@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_bg_chat"
+    android:orientation="vertical">
+
+
+    <!--<com.silver.chat.view.ClearEditText-->
+    <!--android:id="@+id/filter_edit"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="5dip"-->
+    <!--android:drawableLeft="@drawable/search_bar_icon_normal"-->
+    <!--android:hint="请输入关键字"-->
+    <!--android:singleLine="true"-->
+    <!--android:textSize="15.0dip" />-->
+
+
+    <TextView
+        android:id="@id/content_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="联系人"
+        android:textSize="@dimen/dp_12"
+        android:textColor="@color/contact_textcolor"
+        android:layout_marginLeft="@dimen/dp_10"/>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+
+        <ListView
+            android:id="@id/recyle_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:divider="@null" />
+
+        <TextView
+            android:id="@+id/title_layout_no_friends"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="right|top"
+            android:background="#E0E0E0"
+            android:gravity="center_vertical"
+            android:text="没有匹配的联系人"
+            android:textColor="#454545"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/title_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="right|top"
+            android:background="@color/color_lucency"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/title_layout_catalog"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/color_lucency"
+                android:paddingBottom="5dip"
+                android:paddingLeft="5dip"
+                android:paddingTop="5dip"
+                android:textColor="@color/contact_textcolor" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/dialog"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:layout_gravity="center"
+            android:background="@drawable/show_head_toast_bg"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:textSize="30.0dip"
+            android:visibility="invisible" />
+
+        <!--<com.example.sortlistview.SideBar-->
+        <!--android:id="@+id/sidrbar"-->
+        <!--android:layout_width="30.0dip"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--android:layout_gravity="right|center" />-->
+    </FrameLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TabLayoutPlus">
+        <attr name="subTextSize" format="dimension|reference"/>
+        <attr name="countTextColor" format="color|reference"/>
+        <attr name="countTextSize" format="dimension|reference"/>
+        <attr name="countTextBackground" format="color|reference"/>
+    </declare-styleable>
+
+    <style name="TabLayoutPlus_DAFULT">
+        <item name="subTextSize">9sp</item>
+        <item name="countTextSize">11sp</item>
+        <item name="countTextBackground">@drawable/default_badged_count_bg</item>
+    </style>
+
+    <declare-styleable name="RippleLayout">
+        <attr name="color" format="color"/>
+        <attr name="strokeWidth" format="dimension"/>
+        <attr name="radius" format="dimension"/>
+        <attr name="duration" format="integer"/>
+        <attr name="rippleNums" format="integer"/>
+        <attr name="scale" format="float"/>
+    </declare-styleable>
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension"/>
+        <attr name="civ_border_color" format="color"/>
+        <attr name="civ_border_overlay" format="boolean"/>
+        <attr name="civ_fill_color" format="color"/>
+    </declare-styleable>
+</resources>

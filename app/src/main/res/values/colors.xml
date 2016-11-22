@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#36586c</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="white_fe">#feFFFFFF</color>
+    <color name="white_10">#1affffff</color>
+    <color name="translate">#00000000</color>
+    <color name="blue_36">#36586c</color>
+    <color name="bg_main_tablayout">#4d687d</color>
+    <color name="tab_text_color_mormal">#8affffff</color>
+    <color name="chat_time">#8afffafe</color>
+    <!--app主色调-->
+    <color name="app_primary_color">#031e40</color>
+    <!-- 登录注册页字体颜色 -->
+    <color name="txt_font_one_color">#a4a4a4</color>
+    <!-- 登录注册线条颜色 -->
+    <color name="common_line_one_color">#d9d9d9</color>
+    <!-- 验证码背景颜色 -->
+    <color name="bg_auto_code01">#dcdcdc</color>
+
+    <!--透明色-->
+    <color name="color_lucency">#00000000</color>
+    <!--联系人页-->
+    <color name="contact_textcolor">#8affffff</color>
+
+
+    <color name="black">#000000</color>
+
+    <color name="transparent_black">#50000000</color>
+    <color name="blue_bg_shape">#509de1</color>
+
+</resources>

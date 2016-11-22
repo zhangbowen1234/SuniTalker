@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="toolbar" type="id"/>
+    <item name="tabLayout" type="id"/>
+    <item name="tly_content" type="id"/>
+    <item name="viewpager" type="id"/>
+    <item name="action_search" type="id"/>
+    <item name="action_notifications" type="id"/>
+    <item name="action_more" type="id"/>
+    <item name="recyle_content" type="id"/>
+    <item name="iv_avatar" type="id"/>
+    <item name="tv_time" type="id"/>
+    <item name="tv_name" type="id"/>
+    <item name="tv_content" type="id"/>
+    <!--用户手机-->
+    <item name="user_phone" type="id"/>
+    <!--用户密码-->
+    <item name="user_pwd" type="id"/>
+    <!--忘记密码-->
+    <item name="forgot_pwd" type="id"/>
+    <!--登录-->
+    <item name="btn_login" type="id"/>
+    <!--去注册-->
+    <item name="go_reg" type="id"/>
+    <!--获取验证码-->
+    <item name="btn_auth_code" type="id"/>
+    <!--输入验证码-->
+    <item name="edit_auth_code" type="id"/>
+    <!--注册-->
+    <item name="btn_register_id" type="id"/>
+    <!--返回登录-->
+    <item name="return_last" type="id"/>
+    <!--第三方登录-->
+    <item name="qq" type="id"/>
+    <item name="weixin" type="id"/>
+    <item name="xinlang" type="id"/>
+    <!--设置密码-->
+    <item name="set_pwd" type="id"/>
+    <!--重复输入密码-->
+    <item name="again_set_pwd" type="id"/>
+    <!--重复输入注册手机-->
+    <item name="anew_reg_phone" type="id"/>
+    <!--修改密码-->
+    <item name="verification_bt_register" type="id"/>
+    <item name="iv_notification" type="id"/>
+    <item name="tv_title" type="id"/>
+    <item name="iv_more" type="id"/>
+    <item name="iv_search" type="id"/>
+    <item name="lly_name" type="id"/>
+    <item name="im_contact_image" type="id"/>
+    <item name="tv_contact_name" type="id"/>
+    <item name="horizontal_recyle_content" type="id"/>
+    <item name="content_title" type="id"/>
+
+
+</resources>
