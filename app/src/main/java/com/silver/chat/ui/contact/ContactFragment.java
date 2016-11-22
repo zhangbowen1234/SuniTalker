@@ -1,6 +1,7 @@
 package com.silver.chat.ui.contact;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -60,6 +61,7 @@ public class ContactFragment extends BasePagerFragment {
 
         SourceDateList = filledData(getResources().getStringArray(R.array.date));
 
+        Log.i("","");
 
     }
 
