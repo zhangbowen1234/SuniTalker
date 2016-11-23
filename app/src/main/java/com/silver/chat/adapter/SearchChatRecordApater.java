@@ -17,13 +17,13 @@ import java.util.List;
  * 邮箱：fandy618@hotmail.com
  */
 
-public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHolder> {
+public class SearchChatRecordApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHolder> {
 
-    public ChatApater(List<ChatBean> data) {
+    public SearchChatRecordApater(List<ChatBean> data) {
         super(data);
-        addItemType(ChatBean.CHAT_SINGLR, R.layout.item_chat_record_single);
-        addItemType(ChatBean.CHAT_GROUP, R.layout.item_chat_record_group);
-        addItemType(ChatBean.CHAT_SYSTEM, R.layout.item_chat_record_system);
+        addItemType(ChatBean.CHAT_SINGLR, R.layout.item_search_chat_record_single);
+        addItemType(ChatBean.CHAT_GROUP, R.layout.item_search_chat_record_group);
+        addItemType(ChatBean.CHAT_SYSTEM, R.layout.item_search_chat_record_system);
     }
 
     @Override
@@ -40,13 +40,13 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 list.add(DataServer.IMAGE_URL2);
                 list.add(DataServer.IMAGE_URL3);
                 list.add(DataServer.IMAGE_URL4);
-                if (holder.getPosition() == 5){
+                if (holder.getPosition() == 5) {
                     list.remove(0);
                     ImageUtil.loadGroupAvatar(ivGroup, list);
-                }else{
+                } else {
                     ImageUtil.loadGroupAvatar(ivGroup, list);
                 }
-                holder.setText(R.id.tv_name ,"群组聊天=" + holder.getPosition());
+                holder.setText(R.id.tv_name, "群组聊天=" + holder.getPosition());
                 break;
             case ChatBean.CHAT_SYSTEM:
                 ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
