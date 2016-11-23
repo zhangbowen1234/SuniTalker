@@ -51,6 +51,10 @@
     <item name="tv_contact_name" type="id"/>
     <item name="horizontal_recyle_content" type="id"/>
     <item name="content_title" type="id"/>
+    <item name="iv_back" type="id"/>
+    <item name="et_search" type="id"/>
+    <item name="iv_clear" type="id"/>
+    <item name="search_layout" type="id"/>
 
 
 </resources>

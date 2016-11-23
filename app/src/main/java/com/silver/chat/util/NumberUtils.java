@@ -167,7 +167,7 @@ public class NumberUtils {
 	 * 
 	 * @param IDStr
 	 *            身份证号
-	 * @return 有效：返回"" 无效：返回String信息
+	 * @return 有效：action_clean_white"" 无效：返回String信息
 	 * @throws ParseException
 	 * @throws java.text.ParseException
 	 * @throws NumberFormatException

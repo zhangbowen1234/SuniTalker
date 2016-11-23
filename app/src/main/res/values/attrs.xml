@@ -6,13 +6,13 @@
         <attr name="countTextSize" format="dimension|reference"/>
         <attr name="countTextBackground" format="color|reference"/>
     </declare-styleable>
-
+    <!--自定义tablayout-->
     <style name="TabLayoutPlus_DAFULT">
         <item name="subTextSize">9sp</item>
         <item name="countTextSize">11sp</item>
         <item name="countTextBackground">@drawable/default_badged_count_bg</item>
     </style>
-
+    <!--自定义水波纹动画-->
     <declare-styleable name="RippleLayout">
         <attr name="color" format="color"/>
         <attr name="strokeWidth" format="dimension"/>
@@ -21,6 +21,7 @@
         <attr name="rippleNums" format="integer"/>
         <attr name="scale" format="float"/>
     </declare-styleable>
+    <!--自定义圆形按钮-->
     <declare-styleable name="CircleImageView">
         <attr name="civ_border_width" format="dimension"/>
         <attr name="civ_border_color" format="color"/>

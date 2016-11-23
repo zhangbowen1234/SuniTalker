@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.silver.chat.util.AppManager;
 import com.silver.chat.util.ToastUtil;
-import com.silver.chat.util.PreferenceUtil;
 
 /**
  * 作者：Fandy on 2016/11/14 10:38
@@ -21,7 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 日志输出标志
      **/
     protected final String TAG = this.getClass().getSimpleName();
-    private Context mContext;
+    protected Context mContext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

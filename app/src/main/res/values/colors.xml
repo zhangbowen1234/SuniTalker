@@ -10,6 +10,7 @@
     <color name="blue_36">#36586c</color>
     <color name="bg_main_tablayout">#4d687d</color>
     <color name="tab_text_color_mormal">#8affffff</color>
+    <color name="white_8a">#8affffff</color>
     <color name="chat_time">#8afffafe</color>
     <!--app主色调-->
     <color name="app_primary_color">#031e40</color>

@@ -38,5 +38,8 @@
         <activity
             android:name=".ui.login.ForgotVerificationActivity"
             android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".ui.chat.SearchChatRecordActivity"
+            android:label="搜索聊天记录"/>
     </application>
 </manifest>
