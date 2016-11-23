@@ -1,13 +1,14 @@
 package com.silver.chat.ui.contact;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ListView;
 
 import com.silver.chat.R;
-import com.silver.chat.adapter.SortGroupMemberAdapter;
+import com.silver.chat.adapter.ContactListAdapter;
 import com.silver.chat.base.BasePagerFragment;
-import com.silver.chat.entity.GroupMemberBean;
+import com.silver.chat.entity.ContactMemberBean;
 import com.silver.chat.util.CharacterParser;
 import com.silver.chat.util.PinyinComparator;
 
@@ -26,11 +27,10 @@ import java.util.List;
 
 public class ContactFragment extends BasePagerFragment {
 
-    private ListView mRecycleContent;
+    private RecyclerView mRecycleContent;
+    private ContactListAdapter contactAdapter;
 
-
-    private SortGroupMemberAdapter adapter;
-    private List<GroupMemberBean> SourceDateList;
+    private List<ContactMemberBean> SourceDateList;
     /**
      * 汉字转换成拼音的类
      */
@@ -50,8 +50,8 @@ public class ContactFragment extends BasePagerFragment {
     @Override
     protected void initView(View view) {
         super.initView(view);
-        mRecycleContent = (ListView) view.findViewById(R.id.recyle_content);
-//        mRecycleContent.setLayoutManager(new LinearLayoutManager(mActivity));
+        mRecycleContent = (RecyclerView) view.findViewById(R.id.recyle_content);
+        mRecycleContent.setLayoutManager(new LinearLayoutManager(mActivity));
 
 
         // 实例化汉字转拼音类
@@ -67,14 +67,15 @@ public class ContactFragment extends BasePagerFragment {
     /**
      * 为ListView填充数据
      *
-     * @param
+     * @params
      * @return
+     *
      */
-    private List<GroupMemberBean> filledData(String[] date) {
-        List<GroupMemberBean> mSortList = new ArrayList<GroupMemberBean>();
+    private List<ContactMemberBean> filledData(String[] date) {
+        List<ContactMemberBean> mSortList = new ArrayList<ContactMemberBean>();
 
         for (int i = 0; i < date.length; i++) {
-            GroupMemberBean sortModel = new GroupMemberBean();
+            ContactMemberBean sortModel = new ContactMemberBean();
             sortModel.setName(date[i]);
             // 汉字转换成拼音
             String pinyin = characterParser.getSelling(date[i]);
@@ -101,8 +102,9 @@ public class ContactFragment extends BasePagerFragment {
 
         // 根据a-z进行排序源数据
         Collections.sort(SourceDateList, pinyinComparator);
-        adapter = new SortGroupMemberAdapter(mActivity, SourceDateList);
-        mRecycleContent.setAdapter(adapter);
+
+        contactAdapter = new ContactListAdapter(R.layout.item_contact_list,SourceDateList);
+        mRecycleContent.setAdapter(contactAdapter);
 
     }
 
