@@ -1,7 +1,5 @@
 /*
  * Filename	CharacterParser.java
- * Company	�Ϻ�����-�ֶ��ֹ�˾��
- * @author	LuRuihui
  * @version	0.1
  */
 package com.silver.chat.util;
