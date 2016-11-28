@@ -10,7 +10,7 @@
     android:paddingLeft="@dimen/dp_10"
     android:paddingRight="@dimen/dp_2">
 
-    <ImageView
+    <com.silver.chat.view.CircleImageView
         android:id="@id/im_contact_image"
         android:layout_width="@dimen/dp_47"
         android:layout_height="@dimen/dp_47"

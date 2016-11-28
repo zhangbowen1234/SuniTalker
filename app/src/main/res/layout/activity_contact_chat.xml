@@ -4,7 +4,7 @@
     android:background="@drawable/shape_bg_chat">
 
     <com.silver.chat.view.TitleBarView
-        android:id="@+id/title_bar"
+        android:id="@id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -18,16 +18,17 @@
         android:visibility="visible">
 
 
-        <com.silver.chat.view.RoundImageView
+        <com.silver.chat.view.CircleImageView
             android:id="@id/contact_chat_img"
             android:layout_width="@dimen/dp_100"
             android:layout_height="@dimen/dp_100"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/chat_Listview"
+            android:id="@id/recyle_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="@dimen/dp_10"
@@ -54,6 +55,7 @@
         android:background="@null"
         android:orientation="vertical">
 
+        <include layout="@layout/halving_one_line"/>
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -88,7 +90,7 @@
                 android:textSize="@dimen/font_12" />
 
             <Button
-                android:id="@+id/chat_btn_send"
+                android:id="@id/chat_send_msg"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_46"
                 android:layout_marginLeft="@dimen/dp_4"

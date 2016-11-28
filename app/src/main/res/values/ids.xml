@@ -60,6 +60,8 @@
     <item name="title_name" type="id"/>
     <item name="title_left_back" type="id"/>
     <item name="contact_chat_img" type="id"/>
+    <item name="chat_send_msg" type="id"/>
+    <item name="title_bar" type="id"/>
 
 
 </resources>

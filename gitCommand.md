@@ -3,7 +3,7 @@
 克隆远程分支：git clone -b <branchName> http://****.git
 获取远程分支到本地，并创建对应分支：git fetch orgin <branchName>:<localBranchName>
 
-同步代码：
+同步代码： 
 添加：git add .
 查看：git status
 提交：git commit -m "commit messag"
