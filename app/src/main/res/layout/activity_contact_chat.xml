@@ -1,0 +1,120 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_bg_chat">
+
+    <com.silver.chat.view.TitleBarView
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:id="@id/recyle_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ChatLayoutMsg"
+        android:layout_below="@+id/title_bar"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+
+        <com.silver.chat.view.RoundImageView
+            android:id="@id/contact_chat_img"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/chat_Listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp_10"
+            android:divider="@null"
+            android:soundEffectsEnabled="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Hi , This is a test font"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ChatLayoutMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@null"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/chat_btn_emote"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_46"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_chat_emote_normal" />
+
+            <EditText
+                android:id="@+id/chat_edit_input"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:layout_weight="5"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="键入一条消息"
+                android:imeOptions="flagNoExtractUi"
+                android:maxHeight="@dimen/dp_126"
+                android:maxLength="4000"
+                android:minHeight="@dimen/dp_46"
+                android:paddingTop="@dimen/dp_3"
+                android:textColor="@color/white"
+                android:textColorHint="@color/contact_textcolor"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/font_12" />
+
+            <Button
+                android:id="@+id/chat_btn_send"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_46"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:layout_weight="1.5"
+                android:background="@null"
+                android:minWidth="@dimen/dp_50"
+                android:text="send"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/chatInputHalving"
+            android:layout_width="match_parent"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_height="1px"
+            android:background="@color/txt_font_one_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30">
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>

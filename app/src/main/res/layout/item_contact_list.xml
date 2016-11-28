@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
+    android:clickable="true"
     android:paddingBottom="@dimen/dp_5"
     android:paddingTop="@dimen/dp_5">
 
@@ -19,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
-        android:text="阿拉蕾"
+        android:text="阿拉"
         android:textColor="@color/white"
         android:textSize="@dimen/font_15" />
 </LinearLayout>

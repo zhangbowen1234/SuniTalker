@@ -55,6 +55,11 @@
     <item name="et_search" type="id"/>
     <item name="iv_clear" type="id"/>
     <item name="search_layout" type="id"/>
+    <item name="title_right_video" type="id"/>
+    <item name="title_right_voice" type="id"/>
+    <item name="title_name" type="id"/>
+    <item name="title_left_back" type="id"/>
+    <item name="contact_chat_img" type="id"/>
 
 
 </resources>

@@ -16,22 +16,45 @@
     <!--android:singleLine="true"-->
     <!--android:textSize="15.0dip" />-->
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dp_9"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="常用联系人"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textSize="@dimen/font_12"
+            android:textColor="@color/contact_textcolor"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/horizontal_recyle_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:divider="@null" />
+    </LinearLayout>
 
     <TextView
         android:id="@id/content_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
         android:text="联系人"
-        android:textSize="@dimen/dp_12"
         android:textColor="@color/contact_textcolor"
-        android:layout_marginLeft="@dimen/dp_10"/>
+        android:textSize="@dimen/dp_12" />
 
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@id/recyle_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -79,11 +102,6 @@
             android:textSize="30.0dip"
             android:visibility="invisible" />
 
-        <!--<com.example.sortlistview.SideBar-->
-        <!--android:id="@+id/sidrbar"-->
-        <!--android:layout_width="30.0dip"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:layout_gravity="right|center" />-->
     </FrameLayout>
 
 

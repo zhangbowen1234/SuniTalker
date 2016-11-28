@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.silver.chat">
+    package="com.silver.chat">
 
     <meta-data
         android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
-        android:value="GlideModule"/>
-    <!--联网权限-->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <!--访问sd卡权限-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+        android:value="GlideModule" />
+    <!-- 联网权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 访问sd卡权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
         android:allowBackup="true"
@@ -19,27 +19,28 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ui.login.LoginActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".ui.login.RegisterPWDActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.login.RegisterPhoneActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.login.UserForgotPWDActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.login.ForgotVerificationActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.chat.SearchChatRecordActivity"
-            android:label="搜索聊天记录"/>
+            android:label="搜索聊天记录" />
+        <activity android:name=".ui.contact.ContactChatActivity"></activity>
     </application>
+
 </manifest>

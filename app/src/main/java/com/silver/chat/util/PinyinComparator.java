@@ -1,6 +1,6 @@
 package com.silver.chat.util;
 
-import com.silver.chat.entity.GroupMemberBean;
+import com.silver.chat.entity.ContactMemberBean;
 
 import java.util.Comparator;
 
@@ -9,9 +9,9 @@ import java.util.Comparator;
  * @author xiaanming
  *
  */
-public class PinyinComparator implements Comparator<GroupMemberBean> {
+public class PinyinComparator implements Comparator<ContactMemberBean> {
 
-	public int compare(GroupMemberBean o1, GroupMemberBean o2) {
+	public int compare(ContactMemberBean o1, ContactMemberBean o2) {
 		if (o1.getSortLetters().equals("@")
 				|| o2.getSortLetters().equals("#")) {
 			return -1;

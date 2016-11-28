@@ -67,7 +67,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 if (mTabLayout.getSelectedTabPosition() == 0) {
                     startActivity(SearchChatRecordActivity.class);
                 }
+                if (mTabLayout.getSelectedTabPosition() ==1){
+                    startActivity(SearchChatRecordActivity.class);
+                }
                 break;
+
         }
     }
 }

@@ -23,4 +23,32 @@ public class DataServer {
         }
         return list;
     }
+//
+//    SourceDateList = filledData(getResources().getStringArray(R.array.date));
+//    /**
+//     * 为ListView填充数据
+//     *
+//     * @return
+//     * @params
+//     */
+//    private List<ContactMemberBean> filledData(String[] date) {
+//        List<ContactMemberBean> mSortList = new ArrayList<ContactMemberBean>();
+//        for (int i = 0; i < date.length; i++) {
+//            ContactMemberBean sortModel = new ContactMemberBean();
+//            sortModel.setContactName(date[i]);
+//            // 汉字转换成拼音
+//            String pinyin = characterParser.getSelling(date[i]);
+//            String sortString = pinyin.substring(0, 1).toUpperCase();
+//            // 正则表达式，判断首字母是否是英文字母
+//            if (sortString.matches("[A-Z]")) {
+//                sortModel.setSortLetters(sortString.toUpperCase());
+//            } else {
+//                sortModel.setSortLetters("#");
+//            }
+//            mSortList.add(sortModel);
+//        }
+//        return mSortList;
+//    }
+
+
 }
