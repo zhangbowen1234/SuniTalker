@@ -45,6 +45,7 @@
     <item name="iv_notification" type="id"/>
     <item name="tv_title" type="id"/>
     <item name="iv_more" type="id"/>
+    <item name="iv_toolbar_more" type="id"/>
     <item name="iv_search" type="id"/>
     <item name="lly_name" type="id"/>
     <item name="im_contact_image" type="id"/>
@@ -64,6 +65,15 @@
     <item name="llyout" type="id"/>
     <item name="chat_send_msg" type="id"/>
     <item name="title_bar" type="id"/>
+    <item name="lly_more" type="id"/>
+    <item name="tv_scan" type="id"/>
+    <item name="tv_search" type="id"/>
+    <item name="tv_start_chat" type="id"/>
+    <item name="tv_unread" type="id"/>
+    <item name="tv_read" type="id"/>
+    <item name="tv_clear" type="id"/>
+    <item name="iv_toolbar_search" type="id"/>
+    <item name="llay_one" type="id"/>
 
 
 </resources>

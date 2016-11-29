@@ -22,11 +22,12 @@ import java.util.List;
  * 邮箱：fandy618@hotmail.com
  */
 
-public class ChatRecordFragment extends BasePagerFragment {
+public class ChatRecordFragment extends BasePagerFragment  {
 
     private RecyclerView mRecycleContent;
     private ChatApater mChatApater;
     private List<ChatBean> mList;
+
 
     public static ChatRecordFragment newInstance() {
         Bundle args = new Bundle();
@@ -71,4 +72,5 @@ public class ChatRecordFragment extends BasePagerFragment {
     protected int getLayoutResourceId() {
         return R.layout.fragment_chat_record;
     }
+
 }

@@ -6,6 +6,7 @@
     <color name="white">#FFFFFF</color>
     <color name="white_fe">#feFFFFFF</color>
     <color name="white_10">#1affffff</color>
+    <color name="white_70">#ffffff</color>
     <color name="translate">#00000000</color>
     <color name="blue_36">#36586c</color>
     <color name="bg_main_tablayout">#4d687d</color>

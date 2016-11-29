@@ -8,4 +8,10 @@
     <string name="hint_search_contact_name">Hi，请输入您要搜索的联系人名称</string>
     <string name="global_invite_more_people">邀请更多人</string>
     <string name="global_contact">联系人</string>
+    <string name="global_unread">未读</string>
+    <string name="global_scan">扫码</string>
+    <string name="global_search">搜索</string>
+    <string name="global_start_chat">发起聊天</string>
+    <string name="global_read">已读</string>
+    <string name="global_clear">清空</string>
 </resources>
