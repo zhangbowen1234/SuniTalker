@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.silver.chat.R;
 import com.silver.chat.adapter.ContactListAdapter;
@@ -36,7 +35,6 @@ public class ContactFragment extends BasePagerFragment  {
     private ContactListAdapter contactAdapter;
 
     private List<ContactMemberBean> SourceDateList;
-    private ImageView mIvSearch;
 
     /**
      * 汉字转换成拼音的类
@@ -59,7 +57,6 @@ public class ContactFragment extends BasePagerFragment  {
         super.initView(view);
         mRecycleContent = (RecyclerView) view.findViewById(R.id.recyle_content);
         mHorizontalRecycleContent = (RecyclerView) view.findViewById(R.id.horizontal_recyle_content);
-//        mIvSearch = (ImageView) findViewById(R.id.iv_search);
 
 
         //设置布局管理器
@@ -152,11 +149,6 @@ public class ContactFragment extends BasePagerFragment  {
                 Log.d("ContactFragment.class", "position=" + position);
                 ContactMemberBean contactMemberBean = (ContactMemberBean) adapter.getItem(position);
                 ToastUtil.toastMessage(mActivity, contactMemberBean.getContactName());
-
-//                Intent mIntent = new Intent(mActivity,ContactChatActivity.class);
-//                mIntent.putExtra("contactName",contactMemberBean.getContactName());
-//                startActivity(mIntent);
-
 
             }
         });
