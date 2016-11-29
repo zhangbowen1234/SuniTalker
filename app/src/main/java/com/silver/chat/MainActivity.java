@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.silver.chat.adapter.MainPagerAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.ui.chat.SearchChatRecordActivity;
+import com.silver.chat.ui.contact.SearchContactActivity;
 import com.silver.chat.view.BadgedTabCustomView;
 import com.silver.chat.view.TabLayoutPlus;
 
@@ -68,7 +69,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     startActivity(SearchChatRecordActivity.class);
                 }
                 if (mTabLayout.getSelectedTabPosition() ==1){
-                    startActivity(SearchChatRecordActivity.class);
+                    startActivity(SearchContactActivity.class);
                 }
                 break;
 

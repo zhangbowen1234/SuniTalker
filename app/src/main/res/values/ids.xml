@@ -60,6 +60,8 @@
     <item name="title_name" type="id"/>
     <item name="title_left_back" type="id"/>
     <item name="contact_chat_img" type="id"/>
+    <item name="tv_contact" type="id"/>
+    <item name="llyout" type="id"/>
 
 
 </resources>

@@ -140,7 +140,6 @@ public class GroupDrawable extends Drawable {
     }
 
 
-
     /**
      * 画四分之一的圆半角
      */
@@ -157,6 +156,9 @@ public class GroupDrawable extends Drawable {
      * 使用Path画图
      */
     private void drawBitmapWithPath(Canvas canvas, Bitmap bitmap, Path path, int centerX, int centerY, float radius, Paint drawPaint) {
+        if (bitmap == null) {
+            return;
+        }
         final int halfBitmapWidth = bitmap.getWidth() / 2;
         final int halfBitmapHeight = bitmap.getHeight() / 2;
 

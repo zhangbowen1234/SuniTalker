@@ -5,4 +5,7 @@
     <string name="global_group">群组</string>
     <string name="global_chat_record">聊天记录</string>
     <string name="hint_search_chat_record">Hi，请输入您要搜索的聊天记录</string>
+    <string name="hint_search_contact_name">Hi，请输入您要搜索的联系人名称</string>
+    <string name="global_invite_more_people">邀请更多人</string>
+    <string name="global_contact">联系人</string>
 </resources>

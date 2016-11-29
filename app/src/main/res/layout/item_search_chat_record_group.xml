@@ -11,6 +11,7 @@
         android:id="@id/iv_avatar"
         android:layout_width="@dimen/dp_45"
         android:layout_height="@dimen/dp_45"
+        android:background="@drawable/avatar_bg"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="@dimen/dp_7"
         android:src="@drawable/default_badged_count_bg"/>
