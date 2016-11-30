@@ -6,8 +6,11 @@ import com.silver.chat.view.recycleview.BaseViewHolder;
 
 import java.util.List;
 
+import static com.silver.chat.R.id.user_message;
+
 /**
  * Created by Administrator on 2016/11/28.
+ *
  */
 
 public class ChatMessageAdapter extends BaseQuickAdapter<ChatEntity, BaseViewHolder> {
@@ -23,7 +26,9 @@ public class ChatMessageAdapter extends BaseQuickAdapter<ChatEntity, BaseViewHol
 
 
     @Override
-    protected void convert(BaseViewHolder helper, ChatEntity item) {
+    protected void convert(BaseViewHolder holper, ChatEntity item) {
+        holper.setText(user_message, item.getContent());
+
 
     }
 }

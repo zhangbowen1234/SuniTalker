@@ -62,6 +62,10 @@
     <item name="contact_chat_img" type="id"/>
     <item name="chat_send_msg" type="id"/>
     <item name="title_bar" type="id"/>
+    <item name="rl_recyle_content" type="id"/>
+    <item name="ll_title_name" type="id"/>
+    <item name="show_contact_head" type="id"/>
+    <item name="my_round_head" type="id"/>
 
 
 </resources>

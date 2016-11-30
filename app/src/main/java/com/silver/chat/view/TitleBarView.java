@@ -20,7 +20,7 @@ import com.silver.chat.util.SystemMethod;
 /**
  * 自定义页面抬头
  */
-public class TitleBarView extends RelativeLayout {
+ public class TitleBarView extends RelativeLayout {
 
 	private static final String TAG = "TitleBarView";
 	private Context mContext;
