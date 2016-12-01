@@ -34,21 +34,7 @@
                 android:textSize="@dimen/dp_12" />
         </LinearLayout>
 
-        <!--<ImageView-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="1dip"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginLeft="55dip"-->
-            <!--android:layout_toLeftOf="@+id/message_timestamp_layout"-->
-            <!--android:background="@color/timestampline" />-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="1dip"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginRight="55dip"-->
-            <!--android:layout_toRightOf="@+id/message_timestamp_layout"-->
-            <!--android:background="@color/timestampline" />-->
     </RelativeLayout>
 
     <RelativeLayout
@@ -56,7 +42,7 @@
         android:layout_height="wrap_content"
         android:minHeight="@dimen/dp_40"
         android:paddingBottom="@dimen/dp_4"
-        android:paddingTop="@dimen/dp_10" >
+        android:paddingTop="@dimen/dp_20" >
 
         <LinearLayout
             android:id="@+id/chat_friend_left_layout"
@@ -70,7 +56,7 @@
                 android:layout_width="@dimen/dp_47"
                 android:layout_height="@dimen/dp_47"
                 android:layout_marginLeft="@dimen/dp_10"
-                android:background="@drawable/ic_contact_portrait"/>
+                android:src="@drawable/ic_contact_portrait"/>
 
             <LinearLayout
                 android:id="@+id/chat_message_left_layout"

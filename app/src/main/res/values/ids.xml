@@ -81,6 +81,10 @@
     <item name="tv_detail" type="id"/>
     <item name="tv_report" type="id"/>
     <item name="tv_delete" type="id"/>
+    <item name="rl_recyle_content" type="id"/>
+    <item name="ll_title_name" type="id"/>
+    <item name="show_contact_head" type="id"/>
+    <item name="my_round_head" type="id"/>
 
 
 </resources>

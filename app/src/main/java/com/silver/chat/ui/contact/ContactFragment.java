@@ -128,17 +128,11 @@ public class ContactFragment extends BasePagerFragment  {
                 ToastUtil.toastMessage(mActivity, contactMemberBean.getContactName());
 
 
-                    //Parcelable存数据：
                 Intent mIntent = new Intent(mActivity,ContactChatActivity.class);
-//                         Bundle mBundle = new Bundle();
-//                         mBundle.putParcelable("contactName",contactMemberBean.getContactName());
                 mIntent.putExtra("contactName",contactMemberBean.getContactName());
                 startActivity(mIntent);
 
 
-
-                //Parcelable取数据：
-//                Book mBook = (Book)getIntent().getParcelableExtra(ObjectTranDemo.PAR_KEY);
             }
         });
 
