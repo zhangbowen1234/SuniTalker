@@ -87,18 +87,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="@dimen/dp_9"
-                android:drawableTop="@drawable/ic_scan"
+                android:drawableTop="@drawable/ic_stick_white"
                 android:gravity="center_horizontal"
-                android:text="@string/global_stick"/>
+                android:text="@string/global_stick"
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@id/tv_silence"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/dp_9"
-                android:drawableTop="@drawable/ic_search"
+                android:drawableTop="@drawable/ic_silence_white"
                 android:gravity="center_horizontal"
-                android:text="@string/global_silence"/>
+                android:text="@string/global_silence"
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@id/tv_clear"
@@ -106,9 +108,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="@dimen/dp_9"
-                android:drawableTop="@drawable/ic_start_chat"
+                android:drawableTop="@drawable/ic_clear_white"
                 android:gravity="center_horizontal"
-                android:text="@string/global_clear"/>
+                android:text="@string/global_clear"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 
@@ -124,18 +127,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="@dimen/dp_9"
-                android:drawableTop="@drawable/ic_scan"
+                android:drawableTop="@drawable/ic_detail_white"
                 android:gravity="center_horizontal"
-                android:text="@string/global_detail"/>
+                android:text="@string/global_detail"
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@id/tv_report"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/dp_9"
-                android:drawableTop="@drawable/ic_search"
+                android:drawableTop="@drawable/ic_report_white"
                 android:gravity="center_horizontal"
-                android:text="@string/global_report"/>
+                android:text="@string/global_report"
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@id/tv_delete"
@@ -143,9 +148,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="@dimen/dp_9"
-                android:drawableTop="@drawable/ic_start_chat"
+                android:drawableTop="@drawable/ic_delete_white"
                 android:gravity="center_horizontal"
-                android:text="@string/global_delete"/>
+                android:text="@string/global_delete"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 
