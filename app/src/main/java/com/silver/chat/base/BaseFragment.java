@@ -1,6 +1,7 @@
 package com.silver.chat.base;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -84,5 +85,13 @@ public abstract class BaseFragment extends SupportFragment {
 
     protected void initData() {
 
+    }
+    /**
+     * [页面跳转]
+     *
+     * @param clz
+     */
+    public void startActivity(Class<?> clz) {
+        mActivity.startActivity(new Intent(mActivity, clz));
     }
 }

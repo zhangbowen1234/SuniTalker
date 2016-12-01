@@ -14,4 +14,9 @@
     <string name="global_start_chat">发起聊天</string>
     <string name="global_read">已读</string>
     <string name="global_clear">清空</string>
+    <string name="global_stick">置顶</string>
+    <string name="global_silence">静音</string>
+    <string name="global_detail">详情</string>
+    <string name="global_report">举报</string>
+    <string name="global_delete">删除</string>
 </resources>

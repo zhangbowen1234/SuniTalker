@@ -43,6 +43,9 @@
         <activity
             android:name=".ui.contact.SearchContactActivity"
             android:label="搜索联系人"/>
+        <activity
+            android:name=".ui.mine.FriendInfoActivity"
+            android:label="好友详情"/>
         <activity android:name=".ui.contact.ContactChatActivity"></activity>
     </application>
 
