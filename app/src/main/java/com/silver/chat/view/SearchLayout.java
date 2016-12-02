@@ -47,6 +47,11 @@ public class SearchLayout extends LinearLayout implements View.OnClickListener, 
         init();
     }
 
+    public void setHint(int resId) {
+        String hint = mContext.getResources().getString(resId);
+        mEtSearch.setHint(hint);
+    }
+
     private void init() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_edittext, null);
         mIvBack = (ImageView) view.findViewById(R.id.iv_back);

@@ -11,6 +11,7 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.ContactListAdapter;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.entity.ContactMemberBean;
+import com.silver.chat.entity.User;
 import com.silver.chat.util.CharacterParser;
 import com.silver.chat.util.PinyinComparator;
 import com.silver.chat.util.ToastUtil;
@@ -114,7 +115,7 @@ public class ContactFragment extends BasePagerFragment  {
 
     }
 
-
+    User user;
     @Override
     protected void initListener() {
         super.initListener();
@@ -125,7 +126,8 @@ public class ContactFragment extends BasePagerFragment  {
                 Log.d("ContactFragment.class", "position=" + position);
 
                 ContactMemberBean contactMemberBean = (ContactMemberBean) adapter.getItem(position);
-                ToastUtil.toastMessage(mActivity, contactMemberBean.getContactName());
+
+
 
 
                 Intent mIntent = new Intent(mActivity,ContactChatActivity.class);

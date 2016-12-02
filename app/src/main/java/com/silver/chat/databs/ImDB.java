@@ -1,9 +1,14 @@
-package com.silver.chat.database;
+package com.silver.chat.databs;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.silver.chat.entity.ApplicationData;
+import com.silver.chat.entity.ChatEntity;
+import com.silver.chat.entity.MessageTabEntity;
+import com.silver.chat.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;

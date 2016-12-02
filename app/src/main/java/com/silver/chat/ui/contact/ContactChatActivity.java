@@ -1,40 +1,45 @@
 package com.silver.chat.ui.contact;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.database.ChatEntity;
-import com.silver.chat.util.CharacterParser;
-import com.silver.chat.util.PinyinComparator;
+import com.silver.chat.entity.ChatEntity;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class ContactChatActivity extends BaseActivity {
+
+public class ContactChatActivity extends BaseActivity implements View.OnClickListener {
 
     private CircleImageView mContactChatImg;
-    private ImageButton mSendMsg;
+    private ImageButton mSendMsg, mEmoteBtn;
+    private EditText inputEdit;
     private String contactName;
     private TitleBarView mTitleBar;
     private RecyclerView mChatMsgList;
+    private RelativeLayout mShowHead;
     private List<ChatEntity> chatList;
     private ChatMessageAdapter chatMessageAdapter;
-
-//    private List<ContactMemberBean> SourceDateList;
-    /**
-     * 汉字转换成拼音的类
-     */
-    private CharacterParser characterParser;
-    /**
-     * 根据拼音来排列ListView里面的数据类
-     */
-    private PinyinComparator pinyinComparator;
+    private ViewPager mFaceViewPager;
+    private LinearLayout mExpression;
+    private Handler handler;
+    private int friendId = 894446774;
 
     @Override
     protected int getLayoutId() {
@@ -50,32 +55,16 @@ public class ContactChatActivity extends BaseActivity {
         mSendMsg = (ImageButton) findViewById(R.id.chat_send_msg);
         mTitleBar = (TitleBarView) findViewById(R.id.title_bar);
         mChatMsgList = (RecyclerView) findViewById(R.id.recyle_content);
+        mEmoteBtn = (ImageButton) findViewById(R.id.chat_btn_emote);
+        mExpression = (LinearLayout) findViewById(R.id.expression);
+        mFaceViewPager = (ViewPager) findViewById(R.id.face_viewpager);
+        inputEdit = (EditText) findViewById(R.id.chat_edit_input);
+        mShowHead = (RelativeLayout) findViewById(R.id.show_contact_head);
 
 
-        // 实例化汉字转拼音类
-        characterParser = CharacterParser.getInstance();
-        pinyinComparator = new PinyinComparator();
-        //初始化联系人数据
-        chatList = filledData(getResources().getStringArray(R.array.date));
+        mChatMsgList.setLayoutManager(new LinearLayoutManager(this));
     }
-    /**
-     * 为ListView填充数据
-     *
-     * @return
-     * @params
-     */
-    private List<ChatEntity> filledData(String[] date) {
-        List<ChatEntity> mSortList = new ArrayList<ChatEntity>();
-        for (int i = 0; i < date.length; i++) {
-            ChatEntity sortModel = new ChatEntity();
-            sortModel.setContent(date[i]);
-            // 汉字转换成拼音
-            String pinyin = characterParser.getSelling(date[i]);
-            String sortString = pinyin.substring(0, 1).toUpperCase();
-            mSortList.add(sortModel);
-        }
-        return mSortList;
-    }
+
 
     @Override
     protected void initData() {
@@ -83,19 +72,31 @@ public class ContactChatActivity extends BaseActivity {
         Intent intent = getIntent();
         contactName = intent.getStringExtra("contactName");
         mTitleBar.setTitleText(contactName + "");
-
-
-
+//
+//        handler = new Handler() {
+//            public void handleMessage(Message msg) {
+//                switch (msg.what) {
+//                    case 1:
+//                        chatMessageAdapter.notifyDataSetChanged();
+//                        mChatMsgList.scrollToPosition(chatList.size());
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        };
+//
 //        ApplicationData.getInstance().setChatHandler(handler);
 //        chatList = ApplicationData.getInstance().getChatMessagesMap()
 //                .get(friendId);
 //        if(chatList == null){
+//
 //            chatList = ImDB.getInstance(ContactChatActivity.this).getChatMessage(friendId);
 //            ApplicationData.getInstance().getChatMessagesMap().put(friendId, chatList);
 //        }
 
-
-        mChatMsgList.setAdapter(new ChatMessageAdapter(R.layout.chat_message_item,chatList));
+        chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, chatList);
+        mChatMsgList.setAdapter(chatMessageAdapter);
 
     }
 
@@ -103,6 +104,39 @@ public class ContactChatActivity extends BaseActivity {
     @Override
     protected void initListener() {
         super.initListener();
+        //表情
+        mEmoteBtn.setOnClickListener(this);
+        mSendMsg.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.chat_send_msg:
+                String content = inputEdit.getText().toString();
+                chatList = new ArrayList<>();
+
+                inputEdit.setText("");
+                ChatEntity chatMessage = new ChatEntity();
+                chatMessage.setContent(content);
+                chatMessage.setSenderId(123);
+                chatMessage.setReceiverId(friendId);
+                chatMessage.setMessageType(ChatEntity.SEND);
+                Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd hh:mm:ss");
+                String sendTime = sdf.format(date);
+                chatMessage.setSendTime(sendTime);
+                chatMessageAdapter.addData(chatMessage);
+                Log.e("1111","size="+chatList.size());
+                mChatMsgList.scrollToPosition(chatList.size());
+//                UserAction.sendMessage(chatMessage);
+//                ImDB.getInstance(ContactChatActivity.this)
+//                        .saveChatMessage(chatMessage);
+                mShowHead.setVisibility(View.INVISIBLE);
+
+                break;
+        }
+
 
     }
 }

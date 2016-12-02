@@ -3,7 +3,7 @@
  * 时间：2015年5月9日上午10:23:19
  * 作者：修维康
  */
-package com.silver.chat.database;
+package com.silver.chat.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class User implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int id;
+	private int id ;
 	private String account;
 	private String userName;
 	private String password;

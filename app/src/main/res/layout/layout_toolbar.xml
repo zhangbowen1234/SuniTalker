@@ -27,7 +27,7 @@
             android:textSize="@dimen/font_18"/>
 
         <ImageView
-            android:id="@id/iv_more"
+            android:id="@id/iv_toolbar_more"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
@@ -36,12 +36,12 @@
             android:src="@drawable/ic_menu_more"/>
 
         <ImageView
-            android:id="@id/iv_search"
+            android:id="@id/iv_toolbar_search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_14"
-            android:layout_toLeftOf="@id/iv_more"
+            android:layout_toLeftOf="@id/iv_toolbar_more"
             android:padding="@dimen/dp_10"
             android:src="@drawable/ic_menu_search"/>
 

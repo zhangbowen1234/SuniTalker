@@ -1,4 +1,4 @@
-package com.silver.chat.database;
+package com.silver.chat.util;
 
 import android.app.Activity;
 import android.content.ContentResolver;

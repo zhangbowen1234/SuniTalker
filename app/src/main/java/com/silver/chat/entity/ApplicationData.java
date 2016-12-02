@@ -1,9 +1,12 @@
-package com.silver.chat.database;
+package com.silver.chat.entity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
+
+import com.silver.chat.databs.ImDB;
+import com.silver.chat.util.PhotoUtils;
 
 import java.util.HashMap;
 import java.util.List;

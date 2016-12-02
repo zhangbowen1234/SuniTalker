@@ -124,7 +124,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/chat_btn_emote"
+                android:id="@id/chat_btn_emote"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginLeft="@dimen/dp_4"
@@ -133,7 +133,7 @@
                 android:src="@drawable/ic_chat_emote" />
 
             <EditText
-                android:id="@+id/chat_edit_input"
+                android:id="@id/chat_edit_input"
                 android:layout_width="@dimen/dp_0"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_4"
@@ -222,6 +222,34 @@
                 android:paddingBottom="@dimen/dp_15"
                 android:layout_marginLeft="@dimen/dp_15"
                 android:src="@drawable/more_btn" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/expression"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#DDDDDD"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/face_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_80"
+                android:layout_gravity="center"
+                android:padding="10dip" />
+
+            <LinearLayout
+                android:id="@+id/face_dots_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_10"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+            </LinearLayout>
 
         </LinearLayout>
 

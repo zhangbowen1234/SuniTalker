@@ -1,4 +1,4 @@
-package com.silver.chat.database;
+package com.silver.chat.entity;
 
 /**
  * 传输对象类型

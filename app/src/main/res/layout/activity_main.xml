@@ -1,52 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_scrollFlags="scroll|enterAlways"
-    tools:context="com.silver.chat.MainActivity">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/activity_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+        android:layout_height="match_parent"
+        app:layout_scrollFlags="scroll|enterAlways"
+        tools:context="com.silver.chat.MainActivity">
 
-        <include layout="@layout/layout_toolbar"/>
-
-        <!--<android.support.v7.widget.Toolbar-->
-        <!--android:id="@id/toolbar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/dp_48"-->
-        <!--android:theme="@style/AppTheme.AppBarOverlay"-->
-        <!--android:titleTextColor="@color/white"-->
-        <!--app:layout_scrollFlags="scroll|enterAlways"-->
-        <!--app:popupTheme="@style/AppTheme.PopupOverlay"-->
-        <!--app:title="@string/app_name">-->
-
-        <!--</android.support.v7.widget.Toolbar>-->
-
-        <com.silver.chat.view.TabLayoutPlus
-            android:id="@id/tabLayout"
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_48"
-            android:background="@color/white_10"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="@color/white"
-            app:tabIndicatorHeight="@dimen/dp_0"
-            app:tabMode="fixed"
-            app:layout_scrollFlags="enterAlways|scroll"
-            app:tabSelectedTextColor="@color/white_fe"
-            app:tabTextColor="@color/tab_text_color_mormal">
-        </com.silver.chat.view.TabLayoutPlus>
-    </android.support.design.widget.AppBarLayout>
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
 
-    <android.support.v4.view.ViewPager
-        android:id="@id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            <include layout="@layout/layout_toolbar"/>
 
-</android.support.design.widget.CoordinatorLayout>
+            <!--<android.support.v7.widget.Toolbar-->
+            <!--android:id="@id/toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/dp_48"-->
+            <!--android:theme="@style/AppTheme.AppBarOverlay"-->
+            <!--android:titleTextColor="@color/white"-->
+            <!--app:layout_scrollFlags="scroll|enterAlways"-->
+            <!--app:popupTheme="@style/AppTheme.PopupOverlay"-->
+            <!--app:title="@string/app_name">-->
+
+            <!--</android.support.v7.widget.Toolbar>-->
+
+            <com.silver.chat.view.TabLayoutPlus
+                android:id="@id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:background="@color/white_10"
+                app:layout_scrollFlags="enterAlways|scroll"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/white"
+                app:tabIndicatorHeight="@dimen/dp_0"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/white_fe"
+                app:tabTextColor="@color/tab_text_color_mormal">
+            </com.silver.chat.view.TabLayoutPlus>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        <ImageView
+            android:id="@id/iv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:padding="@dimen/dp_25"
+            android:src="@drawable/action_more"/>
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <include layout="@layout/dialog_more"/>
+</FrameLayout>

@@ -1,4 +1,4 @@
-package com.silver.chat.database;
+package com.silver.chat.entity;
 
 import java.io.Serializable;
 

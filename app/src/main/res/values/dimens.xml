@@ -112,6 +112,7 @@
     <dimen name="dp_140">140.0dip</dimen>
     <dimen name="dp_150">150.0dip</dimen>
     <dimen name="dp_160">160.0dip</dimen>
+    <dimen name="dp_175">175.0dip</dimen>
     <dimen name="dp_180">180.0dip</dimen>
     <dimen name="dp_220">220.0dip</dimen>
     <dimen name="font_9">9.0sp</dimen>
