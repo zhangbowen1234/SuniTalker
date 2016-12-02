@@ -1,5 +1,18 @@
 package com.silver.chatsdk;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.silver.chatsdk.bean.BaseBean;
+import com.silver.chatsdk.bean.Person;
+import com.silver.chatsdk.bean.RequestInfo;
+import com.silver.chatsdk.network.ApiService;
+import com.silver.chatsdk.network.RetrofitClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 /**
  * 作者：Fandy on 2016/11/28 16:18
  * 邮箱：fandy618@hotmail.com
@@ -8,6 +21,7 @@ package com.silver.chatsdk;
 public class YDClient {
 
     private static YDClient instance = null;
+    private Context mContext;
 
     /**
      * 单例模式
@@ -21,17 +35,35 @@ public class YDClient {
         return instance;
     }
 
+    public void init(Context context) {
+        mContext = context;
+    }
+
     /**
      * 注册账户
      */
-    public static void creatAccount() {
+    public void creatAccount(final ResponseCallBack callBack) {
+        ApiService service = RetrofitClient.getInstance(mContext);
+        Call<Person> regist = service.regist(new RequestInfo("REGISTER", "1380000000", "123", "123"));
+        regist.enqueue(new Callback<Person>() {
+            @Override
+            public void onResponse(Call<Person> call, Response<Person> response) {
+                Log.e("onResponse", response.body().toString());
+                callBack.onSuccess(new BaseBean(1, "123"));
+            }
 
+            @Override
+            public void onFailure(Call<Person> call, Throwable t) {
+                Log.e("onFailure", "onFailure");
+                callBack.onFailed(-1);
+            }
+        });
     }
 
     /**
      * 登录账号
      */
-    public static void login() {
+    public void login() {
 
     }
 }
