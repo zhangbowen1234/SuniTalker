@@ -1,4 +1,4 @@
-package com.silver.chat.database;
+package com.silver.chat.databs;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

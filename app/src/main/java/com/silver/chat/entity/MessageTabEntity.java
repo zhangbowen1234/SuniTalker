@@ -1,4 +1,4 @@
-package com.silver.chat.database;
+package com.silver.chat.entity;
 
 /**
  * 类名：MessageEntity 说明：messageFragment显示的消息

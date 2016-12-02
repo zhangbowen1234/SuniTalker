@@ -65,6 +65,10 @@
     <item name="llyout" type="id"/>
     <item name="chat_send_msg" type="id"/>
     <item name="title_bar" type="id"/>
+    <item name="rl_recyle_content" type="id"/>
+    <item name="ll_title_name" type="id"/>
+    <item name="show_contact_head" type="id"/>
+    <item name="my_round_head" type="id"/>
     <item name="lly_more" type="id"/>
     <item name="tv_scan" type="id"/>
     <item name="tv_search" type="id"/>
@@ -85,6 +89,8 @@
     <item name="ll_title_name" type="id"/>
     <item name="show_contact_head" type="id"/>
     <item name="my_round_head" type="id"/>
+    <item name="chat_btn_emote" type="id"/>
+    <item name="chat_edit_input" type="id"/>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package com.silver.chat.database;
+package com.silver.chat.entity;
 
 public enum Result {
 	ACCOUNT_EXISTED,
