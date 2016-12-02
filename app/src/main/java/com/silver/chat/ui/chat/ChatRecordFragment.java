@@ -22,7 +22,7 @@ import java.util.List;
  * 邮箱：fandy618@hotmail.com
  */
 
-public class ChatRecordFragment extends BasePagerFragment  {
+public class ChatRecordFragment extends BasePagerFragment {
 
     private RecyclerView mRecycleContent;
     private ChatApater mChatApater;
