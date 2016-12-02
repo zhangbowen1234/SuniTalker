@@ -100,7 +100,7 @@ public class RetrofitClient {
         Cache cache = new Cache(cacheFile, 20 * 1024 * 1024);
         builder.cache(cache).addInterceptor(cacheInterceptor);
     }
-
++
     /**
      * 缓存
      */
