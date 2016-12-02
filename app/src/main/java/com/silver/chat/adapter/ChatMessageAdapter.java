@@ -2,7 +2,7 @@ package com.silver.chat.adapter;
 
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.silver.chat.R;
@@ -33,8 +33,8 @@ public class ChatMessageAdapter extends BaseQuickAdapter<ChatEntity, BaseViewHol
     @Override
     protected void convert(BaseViewHolder holper, ChatEntity item) {
 
-        LinearLayout leftLayout;
-        LinearLayout rightLayout;
+        RelativeLayout leftLayout;
+        RelativeLayout rightLayout;
         TextView leftMessageView;
         TextView rightMessageView;
         TextView timeView;

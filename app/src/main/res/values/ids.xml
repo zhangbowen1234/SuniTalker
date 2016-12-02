@@ -65,13 +65,10 @@
     <item name="llyout" type="id"/>
     <item name="chat_send_msg" type="id"/>
     <item name="title_bar" type="id"/>
-<<<<<<< HEAD
     <item name="rl_recyle_content" type="id"/>
     <item name="ll_title_name" type="id"/>
     <item name="show_contact_head" type="id"/>
     <item name="my_round_head" type="id"/>
-=======
->>>>>>> 86da888b11da266a1718de93cf9ede02d7c3a593
     <item name="lly_more" type="id"/>
     <item name="tv_scan" type="id"/>
     <item name="tv_search" type="id"/>
@@ -81,10 +78,8 @@
     <item name="tv_clear" type="id"/>
     <item name="iv_toolbar_search" type="id"/>
     <item name="llay_one" type="id"/>
-<<<<<<< HEAD
     <item name="chat_btn_emote" type="id"/>
     <item name="chat_edit_input" type="id"/>
-=======
     <item name="tv_sex" type="id"/>
     <item name="tv_sign" type="id"/>
     <item name="tv_stick" type="id"/>
@@ -92,11 +87,6 @@
     <item name="tv_detail" type="id"/>
     <item name="tv_report" type="id"/>
     <item name="tv_delete" type="id"/>
-    <item name="rl_recyle_content" type="id"/>
-    <item name="ll_title_name" type="id"/>
-    <item name="show_contact_head" type="id"/>
-    <item name="my_round_head" type="id"/>
->>>>>>> 86da888b11da266a1718de93cf9ede02d7c3a593
 
 
 </resources>

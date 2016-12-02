@@ -41,6 +41,8 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private Handler handler;
     private int friendId = 894446774;
 
+    int lastItemPosition;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_contact_chat;
@@ -60,9 +62,16 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mFaceViewPager = (ViewPager) findViewById(R.id.face_viewpager);
         inputEdit = (EditText) findViewById(R.id.chat_edit_input);
         mShowHead = (RelativeLayout) findViewById(R.id.show_contact_head);
+        //设置管理
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mChatMsgList.setLayoutManager(linearLayoutManager);
 
+        //判断是当前layoutManager是否为LinearLayoutManager
+        // 只有LinearLayoutManager才有查找第一个和最后一个可见view位置的方法
+        //获取最后一个可见view的位置
+//        lastItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+//        if (lastItemPosition!=-1)
 
-        mChatMsgList.setLayoutManager(new LinearLayoutManager(this));
     }
 
 
@@ -127,13 +136,14 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 String sendTime = sdf.format(date);
                 chatMessage.setSendTime(sendTime);
                 chatMessageAdapter.addData(chatMessage);
-                Log.e("1111","size="+chatList.size());
+                Log.e("1111", "size=" + chatList.size());
                 mChatMsgList.scrollToPosition(chatList.size());
 //                UserAction.sendMessage(chatMessage);
 //                ImDB.getInstance(ContactChatActivity.this)
 //                        .saveChatMessage(chatMessage);
                 mShowHead.setVisibility(View.INVISIBLE);
 
+                mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount()-1);
                 break;
         }
 
