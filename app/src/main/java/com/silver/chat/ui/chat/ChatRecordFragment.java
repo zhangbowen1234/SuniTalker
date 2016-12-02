@@ -3,6 +3,7 @@ package com.silver.chat.ui.chat;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.silver.chat.R;
@@ -10,9 +11,10 @@ import com.silver.chat.adapter.ChatApater;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.entity.ChatBean;
 import com.silver.chat.entity.DataServer;
-import com.silver.chat.util.ToastUtil;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
+import com.silver.chatsdk.ResponseCallBack;
+import com.silver.chatsdk.YDClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +60,17 @@ public class ChatRecordFragment extends BasePagerFragment {
         mRecycleContent.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtil.toastMessage(mActivity, "position=" + position);
+                YDClient.getInstance().creatAccount( new ResponseCallBack() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        Log.i("success", "success");
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+                        Log.i("onFailed", "onFailed");
+                    }
+                });
             }
         });
     }
