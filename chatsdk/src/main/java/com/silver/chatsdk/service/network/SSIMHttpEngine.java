@@ -5,6 +5,7 @@ import android.os.Environment;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.silver.chatsdk.service.bean.BaseResponse;
 import com.silver.chatsdk.util.NetWorkUtil;
 
 import java.io.File;
@@ -82,7 +83,7 @@ public class SSIMHttpEngine {
                 baseUrl(baseUrl).
                 addConverterFactory(GsonConverterFactory.create(gson)).
                 client(okHttpClient).build();
-        ApiService service =  retrofit.create(ApiService.class);
+        ApiService service = retrofit.create(ApiService.class);
         return service;
     }
 
@@ -94,7 +95,9 @@ public class SSIMHttpEngine {
         //设置缓存大小 20M
         Cache cache = new Cache(cacheFile, 20 * 1024 * 1024);
         builder.cache(cache).addInterceptor(cacheInterceptor);
+
     }
+
     /**
      * 缓存
      */
@@ -176,18 +179,10 @@ public class SSIMHttpEngine {
         call.enqueue(new Callback() {
             @Override
             public void onResponse(Call call, retrofit2.Response response) {
-//                BaseBean bean = (BaseBean) response.body();
-//                /**
-//                 * 公共参数处理
-//                 * eg
-//                 * if(bean.getCode().equals("xxx")){
-//                 *     ........
-//                 * }
-//                 */
-//                if (bean.getCode().equals("305")) {
-//                    Logger.d("公共返回code处理");
-//                }
-                callback.onResponse(call, response);
+                BaseResponse bean = (BaseResponse) response.body();
+                if (bean.getCode() == 1) {
+                    callback.onResponse(call, response);
+                }
             }
 
             @Override

@@ -3,7 +3,7 @@ package com.silver.chatsdk;
 import android.content.Context;
 import android.util.Log;
 
-import com.silver.chatsdk.service.bean.BaseBean;
+import com.silver.chatsdk.service.bean.BaseResponse;
 import com.silver.chatsdk.service.bean.Person;
 import com.silver.chatsdk.service.bean.RequestInfo;
 import com.silver.chatsdk.service.network.ApiService;
@@ -50,7 +50,7 @@ public class SSIMClient {
             @Override
             public void onResponse(Call<Person> call, Response<Person> response) {
                 Log.e("onResponse", response.body().toString());
-                callBack.onSuccess(new BaseBean(1, "123"));
+                callBack.onSuccess(new BaseResponse(1, "123",123));
             }
 
             @Override
