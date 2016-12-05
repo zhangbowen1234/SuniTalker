@@ -78,6 +78,8 @@
     <item name="tv_clear" type="id"/>
     <item name="iv_toolbar_search" type="id"/>
     <item name="llay_one" type="id"/>
+    <item name="chat_btn_emote" type="id"/>
+    <item name="chat_edit_input" type="id"/>
     <item name="tv_sex" type="id"/>
     <item name="tv_sign" type="id"/>
     <item name="tv_stick" type="id"/>
@@ -85,8 +87,6 @@
     <item name="tv_detail" type="id"/>
     <item name="tv_report" type="id"/>
     <item name="tv_delete" type="id"/>
-    <item name="chat_btn_emote" type="id"/>
-    <item name="chat_edit_input" type="id"/>
 
 
 </resources>
