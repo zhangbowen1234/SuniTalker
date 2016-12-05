@@ -24,17 +24,17 @@ public class SSIMClient {
     private static SSIMClient instance = null;
     private Context mContext;
 
-//    /**
-//     * 单例模式
-//     *
-//     * @return 客户端对象
-//     */
-//    public synchronized static SSIMClient getInstance() {
-//        if (instance == null) {
-//            instance = new SSIMClient();
-//        }
-//        return instance;
-//    }
+    /**
+     * 单例模式
+     *
+     * @return 客户端对象
+     */
+    public synchronized static SSIMClient getInstance() {
+        if (instance == null) {
+            instance = new SSIMClient();
+        }
+        return instance;
+    }
 
     public void init(Context context) {
         mContext = context;

@@ -81,7 +81,8 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         Intent intent = getIntent();
         contactName = intent.getStringExtra("contactName");
         mTitleBar.setTitleText(contactName + "");
-//
+
+
 //        handler = new Handler() {
 //            public void handleMessage(Message msg) {
 //                switch (msg.what) {
