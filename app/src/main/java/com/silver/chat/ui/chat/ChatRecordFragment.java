@@ -14,7 +14,7 @@ import com.silver.chat.entity.DataServer;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
 import com.silver.chatsdk.ResponseCallBack;
-import com.silver.chatsdk.YDClient;
+import com.silver.chatsdk.SSIMClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ public class ChatRecordFragment extends BasePagerFragment {
         mRecycleContent.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
-                YDClient.getInstance().creatAccount( new ResponseCallBack() {
+                SSIMClient.getInstance().creatAccount(new ResponseCallBack() {
                     @Override
                     public void onSuccess(Object o) {
                         Log.i("success", "success");
