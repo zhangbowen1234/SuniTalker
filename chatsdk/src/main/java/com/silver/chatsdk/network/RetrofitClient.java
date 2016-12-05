@@ -3,8 +3,6 @@ package com.silver.chatsdk.network;
 import android.content.Context;
 import android.os.Environment;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.silver.chatsdk.util.NetWorkUtil;
 
 import java.io.File;
@@ -33,7 +31,7 @@ public class RetrofitClient {
      * <p/>
      * {"success":"1","result":{"status":"ALREADY_ATT","par":"110101","idcard":"110101199001011114","born":"1990年01月01日","sex":"男","att":"北京市 东城区 ","postno":"100000","areano":"010","style_simcall":"中国,北京","style_citynm":"中华人民共和国,北京市"}}
      */
-    public static String baseUrl = "http://192.168.10.51:7303";
+    public static String baseUrl = " http://api.k780.com:88";
     private static Context context;
     private static OkHttpClient okHttpClient;
 
@@ -81,13 +79,10 @@ public class RetrofitClient {
 
             okHttpClient = builder.build();
         }
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").serializeNulls().create();
 
-        Retrofit retrofit = new Retrofit.Builder().
-                baseUrl(baseUrl).
-                addConverterFactory(GsonConverterFactory.create(gson)).
-                client(okHttpClient).build();
-        ApiService service =  retrofit.create(ApiService.class);
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).client(okHttpClient).build();
+        ApiService service = retrofit.create(ApiService.class);
         return service;
     }
 
@@ -100,7 +95,7 @@ public class RetrofitClient {
         Cache cache = new Cache(cacheFile, 20 * 1024 * 1024);
         builder.cache(cache).addInterceptor(cacheInterceptor);
     }
-+
+
     /**
      * 缓存
      */
