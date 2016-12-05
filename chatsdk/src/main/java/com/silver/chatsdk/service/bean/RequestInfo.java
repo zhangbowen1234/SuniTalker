@@ -1,4 +1,4 @@
-package com.silver.chatsdk.bean;
+package com.silver.chatsdk.service.bean;
 
 /**
  * 作者：Fandy on 2016/12/2 11:24

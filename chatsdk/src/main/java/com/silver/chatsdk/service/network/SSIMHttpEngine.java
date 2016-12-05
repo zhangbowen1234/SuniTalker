@@ -1,4 +1,4 @@
-package com.silver.chatsdk.network;
+package com.silver.chatsdk.service.network;
 
 import android.content.Context;
 import android.os.Environment;
@@ -26,20 +26,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by shiyan on 2016/10/9.
  */
-public class RetrofitClient {
-    /**
-     * 接口测试地址
-     * http://api.k780.com:88/?app=idcard.get&&appkey=10003&&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&&format=json&&idcard=110101199001011114
-     * <p/>
-     * {"success":"1","result":{"status":"ALREADY_ATT","par":"110101","idcard":"110101199001011114","born":"1990年01月01日","sex":"男","att":"北京市 东城区 ","postno":"100000","areano":"010","style_simcall":"中国,北京","style_citynm":"中华人民共和国,北京市"}}
-     */
+public class SSIMHttpEngine {
+
     public static String baseUrl = "http://192.168.10.51:7303";
     private static Context context;
     private static OkHttpClient okHttpClient;
 
     public static ApiService getInstance(Context context) {
         if (okHttpClient == null) {
-            RetrofitClient.context = context;
+            SSIMHttpEngine.context = context;
             OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
             //设置超时
             builder.connectTimeout(15, TimeUnit.SECONDS);
@@ -100,7 +95,6 @@ public class RetrofitClient {
         Cache cache = new Cache(cacheFile, 20 * 1024 * 1024);
         builder.cache(cache).addInterceptor(cacheInterceptor);
     }
-+
     /**
      * 缓存
      */

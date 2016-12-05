@@ -3,11 +3,11 @@ package com.silver.chatsdk;
 import android.content.Context;
 import android.util.Log;
 
-import com.silver.chatsdk.bean.BaseBean;
-import com.silver.chatsdk.bean.Person;
-import com.silver.chatsdk.bean.RequestInfo;
-import com.silver.chatsdk.network.ApiService;
-import com.silver.chatsdk.network.RetrofitClient;
+import com.silver.chatsdk.service.bean.BaseBean;
+import com.silver.chatsdk.service.bean.Person;
+import com.silver.chatsdk.service.bean.RequestInfo;
+import com.silver.chatsdk.service.network.ApiService;
+import com.silver.chatsdk.service.network.SSIMHttpEngine;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,9 +18,9 @@ import retrofit2.Response;
  * 邮箱：fandy618@hotmail.com
  */
 
-public class YDClient {
+public class SSIMClient {
 
-    private static YDClient instance = null;
+    private static SSIMClient instance = null;
     private Context mContext;
 
     /**
@@ -28,9 +28,9 @@ public class YDClient {
      *
      * @return 客户端对象
      */
-    public synchronized static YDClient getInstance() {
+    public synchronized static SSIMClient getInstance() {
         if (instance == null) {
-            instance = new YDClient();
+            instance = new SSIMClient();
         }
         return instance;
     }
@@ -43,7 +43,7 @@ public class YDClient {
      * 注册账户
      */
     public void creatAccount(final ResponseCallBack callBack) {
-        ApiService service = RetrofitClient.getInstance(mContext);
+        ApiService service = SSIMHttpEngine.getInstance(mContext);
         Call<Person> regist = service.regist(new RequestInfo("REGISTER", "1380000000", "123", "123"));
         regist.enqueue(new Callback<Person>() {
             @Override

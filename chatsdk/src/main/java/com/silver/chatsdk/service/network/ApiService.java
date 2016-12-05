@@ -1,7 +1,7 @@
-package com.silver.chatsdk.network;
+package com.silver.chatsdk.service.network;
 
-import com.silver.chatsdk.bean.Person;
-import com.silver.chatsdk.bean.RequestInfo;
+import com.silver.chatsdk.service.bean.Person;
+import com.silver.chatsdk.service.bean.RequestInfo;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

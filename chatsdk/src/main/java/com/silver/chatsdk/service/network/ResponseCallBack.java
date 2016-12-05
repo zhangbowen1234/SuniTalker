@@ -1,4 +1,4 @@
-package com.silver.chatsdk;
+package com.silver.chatsdk.service.network;
 
 /**
  * 作者：Fandy on 2016/12/2 11:55
