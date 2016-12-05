@@ -13,8 +13,8 @@ import com.silver.chat.entity.ChatBean;
 import com.silver.chat.entity.DataServer;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
-import com.silver.chatsdk.ResponseCallBack;
 import com.silver.chatsdk.SSIMClient;
+import com.silver.chatsdk.service.network.ResponseCallBack;
 
 import java.util.ArrayList;
 import java.util.List;
