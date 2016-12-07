@@ -5,6 +5,6 @@ package com.silver.chatsdk.service.network;
  * 邮箱：fandy618@hotmail.com
  */
 
-public class SSIMSocketEngine {
+public class SSIMSocketEngine extends SSIMNetworkEngine{
 
 }

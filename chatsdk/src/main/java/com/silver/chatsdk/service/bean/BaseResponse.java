@@ -11,6 +11,10 @@ public class BaseResponse {
     private String errMsg;
     private long responseTime;
 
+    public  BaseResponse(){
+
+    }
+
     public BaseResponse(int code, String errMsg, long responseTime) {
         this.code = code;
         this.errMsg = errMsg;
