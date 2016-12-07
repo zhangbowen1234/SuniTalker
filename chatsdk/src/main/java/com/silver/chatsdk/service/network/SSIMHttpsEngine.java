@@ -34,15 +34,6 @@ public class SSIMHttpsEngine extends SSIMNetworkEngine{
 
     private APIService httpsEngine;
 
-
-    public APIService getHttpsEngine() {
-        return httpsEngine;
-    }
-
-    public void setHttpsEngine(APIService httpsEngine) {
-        this.httpsEngine = httpsEngine;
-    }
-
     private static class SingletonHolder {
         private static final SSIMHttpsEngine INSTANCE = new SSIMHttpsEngine();  //创建实例的地方
     }

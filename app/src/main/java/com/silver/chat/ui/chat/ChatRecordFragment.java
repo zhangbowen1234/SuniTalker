@@ -20,6 +20,8 @@ import com.silver.chatsdk.service.manager.SSIMEngine;
 import com.silver.chatsdk.service.bean.RegisterRequest;
 import com.silver.chatsdk.service.bean.RegisterResponse;
 import com.silver.chatsdk.service.bean.ResponseCallBackInterface;
+import com.silver.chatsdk.service.network.SSIMHttpEngine;
+import com.silver.chatsdk.service.network.SSIMHttpsEngine;
 
 import java.util.ArrayList;
 import java.util.List;

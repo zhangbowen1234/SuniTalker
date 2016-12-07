@@ -1,6 +1,5 @@
 package com.silver.chatsdk.service.network;
 
-import com.silver.chatsdk.config.SSIMConfig;
 import com.silver.chatsdk.service.manager.SSIMEngine;
 
 import java.io.IOException;
@@ -18,13 +17,6 @@ public class SSIMHttpEngine extends SSIMNetworkEngine{
 
     private APIService httpEngine;
 
-    public APIService getHttpEngine() {
-        return httpEngine;
-    }
-
-    public void setHttpEngine(APIService httpEngine) {
-        this.httpEngine = httpEngine;
-    }
 
     private SSIMHttpEngine() {
     }
