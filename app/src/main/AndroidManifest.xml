@@ -46,7 +46,19 @@
         <activity
             android:name=".ui.mine.FriendInfoActivity"
             android:label="好友详情"/>
+        <activity
+            android:name=".ui.mine.MyPRCodeActivity"
+            android:label="我的二维码"/>
         <activity android:name=".ui.contact.ContactChatActivity"></activity>
+        <activity
+            android:name=".ui.mine.SettingActivity"
+            android:label="设置"/>
+        <activity
+            android:name=".ui.mine.AccountActivity"
+            android:label="账户"/>
+        <activity
+            android:name=".ui.mine.AboutActivity"
+            android:label="账户"/>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.silver.chatsdk.DB.bean;
+package com.silver.chatsdk.db.bean;
 
 /**
  * Created by ArthurYis on 2016/12/5.

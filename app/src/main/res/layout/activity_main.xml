@@ -4,12 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         app:layout_scrollFlags="scroll|enterAlways"
         tools:context="com.silver.chat.MainActivity">
 
@@ -49,7 +51,7 @@
         <android.support.v4.view.ViewPager
             android:id="@id/viewpager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
         <ImageView
@@ -59,7 +61,6 @@
             android:layout_gravity="right|bottom"
             android:padding="@dimen/dp_25"
             android:src="@drawable/action_more"/>
-
 
     </android.support.design.widget.CoordinatorLayout>
 

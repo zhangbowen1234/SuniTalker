@@ -87,6 +87,26 @@
     <item name="tv_detail" type="id"/>
     <item name="tv_report" type="id"/>
     <item name="tv_delete" type="id"/>
-
+    <item type="id" name="id_autolayout" />
+    <item name="iv_emoticon" type="id"/>
+    <item name="iv_send" type="id"/>
+    <item name="iv_camera" type="id"/>
+    <item name="tv_qr_code" type="id"/>
+    <item name="tv_file" type="id"/>
+    <item name="tv_dynamic" type="id"/>
+    <item name="iv_header" type="id"/>
+    <item name="iv_code" type="id"/>
+    <item name="iv_scan" type="id"/>
+    <item name="tv_account" type="id"/>
+    <item name="tv_about" type="id"/>
+    <item name="tv_login_out" type="id"/>
+    <item name="tv_theme" type="id"/>
+    <item name="iv_save" type="id"/>
+    <item name="tv_avatar" type="id"/>
+    <item name="rly_avatar" type="id"/>
+    <item name="lly_phone" type="id"/>
+    <item name="tv_phone" type="id"/>
+    <item name="tv_clause" type="id"/>
+    <item name="tv_version" type="id"/>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.silver.chatsdk.service.bean;
 
-import com.silver.chatsdk.DB.bean.SigninUserInfo;
+
+import com.silver.chatsdk.db.bean.SigninUserInfo;
 
 /**
  * Created by ArthurYis on 2016/12/5.
