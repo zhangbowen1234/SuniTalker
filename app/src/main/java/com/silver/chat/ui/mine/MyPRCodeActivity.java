@@ -72,7 +72,7 @@ public class MyPRCodeActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    class CodeAsyncTask extends AsyncTask<Void,Void,Bitmap>{
+    class CodeAsyncTask extends AsyncTask<Void, Void, Bitmap> {
 
         @Override
         protected Bitmap doInBackground(Void... voids) {
@@ -85,7 +85,7 @@ public class MyPRCodeActivity extends BaseActivity implements View.OnClickListen
             if (bitmap != null) {
                 mIvCode.setImageBitmap(bitmap);
             } else {
-                Toast.makeText(MyPRCodeActivity.this, "生成带logo的二维码失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyPRCodeActivity.this, "生成二维码失败", Toast.LENGTH_SHORT).show();
             }
         }
     }
