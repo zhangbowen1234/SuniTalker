@@ -14,11 +14,10 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
- * 作者：Fandy on 2016/12/2 10:34
- * 邮箱：fandy618@hotmail.com
+ * Created by 张博文 on 2017/4/18.
  */
-public interface APIService {
 
+public interface APIService {
     @GET("/")
     Call<Person> getOnePersonInfo(@Query("app") String app, @Query("appkey") String appkey, @Query("sign") String sign, @Query("format") String format, @Query("idcard") String idcard);
 
