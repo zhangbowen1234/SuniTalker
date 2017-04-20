@@ -48,6 +48,7 @@ dependencies {
     compile 'com.github.bumptech.glide:okhttp-integration:1.4.0'
     compile 'com.android.support.constraint:constraint-layout:+'
     compile 'com.google.zxing:core:3.2.1'
+    compile 'com.jakewharton:butterknife:8.4.0'
     testCompile 'junit:junit:4.12'
     compile project(':chatsdk')
 }

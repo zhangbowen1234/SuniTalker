@@ -1,7 +1,6 @@
 package com.silver.chat.ui.mine;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.view.View;
@@ -64,7 +63,7 @@ public class MyPRCodeActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_scan:
-
+                startActivity(MyPRScanCodeActivity.class);
                 break;
             case R.id.iv_back:
                 finish();
@@ -76,8 +75,9 @@ public class MyPRCodeActivity extends BaseActivity implements View.OnClickListen
 
         @Override
         protected Bitmap doInBackground(Void... voids) {
-            Bitmap logoBitmap = BitmapFactory.decodeResource(MyPRCodeActivity.this.getResources(), R.mipmap.ic_launcher);
-            return QRCodeEncoder.syncEncodeQRCode("IM", BGAQRCodeUtil.dp2px(MyPRCodeActivity.this, 244), Color.BLACK, Color.WHITE, logoBitmap);
+            //二维码中间头像
+//            Bitmap logoBitmap = BitmapFactory.decodeResource(MyPRCodeActivity.this.getResources(), R.mipmap.ic_launcher);     //, Color.WHITE, logoBitmap
+            return QRCodeEncoder.syncEncodeQRCode("IM", BGAQRCodeUtil.dp2px(MyPRCodeActivity.this, 244), Color.WHITE);
         }
 
         @Override

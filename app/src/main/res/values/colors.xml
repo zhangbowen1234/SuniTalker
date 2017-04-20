@@ -28,11 +28,9 @@
     <color name="color_lucency">#00000000</color>
     <!--联系人页-->
     <color name="contact_textcolor">#8affffff</color>
-
-
     <color name="black">#000000</color>
 
     <color name="transparent_black">#50000000</color>
     <color name="blue_bg_shape">#509de1</color>
-
+    <!--二维码扫码-->
 </resources>

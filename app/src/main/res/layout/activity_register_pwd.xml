@@ -101,6 +101,7 @@
             android:textCursorDrawable="@null"
             android:gravity="center_horizontal"
             android:hint="请输入短信验证码"
+            android:inputType="number"
             android:textColorHint="@color/txt_font_one_color"
             android:padding="10dp"
             android:textColor="@color/white"
