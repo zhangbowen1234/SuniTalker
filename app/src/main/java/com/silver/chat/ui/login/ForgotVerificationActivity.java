@@ -11,6 +11,7 @@ import com.silver.chat.view.MyLineEditText;
 
 /**
  * Created by Administrator on 2016/11/14.
+ * 忘记密码
  */
 public class ForgotVerificationActivity extends BaseActivity implements View.OnClickListener {
 

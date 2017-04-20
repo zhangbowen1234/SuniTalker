@@ -15,7 +15,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="60dp"
         android:orientation="vertical">
 
 
@@ -44,14 +44,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:textCursorDrawable="@null"
                     android:hint="请输入密码"
-                    android:inputType="textPassword"
-                    android:textColorHint="@color/txt_font_one_color"
                     android:imeOptions="actionNext"
+                    android:inputType="textPassword"
                     android:padding="10.0dip"
                     android:textColor="@color/white"
-                    android:textSize="14.0sp" />
+                    android:textColorHint="@color/txt_font_one_color"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14.0sp"/>
 
             </LinearLayout>
 
@@ -65,24 +65,24 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/user_pwd" />
-
                 <EditText
                     android:id="@id/again_set_pwd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:textCursorDrawable="@null"
                     android:hint="重复输入密码"
-                    android:inputType="textPassword"
-                    android:textColorHint="@color/txt_font_one_color"
                     android:imeOptions="actionNext"
+                    android:inputType="textPassword"
                     android:padding="10.0dip"
                     android:textColor="@color/white"
-                    android:textSize="14.0sp" />
+                    android:textColorHint="@color/txt_font_one_color"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14.0sp"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/user_pwd" />
 
             </LinearLayout>
 
@@ -96,16 +96,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/LinearLayout_reg"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             android:background="@null"
             android:textCursorDrawable="@null"
             android:gravity="center_horizontal"
-            android:hint="请输入短信验证码"
+            android:hint="请输入手机验证码"
             android:inputType="number"
             android:textColorHint="@color/txt_font_one_color"
             android:padding="10dp"
             android:textColor="@color/white"
             android:textSize="14sp" />
+        <include layout="@layout/halving_one_line" />
+        <TextView
+            android:id="@+id/tv_send_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="短信已发送至15323500145"
+            android:gravity="center_horizontal"
+            android:textColor="#deffffff"
+            android:layout_marginTop="@dimen/dp_4"
+            />
 
 
         <Button
@@ -113,7 +123,7 @@
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/reg_verification_code_shape"
             android:padding="8.0dip"
             android:text="注  册"
@@ -177,10 +187,18 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="@drawable/lg_button_shape"
-            android:text="再次发送验证码至13621153700"
+            android:text="重新发送短信验证码到手机号13621153700"
             android:textColor="@color/txt_font_one_color"
             android:textSize="12.0sp" />
-
+        <Button
+            android:id="@+id/btn_auth_code_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/lg_button_shape"
+            android:text="发送短信验证码到其他手机号"
+            android:textColor="@color/txt_font_one_color"
+            android:textSize="12.0sp" />
 
         <TextView
             android:id="@id/return_last"
