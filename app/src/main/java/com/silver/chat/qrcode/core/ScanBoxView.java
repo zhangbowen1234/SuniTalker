@@ -44,6 +44,7 @@ public class ScanBoxView extends View {
     private int mScanLineMargin;
     private boolean mIsShowDefaultScanLineDrawable;
     private Drawable mCustomScanLineDrawable;
+
     private Bitmap mScanLineBitmap;
     private int mBorderSize;
     private int mBorderColor;
