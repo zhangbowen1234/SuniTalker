@@ -12,6 +12,9 @@ import android.widget.EditText;
 
 import java.io.IOException;
 
+/**
+ * 表情滤波器
+ */
 public abstract class EmoticonFilter {
 
     public abstract void filter(EditText editText, CharSequence text, int start, int lengthBefore, int lengthAfter);

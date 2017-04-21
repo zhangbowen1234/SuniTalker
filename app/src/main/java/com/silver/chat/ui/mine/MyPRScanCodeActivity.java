@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 
-import butterknife.OnClick;
 
 /**
  * 扫一扫
@@ -53,7 +52,6 @@ public class MyPRScanCodeActivity extends BaseActivity implements View.OnClickLi
         super.initData();
     }
 
-    @OnClick({R.id.iv_album, R.id.iv_flashlight, R.id.iv_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_album:

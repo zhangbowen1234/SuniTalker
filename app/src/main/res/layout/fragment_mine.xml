@@ -54,19 +54,19 @@
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_gravity="center"
-                android:background="@drawable/circlr_bg_big"/>
+                android:background="@drawable/circlr_bg_small"/>
 
             <ImageView
                 android:layout_width="240dp"
                 android:layout_height="240dp"
                 android:layout_gravity="center"
-                android:background="@drawable/circlr_bg_center"/>
+                android:background="@drawable/circlr_bg_big"/>
 
             <ImageView
                 android:layout_width="225dp"
                 android:layout_height="225dp"
                 android:layout_gravity="center"
-                android:background="@drawable/circlr_bg_small"/>
+                android:background="@drawable/circlr_bg_center"/>
 
             <com.silver.chat.view.CircleImageView
                 android:id="@id/iv_avatar"

@@ -109,19 +109,10 @@
             android:textCursorDrawable="@null"
             android:gravity="center_horizontal"
             android:hint="请输入手机号"
-            android:inputType="number"
             android:textColorHint="@color/txt_font_one_color"
             android:padding="10dp"
             android:textColor="@color/white"
             android:textSize="14sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="*点击验证码，注意查收短信验证码"
-            android:textSize="12sp"
-            android:textColor="#5B6872"/>
 
         <Button
             android:id="@id/btn_auth_code"

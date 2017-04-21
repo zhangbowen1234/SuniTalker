@@ -147,7 +147,8 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
 
                 break;
             case R.id.btn_auth_code_other:
-
+                ScreenManager.getScreenManager().goBlackPage();
+                finish();
                 break;
             case R.id.return_last:
                 ScreenManager.getScreenManager().goBlackPage();

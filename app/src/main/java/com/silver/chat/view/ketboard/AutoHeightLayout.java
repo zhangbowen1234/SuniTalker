@@ -12,7 +12,9 @@ import android.widget.RelativeLayout;
 import com.silver.chat.R;
 import com.silver.chat.util.EmoticonsKeyboardUtils;
 
-
+/**
+ * 高度自动布局
+ */
 public abstract class AutoHeightLayout extends SoftKeyboardSizeWatchLayout implements SoftKeyboardSizeWatchLayout.OnResizeListener {
 
     private static final int ID_CHILD = R.id.id_autolayout;

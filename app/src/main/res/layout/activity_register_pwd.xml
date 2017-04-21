@@ -65,6 +65,10 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical">
 
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/user_pwd" />
                 <EditText
                     android:id="@id/again_set_pwd"
                     android:layout_width="match_parent"
@@ -87,26 +91,24 @@
             </LinearLayout>
 
             <include layout="@layout/halving_one_line" />
-
-
         </LinearLayout>
-
         <com.silver.chat.view.MyLineEditText
-            android:id="@id/edit_auth_code"
+            android:id="@+id/edit_auth_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/LinearLayout_reg"
             android:layout_marginTop="60dp"
             android:background="@null"
             android:textCursorDrawable="@null"
             android:gravity="center_horizontal"
             android:hint="请输入手机验证码"
-            android:inputType="number"
             android:textColorHint="@color/txt_font_one_color"
             android:padding="10dp"
             android:textColor="@color/white"
-            android:textSize="14sp" />
-        <include layout="@layout/halving_one_line" />
+            android:textSize="14sp"
+            android:layout_below="@id/LinearLayout_reg"
+            />
+
+
         <TextView
             android:id="@+id/tv_send_number"
             android:layout_width="match_parent"
@@ -187,6 +189,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="@drawable/lg_button_shape"
+            android:alpha="0.26"
             android:text="重新发送短信验证码到手机号13621153700"
             android:textColor="@color/txt_font_one_color"
             android:textSize="12.0sp" />
@@ -197,7 +200,7 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/lg_button_shape"
             android:text="发送短信验证码到其他手机号"
-            android:textColor="@color/txt_font_one_color"
+            android:textColor="@color/txt_font_one_color_other"
             android:textSize="12.0sp" />
 
         <TextView
