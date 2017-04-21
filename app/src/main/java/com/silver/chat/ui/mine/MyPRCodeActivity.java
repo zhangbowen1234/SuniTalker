@@ -1,5 +1,6 @@
 package com.silver.chat.ui.mine;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -64,7 +65,8 @@ public class MyPRCodeActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_scan:
-
+                Intent intent = new Intent(this,ScanActivity.class);
+                startActivity(intent);
                 break;
             case R.id.iv_back:
                 finish();
