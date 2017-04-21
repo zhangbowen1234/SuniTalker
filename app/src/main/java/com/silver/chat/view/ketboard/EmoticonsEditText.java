@@ -8,6 +8,9 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 表情符号编辑
+ */
 public class EmoticonsEditText extends EditText {
 
     private List<EmoticonFilter> mFilterList;

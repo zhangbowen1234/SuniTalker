@@ -46,7 +46,7 @@ public class QRCodeEncoder {
      * @param foregroundColor 二维码图片的前景色
      */
     public static Bitmap syncEncodeQRCode(String content, int size, int foregroundColor) {
-        return syncEncodeQRCode(content, size, foregroundColor, Color.WHITE, null);
+        return syncEncodeQRCode(content, size, foregroundColor, 0x00ffffff, null);
     }
 
     /**

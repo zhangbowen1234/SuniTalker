@@ -18,7 +18,9 @@
     <!--app主色调-->
     <color name="app_primary_color">#031e40</color>
     <!-- 登录注册页字体颜色 -->
-    <color name="txt_font_one_color">#a4a4a4</color>
+    <color name="txt_font_one_color_other">#a4a4a4</color>
+    <!-- 登录注册页重新发送验证码字体颜色 -->
+    <color name="txt_font_one_color">#aaaaaa</color>
     <!-- 登录注册线条颜色 -->
     <color name="common_line_one_color">#d9d9d9</color>
     <!-- 验证码背景颜色 -->
@@ -28,8 +30,6 @@
     <color name="color_lucency">#00000000</color>
     <!--联系人页-->
     <color name="contact_textcolor">#8affffff</color>
-
-
     <color name="black">#000000</color>
 
     <color name="transparent_black">#50000000</color>
@@ -45,4 +45,5 @@
     <color name="corner_color">#00FF00</color>
     <!-- QRCode scanner color end -->
 
+    <!--二维码扫码-->
 </resources>

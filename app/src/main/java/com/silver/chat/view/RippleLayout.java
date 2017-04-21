@@ -20,6 +20,7 @@ import java.util.ArrayList;
 /**
  * 作者：Fandy on 2016/11/16 14:37
  * 邮箱：fandy618@hotmail.com
+ * 波纹布局
  */
 
 public class RippleLayout  extends RelativeLayout {

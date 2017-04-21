@@ -15,13 +15,14 @@ import com.silver.chat.view.MyLineEditText;
 
 /**
  * Created by zhenghp on 2016/11/14.
+ * 注册账号
  */
 public class RegisterPWDActivity extends BaseActivity implements View.OnClickListener {
 
     private EditText mSetPwd, mAgainSetPwd;
     private MyLineEditText mAuthCode;
-    private Button mBtnReg, mBtnAuthCode, mBtnRegPhone;
-    private TextView mReturnLast;
+    private Button mBtnReg, mBtnAuthCode, mBtnRegPhone,mBtnAuthCodeOther;
+    private TextView mReturnLast,tv_send_number;
     private String uSetP, uASetP, uAuthC;
     TimeCountUtil timeCountUtil;//倒计时工具
 //    private final int charMaxNum = 6; // 允许输入的字数
@@ -46,11 +47,14 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
         mBtnReg = (Button) findViewById(R.id.btn_register_id);
         mBtnAuthCode = (Button) findViewById(R.id.btn_auth_code);
         mReturnLast = (TextView) findViewById(R.id.return_last);
+        mBtnAuthCodeOther = (Button) findViewById(R.id.btn_auth_code_other);
+        tv_send_number = (TextView) findViewById(R.id.tv_send_number);
 
 
         mBtnReg.setOnClickListener(this);
         mBtnAuthCode.setOnClickListener(this);
         mReturnLast.setOnClickListener(this);
+        mBtnAuthCodeOther.setOnClickListener(this);
 
 //        mAuthCode.addTextChangedListener(new EditChangedListener());
         //计时器
@@ -141,6 +145,10 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
                 //重新发送验证码并计时
                 TimePiece();
 
+                break;
+            case R.id.btn_auth_code_other:
+                ScreenManager.getScreenManager().goBlackPage();
+                finish();
                 break;
             case R.id.return_last:
                 ScreenManager.getScreenManager().goBlackPage();

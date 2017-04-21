@@ -13,7 +13,8 @@ import com.silver.chat.base.BasePagerFragment;
 
 public class MineFragment extends BasePagerFragment implements View.OnClickListener {
 
-    private TextView mPrCode;
+    private TextView mPrCode,tv_file,tv_dynamic;
+
 
     public static MineFragment newInstance() {
         Bundle args = new Bundle();
@@ -27,6 +28,8 @@ public class MineFragment extends BasePagerFragment implements View.OnClickListe
     protected void initView(View view) {
         super.initView(view);
         mPrCode = (TextView) view.findViewById(R.id.tv_qr_code);
+        tv_file = (TextView) view.findViewById(R.id.tv_file);
+        tv_dynamic = (TextView) view.findViewById(R.id.tv_dynamic);
 
     }
 
@@ -39,6 +42,8 @@ public class MineFragment extends BasePagerFragment implements View.OnClickListe
     protected void initListener() {
         super.initListener();
         mPrCode.setOnClickListener(this);
+        tv_file.setOnClickListener(this);
+        tv_dynamic.setOnClickListener(this);
     }
 
     @Override
@@ -51,6 +56,12 @@ public class MineFragment extends BasePagerFragment implements View.OnClickListe
         switch (view.getId()){
             case R.id.tv_qr_code:
                 startActivity(MyPRCodeActivity.class);
+                break;
+            case R.id.tv_file:
+
+                break;
+            case R.id.tv_dynamic:
+
                 break;
         }
     }

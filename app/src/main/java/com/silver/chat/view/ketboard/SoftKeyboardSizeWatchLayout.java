@@ -10,6 +10,9 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 软键盘尺寸表布局
+ */
 public class SoftKeyboardSizeWatchLayout extends RelativeLayout {
 
     private Context mContext;
