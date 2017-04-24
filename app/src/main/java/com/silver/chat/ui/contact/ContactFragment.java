@@ -155,7 +155,6 @@ public class ContactFragment extends BasePagerFragment  {
 
     @Override
     protected void getData() {
-
     }
 
     @Override

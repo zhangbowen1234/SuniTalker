@@ -14,7 +14,8 @@ import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class
+LoginActivity extends BaseActivity implements View.OnClickListener {
 
 
     private TextView mGoReg, mForgot;

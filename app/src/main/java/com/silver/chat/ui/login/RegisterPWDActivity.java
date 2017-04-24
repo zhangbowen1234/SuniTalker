@@ -108,7 +108,7 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
 //                String autoCode = "123456";
 
                 if (uSetP == null || "".equals(uSetP)) {
-                    ToastUtils.showMessage(RegisterPWDActivity.this, "请输入6-16位字母或数字!");
+                    ToastUtils.showMessage(RegisterPWDActivity.this, "密码不能为空!");
                     return;
                 }
                 if (uSetP.length() < 6 || uSetP.length() > 16) {
