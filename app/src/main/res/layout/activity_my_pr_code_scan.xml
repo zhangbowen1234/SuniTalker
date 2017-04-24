@@ -28,14 +28,7 @@
         android:layout_marginTop="@dimen/dp_25"
         android:layout_above="@id/iv_back"
         android:layout_below="@+id/tv_title">
-        <ImageView
-            android:id="@+id/iv_scan_code"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/sweep_background2"
-            android:gravity="center"
-            android:scaleType="fitXY"
-            />
+
         <RelativeLayout
             android:layout_width="265dp"
             android:layout_height="240dp"
@@ -76,6 +69,17 @@
             android:layout_marginBottom="@dimen/dp_13"
             android:layout_alignParentBottom="true"
             />
+
+        <ImageView
+            android:id="@+id/iv_scan_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/sweep_background2"
+            android:gravity="center"
+            android:scaleType="fitXY"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 
 

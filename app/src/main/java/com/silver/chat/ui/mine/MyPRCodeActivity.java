@@ -21,6 +21,7 @@ import com.silver.chat.qrcode.zxing.QRCodeEncoder;
  */
 
 public class MyPRCodeActivity extends BaseActivity implements View.OnClickListener {
+    private static final int REQUEST_CODE = 1;
     /**
      * 二维码
      */
@@ -64,14 +65,27 @@ public class MyPRCodeActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_scan:
+                /*Intent intent = new Intent(this,ScanActivity.class);
+                startActivity(intent);*/
+                //startActivity(MyPRScanCodeActivity.class);
 //                startActivity(MyPRScanCodeActivity.class);
                 Intent intent = new Intent(this,ScanActivity.class);
+                startActivityForResult(intent,REQUEST_CODE);
                 startActivity(intent);
                 break;
             case R.id.iv_back:
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK &&requestCode == REQUEST_CODE) {
+            data.getStringArrayExtra("result");
+        }
+
     }
 
     class CodeAsyncTask extends AsyncTask<Void, Void, Bitmap> {

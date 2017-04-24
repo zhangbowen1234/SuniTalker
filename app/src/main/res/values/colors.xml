@@ -45,4 +45,5 @@
     <color name="corner_color">#00FF00</color>
     <!-- QRCode scanner color end -->
 
+    <!--二维码扫码-->
 </resources>

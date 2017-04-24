@@ -64,12 +64,14 @@
         <activity
             android:name=".ui.mine.AboutActivity"
             android:label="账户"/>
+
+        <activity android:name=".ui.mine.ScanActivity"
+            android:label="扫一扫界面"/>
         <activity
             android:name=".ui.mine.MyPRScanCodeActivity"
             android:label="扫描二维码"/>
 
-        <activity android:name=".ui.mine.ScanActivity"
-            android:label="扫一扫界面"/>
+
     </application>
 
 </manifest>
