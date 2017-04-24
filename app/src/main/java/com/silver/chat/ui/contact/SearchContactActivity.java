@@ -11,8 +11,7 @@ import com.silver.chat.view.SearchLayout;
 import java.util.ArrayList;
 
 /**
- * 作者：Fandy on 2016/11/28 18:16
- * 邮箱：fandy618@hotmail.com
+ * 作者：hibon on 2016/11/28 18:16
  * 联系人搜索
  */
 
