@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.silver.chat.R;
 import com.silver.chat.adapter.ContactListAdapter;
@@ -22,6 +23,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+
 /**
  * 作者：zhenghp on 2016/11/16 14:14
  */
@@ -32,7 +36,15 @@ import java.util.List;
 
 public class ContactFragment extends BasePagerFragment  {
 
-    private RecyclerView mRecycleContent, mHorizontalRecycleContent;
+    @BindView(R.id.recyle_content)
+    RecyclerView mRecycleContent;
+    @BindView(R.id.horizontal_recyle_content)
+    RecyclerView mHorizontalRecycleContent;
+    @BindView(R.id.new_friend_btn)
+    LinearLayout mNewFriend;
+    @BindView(R.id.group_chat_btn)
+    LinearLayout mGroupChat;
+
     private ContactListAdapter contactAdapter;
 
     private List<ContactMemberBean> SourceDateList;
@@ -56,9 +68,6 @@ public class ContactFragment extends BasePagerFragment  {
     @Override
     protected void initView(View view) {
         super.initView(view);
-        mRecycleContent = (RecyclerView) view.findViewById(R.id.recyle_content);
-        mHorizontalRecycleContent = (RecyclerView) view.findViewById(R.id.horizontal_recyle_content);
-
 
         //设置布局管理器
         mRecycleContent.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -115,7 +124,6 @@ public class ContactFragment extends BasePagerFragment  {
 
     }
 
-    User user;
     @Override
     protected void initListener() {
         super.initListener();
@@ -127,13 +135,9 @@ public class ContactFragment extends BasePagerFragment  {
 
                 ContactMemberBean contactMemberBean = (ContactMemberBean) adapter.getItem(position);
 
-
-
-
                 Intent mIntent = new Intent(mActivity,ContactChatActivity.class);
                 mIntent.putExtra("contactName",contactMemberBean.getContactName());
                 startActivity(mIntent);
-
 
             }
         });
@@ -151,7 +155,19 @@ public class ContactFragment extends BasePagerFragment  {
 
     }
 
+    @OnClick({R.id.new_friend_btn,R.id.group_chat_btn})
+    protected  void onClick(View view){
+        switch (view.getId()){
+            case R.id.new_friend_btn:
+                startActivity(NewFriendActivity.class);
+                break;
+            case R.id.group_chat_btn:
 
+                break;
+
+        }
+
+    }
 
     @Override
     protected void getData() {

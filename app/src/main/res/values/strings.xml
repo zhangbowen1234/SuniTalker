@@ -41,4 +41,6 @@
     <string name="global_about">关于</string>
     <string name="mine_clause">使用条款</string>
     <string name="mine_version">版本信息</string>
+    <string name="contact_new_friend">新朋友</string>
+    <string name="contact_group_chat">群聊</string>
 </resources>

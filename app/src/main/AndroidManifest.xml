@@ -1,77 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.silver.chat">
+    package="com.silver.chat">
 
     <meta-data
         android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
-        android:value="GlideModule"/>
+        android:value="GlideModule" />
     <!-- 联网权限 -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- 访问sd卡权限 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-permission android:name="android.permission.VIBRATE"/>  <!-- 震动权限 -->
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera"/>        <!-- 使用照相机权限 -->
-    <uses-feature android:name="android.hardware.camera.autofocus"/>   <!-- 自动聚焦权限 -->
+    <uses-feature android:name="android.hardware.camera" /> <!-- 使用照相机权限 -->
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <!-- 自动聚焦权限 -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.login.LoginActivity"
-           >
+        <activity android:name=".ui.login.LoginActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".ui.login.RegisterPWDActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.login.RegisterPhoneActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.login.UserForgotPWDActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.login.ForgotVerificationActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.chat.SearchChatRecordActivity"
-            android:label="搜索聊天记录"/>
+            android:label="搜索聊天记录" />
         <activity
             android:name=".ui.contact.SearchContactActivity"
-            android:label="搜索联系人"/>
+            android:label="搜索联系人" />
         <activity
             android:name=".ui.mine.FriendInfoActivity"
-            android:label="好友详情"/>
+            android:label="好友详情" />
         <activity
             android:name=".ui.mine.MyPRCodeActivity"
-            android:label="我的二维码"/>
-        <activity android:name=".ui.contact.ContactChatActivity"></activity>
+            android:label="我的二维码" />
+        <activity android:name=".ui.contact.ContactChatActivity" />
         <activity
             android:name=".ui.mine.SettingActivity"
-            android:label="设置"/>
+            android:label="设置" />
         <activity
             android:name=".ui.mine.AccountActivity"
-            android:label="账户"/>
+            android:label="账户" />
         <activity
             android:name=".ui.mine.AboutActivity"
-            android:label="账户"/>
-
-        <activity android:name=".ui.mine.ScanActivity"
-            android:label="扫一扫界面"/>
+            android:label="账户" />
+        <activity
+            android:name=".ui.mine.ScanActivity"
+            android:label="扫一扫界面" />
         <activity
             android:name=".ui.mine.MyPRScanCodeActivity"
-            android:label="扫描二维码"/>
-
-
+            android:label="扫描二维码" />
+        <activity android:name=".ui.contact.NewFriendActivity" />
     </application>
 
 </manifest>
