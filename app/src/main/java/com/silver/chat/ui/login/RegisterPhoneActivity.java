@@ -13,6 +13,9 @@ import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
 
+/**
+ * 登录手机号
+ */
 public class RegisterPhoneActivity extends BaseActivity implements View.OnClickListener {
 
     private Button mBtnAuthCode;

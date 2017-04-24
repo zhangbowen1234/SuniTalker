@@ -24,4 +24,21 @@
     <string name="global_detail">详情</string>
     <string name="global_report">举报</string>
     <string name="global_delete">删除</string>
+    <string name="global_qr_code">二维码</string>
+    <string name="global_file">文件</string>
+    <string name="global_dynamic">动态</string>
+    <string name="global_setting">设置</string>
+    <string name="mine_my_account">我的账户</string>
+    <string name="mine_theme">主色调</string>
+    <string name="mine_my_about">关于</string>
+    <string name="mine_login_back">返回登录</string>
+    <string name="mine_account">账户</string>
+    <string name="global_finish">完成</string>
+    <string name="mine_personage">个人信息</string>
+    <string name="mine_avatar">头像</string>
+    <string name="mine_name">名称</string>
+    <string name="mine_regist_phone">注册电话</string>
+    <string name="global_about">关于</string>
+    <string name="mine_clause">使用条款</string>
+    <string name="mine_version">版本信息</string>
 </resources>

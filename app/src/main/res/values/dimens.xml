@@ -138,4 +138,5 @@
     <dimen name="font_29">29.0sp</dimen>
     <dimen name="font_30">30.0sp</dimen>
     <dimen name="default_stroke_width">15dp</dimen>
+    <dimen name="dp_255">255dp</dimen>
 </resources>

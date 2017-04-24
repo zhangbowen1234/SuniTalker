@@ -1,43 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_bg_chat"
-    android:orientation="vertical">
-
-
-    <com.silver.chat.view.CircleImageView
-        android:id="@+id/my_round_head"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/system_head"/>
+    android:background="@drawable/shape_bg_chat">
 
     <LinearLayout
+        android:id="@id/llyout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/my_round_head"
-        android:layout_marginTop="@dimen/dp_50"
-        android:gravity="center_horizontal">
-
-
-        <ImageView
-            android:layout_width="@dimen/dp_50"
-            android:layout_height="@dimen/dp_50" />
-
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TextView
-            android:layout_width="@dimen/dp_1"
-            android:layout_height="@dimen/dp_50"
-            />
+            android:id="@id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_28"
+            android:singleLine="true"
+            android:text="程姐"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_15"/>
 
-        <ImageView
-            android:layout_width="@dimen/dp_50"
-            android:layout_height="@dimen/dp_50" />
+        <TextView
+            android:id="@id/tv_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_7"
+            android:text="女"
+            android:textColor="@color/white_8a"
+            android:textSize="@dimen/font_11"/>
 
+        <TextView
+            android:id="@id/tv_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_7"
+            android:text="皮肤好才是真的好，我吐。我吐。。"
+            android:textColor="@color/white_8a"
+            android:textSize="@dimen/font_11"/>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20">
+
+            <ImageView
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circlr_bg_small"/>
+
+            <ImageView
+                android:layout_width="240dp"
+                android:layout_height="240dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circlr_bg_big"/>
+
+            <ImageView
+                android:layout_width="225dp"
+                android:layout_height="225dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circlr_bg_center"/>
+
+            <com.silver.chat.view.CircleImageView
+                android:id="@id/iv_avatar"
+                android:layout_width="210dp"
+                android:layout_height="210dp"
+                android:layout_gravity="center"
+                android:src="@drawable/system_head"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@id/tv_qr_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_55"
+                android:drawablePadding="@dimen/dp_9"
+                android:drawableTop="@drawable/ic_qr_code"
+                android:gravity="center_horizontal"
+                android:text="@string/global_qr_code"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@id/tv_file"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/dp_9"
+                android:drawableTop="@drawable/ic_file"
+                android:gravity="center_horizontal"
+                android:text="@string/global_file"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@id/tv_dynamic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_55"
+                android:drawablePadding="@dimen/dp_9"
+                android:drawableTop="@drawable/ic_dynamic"
+                android:gravity="center_horizontal"
+                android:text="@string/global_dynamic"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
     </LinearLayout>
-
 
 </RelativeLayout>

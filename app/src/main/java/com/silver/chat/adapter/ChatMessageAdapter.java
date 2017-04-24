@@ -29,7 +29,6 @@ public class ChatMessageAdapter extends BaseQuickAdapter<ChatEntity, BaseViewHol
         super(data);
     }
 
-
     @Override
     protected void convert(BaseViewHolder holper, ChatEntity item) {
 

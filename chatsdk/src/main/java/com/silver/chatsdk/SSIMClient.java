@@ -6,9 +6,8 @@ import android.util.Log;
 import com.silver.chatsdk.service.bean.BaseResponse;
 import com.silver.chatsdk.service.bean.Person;
 import com.silver.chatsdk.service.bean.RequestInfo;
-import com.silver.chatsdk.service.network.ApiService;
-import com.silver.chatsdk.service.network.ResponseCallBack;
-import com.silver.chatsdk.service.network.SSIMHttpEngine;
+import com.silver.chatsdk.service.network.APIService;
+import com.silver.chatsdk.service.bean.ResponseCallBackInterface;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,22 +42,22 @@ public class SSIMClient {
     /**
      * 注册账户
      */
-    public void creatAccount(final ResponseCallBack callBack) {
-        ApiService service = SSIMHttpEngine.getInstance(mContext);
-        Call<Person> regist = service.regist(new RequestInfo("REGISTER", "1380000000", "123", "123"));
-        regist.enqueue(new Callback<Person>() {
-            @Override
-            public void onResponse(Call<Person> call, Response<Person> response) {
-                Log.e("onResponse", response.body().toString());
-                callBack.onSuccess(new BaseResponse(1, "123",123));
-            }
-
-            @Override
-            public void onFailure(Call<Person> call, Throwable t) {
-                Log.e("onFailure", "onFailure");
-                callBack.onFailed(-1);
-            }
-        });
+    public void creatAccount(final ResponseCallBackInterface callBack) {
+//        APIService service = SSIMHttpEngine.getInstance(mContext);
+//        Call<Person> regist = service.regist(new RequestInfo("REGISTER", "1380000000", "123", "123"));
+//        regist.enqueue(new Callback<Person>() {
+//            @Override
+//            public void onResponse(Call<Person> call, Response<Person> response) {
+//                Log.e("onResponse", response.body().toString());
+//                callBack.onSuccess(new BaseResponse(1, "123",123));
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Person> call, Throwable t) {
+//                Log.e("onFailure", "onFailure");
+//                callBack.onFailed(-1);
+//            }
+//        });
     }
 
     /**

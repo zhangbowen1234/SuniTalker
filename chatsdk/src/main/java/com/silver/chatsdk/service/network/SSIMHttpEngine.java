@@ -1,195 +1,64 @@
 package com.silver.chatsdk.service.network;
 
-import android.content.Context;
-import android.os.Environment;
+import com.silver.chatsdk.service.manager.SSIMEngine;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.silver.chatsdk.service.bean.BaseResponse;
-import com.silver.chatsdk.util.NetWorkUtil;
-
-import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by shiyan on 2016/10/9.
- */
-public class SSIMHttpEngine {
 
-    public static String baseUrl = "http://192.168.10.51:7303";
-    private static Context context;
-    private static OkHttpClient okHttpClient;
+public class SSIMHttpEngine extends SSIMNetworkEngine{
 
-    public static ApiService getInstance(Context context) {
-        if (okHttpClient == null) {
-            SSIMHttpEngine.context = context;
-            OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
-            //设置超时
-            builder.connectTimeout(15, TimeUnit.SECONDS);
-            builder.readTimeout(20, TimeUnit.SECONDS);
-            builder.writeTimeout(20, TimeUnit.SECONDS);
-            //错误重连
-            builder.retryOnConnectionFailure(true);
-//
-//            //OkHttp添加拦截器
-//            if (BuildConfig.DEBUG) {
-//                // Log信息拦截器
-//                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-//                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-//                //设置 Debug Log 模式
-//                builder.addInterceptor(loggingInterceptor);
-//            }
-            /**
-             * 添加缓存处理
-             */
-            //buildCache(builder, true);
-
-            /**
-             *  添加公共参数拦截器
-             */
-            //builder.addInterceptor(addQueryParameterInterceptor);
+    private APIService httpEngine;
 
 
-            /**
-             * 添加请求头拦截器
-             */
-            //builder.addInterceptor(headerInterceptor);
-
-
-            /**
-             * 配置Cookie
-             */
-//            buildCookie(builder);
-
-
-            okHttpClient = builder.build();
-        }
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").serializeNulls().create();
-
-        Retrofit retrofit = new Retrofit.Builder().
-                baseUrl(baseUrl).
-                addConverterFactory(GsonConverterFactory.create(gson)).
-                client(okHttpClient).build();
-        ApiService service = retrofit.create(ApiService.class);
-        return service;
+    private SSIMHttpEngine() {
     }
 
-    private static void buildCache(OkHttpClient.Builder builder, boolean isCache) {
-        if (!isCache)
-            return;
-        //设置缓存路径
-        File cacheFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "kkcache");
-        //设置缓存大小 20M
-        Cache cache = new Cache(cacheFile, 20 * 1024 * 1024);
-        builder.cache(cache).addInterceptor(cacheInterceptor);
-
+    private static class SingletonHolder {
+        private static final SSIMHttpEngine INSTANCE = new SSIMHttpEngine();  //创建实例的地方
     }
 
-    /**
-     * 缓存
-     */
-    static Interceptor cacheInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            //没网
-            if (!NetWorkUtil.isConnectedByState(context)) {
-                request = request.newBuilder()
-                        .cacheControl(CacheControl.FORCE_CACHE)
+    public static SSIMHttpEngine getInstance() {
+        SSIMHttpEngine httpEngine = SingletonHolder.INSTANCE;
+        synchronized (APIService.class) {
+            if (httpEngine.httpEngine == null) {
+                SSIMEngine engine = SSIMEngine.getInstance();
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(engine.getConfig().getHttpConfig().formatURL())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .client(new OkHttpClient.Builder()
+                                .addInterceptor(new Interceptor() {
+                                    @Override
+                                    public Response intercept(Chain chain) throws IOException {
+                                        Request request = chain.request()
+                                                .newBuilder()
+//                                        .addHeader("a", "b")
+                                                .build();
+                                        return chain.proceed(request);
+                                    }
+                                })
+                                .connectTimeout(15, TimeUnit.SECONDS)
+                                .readTimeout(20, TimeUnit.SECONDS)
+                                .writeTimeout(20, TimeUnit.SECONDS)
+                                .build())
                         .build();
+                httpEngine.httpEngine = retrofit.create(APIService.class);
             }
-            Response response = chain.proceed(request);
-            if (NetWorkUtil.isConnectedByState(context)) {
-                int maxAge = 0;
-                // 有网络时 设置缓存超时时间0个小时
-                response.newBuilder()
-                        .header("Cache-Control", "public, max-age=" + maxAge)
-                        .removeHeader("Pragma")// 清除头信息，因为服务器如果不支持，会返回一些干扰信息，不清除下面无法生效
-                        .build();
-            } else {
-                // 无网络时，设置超时为4周
-                int maxStale = 60 * 60 * 24 * 28;
-                response.newBuilder()
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                        .removeHeader("Pragma")
-                        .build();
-            }
-            return response;
         }
-    };
 
-
-    /**
-     * 公共参数
-     */
-    static Interceptor addQueryParameterInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request originRequest = chain.request();
-            HttpUrl modifiedUrl = originRequest.url().newBuilder().addQueryParameter("platform", "android")
-                    .addQueryParameter("version", "1.0").build();
-            originRequest = originRequest.newBuilder().url(modifiedUrl).build();
-            return chain.proceed(originRequest);
-        }
-    };
-
-    /**
-     * 请求头
-     */
-    static Interceptor headerInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request originalRequest = chain.request();
-            Request.Builder requestBuilder = originalRequest.newBuilder()
-                    .header("AppType", "TPOS")
-                    .method(originalRequest.method(), originalRequest.body());
-            originalRequest = requestBuilder.build();
-            return chain.proceed(originalRequest);
-        }
-    };
-
-//    /**
-//     * 配置Cookie
-//     *
-//     * @param builder
-//     */
-//    static public void buildCookie(OkHttpClient.Builder builder) {
-//        CookieManager cookieManager = new CookieManager();
-//        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
-//        builder.cookieJar(new JavaNetCookieJar(cookieManager));
-//    }
-
-    /**
-     * 统一处理返回对象公共参数
-     */
-    static public void enqueue(Call call, final Callback callback) {
-        call.enqueue(new Callback() {
-            @Override
-            public void onResponse(Call call, retrofit2.Response response) {
-                BaseResponse bean = (BaseResponse) response.body();
-                if (bean.getCode() == 1) {
-                    callback.onResponse(call, response);
-                }
-            }
-
-            @Override
-            public void onFailure(Call call, Throwable t) {
-                callback.onFailure(call, t);
-            }
-        });
+        return httpEngine;
     }
 
+    @Override
+    public  APIService getEngine() {
+        return this.httpEngine;
+    }
 }

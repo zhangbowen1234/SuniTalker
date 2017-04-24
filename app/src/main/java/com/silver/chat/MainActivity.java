@@ -13,6 +13,7 @@ import com.silver.chat.adapter.MainPagerAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.ui.chat.SearchChatRecordActivity;
 import com.silver.chat.ui.contact.SearchContactActivity;
+import com.silver.chat.ui.mine.SettingActivity;
 import com.silver.chat.view.BadgedTabCustomView;
 import com.silver.chat.view.TabLayoutPlus;
 
@@ -130,11 +131,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 2) {
-                    mIvMore.setVisibility(View.GONE);
-                }else{
-                    mIvMore.setVisibility(View.VISIBLE);
-                }
             }
 
             @Override
@@ -156,7 +152,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.iv_more:
-                openPanelView();
+                if (mTabLayout.getSelectedTabPosition() == 2) {
+                    startActivity(SettingActivity.class);
+                } else {
+                    openPanelView();
+                }
                 break;
             case R.id.iv_back:
                 closePanelView();
