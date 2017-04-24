@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * 作者：Fandy on 2016/11/14 11:58
  * 邮箱：fandy618@hotmail.com
@@ -15,6 +19,7 @@ import android.view.ViewGroup;
 
 public abstract class BaseFragment extends SupportFragment {
     protected BaseActivity mActivity;
+    Unbinder bind;
 
     @Override
     public void onAttach(Activity activity) {
@@ -32,6 +37,7 @@ public abstract class BaseFragment extends SupportFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = LayoutInflater.from(mActivity).inflate(getLayoutResourceId(), null);
+        bind = ButterKnife.bind(this, view);
         initView(view);
         initListener();
         return view;
@@ -61,6 +67,7 @@ public abstract class BaseFragment extends SupportFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        bind.unbind();
     }
 
     @Override

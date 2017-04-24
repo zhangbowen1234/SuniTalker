@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 
 /**
- * Created by zhenghp on 2016/11/3.
+ * Created by hibon on 2016/11/3.
  */
 
 /**

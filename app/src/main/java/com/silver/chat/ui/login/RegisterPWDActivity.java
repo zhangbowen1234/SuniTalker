@@ -14,7 +14,7 @@ import com.silver.chat.view.MyLineEditText;
 
 
 /**
- * Created by zhenghp on 2016/11/14.
+ * Created by hibon on 2016/11/14.
  * 注册账号
  */
 public class RegisterPWDActivity extends BaseActivity implements View.OnClickListener {

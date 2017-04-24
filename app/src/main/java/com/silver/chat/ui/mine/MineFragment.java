@@ -8,7 +8,7 @@ import com.silver.chat.R;
 import com.silver.chat.base.BasePagerFragment;
 
 /**
- * 作者：zhenghp on 2016/11/24
+ * 作者：hibon on 2016/11/24
  */
 
 public class MineFragment extends BasePagerFragment implements View.OnClickListener {
