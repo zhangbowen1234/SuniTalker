@@ -27,7 +27,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 作者：zhenghp on 2016/11/16 14:14
+ * 作者：hibon on 2016/11/16 14:14
  */
 
 /*
