@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.silver.chat"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -33,6 +33,11 @@ android {
         }
     }
 }
+repositories{
+    flatDir{
+        dir 'libs'
+    }
+}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -52,6 +57,7 @@ dependencies {
     compile project(':chatsdk')
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.jakewharton:butterknife:8.4.0'
+    compile(name:'ssim-release',ext:'aar')
 
 
 }
