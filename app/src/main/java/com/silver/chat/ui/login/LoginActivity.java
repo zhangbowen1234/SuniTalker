@@ -17,7 +17,8 @@ import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class
+LoginActivity extends BaseActivity implements View.OnClickListener {
 
 
     private TextView mGoReg, mForgot;

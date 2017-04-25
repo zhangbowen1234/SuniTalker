@@ -14,7 +14,7 @@ import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
 
 /**
- * Created by zhenghp on 2016/11/14.
+ * Created by hibon on 2016/11/14.
  */
 public class UserForgotPWDActivity extends BaseActivity implements View.OnClickListener {
 

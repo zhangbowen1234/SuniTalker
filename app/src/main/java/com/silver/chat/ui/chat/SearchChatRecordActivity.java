@@ -8,7 +8,6 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.SearchChatRecordApater;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.ChatBean;
-import com.silver.chat.entity.DataServer;
 import com.silver.chat.util.ToastUtil;
 import com.silver.chat.view.SearchLayout;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
@@ -66,7 +65,7 @@ public class SearchChatRecordActivity extends BaseActivity implements SearchLayo
     protected void initData() {
         super.initData();
         mList = new ArrayList<>();
-        mList.addAll(DataServer.getChatData());
+//        mList.addAll(DataServer.getChatData());
         mApater = new SearchChatRecordApater(mList);
         mRecycleContent.setAdapter(mApater);
     }

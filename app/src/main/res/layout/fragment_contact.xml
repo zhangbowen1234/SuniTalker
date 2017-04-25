@@ -17,11 +17,74 @@
     <!--android:textSize="15.0dip" />-->
 
     <LinearLayout
+        android:id="@+id/new_friend_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/new_friend_img"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/contact_new_friend"
+            android:textSize="@dimen/font_15"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/dp_10"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/right_in_img"
+            android:layout_marginRight="@dimen/dp_10"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="@color/white_26"/>
+
+    <LinearLayout
+        android:id="@+id/group_chat_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/group_chat_img"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/contact_group_chat"
+            android:textSize="@dimen/font_15"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/dp_10"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/right_in_img"
+            android:layout_marginRight="@dimen/dp_10"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="@color/white_26"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="@dimen/dp_9"
-        android:layout_marginBottom="@dimen/dp_15"
         android:visibility="visible">
 
         <TextView
@@ -44,7 +107,9 @@
         android:id="@id/content_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_10"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_10"
         android:text="联系人"
         android:textColor="@color/contact_textcolor"
         android:textSize="@dimen/dp_12" />

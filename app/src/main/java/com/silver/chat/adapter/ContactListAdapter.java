@@ -1,12 +1,11 @@
 package com.silver.chat.adapter;
 
+import com.silver.chat.R;
 import com.silver.chat.entity.ContactMemberBean;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
 
 import java.util.List;
-
-import static com.silver.chat.R.id.tv_contact_name;
 
 /**
  * Created by Administrator on 2016/11/22.
@@ -26,7 +25,7 @@ public class ContactListAdapter extends BaseQuickAdapter<ContactMemberBean, Base
 
     @Override
     protected void convert(BaseViewHolder holper, ContactMemberBean item) {
-        holper.setText(tv_contact_name, item.getContactName());
+        holper.setText(R.id.tv_contact_name, item.getContactName());
 
     }
 

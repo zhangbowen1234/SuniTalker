@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 /**
- * Created by zhenghp on 2016/2/26.
+ * Created by hibon on 2016/2/26.
  * 记住用户名，密码之类的首选项
  */
 public class PreferenceUtil {

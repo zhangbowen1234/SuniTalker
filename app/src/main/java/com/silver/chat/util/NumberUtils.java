@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  * passwordRegex = /^\w{6,12}$/; //邮箱：自己实现验证规则 emailRegex = /^\w+@\w+(\.\w+)+$/;
  * //真实姓名：必须是2-5中文 realNameRegex = /^[\u4e00-\u9fa5]{2,5}$/;
  * 
- * @author zhenghp
+ * @author hibon
  * @date 2015年6月25日
  */
 public class NumberUtils {
