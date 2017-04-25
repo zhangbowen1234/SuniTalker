@@ -75,8 +75,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         switch (view.getId()) {
             case R.id.btn_login:
 
-                uPhone = mUserPhone.getText().toString();
-                uPwd = mUserPwd.getText().toString();
+                uPhone = mUserPhone.getText().toString().trim();
+                uPwd = mUserPwd.getText().toString().trim();
                 startActivity(MainActivity.class);
 
 

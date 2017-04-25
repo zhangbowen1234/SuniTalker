@@ -61,7 +61,14 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
         TimePiece();
     }
 
-//    class EditChangedListener implements TextWatcher {
+    @Override
+    protected void initData() {
+        super.initData();
+        String uPhone = getIntent().getStringExtra("uPhone");
+        tv_send_number.setText("短信已发送至" + uPhone);
+    }
+
+    //    class EditChangedListener implements TextWatcher {
 //        private CharSequence temp; // 监听前的文本
 //        private int editStart; // 光标开始位置
 //        private int editEnd; // 光标结束位置
