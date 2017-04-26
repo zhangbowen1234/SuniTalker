@@ -13,6 +13,7 @@ import com.silver.chat.adapter.ContactListAdapter;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.entity.ContactMemberBean;
 import com.silver.chat.entity.User;
+import com.silver.chat.ui.mine.FriendInfoActivity;
 import com.silver.chat.util.CharacterParser;
 import com.silver.chat.util.PinyinComparator;
 import com.silver.chat.util.ToastUtil;
@@ -145,7 +146,7 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
     public  void onClick(View view){
         switch (view.getId()){
             case R.id.new_friend_btn:
-                startActivity(NewFriendActivity.class);
+                startActivity(FriendInfoActivity.class);
                 break;
             case R.id.group_chat_btn:
 
