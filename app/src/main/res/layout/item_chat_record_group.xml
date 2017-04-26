@@ -3,17 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/translate"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/dp_10">
-
-    <ImageView
+    <com.silver.chat.view.CircleImageView
         android:id="@id/iv_avatar"
         android:layout_width="@dimen/dp_45"
         android:layout_height="@dimen/dp_45"
         android:layout_alignParentLeft="true"
-        android:background="@drawable/avatar_bg"
         android:layout_marginTop="@dimen/dp_7"
+        app:civ_border_width="@dimen/dp_1"
+        app:civ_border_color="@color/white_10"
         android:src="@drawable/default_badged_count_bg"/>
 
     <TextView
@@ -100,4 +101,34 @@
         android:layout_toRightOf="@id/iv_avatar"
         android:background="@color/white_10"
         />
+    <LinearLayout
+        android:id="@+id/ll_top_delelte"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        >
+        <Button
+            android:id="@+id/tv_mian_top"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/blue_bg_shape"
+            android:gravity="center"
+            android:text="置顶"
+            android:textColor="#FFFFFF"
+            />
+        <Button
+            android:id="@+id/tv_main_delete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="#FFFFFF"
+            />
+    </LinearLayout>
+
 </RelativeLayout>

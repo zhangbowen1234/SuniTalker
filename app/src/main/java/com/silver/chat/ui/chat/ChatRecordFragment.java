@@ -1,5 +1,6 @@
 package com.silver.chat.ui.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,17 +12,17 @@ import com.silver.chat.adapter.ChatApater;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.entity.ChatBean;
 import com.silver.chat.entity.DataServer;
+import com.silver.chat.ui.contact.ContactChatActivity;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
+import com.silver.chat.view.recycleview.BaseViewHolder;
 import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
 import com.silver.chatsdk.SSIMClient;
-import com.silver.chatsdk.service.bean.SigninRequest;
-import com.silver.chatsdk.service.bean.SigninResponse;
-import com.silver.chatsdk.service.manager.SSIMEngine;
 import com.silver.chatsdk.service.bean.RegisterRequest;
 import com.silver.chatsdk.service.bean.RegisterResponse;
 import com.silver.chatsdk.service.bean.ResponseCallBackInterface;
-import com.silver.chatsdk.service.network.SSIMHttpEngine;
-import com.silver.chatsdk.service.network.SSIMHttpsEngine;
+import com.silver.chatsdk.service.bean.SigninRequest;
+import com.silver.chatsdk.service.bean.SigninResponse;
+import com.silver.chatsdk.service.manager.SSIMEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,6 @@ public class ChatRecordFragment extends BasePagerFragment {
     private RecyclerView mRecycleContent;
     private ChatApater mChatApater;
     private List<ChatBean> mList;
-
 
     public static ChatRecordFragment newInstance() {
         Bundle args = new Bundle();
@@ -66,7 +66,37 @@ public class ChatRecordFragment extends BasePagerFragment {
         super.initListener();
         mRecycleContent.addOnItemTouchListener(new OnItemClickListener() {
             @Override
-            public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                super.onItemLongClick(adapter, view, position);
+                BaseViewHolder holder = new BaseViewHolder(view);
+                holder.setVisible(R.id.ll_top_delelte,true);
+            }
+
+            @Override
+            public void SimpleOnItemClick(BaseQuickAdapter adapter, final View view, final int position) {
+                BaseViewHolder holder = new BaseViewHolder(view);
+                holder.setVisible(R.id.ll_top_delelte,false);
+
+                ChatBean chatBean = (ChatBean) mChatApater.getItem(position);
+                Intent mIntent = new Intent(mActivity,ContactChatActivity.class);
+//                        mIntent.putExtra("contactName",chatBean.getContactName());
+                startActivity(mIntent);
+                SSIMClient.getInstance().creatAccount(new ResponseCallBackInterface() {
+                    @Override
+                    public void onSuccess(Object o) {
+
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
                 SSIMClient.getInstance().creatAccount(new ResponseCallBackInterface() {
                     @Override
                     public void onSuccess(Object o) {
@@ -83,7 +113,6 @@ public class ChatRecordFragment extends BasePagerFragment {
 
                     }
                 });
-
                 //调用无参的getInstance()方法时，初始化参数为默认设置参数
                 SSIMEngine engine = SSIMEngine.getInstance();
 
@@ -137,5 +166,4 @@ public class ChatRecordFragment extends BasePagerFragment {
     protected int getLayoutResourceId() {
         return R.layout.fragment_chat_record;
     }
-
 }

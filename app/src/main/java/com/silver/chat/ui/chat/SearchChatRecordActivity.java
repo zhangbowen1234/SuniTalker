@@ -53,9 +53,12 @@ public class SearchChatRecordActivity extends BaseActivity implements SearchLayo
                     ToastUtil.toastMessage(mContext, "系统position=" + position);
                 }else if(mList.get(position).getItemType() == 2){
                     ToastUtil.toastMessage(mContext, "单聊position=" + position);
-
                 }else if ((mList.get(position).getItemType() == 3)){
                     ToastUtil.toastMessage(mContext, "群聊position=" + position);
+                }else if ((mList.get(position).getItemType() == 4)){
+                    ToastUtil.toastMessage(mContext, "讨论组position=" + position);
+                }else if ((mList.get(position).getItemType() == 5)){
+                    ToastUtil.toastMessage(mContext, "群通知position=" + position);
                 }
             }
         });

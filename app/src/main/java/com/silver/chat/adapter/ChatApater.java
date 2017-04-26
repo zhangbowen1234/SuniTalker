@@ -24,16 +24,29 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
         addItemType(ChatBean.CHAT_SINGLR, R.layout.item_chat_record_single);
         addItemType(ChatBean.CHAT_GROUP, R.layout.item_chat_record_group);
         addItemType(ChatBean.CHAT_SYSTEM, R.layout.item_chat_record_system);
+        addItemType(ChatBean.CHAT_DISCUSSION_GROUP, R.layout.item_chat_record_dicussion);
+        addItemType(ChatBean.CHAT_GROUP_NOTICE, R.layout.item_chat_record_notice);
     }
+
 
     @Override
     protected void convert(BaseViewHolder holder, ChatBean item) {
+        holder.addOnClickListener(R.id.tv_mian_top);
+        holder.addOnClickListener(R.id.tv_main_delete);
         switch (holder.getItemViewType()) {
             case ChatBean.CHAT_SINGLR:
                 ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
                 holder.setText(R.id.tv_name, "单人聊天=" + holder.getPosition());
                 break;
             case ChatBean.CHAT_GROUP:
+                ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
+                holder.setText(R.id.tv_name ,"群组聊天=" + holder.getPosition());
+                break;
+            case ChatBean.CHAT_SYSTEM:
+                ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
+                holder.setText(R.id.tv_name, "系统消息=" + holder.getPosition());
+                break;
+            case ChatBean.CHAT_DISCUSSION_GROUP:
                 ImageView ivGroup = holder.getView(R.id.iv_avatar);
                 ArrayList<String> list = new ArrayList<>();
                 list.add(DataServer.IMAGE_URL1);
@@ -46,13 +59,12 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 }else{
                     ImageUtil.loadGroupAvatar(ivGroup, list);
                 }
-                holder.setText(R.id.tv_name ,"群组聊天=" + holder.getPosition());
+                holder.setText(R.id.tv_name, "讨论组消息=" + holder.getPosition());
                 break;
-            case ChatBean.CHAT_SYSTEM:
+            case ChatBean.CHAT_GROUP_NOTICE:
                 ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
-                holder.setText(R.id.tv_name, "系统消息=" + holder.getPosition());
+                holder.setText(R.id.tv_name, "群通知=" + holder.getPosition());
                 break;
         }
     }
-
 }

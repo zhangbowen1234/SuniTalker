@@ -8,10 +8,27 @@ import com.silver.chat.view.recycleview.entity.MultiItemEntity;
  */
 
 public class ChatBean extends BaseBean implements MultiItemEntity {
-
+    /**
+     * 系统消息
+     */
     public static final int CHAT_SYSTEM = 1;
+    /**
+     * 个人消息
+     */
     public static final int CHAT_SINGLR = 2;
+    /**
+     * 群消息
+     */
     public static final int CHAT_GROUP = 3;
+    /**
+     * 讨论组消息
+     */
+    public static final int CHAT_DISCUSSION_GROUP = 4;
+    /**
+     * 群通知
+     */
+    public static final int CHAT_GROUP_NOTICE = 5;
+
 
     private String userId;
     private String userName;

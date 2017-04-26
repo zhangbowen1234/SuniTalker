@@ -79,4 +79,34 @@
         android:layout_toRightOf="@id/iv_avatar"
         android:background="@color/white_10"
         />
+    <LinearLayout
+        android:id="@+id/ll_top_delelte"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        >
+        <Button
+            android:id="@+id/tv_mian_top"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/blue_bg_shape"
+            android:gravity="center"
+            android:text="置顶"
+            android:textColor="#FFFFFF"
+            />
+        <Button
+            android:id="@+id/tv_main_delete"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="#FFFFFF"
+            />
+    </LinearLayout>
+
 </RelativeLayout>
