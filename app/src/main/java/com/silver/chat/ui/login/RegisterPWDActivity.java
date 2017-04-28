@@ -1,5 +1,6 @@
 package com.silver.chat.ui.login;
 
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,12 +34,16 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
         return R.layout.activity_register_pwd;
     }
 
+
+
+
     private void TimePiece() {
         if (timeCountUtil == null) {
             timeCountUtil = new TimeCountUtil(this, 60000, 1000, mBtnAuthCode);
         }
         timeCountUtil.start();
     }
+
 
     protected void initView() {
         mSetPwd = (EditText) findViewById(R.id.set_pwd);
@@ -61,48 +66,10 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
         TimePiece();
     }
 
-//    class EditChangedListener implements TextWatcher {
-//        private CharSequence temp; // 监听前的文本
-//        private int editStart; // 光标开始位置
-//        private int editEnd; // 光标结束位置
-//
-//        // 输入文本之前的状态
-//        @Override
-//        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            temp = s;
-//        }
-//
-//        // 输入文字中的状态，count是一次性输入字符数
-//        @Override
-//        public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            if (charMaxNum - s.length() <= 6) {
-////              tip.setText(还能输入 + (charMaxNum - s.length()) + 字符);
-//
-//            }
-//        }
-//
-//        // 输入文字后的状态
-//        @Override
-//        public void afterTextChanged(Editable s) {
-//            /** 得到光标开始和结束位置 ,超过最大数后记录刚超出的数字索引进行控制 */
-//            editStart = mAuthCode.getSelectionStart();
-//            editEnd = mAuthCode.getSelectionEnd();
-//            if (temp.length() > charMaxNum) {
-//                s.delete(editStart - 1, editEnd);
-//                mAuthCode.setText(s);
-//                mAuthCode.setSelection(s.length());
-//
-//
-////
-//            }
-//        }
-//    };
 
 
     @Override
     public void onClick(View view) {
-
-
         switch (view.getId()) {
             case R.id.btn_register_id:
 
@@ -141,7 +108,6 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
 //                }
                 break;
             case R.id.btn_auth_code:
-
                 //重新发送验证码并计时
                 TimePiece();
 

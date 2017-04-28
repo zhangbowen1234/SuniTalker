@@ -64,7 +64,6 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected int getLayoutId() {
         Log.i("aaaaaaa", "saaaa");
-
         return R.layout.activity_login;
     }
 

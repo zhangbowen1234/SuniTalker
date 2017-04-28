@@ -9,16 +9,20 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
 import com.silver.chat.network.SSIMUserMange;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.NumberUtils;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
 
 
 /**
+ * Created by hibon
  * 登录手机号
  */
 public class RegisterPhoneActivity extends BaseActivity implements View.OnClickListener {
@@ -66,51 +70,47 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                     ToastUtils.showMessage(RegisterPhoneActivity.this, "手机号不正确!");
                     return;
                 }
-
-
 //                SSIMClient.getInstance().creatAccount(uPhone,1,new ResponseCallBackInterface() {
 //                    @Override
 //                    public void onSuccess(Object o) {
 //                        Log.i("success", "success:" + o.toString());
 //                        ToastUtils.showMessage(mContext,"发送验证码成功");
 //                    }
-//
 //                    @Override
 //                    public void onFailed(int code) {
 //                        Log.i("onFailed", "onFailed");
 //                        ToastUtils.showMessage(mContext,"发送验证码失败");
 //                    }
-//
 //                    @Override
 //                    public void onError() {
 //                    }
 //                });
-                Intent regPIntent = new Intent(RegisterPhoneActivity.this, RegisterPWDActivity.class);
-                ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
-                break;
 
-            case R.id.qq:
-                SSIMUserMange.userReginstCode(new ResponseCallBack<BaseResponse>() {
+                SSIMUserMange.userReginstCode("leaf",uPhone, Common.RegType,new ResponseCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        Log.e(TAG, baseResponse.toString() );
+                        Log.e(TAG, baseResponse.getStatusMsg());
+                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.USER_PHONE,uPhone);
                     }
-
                     @Override
                     public void onFailed(int code) {
                         Log.e(TAG, code+"" );
-
                     }
-
                     @Override
                     public void onError() {
                         Log.e(TAG, "onError" );
 
-
                     }
-                },"15712804153");
+                });
+                Intent regPIntent = new Intent(RegisterPhoneActivity.this, RegisterPWDActivity.class);
+                regPIntent.putExtra("phone",uPhone);
+                ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
                 break;
 
+            case R.id.qq:
+                ToastUtils.showMessage(this, "尚未开通此功能");
+                break;
             case R.id.xinlang:
                 ToastUtils.showMessage(this, "尚未开通此功能");
                 break;

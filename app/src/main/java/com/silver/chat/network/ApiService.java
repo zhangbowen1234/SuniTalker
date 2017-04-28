@@ -17,6 +17,9 @@ public interface ApiService {
 //    Call<BaseResponse> getContact(@Path("version") String leaf, @Path("phone") String phone, @Path("genre") int genre);
 
     //获取验证码
-    @GET("imx/leaf/sms/{phone}/1")
-    Call<BaseResponse> registCode(@Path("phone") String phone);
+    @GET("imx/{version}/sms/{phone}/{genre}")
+    Call<BaseResponse> registCode(@Path("version") String version,@Path("phone") String phone,@Path("genre") int genre);
+
+
+
 }
