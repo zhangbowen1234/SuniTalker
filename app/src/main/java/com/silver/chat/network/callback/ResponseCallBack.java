@@ -1,17 +1,19 @@
-package com.silver.chat.network;
+package com.silver.chat.network.callback;
 
+/**
+ * Created by Joe on 2017/4/27.
+ */
 
-public interface ResponseCallBackInterface<T> {
+public interface ResponseCallBack<T> {
     /**
      * 请求成功
-     * 返回code为1时的回调
+     *
      * @param t
      */
     void onSuccess(T t);
 
     /**
-     * 请求成功
-     * 返回code不为1时的回调
+     *
      * @param code
      */
     void onFailed(int code);
@@ -20,4 +22,5 @@ public interface ResponseCallBackInterface<T> {
      * 请求失败时的回调
      */
     void onError();
+
 }

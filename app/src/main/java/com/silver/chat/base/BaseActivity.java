@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.silver.chat.util.AppManager;
 import com.silver.chat.util.ToastUtil;
 
+import butterknife.ButterKnife;
+import butterknife.Optional;
+
 /**
  * 作者：Fandy on 2016/11/14 10:38
  * 邮箱：fandy618@hotmail.com
@@ -21,7 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      **/
     protected final String TAG = this.getClass().getSimpleName();
     protected Context mContext;
-
+    @Optional
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mContext = this;
         ToastUtil.cancelToast();
         AppManager.getInstance().addActivity(this);
+        ButterKnife.bind(this);
         initView();
         initListener();
         initData();

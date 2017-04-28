@@ -13,6 +13,7 @@ import com.silver.chat.entity.DataServer;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +115,7 @@ public class ChatRecordFragment extends BasePagerFragment {
 //
 //                    }
 //                }, new SigninRequest("13146733521", "12345"));
+
             }
         });
     }

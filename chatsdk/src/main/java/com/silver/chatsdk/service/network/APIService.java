@@ -35,5 +35,8 @@ public interface APIService {
 
     @GET("imx/{version}/sms/{phone}/{genre}")
     Call<BaseResponse> getContact(@Path("version") String leaf, @Path("phone") String phone, @Path("genre") int genre);
+    //获取验证码
+    @GET("imx/leaf/sms/{phone}/1")
+    Call<BaseResponse> registCode(@Path("phone") int phone);
 
 }

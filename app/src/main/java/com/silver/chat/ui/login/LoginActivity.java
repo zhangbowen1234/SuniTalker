@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.util.NumberUtils;
@@ -101,7 +102,7 @@ Log.e("===","失败"+call.toString());
 
                 uPhone = mUserPhone.getText().toString();
                 uPwd = mUserPwd.getText().toString();
-//                startActivity(MainActivity.class);
+                startActivity(MainActivity.class);
 
                 if (uPhone == null || "".equals(uPhone)) {
                     ToastUtils.showMessage(LoginActivity.this, "请输入账号!");

@@ -6,8 +6,8 @@ package com.silver.chatsdk.config;
  */
 public class SSIMSocketConfig extends SSIMNetworkConfig {
     //常量
-    private static final String HOST = "127.0.0.1";
-    private static final String PORT = "8080";
+    private static final String HOST = "http://pan.sspaas.com/sspaas-cloud/";
+    private static final String PORT = "";
 
     public SSIMSocketConfig(String host, String port) {
         super(host, port);

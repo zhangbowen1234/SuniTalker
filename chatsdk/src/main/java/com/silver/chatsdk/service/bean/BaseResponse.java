@@ -48,8 +48,8 @@ public class BaseResponse {
     @Override
     public String toString() {
         return "BaseResponse{" +
-                "code=" + code +
-                ", errMsg='" + errMsg + '\'' +
+                "statusCode=" + code +
+                ", statusMsg='" + errMsg + '\'' +
                 ", responseTime=" + responseTime +
                 '}';
     }

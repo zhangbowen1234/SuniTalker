@@ -5,7 +5,7 @@ package com.silver.chat.network;
  */
 
 public class Urls {
-
+    //public static final String SERVER = "http://192.168.10.168:8080/sspaas-cloud/";
     public static final String SERVER = "http://imx.users.docker.sspaas.net/";
     //用户
     public static final String URL_SMS = SERVER + "imx/version/sms";// 发送验证码
