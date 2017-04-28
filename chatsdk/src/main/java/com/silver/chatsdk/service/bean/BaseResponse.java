@@ -7,8 +7,8 @@ package com.silver.chatsdk.service.bean;
 
 public class BaseResponse {
 
-    private int code;
-    private String errMsg;
+    private int statusCode;
+    private String statusMsg;
     private long responseTime;
 
     public  BaseResponse(){
@@ -16,25 +16,25 @@ public class BaseResponse {
     }
 
     public BaseResponse(int code, String errMsg, long responseTime) {
-        this.code = code;
-        this.errMsg = errMsg;
+        this.statusCode = code;
+        this.statusMsg = errMsg;
         this.responseTime = responseTime;
     }
 
-    public int getCode() {
-        return code;
+    public int getStatusCode() {
+        return statusCode;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
-    public String getErrMsg() {
-        return errMsg;
+    public String getStatusMsg() {
+        return statusMsg;
     }
 
-    public void setErrMsg(String errMsg) {
-        this.errMsg = errMsg;
+    public void setStatusMsg(String statusMsg) {
+        this.statusMsg = statusMsg;
     }
 
     public long getResponseTime() {
@@ -43,6 +43,15 @@ public class BaseResponse {
 
     public void setResponseTime(long responseTime) {
         this.responseTime = responseTime;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseResponse{" +
+                "statusCode=" + statusCode +
+                ", statusMsg='" + statusMsg + '\'' +
+                ", responseTime=" + responseTime +
+                '}';
     }
 }
 

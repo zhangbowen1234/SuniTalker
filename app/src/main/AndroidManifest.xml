@@ -71,7 +71,11 @@
         <activity
             android:name=".ui.mine.MyPRScanCodeActivity"
             android:label="扫描二维码" />
-        <activity android:name=".ui.contact.NewFriendActivity" />
+        <activity android:name=".ui.contact.NewFriendActivity"
+            android:label="新朋友"/>
+        <activity
+            android:name=".ui.contact.GroupChatActivity"
+            android:label="我的群" />
     </application>
 
 </manifest>

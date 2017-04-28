@@ -1,6 +1,7 @@
 package com.silver.chat.ui.login;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -8,10 +9,15 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.network.SSIMUserMange;
+import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
+import com.silver.chatsdk.service.bean.BaseResponse;
+import com.silver.chatsdk.service.bean.ResponseCallBackInterface;
+import com.silver.chatsdk.service.manager.SSIMEngine;
 
 /**
  * 登录手机号
@@ -23,6 +29,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
     private TextView mReturnLast;
     private MyLineEditText mUserPhone;
     private String uPhone;
+
 
     @Override
     protected int getLayoutId() {
@@ -61,12 +68,30 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                     return;
                 }
 
-                Intent regPIntent = new Intent(this, RegisterPWDActivity.class);
+                Intent regPIntent = new Intent(RegisterPhoneActivity.this, RegisterPWDActivity.class);
                 ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
                 break;
 
             case R.id.qq:
-                ToastUtils.showMessage(this, "尚未开通此功能");
+                SSIMUserMange.userReginstCode(new ResponseCallBack<BaseResponse>() {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        Log.e(TAG, baseResponse.toString() );
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+                        Log.e(TAG, code+"" );
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        Log.e(TAG, "onError" );
+
+
+                    }
+                },"15712804153");
                 break;
 
             case R.id.xinlang:

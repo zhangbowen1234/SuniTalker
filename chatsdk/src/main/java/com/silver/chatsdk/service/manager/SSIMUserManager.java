@@ -4,10 +4,10 @@ import android.content.Context;
 
 import com.silver.chatsdk.service.bean.RegisterRequest;
 import com.silver.chatsdk.service.bean.RegisterResponse;
+import com.silver.chatsdk.service.bean.ResponseCallBackInterface;
 import com.silver.chatsdk.service.bean.SigninRequest;
 import com.silver.chatsdk.service.bean.SigninResponse;
 import com.silver.chatsdk.service.network.APIService;
-import com.silver.chatsdk.service.bean.ResponseCallBackInterface;
 import com.silver.chatsdk.service.network.SSIMHttpEngine;
 import com.silver.chatsdk.service.network.SSIMHttpsEngine;
 import com.silver.chatsdk.service.network.SSIMNetworkEngine;
@@ -49,10 +49,10 @@ public class SSIMUserManager {
         call.enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
-                if (response.body().getCode() == 1){
+                if (response.body().getStatusCode() == 1){
                     callBack.onSuccess(response.body());
                 }else{
-                    callBack.onFailed(response.body().getCode());
+                    callBack.onFailed(response.body().getStatusCode());
                 }
 
             }
@@ -88,10 +88,10 @@ public class SSIMUserManager {
         call.enqueue(new Callback<SigninResponse>() {
             @Override
             public void onResponse(Call<SigninResponse> call, Response<SigninResponse> response) {
-                if (response.body().getCode() == 1){
+                if (response.body().getStatusCode() == 1){
                     callBack.onSuccess(response.body());
                 }else{
-                    callBack.onFailed(response.body().getCode());
+                    callBack.onFailed(response.body().getStatusCode());
                 }
 
             }
@@ -101,6 +101,9 @@ public class SSIMUserManager {
                 callBack.onError();
             }
         });
+
+
     }
+
 
 }

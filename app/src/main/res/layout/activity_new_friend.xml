@@ -10,4 +10,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.silver.chat.ui.contact.NewFriendActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="zehgnhaipengshixiaogou"
+        android:layout_centerInParent="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_21"
+        android:gravity="center"
+        />
+
+
+
+
+
 </RelativeLayout>
