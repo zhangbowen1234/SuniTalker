@@ -49,4 +49,10 @@
     <!--会话列表-->
     <color name="gray_81">#818181</color>
     <color name="write_bg">#ffffff</color>
+    <!--主色调颜色-->
+    <color name="black_theme">#212121</color>
+    <color name="blue_theme">#268fd3</color>
+    <color name="green_theme">#01c702</color>
+    <color name="red_theme">#fe2901</color>
+    <color name="purple_theme">#ff00ff</color>
 </resources>

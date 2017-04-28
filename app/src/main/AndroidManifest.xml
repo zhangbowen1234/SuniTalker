@@ -61,10 +61,10 @@
             android:name=".ui.mine.SettingActivity"
             android:label="设置" />
         <activity
-            android:name=".ui.mine.AccountActivity"
+            android:name=".ui.mine.setting.AccountActivity"
             android:label="账户" />
         <activity
-            android:name=".ui.mine.AboutActivity"
+            android:name=".ui.mine.setting.AboutActivity"
             android:label="账户" />
         <activity
             android:name=".ui.mine.ScanActivity"
@@ -73,6 +73,9 @@
             android:name=".ui.mine.MyPRScanCodeActivity"
             android:label="扫描二维码" />
         <activity android:name=".ui.contact.NewFriendActivity" />
+        <activity
+            android:name=".ui.mine.setting.ChangeBackgroundActivity"
+            android:label="主色调" />
     </application>
 
 </manifest>

@@ -6,6 +6,11 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.ui.login.LoginActivity;
+import com.silver.chat.ui.mine.setting.AboutActivity;
+import com.silver.chat.ui.mine.setting.AccountActivity;
+import com.silver.chat.ui.mine.setting.ChangeBackgroundActivity;
+import com.silver.chat.view.dialog.TvLoginOutDialog;
 
 /**
  * 作者：Fandy on 2016/12/9 10:38
@@ -52,13 +57,28 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 startActivity(AccountActivity.class);
                 break;
             case R.id.tv_theme:
-
+                startActivity(ChangeBackgroundActivity.class);
                 break;
             case R.id.tv_about:
                 startActivity(AboutActivity.class);
                 break;
             case R.id.tv_login_out:
+                new TvLoginOutDialog(mContext).builder()
+                        .setCancelable(true)
+                        .setCanceledOnTouchOutside(true)
+                        .setNegativeButton(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
+                            }
+                        })
+                        .setPositiveButton(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(LoginActivity.class);
+                                finish();
+                            }
+                        }).show();
                 break;
             case R.id.iv_back:
                 finish();
