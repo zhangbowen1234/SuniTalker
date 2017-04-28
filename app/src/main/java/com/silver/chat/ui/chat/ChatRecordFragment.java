@@ -67,22 +67,22 @@ public class ChatRecordFragment extends BasePagerFragment {
         mRecycleContent.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
-                SSIMClient.getInstance().creatAccount(new ResponseCallBackInterface() {
-                    @Override
-                    public void onSuccess(Object o) {
-                        Log.i("success", "success");
-                    }
-
-                    @Override
-                    public void onFailed(int code) {
-                        Log.i("onFailed", "onFailed");
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
+//                SSIMClient.getInstance().creatAccount(new ResponseCallBackInterface() {
+//                    @Override
+//                    public void onSuccess(Object o) {
+//                        Log.i("success", "success");
+//                    }
+//
+//                    @Override
+//                    public void onFailed(int code) {
+//                        Log.i("onFailed", "onFailed");
+//                    }
+//
+//                    @Override
+//                    public void onError() {
+//
+//                    }
+//                });
 
                 //调用无参的getInstance()方法时，初始化参数为默认设置参数
                 SSIMEngine engine = SSIMEngine.getInstance();

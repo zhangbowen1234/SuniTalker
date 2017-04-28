@@ -124,7 +124,7 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ContactMemberBean contactMemberBean = (ContactMemberBean) adapter.getItem(position);
-                Intent mIntent = new Intent(mActivity,ContactChatActivity.class);
+                Intent mIntent = new Intent(mActivity,FriendInfoActivity.class);
                 mIntent.putExtra("contactName",contactMemberBean.getContactName());
                 startActivity(mIntent);
 
@@ -146,7 +146,7 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
     public  void onClick(View view){
         switch (view.getId()){
             case R.id.new_friend_btn:
-                startActivity(FriendInfoActivity.class);
+                startActivity(NewFriendActivity.class);
                 break;
             case R.id.group_chat_btn:
 

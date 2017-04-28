@@ -1,6 +1,7 @@
 package com.silver.chat.ui.login;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -8,10 +9,12 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.network.SSIMClient;
 import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
+import com.silver.chatsdk.service.bean.ResponseCallBackInterface;
 
 /**
  * 登录手机号
@@ -61,8 +64,26 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                     return;
                 }
 
+
+                SSIMClient.getInstance().creatAccount(uPhone,1,new ResponseCallBackInterface() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        Log.i("success", "success:" + o.toString());
+                        ToastUtils.showMessage(mContext,"发送验证码成功");
+                    }
+
+                    @Override
+                    public void onFailed(int code) {
+                        Log.i("onFailed", "onFailed");
+                        ToastUtils.showMessage(mContext,"发送验证码失败");
+                    }
+
+                    @Override
+                    public void onError() {
+                    }
+                });
                 Intent regPIntent = new Intent(this, RegisterPWDActivity.class);
-                ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
+//                ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
                 break;
 
             case R.id.qq:

@@ -32,7 +32,8 @@ public class SSIMHttpEngine extends SSIMNetworkEngine{
                 SSIMEngine engine = SSIMEngine.getInstance();
 
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(engine.getConfig().getHttpConfig().formatURL())
+//                        .baseUrl(engine.getConfig().getHttpConfig().formatURL())
+                        .baseUrl("http://imx.users.docker.sspaas.net/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .client(new OkHttpClient.Builder()
                                 .addInterceptor(new Interceptor() {

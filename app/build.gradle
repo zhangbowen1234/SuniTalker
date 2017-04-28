@@ -57,7 +57,8 @@ dependencies {
     compile project(':chatsdk')
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.jakewharton:butterknife:8.4.0'
-    compile(name:'ssim-release',ext:'aar')
-
-
+    compile(name: 'ssim-release', ext: 'aar')
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
 }

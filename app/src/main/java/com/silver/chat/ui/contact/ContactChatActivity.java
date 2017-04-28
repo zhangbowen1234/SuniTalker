@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -40,6 +41,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private LinearLayout mExpression;
     private Handler handler;
     private int friendId = 894446774;
+    private ImageView mBack;
 
     int lastItemPosition;
 
@@ -62,6 +64,8 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mFaceViewPager = (ViewPager) findViewById(R.id.face_viewpager);
         inputEdit = (EditText) findViewById(R.id.chat_edit_input);
         mShowHead = (RelativeLayout) findViewById(R.id.show_contact_head);
+        mBack = (ImageView)findViewById(R.id.title_left_back);
+
         //设置管理
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mChatMsgList.setLayoutManager(linearLayoutManager);
@@ -117,6 +121,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         //表情
         mEmoteBtn.setOnClickListener(this);
         mSendMsg.setOnClickListener(this);
+        mBack.setOnClickListener(this);
     }
 
     @Override
@@ -145,6 +150,10 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 mShowHead.setVisibility(View.INVISIBLE);
 
                 mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount()-1);
+                break;
+
+            case R.id.title_left_back:
+                finish();
                 break;
         }
 
