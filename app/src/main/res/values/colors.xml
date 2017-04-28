@@ -46,4 +46,7 @@
     <!-- QRCode scanner color end -->
 
     <!--二维码扫码-->
+    <!--会话列表-->
+    <color name="gray_81">#818181</color>
+    <color name="write_bg">#ffffff</color>
 </resources>

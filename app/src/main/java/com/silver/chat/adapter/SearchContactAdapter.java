@@ -23,17 +23,17 @@ public class SearchContactAdapter extends BaseQuickAdapter<String, BaseViewHolde
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
-        int position = helper.getAdapterPosition();
+    protected void convert(BaseViewHolder helper, String item, int position) {
+        int positions = helper.getAdapterPosition();
         LinearLayout layout = helper.getView(R.id.llyout);
         //改变根布局margin
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         int px = DisplayUtil.dip2px(mContext, 10);
         int px5 = DisplayUtil.dip2px(mContext, 5);
-        if (position == 0) {
+        if (positions == 0) {
             lp.setMargins(0, px, 0, px5);
             layout.setLayoutParams(lp);
-        } else if (position == getData().size() - 1) {
+        } else if (positions == getData().size() - 1) {
             lp.setMargins(0, px5, 0, px);
             layout.setLayoutParams(lp);
         } else {

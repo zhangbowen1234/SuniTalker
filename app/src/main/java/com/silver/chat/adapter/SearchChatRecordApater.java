@@ -29,7 +29,7 @@ public class SearchChatRecordApater extends BaseMultiItemQuickAdapter<ChatBean, 
     }
 
     @Override
-    protected void convert(BaseViewHolder holder, ChatBean item) {
+    protected void convert(BaseViewHolder holder, ChatBean item, int position) {
         switch (holder.getItemViewType()) {
             case ChatBean.CHAT_SINGLR:
                 ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());

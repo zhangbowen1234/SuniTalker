@@ -2,12 +2,15 @@ package com.silver.chat.entity;
 
 import com.silver.chat.view.recycleview.entity.MultiItemEntity;
 
+import java.io.Serializable;
+import java.util.Calendar;
+
 /**
  * 作者：Fandy on 2016/11/17 10:37
  * 邮箱：fandy618@hotmail.com
  */
 
-public class ChatBean extends BaseBean implements MultiItemEntity {
+public class ChatBean extends BaseBean implements MultiItemEntity,Serializable, Comparable {
     /**
      * 系统消息
      */
@@ -28,7 +31,20 @@ public class ChatBean extends BaseBean implements MultiItemEntity {
      * 群通知
      */
     public static final int CHAT_GROUP_NOTICE = 5;
+    /**
+     * 是否置顶
+     */
+    public int top;
 
+    /**
+     * 置顶时间
+     **/
+    public long time;
+
+    /**
+     * 头像
+     */
+    public int avatar;
 
     private String userId;
     private String userName;
@@ -74,9 +90,61 @@ public class ChatBean extends BaseBean implements MultiItemEntity {
         this.content = content;
     }
 
-
     @Override
     public int getItemType() {
         return type;
+    }
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public int getTop() {
+        return top;
+    }
+
+    public void setTop(int top) {
+        this.top = top;
+    }
+
+    public int getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(int avatar) {
+        this.avatar = avatar;
+    }
+
+    @Override
+    public int compareTo(Object another) {
+        if (another == null || !(another instanceof ChatBean)) {
+            return -1;
+        }
+
+        ChatBean otherSession = (ChatBean) another;
+        /**置顶判断 ArrayAdapter是按照升序从上到下排序的，就是默认的自然排序
+         * 如果是相等的情况下返回0，包括都置顶或者都不置顶，返回0的情况下要
+         * 再做判断，拿它们置顶时间进行判断
+         * 如果是不相等的情况下，otherSession是置顶的，则当前session是非置顶的，应该在otherSession下面，所以返回1
+         *  同样，session是置顶的，则当前otherSession是非置顶的，应该在otherSession上面，所以返回-1
+         * */
+        int result = 0 - (top - otherSession.getTop());
+        if (result == 0) {
+            result = 0 - compareToTime(time, otherSession.getTime());
+        }
+        return result;
+    }
+    /**
+     * 根据时间对比
+     * */
+    public static int compareToTime(long lhs, long rhs) {
+        Calendar cLhs = Calendar.getInstance();
+        Calendar cRhs = Calendar.getInstance();
+        cLhs.setTimeInMillis(lhs);
+        cRhs.setTimeInMillis(rhs);
+        return cLhs.compareTo(cRhs);
     }
 }

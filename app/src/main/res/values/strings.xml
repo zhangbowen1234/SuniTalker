@@ -44,4 +44,7 @@
     <string name="mine_version">版本信息</string>
     <string name="contact_new_friend">新朋友</string>
     <string name="contact_group_chat">群聊</string>
+    <string name="global_top_talk">置顶该聊天</string>
+    <string name="global_delete_talk">删除该聊天</string>
+    <string name="global_notop_talk">取消置顶</string>
 </resources>

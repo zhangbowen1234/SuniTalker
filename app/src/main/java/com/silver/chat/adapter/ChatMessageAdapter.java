@@ -30,7 +30,7 @@ public class ChatMessageAdapter extends BaseQuickAdapter<ChatEntity, BaseViewHol
     }
 
     @Override
-    protected void convert(BaseViewHolder holper, ChatEntity item) {
+    protected void convert(BaseViewHolder holper, ChatEntity item, int position) {
 
         RelativeLayout leftLayout;
         RelativeLayout rightLayout;
@@ -64,6 +64,6 @@ public class ChatMessageAdapter extends BaseQuickAdapter<ChatEntity, BaseViewHol
 //                leftPhotoView.setImageBitmap(photo);
             leftMessageView.setText(item.getContent());
         }
-
     }
+
 }
