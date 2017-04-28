@@ -119,6 +119,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                         PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR,loginRequestBaseResponse.data.getAvatar()+"");
                         PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME,loginRequestBaseResponse.data.getNickName()+"");
                         startActivity(MainActivity.class);
+
                     }
 
                     @Override

@@ -62,6 +62,7 @@ public class SSIMUserMange {
                 }else{
                     callBack.onFailed(response.body());
                 }
+                //Log.e("RegisterPhoneActivity", response.body().toString() );
             }
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {

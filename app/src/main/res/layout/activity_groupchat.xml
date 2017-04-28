@@ -37,25 +37,28 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/txt_font_one_color" />
+
         <RelativeLayout
+            android:id="@+id/rl_seach"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
-                android:text="搜索"
-                android:layout_centerInParent="true"
-                android:textColor="#99ffffff"
-                android:textSize="@dimen/font_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/seach_little"/>
+                android:layout_centerInParent="true"
+                android:drawableRight="@drawable/seach_little"
+                android:text="搜索"
+                android:textColor="#99ffffff"
+                android:textSize="@dimen/font_12" />
 
-        <ImageView
-            android:paddingLeft="@dimen/dp_5"
-            android:paddingRight="@dimen/dp_5"
-            android:id="@+id/image_seach"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/seach_bg" />
+            <ImageView
+                android:id="@+id/image_seach"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="@dimen/dp_5"
+                android:paddingRight="@dimen/dp_5"
+                android:src="@drawable/seach_bg" />
         </RelativeLayout>
 
         <TextView
@@ -65,19 +68,11 @@
             android:background="@color/txt_font_one_color" />
     </RelativeLayout>
 
-    <TextView
-
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_25"
-        android:layout_marginLeft="@dimen/dp_5"
-        android:gravity="center_vertical"
-        android:text="(6)个群聊"
-        android:textColor="#42ffffff"
-        android:textSize="@dimen/font_12" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycleview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+<ListView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:divider="@null"
+    android:id="@+id/listview"/>
 
 </LinearLayout>

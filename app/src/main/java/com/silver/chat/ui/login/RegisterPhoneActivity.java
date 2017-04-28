@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
@@ -71,6 +72,9 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                     ToastUtils.showMessage(RegisterPhoneActivity.this, "手机号不正确!");
                     return;
                 }
+//                //去后台请求获取验证码
+//                getIndentifyCode();
+
 
                 SSIMUserMange.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
                     @Override
@@ -99,7 +103,8 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                         ToastUtils.showMessage(mContext,"网络连接错误");
                     }
                 });
-
+                Intent regPIntent = new Intent(RegisterPhoneActivity.this, RegisterPWDActivity.class);
+                ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
                 break;
 
             case R.id.qq:
@@ -144,4 +149,26 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
     }
 
 
+//    private void getIndentifyCode() {
+//        SSIMUserMange.userReginstCode(new ResponseCallBack<BaseResponse>() {
+//            @Override
+//            public void onSuccess(BaseResponse baseResponse) {
+//                Toast.makeText(mContext, "获取验证码成功", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailed(BaseResponse baseResponse) {
+//                //Log.e(TAG, code+"" );
+//                Toast.makeText(mContext, "获取验证码失败", Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//            @Override
+//            public void onError() {
+//                //Log.e(TAG, "onError" );
+//
+//
+//            }
+//        }, mUserPhone.getText().toString());
+//    }
 }
