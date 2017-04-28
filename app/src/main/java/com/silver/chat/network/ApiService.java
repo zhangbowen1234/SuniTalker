@@ -1,6 +1,6 @@
 package com.silver.chat.network;
 
-import com.silver.chatsdk.service.bean.BaseResponse;
+import com.silver.chat.network.responsebean.BaseResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

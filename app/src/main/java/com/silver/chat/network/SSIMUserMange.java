@@ -3,7 +3,7 @@ package com.silver.chat.network;
 import android.util.Log;
 
 import com.silver.chat.network.callback.ResponseCallBack;
-import com.silver.chatsdk.service.bean.BaseResponse;
+import com.silver.chat.network.responsebean.BaseResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
