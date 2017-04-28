@@ -6,6 +6,8 @@ import android.view.Gravity;
 import android.widget.Toast;
 
 import com.silver.chat.R;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.responsebean.BaseResponse;
 
 
 /**
@@ -20,8 +22,8 @@ public class ToastUtil {
             toast.cancel();
     }
 
-    public static void toastMessage(Context context, int resId) {
-        toastMessage(context, context.getResources().getText(resId));
+    public static void toastMessage(ResponseCallBack<BaseResponse> context, String resId) {
+        toastMessage(context, resId);
     }
 
     public static void toastMessage(final Context context, final CharSequence sequence) {

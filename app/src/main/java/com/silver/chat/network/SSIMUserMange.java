@@ -20,12 +20,12 @@ public class SSIMUserMange {
         baseResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.body().getStatusCode() == 1){
+                if (response.body().getStatusCode() == 200){
                     callBack.onSuccess(response.body());
                 }else{
-                    callBack.onFailed(response.body().getStatusCode());
+                    callBack.onFailed(response.body());
                 }
-                Log.e("RegisterPhoneActivity", response.body().toString() );
+                //Log.e("RegisterPhoneActivity", response.body().toString() );
             }
 
             @Override

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
@@ -14,6 +15,7 @@ import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.ScreenManager;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
 
@@ -66,31 +68,16 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                     ToastUtils.showMessage(RegisterPhoneActivity.this, "手机号不正确!");
                     return;
                 }
+                //去后台请求获取验证码
+                getIndentifyCode();
+
 
                 Intent regPIntent = new Intent(RegisterPhoneActivity.this, RegisterPWDActivity.class);
                 ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
                 break;
 
             case R.id.qq:
-                SSIMUserMange.userReginstCode(new ResponseCallBack<BaseResponse>() {
-                    @Override
-                    public void onSuccess(BaseResponse baseResponse) {
-                        Log.e(TAG, baseResponse.toString() );
-                    }
 
-                    @Override
-                    public void onFailed(int code) {
-                        Log.e(TAG, code+"" );
-
-                    }
-
-                    @Override
-                    public void onError() {
-                        Log.e(TAG, "onError" );
-
-
-                    }
-                },"15712804153");
                 break;
 
             case R.id.xinlang:
@@ -110,4 +97,26 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
     }
 
 
+    private void getIndentifyCode() {
+        SSIMUserMange.userReginstCode(new ResponseCallBack<BaseResponse>() {
+            @Override
+            public void onSuccess(BaseResponse baseResponse) {
+                Toast.makeText(mContext, "获取验证码成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailed(BaseResponse baseResponse) {
+                //Log.e(TAG, code+"" );
+                Toast.makeText(mContext, "获取验证码失败", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onError() {
+                //Log.e(TAG, "onError" );
+
+
+            }
+        }, mUserPhone.getText().toString());
+    }
 }

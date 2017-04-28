@@ -23,15 +23,7 @@ public class DataServer {
         }
         return list;
     }
-    public static List<GroupEntity> getChatDatagroup() {
-        List<GroupEntity> list = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            list.add(new GroupEntity("user_id=" + i, "userName=" + i, GroupEntity.GROUP_NAME));
-            list.add(new GroupEntity("user_id=" + i, "userName=" + i,  GroupEntity.GROUP_TYPE));
-            list.add(new GroupEntity("user_id=" + i, "userName=" + i,  GroupEntity.GROUP_TYPE));
-        }
-        return list;
-    }
+
 //
 //    SourceDateList = filledData(getResources().getStringArray(R.array.date));
 //    /**
