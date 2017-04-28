@@ -1,13 +1,18 @@
 package com.silver.chat.network.responsebean;
 
+
+import java.io.Serializable;
+
 /**
- * Created by Joe on 2017/4/28.
+ * Created by hibon on 2017/4/28.
  */
 
-public class BaseResponse {
+public class BaseResponse<T> implements Serializable{
     private int statusCode;
     private String statusMsg;
     private long responseTime;
+    public T data;
+
     public BaseResponse() {
 
     }
@@ -50,4 +55,5 @@ public class BaseResponse {
                 ", responseTime=" + responseTime +
                 '}';
     }
+
 }

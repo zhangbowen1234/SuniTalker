@@ -14,9 +14,9 @@ public interface ResponseCallBack<T> {
 
     /**
      *
-     * @param code
+     * @param t
      */
-    void onFailed(int code);
+    void onFailed(T t);
 
     /**
      * 请求失败时的回调

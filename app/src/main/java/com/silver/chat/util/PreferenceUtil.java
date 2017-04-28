@@ -13,9 +13,16 @@ public class PreferenceUtil {
     private SharedPreferences sharedPreference;
     private String packageName = "";
 
-    public static final String USER_PHONE = "phone";
-    public static final String USER_PWD = "pwd";
+    public static final String USERPHONE = "phone";
+    public static final String USERID = "userId";
+    public static final String USERPWD = "pwd";
     public static final String ISLOG = "log";// 是否登录
+    public static final String TOKEN = "token";
+    public static final String IMTOKEN = "imToken";
+    public static final String IMUSERID = "imUserId";
+    public static final String AVATAR = "avatar";
+    public static final String NICKNAME = "nickName";
+
 
 
     public static synchronized PreferenceUtil getInstance(Context context) {

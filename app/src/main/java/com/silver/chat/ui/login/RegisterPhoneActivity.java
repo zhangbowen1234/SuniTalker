@@ -1,6 +1,7 @@
 package com.silver.chat.ui.login;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -70,42 +71,35 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                     ToastUtils.showMessage(RegisterPhoneActivity.this, "手机号不正确!");
                     return;
                 }
-//                SSIMClient.getInstance().creatAccount(uPhone,1,new ResponseCallBackInterface() {
-//                    @Override
-//                    public void onSuccess(Object o) {
-//                        Log.i("success", "success:" + o.toString());
-//                        ToastUtils.showMessage(mContext,"发送验证码成功");
-//                    }
-//                    @Override
-//                    public void onFailed(int code) {
-//                        Log.i("onFailed", "onFailed");
-//                        ToastUtils.showMessage(mContext,"发送验证码失败");
-//                    }
-//                    @Override
-//                    public void onError() {
-//                    }
-//                });
 
-                SSIMUserMange.userReginstCode("leaf",uPhone, Common.RegType,new ResponseCallBack<BaseResponse>() {
+                SSIMUserMange.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        Log.e(TAG, baseResponse.getStatusMsg());
-                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
-                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.USER_PHONE,uPhone);
+                        int statusCode = baseResponse.getStatusCode();
+                        Log.d(TAG, statusCode + "");
+                        if (statusCode == 1) { //未注册
+                            /**
+                             * 获取短信验证码
+                             */
+                            sendSmsCode(uPhone);
+                            Intent regPIntent = new Intent(mContext, RegisterPWDActivity.class);
+                            regPIntent.putExtra("uPhone", uPhone);
+                            ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
+                        }
+                        if (statusCode ==2){//已注册
+                            ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                        }
                     }
                     @Override
-                    public void onFailed(int code) {
-                        Log.e(TAG, code+"" );
+                    public void onFailed(BaseResponse baseResponse) {
+                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
                     }
                     @Override
                     public void onError() {
-                        Log.e(TAG, "onError" );
-
+                        ToastUtils.showMessage(mContext,"网络连接错误");
                     }
                 });
-                Intent regPIntent = new Intent(this, RegisterPWDActivity.class);
-                regPIntent.putExtra("uPhone",uPhone);
-                ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
+
                 break;
 
             case R.id.qq:
@@ -125,6 +119,28 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                 finish();
                 break;
         }
+    }
+
+    private void sendSmsCode(String uPhone) {
+        SSIMUserMange.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+            @Override
+            public void onSuccess(BaseResponse baseResponse) {
+                Log.e(TAG, baseResponse.getStatusMsg());
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onFailed(BaseResponse baseResponse) {
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onError() {
+                Log.e(TAG, "onError");
+                ToastUtils.showMessage(mContext,"网络连接错误");
+            }
+        });
+
     }
 
 

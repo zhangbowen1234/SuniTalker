@@ -12,10 +12,20 @@ import android.widget.TextView;
 import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
+import com.silver.chat.network.SSIMUserMange;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.LoginRequest;
+import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.util.NumberUtils;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
+
+import java.util.UUID;
 
 public class
 LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -59,6 +69,10 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
         //播放操作
         mVideoView.start();
 
+        //获取设备 UUID 号码
+        UUID uuid = UUID.randomUUID();
+        String uniqueId = uuid.toString();
+        PreferenceUtil.getInstance(this).setString("androidID", uniqueId);
     }
 
     @Override
@@ -71,37 +85,8 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-/**
-
- Retrofit retrofit = new Retrofit.Builder()
- .baseUrl("http://imx.users.docker.sspaas.net/")
- //增加返回值为String的支持
- //                        .addConverterFactory(ScalarConverterFactory.create())
- //增加返回值为Gson的支持(以实体类返回)
- .addConverterFactory(GsonConverterFactory.create())
- //增加返回值为Oservable<T>的支持
- //                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
- .build();
-
- RequestService requestServes = retrofit.create(RequestService.class);
- Call<String> call = requestServes.getContact("leaf", "13621153700", 1);
- call.enqueue(new Callback<String>() {
-@Override public void onResponse(Call<String> call, Response<String> response) {
-Log.e("===","return:"+response);
-Log.e("===","return+call:"+call.toString());
-}
-
-@Override public void onFailure(Call<String> call, Throwable t) {
-Log.e("===","失败"+call.toString());
-}
-});
- */
-
-
-
                 uPhone = mUserPhone.getText().toString().trim();
                 uPwd = mUserPwd.getText().toString().trim();
-                startActivity(MainActivity.class);
 
                 if (uPhone == null || "".equals(uPhone)) {
                     ToastUtils.showMessage(LoginActivity.this, "请输入账号!");
@@ -119,6 +104,33 @@ Log.e("===","失败"+call.toString());
 //                    preferenceUtil.setString("mobilenum", uPhone);
 //                    preferenceUtil.setString("pwd", uPwd);
 //                }
+                LoginRequest.getInstance().setPhone(uPhone);
+                LoginRequest.getInstance().setPassword(uPwd);
+                LoginRequest.getInstance().setPhoneUuid(PreferenceUtil.getInstance(mContext).getString("androidID",""));
+
+                SSIMUserMange.goLogin(Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<LoginRequestBean> loginRequestBaseResponse) {
+                        ToastUtils.showMessage(mContext,loginRequestBaseResponse.getStatusMsg());
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.USERID,loginRequestBaseResponse.data.getUserId()+"");
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.TOKEN,loginRequestBaseResponse.data.getToken()+"");
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.IMTOKEN,loginRequestBaseResponse.data.getImToken()+"");
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.IMUSERID,loginRequestBaseResponse.data.getImUserId()+"");
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR,loginRequestBaseResponse.data.getAvatar()+"");
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME,loginRequestBaseResponse.data.getNickName()+"");
+                        startActivity(MainActivity.class);
+                    }
+
+                    @Override
+                    public void onFailed(BaseResponse<LoginRequestBean> loginRequestBaseResponse) {
+                        ToastUtils.showMessage(mContext,loginRequestBaseResponse.getStatusMsg());
+                    }
+
+                    @Override
+                    public void onError() {
+                        ToastUtils.showMessage(mContext,"网络连接异常");
+                    }
+                });
 
                 break;
             case R.id.go_reg:
