@@ -99,8 +99,8 @@ Log.e("===","失败"+call.toString());
 
 
 
-                uPhone = mUserPhone.getText().toString();
-                uPwd = mUserPwd.getText().toString();
+                uPhone = mUserPhone.getText().toString().trim();
+                uPwd = mUserPwd.getText().toString().trim();
                 startActivity(MainActivity.class);
 
                 if (uPhone == null || "".equals(uPhone)) {

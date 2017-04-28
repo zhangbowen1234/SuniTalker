@@ -61,7 +61,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_auth_code:
-                uPhone = mUserPhone.getText().toString();
+                uPhone = mUserPhone.getText().toString().trim();
                 if (uPhone == null || "".equals(uPhone)) {
                     ToastUtils.showMessage(RegisterPhoneActivity.this, "手机号不能为空!");
                     return;
@@ -103,8 +103,8 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 
                     }
                 });
-                Intent regPIntent = new Intent(RegisterPhoneActivity.this, RegisterPWDActivity.class);
-                regPIntent.putExtra("phone",uPhone);
+                Intent regPIntent = new Intent(this, RegisterPWDActivity.class);
+                regPIntent.putExtra("uPhone",uPhone);
                 ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
                 break;
 

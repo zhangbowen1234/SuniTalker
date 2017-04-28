@@ -18,15 +18,15 @@ public class ContactListAdapter extends BaseQuickAdapter<ContactMemberBean, Base
         super(layoutResId, data);
     }
 
+    @Override
+    protected void convert(BaseViewHolder holper, ContactMemberBean item, int position) {
+        holper.setText(R.id.tv_contact_name, item.getContactName());
+    }
+
 //    public ContactListAdapter(List<ContactMemberBean> data) {
 //        super(R.layout.item_contact_list, data);
 //
 //    }
 
-    @Override
-    protected void convert(BaseViewHolder holper, ContactMemberBean item) {
-        holper.setText(R.id.tv_contact_name, item.getContactName());
-
-    }
 
 }

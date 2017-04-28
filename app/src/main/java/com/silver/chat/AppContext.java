@@ -1,11 +1,11 @@
 package com.silver.chat;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.integration.okhttp.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
+import com.silver.chat.util.Utils;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.io.InputStream;
@@ -15,16 +15,18 @@ import java.io.InputStream;
  * 邮箱：fandy618@hotmail.com
  */
 
-public class Appcontext extends Application {
+public class AppContext extends Application {
 
-    public static Context sContext;
+    public static AppContext appContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        appContext = this;
+        Utils.init(appContext);
         Glide.get(this)
                 .register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(new OkHttpClient()));
-        sContext = this;
+        appContext = this;
         //SSIMClient.getInstance().init(sContext);
     }
 }

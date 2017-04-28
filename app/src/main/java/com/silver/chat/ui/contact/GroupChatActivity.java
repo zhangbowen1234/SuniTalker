@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.silver.chat.R;
-import com.silver.chat.adapter.MyGroupAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.DataServer;
 import com.silver.chat.entity.GroupEntity;

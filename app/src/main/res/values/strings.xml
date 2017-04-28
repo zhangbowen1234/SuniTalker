@@ -3,6 +3,7 @@
     <string name="loading">正在加载中...</string>
     <string name="load_failed">加载失败，请点我重试</string>
     <string name="global_group">群组</string>
+    <string name="dicussion_group">讨论组</string>
     <string name="global_chat_record">聊天记录</string>
     <string name="hint_search_chat_record">Hi，请输入您要搜索的聊天记录</string>
     <string name="normal">按住 说话</string>
@@ -43,4 +44,7 @@
     <string name="mine_version">版本信息</string>
     <string name="contact_new_friend">新朋友</string>
     <string name="contact_group_chat">群聊</string>
+    <string name="global_top_talk">置顶该聊天</string>
+    <string name="global_delete_talk">删除该聊天</string>
+    <string name="global_notop_talk">取消置顶</string>
 </resources>

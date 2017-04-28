@@ -79,4 +79,5 @@
         android:layout_toRightOf="@id/iv_avatar"
         android:background="@color/white_10"
         />
+
 </RelativeLayout>
