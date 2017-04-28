@@ -9,32 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.network.RequestServes;
 import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
-import com.silver.chatsdk.SSIMClient;
-import com.silver.chatsdk.config.SSIMConfig;
-import com.silver.chatsdk.config.SSIMHttpConfig;
-import com.silver.chatsdk.config.SSIMSocketConfig;
-import com.silver.chatsdk.service.bean.BaseResponse;
-import com.silver.chatsdk.service.bean.RegisterRequest;
-import com.silver.chatsdk.service.bean.RegisterResponse;
-import com.silver.chatsdk.service.bean.ResponseCallBackInterface;
-import com.silver.chatsdk.service.bean.SigninRequest;
-import com.silver.chatsdk.service.bean.SigninResponse;
-import com.silver.chatsdk.service.manager.SSIMEngine;
-
-import okhttp3.Request;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class
 LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -103,7 +83,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
  //                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
  .build();
 
- RequestServes requestServes = retrofit.create(RequestServes.class);
+ RequestService requestServes = retrofit.create(RequestService.class);
  Call<String> call = requestServes.getContact("leaf", "13621153700", 1);
  call.enqueue(new Callback<String>() {
 @Override public void onResponse(Call<String> call, Response<String> response) {
