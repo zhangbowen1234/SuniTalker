@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_bg_chat"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -109,13 +108,14 @@
             android:textColor="@color/white"
             android:textSize="@dimen/font_15"/>
 
-        <TextView
+        <EditText
             android:id="@id/tv_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_40"
-            android:gravity="right|center_vertical"
+            android:gravity="right"
             android:text="圈子龙"
+            android:background="@null"
             android:textColor="@color/white_8a"
             android:textSize="@dimen/font_15"/>
 
@@ -143,13 +143,15 @@
             android:textColor="@color/white"
             android:textSize="@dimen/font_15"/>
 
-        <TextView
+        <EditText
             android:id="@id/tv_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_40"
             android:gravity="right"
             android:text="13510235689"
+            android:enabled="false"
+            android:background="@null"
             android:textColor="@color/white_8a"
             android:textSize="@dimen/font_15"/>
 

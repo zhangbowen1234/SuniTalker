@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
+import com.silver.chat.R;
 import com.silver.chat.util.AppManager;
 import com.silver.chat.util.ToastUtil;
 
@@ -18,7 +20,7 @@ import butterknife.Optional;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-
+    static View view = null;
     /**
      * 日志输出标志
      **/
@@ -29,6 +31,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
+        view = this.getWindow().getDecorView();//getDecorView 获得window最顶层的View
+        view.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.purple_theme));
+        ButterKnife.bind(this);
         mContext = this;
         ToastUtil.cancelToast();
         AppManager.getInstance().addActivity(this);
@@ -38,6 +43,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
     }
 
+    public static View getBackgroundView(){
+        return view;
+    }
     protected void initView() {
 
     }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/ll_change_background"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/purple_theme">
+    >
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,42 +47,117 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:orientation="horizontal">
-        <Button
+        <LinearLayout
             android:id="@+id/black_theme"
             android:layout_width="0dp"
-            android:layout_height="3dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/black_theme"
-            android:layout_marginLeft="@dimen/dp_10"/>
-        <Button
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            >
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/black_theme"
+                />
+            <ImageView
+                android:id="@+id/black_choose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/choose"
+                android:layout_gravity="center_horizontal"
+                android:visibility="invisible"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/blue_theme"
             android:layout_width="0dp"
-            android:layout_height="3dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/blue_theme"
-            android:layout_marginLeft="@dimen/dp_10"/>
-        <Button
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            >
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/blue_theme"
+                />
+            <ImageView
+                android:id="@+id/blue_choose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/choose"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/green_theme"
             android:layout_width="0dp"
-            android:layout_height="3dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/green_theme"
-            android:layout_marginLeft="@dimen/dp_10"/>
-        <Button
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            >
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/green_theme"
+              />
+            <ImageView
+                android:id="@+id/green_choose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/choose"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/red_theme"
             android:layout_width="0dp"
-            android:layout_height="3dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/red_theme"
-            android:layout_marginLeft="@dimen/dp_10"/>
-        <Button
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            >
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/red_theme"
+                />
+            <ImageView
+                android:id="@+id/red_choose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/choose"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/purple_theme"
             android:layout_width="0dp"
-            android:layout_height="3dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/purple_theme"
+            android:orientation="vertical"
+            android:layout_marginRight="@dimen/dp_10"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_10"/>
+            >
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/purple_theme"
+                />
+            <ImageView
+                android:id="@+id/purple_choose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/choose"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
     </LinearLayout>
     <ImageView
         android:id="@+id/preservation_theme"
@@ -89,7 +166,7 @@
         android:src="@mipmap/preservation_theme"
         android:layout_gravity="center_horizontal"
         android:paddingBottom="@dimen/dp_50"
-        android:layout_marginTop="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_60"
         />
 
 </LinearLayout>
