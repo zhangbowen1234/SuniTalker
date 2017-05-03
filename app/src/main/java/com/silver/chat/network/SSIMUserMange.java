@@ -4,9 +4,11 @@ import android.util.Log;
 
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.LoginRequest;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.responsebean.RegisterRequest;
+import com.silver.chat.network.responsebean.UserInfoBean;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -123,6 +125,61 @@ public class SSIMUserMange {
 
             }
         });
+    }
+
+    /**
+     * 获取联系人列表
+     * @param version
+     * @param userId 当前用户id
+     * @param page 请求页数(从0开始)
+     * @param count 每页显示条数
+     * @param callBack
+     */
+    public static void contactList(String version, String userId, String page, String count, final ResponseCallBack<BaseResponse<ContactListBean>> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse<ContactListBean>> baseResponseCall = imApi.contactList(version,userId,page,count);
+        baseResponseCall.enqueue(new Callback<BaseResponse<ContactListBean>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<ContactListBean>> call, Response<BaseResponse<ContactListBean>> response) {
+                if (response.body().getStatusCode() == 200){
+                    callBack.onSuccess(response.body());
+                }else{
+                    callBack.onFailed(response.body());
+                }
+            }
+            @Override
+            public void onFailure(Call<BaseResponse<ContactListBean>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    /**
+     * 获取用户信息
+     * @param version
+     * @param token
+     * @param callBack
+     */
+    public static void getUserInfo(String version, String token, final ResponseCallBack<BaseResponse<UserInfoBean>> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse<UserInfoBean>> baseResponseCall = imApi.userInfo(version, token);
+        baseResponseCall.enqueue(new Callback<BaseResponse<UserInfoBean>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<UserInfoBean>> call, Response<BaseResponse<UserInfoBean>> response) {
+                if (response.body().getStatusCode() == 200){
+                    callBack.onSuccess(response.body());
+                }else{
+                    callBack.onFailed(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<UserInfoBean>> call, Throwable t) {
+
+            }
+        });
+
+
     }
 
 

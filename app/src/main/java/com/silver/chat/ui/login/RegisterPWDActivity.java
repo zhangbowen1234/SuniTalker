@@ -14,6 +14,7 @@ import com.silver.chat.network.SSIMUserMange;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.RegisterRequest;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.TimeCountUtil;
 import com.silver.chat.util.ToastUtil;
@@ -117,29 +118,41 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
                 RegisterRequest.getInstance().setRepws(uASetP);
                 RegisterRequest.getInstance().setSmsCode(uAuthC);
 
-                SSIMUserMange.goReginst(Common.version, RegisterRequest.getInstance(), new ResponseCallBack<BaseResponse>() {
+                new Thread(new Runnable() {
                     @Override
-                    public void onSuccess(BaseResponse baseResponse) {
-                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
-                        finish();
-                    }
+                    public void run() {
+                        SSIMUserMange.goReginst(Common.version, RegisterRequest.getInstance(), new ResponseCallBack<BaseResponse>() {
+                            @Override
+                            public void onSuccess(BaseResponse baseResponse) {
+                                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                                PreferenceUtil.getInstance(mContext).setString("phone",uPhone);
+                                PreferenceUtil.getInstance(mContext).setString("pwd",uSetP);
+                                finish();
+                            }
 
-                    @Override
-                    public void onFailed(BaseResponse baseResponse) {
-                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
-                    }
+                            @Override
+                            public void onFailed(BaseResponse baseResponse) {
+                                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                            }
 
-                    @Override
-                    public void onError() {
-                        ToastUtils.showMessage(mContext,"网络连接错误");
+                            @Override
+                            public void onError() {
+                                ToastUtils.showMessage(mContext, "网络连接错误");
+                            }
+                        });
                     }
-                });
+                }).start();
 
                 break;
             case R.id.btn_auth_code:
                 //重新发送验证码并计时
                 TimePiece();
-                sendSmsCode(uPhone);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        sendSmsCode(uPhone);
+                    }
+                }).start();
                 break;
             case R.id.btn_auth_code_other:
                 ScreenManager.getScreenManager().goBlackPage();
@@ -165,6 +178,7 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
             public void onFailed(BaseResponse baseResponse) {
                 ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
             }
+
             @Override
             public void onError() {
                 Log.e(TAG, "onError");

@@ -47,4 +47,5 @@
     <string name="global_top_talk">置顶该聊天</string>
     <string name="global_delete_talk">删除该聊天</string>
     <string name="global_notop_talk">取消置顶</string>
+    <string name="isout_login">是否返回登陆界面</string>
 </resources>

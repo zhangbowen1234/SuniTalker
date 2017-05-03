@@ -12,16 +12,20 @@ public class PreferenceUtil {
     private static PreferenceUtil preference = null;
     private SharedPreferences sharedPreference;
     private String packageName = "";
-
+    public static final String IS_FIRST = "isFirst";//第一次登陆
+    public static final String ISLOG = "log";// 是否登录
     public static final String USERPHONE = "phone";
     public static final String USERID = "userId";
     public static final String USERPWD = "pwd";
-    public static final String ISLOG = "log";// 是否登录
     public static final String TOKEN = "token";
-    public static final String IMTOKEN = "imToken";
-    public static final String IMUSERID = "imUserId";
+    public static final String IMTOKEN = "imToken"; //im令牌
+    public static final String IMUSERID = "imUserId"; //im用户id
     public static final String AVATAR = "avatar";
     public static final String NICKNAME = "nickName";
+    public static final String SEX = "sex";
+    public static final String AGE = "age";
+    public static final String SIGNATURE = "signature";
+    public static final String LEVEL = "level";
 
 
 
@@ -46,7 +50,15 @@ public class PreferenceUtil {
     public boolean isLog() {
         return sharedPreference.getBoolean(ISLOG, false);
     }
+    public void setFirst(boolean vaule) {
+        Editor edit = sharedPreference.edit();
+        edit.putBoolean(IS_FIRST, vaule);
+        edit.commit();
+    }
 
+    public boolean isFirst() {
+        return sharedPreference.getBoolean(IS_FIRST, false);
+    }
 
     public String getString(String name, String defValue) {
         String value = sharedPreference.getString(name, defValue);

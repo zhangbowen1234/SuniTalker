@@ -30,7 +30,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         if (position == 0) {
             fragment = ChatRecordFragment.newInstance();
         } else if (position == 1) {
-            fragment = ContactFragment.newInstance();
+            fragment = ContactFragment.newInstance(false);
         } else if (position == 2) {
             fragment = MineFragment.newInstance();
         }

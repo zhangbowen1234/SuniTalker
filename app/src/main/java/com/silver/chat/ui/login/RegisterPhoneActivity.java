@@ -82,25 +82,34 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                         int statusCode = baseResponse.getStatusCode();
                         Log.d(TAG, statusCode + "");
                         if (statusCode == 1) { //未注册
-                            /**
-                             * 获取短信验证码
-                             */
-                            sendSmsCode(uPhone);
+
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    /**
+                                     * 获取短信验证码
+                                     */
+                                    sendSmsCode(uPhone);
+                                }
+                            }).start();
+
                             Intent regPIntent = new Intent(mContext, RegisterPWDActivity.class);
                             regPIntent.putExtra("uPhone", uPhone);
                             ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
                         }
-                        if (statusCode ==2){//已注册
-                            ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                        if (statusCode == 2) {//已注册
+                            ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
                         }
                     }
+
                     @Override
                     public void onFailed(BaseResponse baseResponse) {
-                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                        ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
                     }
+
                     @Override
                     public void onError() {
-                        ToastUtils.showMessage(mContext,"网络连接错误");
+                        ToastUtils.showMessage(mContext, "网络连接错误");
                     }
                 });
                 Intent regPIntent = new Intent(RegisterPhoneActivity.this, RegisterPWDActivity.class);
@@ -142,7 +151,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onError() {
                 Log.e(TAG, "onError");
-                ToastUtils.showMessage(mContext,"网络连接错误");
+                ToastUtils.showMessage(mContext, "网络连接错误");
             }
         });
 
