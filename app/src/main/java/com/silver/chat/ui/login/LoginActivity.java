@@ -12,10 +12,20 @@ import android.widget.TextView;
 import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
+import com.silver.chat.network.SSIMUserMange;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.LoginRequest;
+import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.util.NumberUtils;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
+
+import java.util.UUID;
 
 public class
 LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -41,14 +51,13 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
         mGoReg.setOnClickListener(this);
         mForgot.setOnClickListener(this);
         mBtnLogin.setOnClickListener(this);
-        Log.e(TAG, "我走了" );
     }
 
     @Override
     protected void initData() {
         //super.initData();
         //获取播放资源
-        mVideoView.setVideoURI(Uri.parse("android.resource://"+this.getPackageName()+"/"+R.raw.logvideobig));
+        mVideoView.setVideoURI(Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.logvideobig));
 
         //监听播放完成重新播放
         mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -60,26 +69,24 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
         //播放操作
         mVideoView.start();
 
+        //获取设备 UUID 号码
+        UUID uuid = UUID.randomUUID();
+        String uniqueId = uuid.toString();
+        PreferenceUtil.getInstance(this).setString("androidID", uniqueId);
     }
 
     @Override
     protected int getLayoutId() {
-        Log.i("aaaaaaa","saaaa");
-
+        Log.i("aaaaaaa", "saaaa");
         return R.layout.activity_login;
     }
-
-
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-
                 uPhone = mUserPhone.getText().toString().trim();
                 uPwd = mUserPwd.getText().toString().trim();
-                startActivity(MainActivity.class);
-
 
                 if (uPhone == null || "".equals(uPhone)) {
                     ToastUtils.showMessage(LoginActivity.this, "请输入账号!");
@@ -97,6 +104,34 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
 //                    preferenceUtil.setString("mobilenum", uPhone);
 //                    preferenceUtil.setString("pwd", uPwd);
 //                }
+                LoginRequest.getInstance().setPhone(uPhone);
+                LoginRequest.getInstance().setPassword(uPwd);
+                LoginRequest.getInstance().setPhoneUuid(PreferenceUtil.getInstance(mContext).getString("androidID",""));
+
+                SSIMUserMange.goLogin(Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<LoginRequestBean> loginRequestBaseResponse) {
+                        ToastUtils.showMessage(mContext,loginRequestBaseResponse.getStatusMsg());
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.USERID,loginRequestBaseResponse.data.getUserId()+"");
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.TOKEN,loginRequestBaseResponse.data.getToken()+"");
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.IMTOKEN,loginRequestBaseResponse.data.getImToken()+"");
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.IMUSERID,loginRequestBaseResponse.data.getImUserId()+"");
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR,loginRequestBaseResponse.data.getAvatar()+"");
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME,loginRequestBaseResponse.data.getNickName()+"");
+                        startActivity(MainActivity.class);
+
+                    }
+
+                    @Override
+                    public void onFailed(BaseResponse<LoginRequestBean> loginRequestBaseResponse) {
+                        ToastUtils.showMessage(mContext,loginRequestBaseResponse.getStatusMsg());
+                    }
+
+                    @Override
+                    public void onError() {
+                        ToastUtils.showMessage(mContext,"网络连接异常");
+                    }
+                });
 
                 break;
             case R.id.go_reg:
@@ -114,7 +149,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onStart() {
         super.onStart();
-        if(!mVideoView.isPlaying()) {
+        if (!mVideoView.isPlaying()) {
             mVideoView.start();
         }
     }

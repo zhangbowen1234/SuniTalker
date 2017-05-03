@@ -1,5 +1,6 @@
 package com.silver.chatsdk.service.network;
 
+import com.silver.chatsdk.service.bean.BaseResponse;
 import com.silver.chatsdk.service.bean.Person;
 import com.silver.chatsdk.service.bean.RegisterRequest;
 import com.silver.chatsdk.service.bean.RegisterResponse;
@@ -11,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -30,4 +32,11 @@ public interface APIService {
 
     @POST("um4cli")
     Call<SigninResponse> signin(@Body SigninRequest info);
+
+    @GET("imx/{version}/sms/{phone}/{genre}")
+    Call<BaseResponse> getContact(@Path("version") String leaf, @Path("phone") String phone, @Path("genre") int genre);
+    //获取验证码
+    @GET("imx/leaf/sms/{phone}/1")
+    Call<BaseResponse> registCode(@Path("phone") int phone);
+
 }

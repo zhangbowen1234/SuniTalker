@@ -13,6 +13,7 @@ import com.silver.chat.adapter.ContactListAdapter;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.entity.ContactMemberBean;
 import com.silver.chat.entity.User;
+import com.silver.chat.ui.mine.FriendInfoActivity;
 import com.silver.chat.util.CharacterParser;
 import com.silver.chat.util.PinyinComparator;
 import com.silver.chat.util.ToastUtil;
@@ -22,9 +23,6 @@ import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * 作者：hibon on 2016/11/16 14:14
@@ -37,7 +35,7 @@ import butterknife.OnClick;
 public class ContactFragment extends BasePagerFragment implements View.OnClickListener {
 
 
-    private LinearLayout mNewFriend,mGroupChat;
+    private LinearLayout mNewFriend, mGroupChat;
     private RecyclerView mRecycleContent, mHorizontalRecycleContent;
     private ContactListAdapter contactAdapter;
 
@@ -69,7 +67,7 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
         //设置布局管理器
         mRecycleContent.setLayoutManager(new LinearLayoutManager(mActivity));
         //设置布局管理器及指定RecyclerView方向
-        mHorizontalRecycleContent.setLayoutManager(new LinearLayoutManager(mActivity,LinearLayoutManager.HORIZONTAL,false));
+        mHorizontalRecycleContent.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
         // 实例化汉字转拼音类
         characterParser = CharacterParser.getInstance();
         pinyinComparator = new PinyinComparator();
@@ -109,9 +107,9 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
         // 根据a-z进行排序源数据
         Collections.sort(SourceDateList, pinyinComparator);
         //联系人列表的adapter
-        mRecycleContent.setAdapter(new ContactListAdapter(R.layout.item_contact_list,SourceDateList));
+        mRecycleContent.setAdapter(new ContactListAdapter(R.layout.item_contact_list, SourceDateList));
         //常用联系人列表的adapter
-        mHorizontalRecycleContent.setAdapter(new ContactListAdapter(R.layout.item_horizontal_contact_list,SourceDateList));
+        mHorizontalRecycleContent.setAdapter(new ContactListAdapter(R.layout.item_horizontal_contact_list, SourceDateList));
     }
 
     @Override
@@ -123,7 +121,7 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
                 ContactMemberBean contactMemberBean = (ContactMemberBean) adapter.getItem(position);
-                Intent mIntent = new Intent(mActivity,ContactChatActivity.class);
+                Intent mIntent = new Intent(mActivity,FriendInfoActivity.class);
                 mIntent.putExtra("contactName",contactMemberBean.getContactName());
                 startActivity(mIntent);
 
@@ -142,13 +140,13 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
 
     }
 
-    public  void onClick(View view){
-        switch (view.getId()){
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.new_friend_btn:
                 startActivity(NewFriendActivity.class);
                 break;
             case R.id.group_chat_btn:
-
+                startActivity(GroupChatActivity.class);
                 break;
 
         }

@@ -5,7 +5,8 @@ package com.silver.chatsdk.config;
  */
 public class SSIMHttpConfig extends SSIMNetworkConfig {
     //常量
-    private static final String HOST = "127.0.0.1";
+//    private static final String HOST = "127.0.0.1";
+    private static final String HOST = "http://imx.users.docker.sspaas.net/";
     private static final String PORT = "8080";
     /**
      * 是否为https请求

@@ -1,5 +1,7 @@
 package com.silver.chat.ui.login;
 
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -7,8 +9,14 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
+import com.silver.chat.network.SSIMUserMange;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.RegisterRequest;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.TimeCountUtil;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
 
@@ -21,17 +29,18 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
 
     private EditText mSetPwd, mAgainSetPwd;
     private MyLineEditText mAuthCode;
-    private Button mBtnReg, mBtnAuthCode, mBtnRegPhone,mBtnAuthCodeOther;
-    private TextView mReturnLast,tv_send_number;
+    private Button mBtnReg, mBtnAuthCode, mBtnRegPhone, mBtnAuthCodeOther;
+    private TextView mReturnLast, tv_send_number;
     private String uSetP, uASetP, uAuthC;
     TimeCountUtil timeCountUtil;//倒计时工具
-//    private final int charMaxNum = 6; // 允许输入的字数
-
+    //    private final int charMaxNum = 6; // 允许输入的字数
+    private String uPhone;
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_register_pwd;
     }
+
 
     private void TimePiece() {
         if (timeCountUtil == null) {
@@ -39,6 +48,7 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
         }
         timeCountUtil.start();
     }
+
 
     protected void initView() {
         mSetPwd = (EditText) findViewById(R.id.set_pwd);
@@ -64,59 +74,19 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void initData() {
         super.initData();
-        String uPhone = getIntent().getStringExtra("uPhone");
+        uPhone = getIntent().getStringExtra("uPhone");
         tv_send_number.setText("短信已发送至" + uPhone);
     }
-
-    //    class EditChangedListener implements TextWatcher {
-//        private CharSequence temp; // 监听前的文本
-//        private int editStart; // 光标开始位置
-//        private int editEnd; // 光标结束位置
-//
-//        // 输入文本之前的状态
-//        @Override
-//        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            temp = s;
-//        }
-//
-//        // 输入文字中的状态，count是一次性输入字符数
-//        @Override
-//        public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            if (charMaxNum - s.length() <= 6) {
-////              tip.setText(还能输入 + (charMaxNum - s.length()) + 字符);
-//
-//            }
-//        }
-//
-//        // 输入文字后的状态
-//        @Override
-//        public void afterTextChanged(Editable s) {
-//            /** 得到光标开始和结束位置 ,超过最大数后记录刚超出的数字索引进行控制 */
-//            editStart = mAuthCode.getSelectionStart();
-//            editEnd = mAuthCode.getSelectionEnd();
-//            if (temp.length() > charMaxNum) {
-//                s.delete(editStart - 1, editEnd);
-//                mAuthCode.setText(s);
-//                mAuthCode.setSelection(s.length());
-//
-//
-////
-//            }
-//        }
-//    };
 
 
     @Override
     public void onClick(View view) {
-
-
         switch (view.getId()) {
             case R.id.btn_register_id:
 
                 uSetP = mSetPwd.getText().toString();
                 uASetP = mAgainSetPwd.getText().toString();
                 uAuthC = mAuthCode.getText().toString();
-//                String autoCode = "123456";
 
                 if (uSetP == null || "".equals(uSetP)) {
                     ToastUtils.showMessage(RegisterPWDActivity.this, "密码不能为空!");
@@ -142,16 +112,34 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
                     ToastUtils.showMessage(RegisterPWDActivity.this, "请输入验证码!");
                     return;
                 }
-//                if (!autoCode.equals(uAuthC)) {
-//                    ToastUtils.showMessage(RegisterPWDActivity.this, "请输入正确的验证码!");
-//                    return;
-//                }
+                RegisterRequest.getInstance().setPhone(uPhone);
+                RegisterRequest.getInstance().setPws(uSetP);
+                RegisterRequest.getInstance().setRepws(uASetP);
+                RegisterRequest.getInstance().setSmsCode(uAuthC);
+
+                SSIMUserMange.goReginst(Common.version, RegisterRequest.getInstance(), new ResponseCallBack<BaseResponse>() {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailed(BaseResponse baseResponse) {
+                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                    }
+
+                    @Override
+                    public void onError() {
+                        ToastUtils.showMessage(mContext,"网络连接错误");
+                    }
+                });
+
                 break;
             case R.id.btn_auth_code:
-
                 //重新发送验证码并计时
                 TimePiece();
-
+                sendSmsCode(uPhone);
                 break;
             case R.id.btn_auth_code_other:
                 ScreenManager.getScreenManager().goBlackPage();
@@ -165,5 +153,25 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
 
     }
 
+    private void sendSmsCode(String uPhone) {
+        SSIMUserMange.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+            @Override
+            public void onSuccess(BaseResponse baseResponse) {
+                Log.e(TAG, baseResponse.getStatusMsg());
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onFailed(BaseResponse baseResponse) {
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
+            @Override
+            public void onError() {
+                Log.e(TAG, "onError");
+                ToastUtils.showMessage(mContext, "网络连接错误");
+            }
+        });
+
+    }
 
 }

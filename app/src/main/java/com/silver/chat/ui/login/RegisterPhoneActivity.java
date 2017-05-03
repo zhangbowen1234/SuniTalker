@@ -1,19 +1,30 @@
 package com.silver.chat.ui.login;
 
 import android.content.Intent;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
+import com.silver.chat.network.SSIMUserMange;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.NumberUtils;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
 
+
 /**
+ * Created by hibon
  * 登录手机号
  */
 public class RegisterPhoneActivity extends BaseActivity implements View.OnClickListener {
@@ -23,6 +34,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
     private TextView mReturnLast;
     private MyLineEditText mUserPhone;
     private String uPhone;
+
 
     @Override
     protected int getLayoutId() {
@@ -60,16 +72,44 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                     ToastUtils.showMessage(RegisterPhoneActivity.this, "手机号不正确!");
                     return;
                 }
+//                //去后台请求获取验证码
+//                getIndentifyCode();
 
-                Intent regPIntent = new Intent(this, RegisterPWDActivity.class);
-                regPIntent.putExtra("uPhone",uPhone);
+
+                SSIMUserMange.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        int statusCode = baseResponse.getStatusCode();
+                        Log.d(TAG, statusCode + "");
+                        if (statusCode == 1) { //未注册
+                            /**
+                             * 获取短信验证码
+                             */
+                            sendSmsCode(uPhone);
+                            Intent regPIntent = new Intent(mContext, RegisterPWDActivity.class);
+                            regPIntent.putExtra("uPhone", uPhone);
+                            ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
+                        }
+                        if (statusCode ==2){//已注册
+                            ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                        }
+                    }
+                    @Override
+                    public void onFailed(BaseResponse baseResponse) {
+                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                    }
+                    @Override
+                    public void onError() {
+                        ToastUtils.showMessage(mContext,"网络连接错误");
+                    }
+                });
+                Intent regPIntent = new Intent(RegisterPhoneActivity.this, RegisterPWDActivity.class);
                 ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
                 break;
 
             case R.id.qq:
                 ToastUtils.showMessage(this, "尚未开通此功能");
                 break;
-
             case R.id.xinlang:
                 ToastUtils.showMessage(this, "尚未开通此功能");
                 break;
@@ -86,5 +126,49 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+    private void sendSmsCode(String uPhone) {
+        SSIMUserMange.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+            @Override
+            public void onSuccess(BaseResponse baseResponse) {
+                Log.e(TAG, baseResponse.getStatusMsg());
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
 
+            @Override
+            public void onFailed(BaseResponse baseResponse) {
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onError() {
+                Log.e(TAG, "onError");
+                ToastUtils.showMessage(mContext,"网络连接错误");
+            }
+        });
+
+    }
+
+
+//    private void getIndentifyCode() {
+//        SSIMUserMange.userReginstCode(new ResponseCallBack<BaseResponse>() {
+//            @Override
+//            public void onSuccess(BaseResponse baseResponse) {
+//                Toast.makeText(mContext, "获取验证码成功", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailed(BaseResponse baseResponse) {
+//                //Log.e(TAG, code+"" );
+//                Toast.makeText(mContext, "获取验证码失败", Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//            @Override
+//            public void onError() {
+//                //Log.e(TAG, "onError" );
+//
+//
+//            }
+//        }, mUserPhone.getText().toString());
+//    }
 }

@@ -6,7 +6,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.integration.okhttp.OkHttpUrlLoader;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.silver.chat.util.Utils;
-import com.silver.chatsdk.SSIMClient;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.io.InputStream;
@@ -27,6 +26,7 @@ public class AppContext extends Application {
         Utils.init(appContext);
         Glide.get(this)
                 .register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(new OkHttpClient()));
-        SSIMClient.getInstance().init(appContext);
+        appContext = this;
+        //SSIMClient.getInstance().init(sContext);
     }
 }

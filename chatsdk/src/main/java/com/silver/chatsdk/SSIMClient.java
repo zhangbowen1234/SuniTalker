@@ -8,6 +8,7 @@ import com.silver.chatsdk.service.bean.Person;
 import com.silver.chatsdk.service.bean.RequestInfo;
 import com.silver.chatsdk.service.network.APIService;
 import com.silver.chatsdk.service.bean.ResponseCallBackInterface;
+import com.silver.chatsdk.service.network.SSIMHttpEngine;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,7 +21,7 @@ import retrofit2.Response;
 
 public class SSIMClient {
 
-    private static SSIMClient instance = null;
+    private static SSIMClient instance ;
     private Context mContext;
 
     /**
@@ -39,25 +40,29 @@ public class SSIMClient {
         mContext = context;
     }
 
+
+
     /**
      * 注册账户
      */
-    public void creatAccount(final ResponseCallBackInterface callBack) {
-//        APIService service = SSIMHttpEngine.getInstance(mContext);
-//        Call<Person> regist = service.regist(new RequestInfo("REGISTER", "1380000000", "123", "123"));
-//        regist.enqueue(new Callback<Person>() {
-//            @Override
-//            public void onResponse(Call<Person> call, Response<Person> response) {
-//                Log.e("onResponse", response.body().toString());
-//                callBack.onSuccess(new BaseResponse(1, "123",123));
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Person> call, Throwable t) {
-//                Log.e("onFailure", "onFailure");
-//                callBack.onFailed(-1);
-//            }
-//        });
+    public void creatAccount(String phone,int smsType,final ResponseCallBackInterface callBack) {
+        SSIMHttpEngine instance = SSIMHttpEngine.getInstance();
+        APIService engine = instance.getEngine();
+//        Call<Person> regist = engine.regist(new RequestInfo("REGISTER", "1380000000", "123", "123"));
+        Call<BaseResponse> regist = engine.getContact("leaf",phone,smsType);
+        regist.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                Log.e("onResponse1", response.body().toString());
+                callBack.onSuccess(response.body().getErrMsg());
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("onFailure", "onFailure");
+                callBack.onFailed(-1);
+            }
+        });
     }
 
     /**

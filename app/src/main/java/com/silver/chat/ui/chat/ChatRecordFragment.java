@@ -18,13 +18,7 @@ import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.dialog.TopDeleteDialog;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
-import com.silver.chatsdk.SSIMClient;
-import com.silver.chatsdk.service.bean.RegisterRequest;
-import com.silver.chatsdk.service.bean.RegisterResponse;
-import com.silver.chatsdk.service.bean.ResponseCallBackInterface;
-import com.silver.chatsdk.service.bean.SigninRequest;
-import com.silver.chatsdk.service.bean.SigninResponse;
-import com.silver.chatsdk.service.manager.SSIMEngine;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -78,7 +72,7 @@ public class ChatRecordFragment extends BasePagerFragment {
                     }
                 }
 
-                mChatApater.notifyItemMoved(fromPosition,toPosition);
+                mChatApater.notifyItemMoved(fromPosition, toPosition);
 
                 return true;
             }
@@ -120,7 +114,7 @@ public class ChatRecordFragment extends BasePagerFragment {
                             @Override
                             public void onClick(View view) {
                                 mList.remove(mChatApater.getItem(position));
-                                ToastUtils.showMessage(getActivity(),"删除成功");
+                                ToastUtils.showMessage(getActivity(), "删除成功");
                                 mChatApater.notifyDataSetChanged();
                             }
                         })
@@ -136,87 +130,17 @@ public class ChatRecordFragment extends BasePagerFragment {
             }
 
             @Override
-            public void SimpleOnItemClick(BaseQuickAdapter adapter, final View view, final int position) {
+            public void SimpleOnItemClick(BaseQuickAdapter adapter, final View view,
+                                          final int position) {
 
                 ChatBean chatBean = (ChatBean) mChatApater.getItem(position);
-                Intent mIntent = new Intent(mActivity,ContactChatActivity.class);
+                Intent mIntent = new Intent(mActivity, ContactChatActivity.class);
 //                        mIntent.putExtra("contactName",chatBean.getContactName());
                 startActivity(mIntent);
-                SSIMClient.getInstance().creatAccount(new ResponseCallBackInterface() {
-                    @Override
-                    public void onSuccess(Object o) {
-
-                    }
-
-                    @Override
-                    public void onFailed(int code) {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
-                SSIMClient.getInstance().creatAccount(new ResponseCallBackInterface() {
-                    @Override
-                    public void onSuccess(Object o) {
-                        Log.i("success", "success");
-                    }
-
-                    @Override
-                    public void onFailed(int code) {
-                        Log.i("onFailed", "onFailed");
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
-                //调用无参的getInstance()方法时，初始化参数为默认设置参数
-                SSIMEngine engine = SSIMEngine.getInstance();
-
-//                SSIMHttpConfig httpConfig = new SSIMHttpConfig("221.122.16.113","7303",true,false);
-//                SSIMSocketConfig socketConfig = new SSIMSocketConfig("221.122.16.113","7301");
-//                SSIMEngine engine = SSIMEngine.getInstance(new SSIMConfig(httpConfig,socketConfig));
-
-                engine.ssimGetUserManager(getContext()).ssimRegister(new ResponseCallBackInterface<RegisterResponse>() {
-                    @Override
-                    public void onSuccess(RegisterResponse registerResponse) {
-
-                    }
-
-                    @Override
-                    public void onFailed(int code) {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                }, new RegisterRequest("13146733521", "123456", "123456"));
-
-                engine.ssimGetUserManager(getContext()).ssimSignin(new ResponseCallBackInterface<SigninResponse>() {
-                    @Override
-                    public void onSuccess(SigninResponse signinResponse) {
-
-                    }
-
-                    @Override
-                    public void onFailed(int code) {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                }, new SigninRequest("13146733521", "12345"));
             }
         });
     }
+
 
     @Override
     protected void getData() {

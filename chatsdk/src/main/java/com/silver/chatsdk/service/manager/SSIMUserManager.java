@@ -4,10 +4,10 @@ import android.content.Context;
 
 import com.silver.chatsdk.service.bean.RegisterRequest;
 import com.silver.chatsdk.service.bean.RegisterResponse;
+import com.silver.chatsdk.service.bean.ResponseCallBackInterface;
 import com.silver.chatsdk.service.bean.SigninRequest;
 import com.silver.chatsdk.service.bean.SigninResponse;
 import com.silver.chatsdk.service.network.APIService;
-import com.silver.chatsdk.service.bean.ResponseCallBackInterface;
 import com.silver.chatsdk.service.network.SSIMHttpEngine;
 import com.silver.chatsdk.service.network.SSIMHttpsEngine;
 import com.silver.chatsdk.service.network.SSIMNetworkEngine;
@@ -101,6 +101,9 @@ public class SSIMUserManager {
                 callBack.onError();
             }
         });
+
+
     }
+
 
 }
