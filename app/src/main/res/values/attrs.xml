@@ -112,4 +112,10 @@
         <attr name="label_text" format="string"/>
         <attr name="label_text_size" format="float"/>
     </declare-styleable>
+    <!--波纹原型图-->
+    <declare-styleable name="roundedimageview">
+        <attr name="border_thickness" format="dimension" />
+        <attr name="border_inside_color" format="color" />
+        <attr name="border_outside_color" format="color"></attr>
+    </declare-styleable>
 </resources>

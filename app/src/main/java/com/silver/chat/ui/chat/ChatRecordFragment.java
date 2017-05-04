@@ -57,34 +57,34 @@ public class ChatRecordFragment extends BasePagerFragment {
         mList.addAll(DataServer.getChatData());
         mChatApater = new ChatApater(mList);
         mRecycleContent.setAdapter(mChatApater);
-        ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                int fromPosition = viewHolder.getAdapterPosition();
-                int toPosition = target.getAdapterPosition();
-                if (fromPosition < toPosition) {
-                    for (int i = fromPosition; i < toPosition; i++) {
-                        Collections.swap(mList, i, i + 1);
-                    }
-                } else {
-                    for (int i = toPosition; i < fromPosition; i++) {
-                        Collections.swap(mList, i, i + 1);
-                    }
-                }
-
-                mChatApater.notifyItemMoved(fromPosition, toPosition);
-
-                return true;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(mRecycleContent);
-        refreshView();
+//        ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
+//            @Override
+//            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+//                int fromPosition = viewHolder.getAdapterPosition();
+//                int toPosition = target.getAdapterPosition();
+//                if (fromPosition < toPosition) {
+//                    for (int i = fromPosition; i < toPosition; i++) {
+//                        Collections.swap(mList, i, i + 1);
+//                    }
+//                } else {
+//                    for (int i = toPosition; i < fromPosition; i++) {
+//                        Collections.swap(mList, i, i + 1);
+//                    }
+//                }
+//
+//                mChatApater.notifyItemMoved(fromPosition, toPosition);
+//
+//                return true;
+//            }
+//
+//            @Override
+//            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+//
+//            }
+//        };
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+//        itemTouchHelper.attachToRecyclerView(mRecycleContent);
+//        refreshView();
     }
 
     @Override
