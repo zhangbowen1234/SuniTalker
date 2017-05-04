@@ -4,24 +4,83 @@
     android:id="@+id/activity_new_friend"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.silver.chat.ui.contact.NewFriendActivity">
 
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="zehgnhaipengshixiaogou"
-        android:layout_centerInParent="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/font_21"
-        android:gravity="center"
-        />
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
+
+            <ImageView
+                android:id="@id/title_left_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/dp_16"
+                android:background="@null"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_20"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="新朋友"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dp_15" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_35">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/txt_font_one_color" />
+
+            <RelativeLayout
+                android:id="@+id/rl_seach"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:drawableRight="@drawable/seach_little"
+                    android:text="搜索"
+                    android:textColor="#99ffffff"
+                    android:textSize="@dimen/font_12" />
+
+                <ImageView
+                    android:id="@+id/image_seach"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/dp_5"
+                    android:paddingRight="@dimen/dp_5"
+                    android:src="@drawable/seach_bg" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/txt_font_one_color" />
+        </RelativeLayout>
 
 
+        <RelativeLayout
+            android:id="@+id/new_friend_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-
+    </LinearLayout>
 
 </RelativeLayout>

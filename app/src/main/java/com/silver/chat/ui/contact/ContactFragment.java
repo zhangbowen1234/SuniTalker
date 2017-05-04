@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -64,7 +65,7 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
     private SwipeRefreshLayout mRefreshLayout;
 
     private List<ContactMemberBean> SourceDateList;
-    private ContactListAdapter contactListAdapter , oftenContactListAdapter;
+    private ContactListAdapter contactListAdapter, oftenContactListAdapter;
 
     /**
      * 汉字转换成拼音的类
@@ -94,9 +95,8 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
         mHorizontalRecycleContent = (RecyclerView) view.findViewById(R.id.horizontal_recyle_content);
         mNewFriend = (LinearLayout) view.findViewById(R.id.new_friend_btn);
         mGroupChat = (LinearLayout) view.findViewById(R.id.group_chat_btn);
-//        mContactTopMuenu = (FrameLayout) view.findViewById(R.id.contact_top_menu);
         mContactTopMuenu = (LinearLayout) view.findViewById(R.id.Horizontal_contact_layout);
-        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
+//        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
 
         //设置布局管理器
         mRecycleContent.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -107,6 +107,14 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
         pinyinComparator = new PinyinComparator();
         //初始化联系人数据
         SourceDateList = filledData(getResources().getStringArray(R.array.date));
+
+        //控件显示的动画
+        mShowAnim = new AlphaAnimation(0.0f, 1.0f);
+        mShowAnim.setDuration(300);
+
+        //控件隐藏的动画
+        mHiddenAmin = new AlphaAnimation(1.0f, 0.0f);
+        mHiddenAmin.setDuration(300);
     }
 
 
@@ -148,8 +156,8 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
         mHorizontalRecycleContent.setAdapter(oftenContactListAdapter);
 
 //        if (isAllContact && contactListAdapter.getData().isEmpty()) {
-            //请求所有文件目录数据
-            getContactList();
+        //请求所有文件目录数据
+        getContactList();
 
 //        } else if (!isAllContact &&contactListAdapter.getData().isEmpty()) {
 //            //优先从数据库中读取数据
@@ -161,31 +169,42 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
     /**
      * 联网获取联系人列表
      */
-    public void getContactList(){
+    public void getContactList() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                SSIMUserMange.contactList(Common.version,PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""),
-                        "0","count", new ResponseCallBack<BaseResponse<ContactListBean>>() {
+                SSIMUserMange.contactList(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, ""), Common.version, PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""),
+                        "0", "10", new ResponseCallBack<BaseResponse>() {
 
-                    @Override
-                    public void onSuccess(BaseResponse<ContactListBean> contactListBeanBaseResponse) {
-                        ToastUtils.showMessage(mActivity,contactListBeanBaseResponse.getStatusMsg());
-                        ContactListBean data = contactListBeanBaseResponse.data;
-                        Log.e("ContactList",data.toString());
-                    }
+//                            @Override
+//                            public void onSuccess(BaseResponse<List<ContactListBean>> listBaseResponse) {
+//                                ToastUtils.showMessage(mActivity,listBaseResponse.getStatusMsg());
+//                                Log.e("ContactList",listBaseResponse.data+"");
+//                            }
+//
+//                            @Override
+//                            public void onFailed(BaseResponse<List<ContactListBean>> listBaseResponse) {
+//                                ToastUtils.showMessage(mActivity,listBaseResponse.getStatusMsg());
+//                                Log.e("ContactList",listBaseResponse.data+"");
+//                            }
 
-                    @Override
-                    public void onFailed(BaseResponse<ContactListBean> contactListBeanBaseResponse) {
-                        ToastUtils.showMessage(mActivity,contactListBeanBaseResponse.getStatusMsg());
-                    }
+                            @Override
+                            public void onSuccess(BaseResponse baseResponse) {
+                                ToastUtils.showMessage(mActivity, baseResponse.getStatusMsg());
+//                                Log.e("ContactList",listBaseResponse.data+"");
+                            }
 
-                    @Override
-                    public void onError() {
+                            @Override
+                            public void onFailed(BaseResponse baseResponse) {
+                                ToastUtils.showMessage(mActivity, baseResponse.getStatusMsg());
+//                                Log.e("ContactList",listBaseResponse.data+"");
+                            }
 
-                    }
-                });
-
+                            @Override
+                            public void onError() {
+                                ToastUtils.showMessage(mActivity, "获取失败");
+                            }
+                        });
             }
         }).start();
 
@@ -225,22 +244,50 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
         /**
          * 滑动监听
          */
-        mRecycleContent.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                Log.i("onScrollStateChanged", "newState: " + newState);
-                if (newState==SCROLL_STATE_IDLE){
-                    mContactTopMuenu.setVisibility(View.GONE);
+//        mRecycleContent.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//            }
+//
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                Log.i("onScrollStateChanged", "newState: " + newState);
+//                if (newState == SCROLL_STATE_IDLE) {
+////                    mContactTopMuenu.setVisibility(View.GONE);
+//                }
+//            }
+//        });
+        mRecycleContent.addOnScrollListener(new MyRecyclerViewScrollListener());
+//        mRefreshLayout.setOnRefreshListener(this);
+
+    }
+
+    private AlphaAnimation mShowAnim, mHiddenAmin;//控件的显示和隐藏动画
+
+    //滑动监听
+    private class MyRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+            int lastVisibleItem = manager.findLastCompletelyVisibleItemPosition();//获取最后一个完全显示的ItemPosition
+            // 当不滚动时
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                // 判断是否滚动到顶部
+                if (lastVisibleItem == 0) {
+                    mContactTopMuenu.startAnimation(mShowAnim);
+                    mContactTopMuenu.setVisibility(View.VISIBLE);
+                }
+            } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {//拖动中
+                if (mContactTopMuenu.getVisibility() == View.VISIBLE) {
+                    mContactTopMuenu.startAnimation(mHiddenAmin);
+                    mContactTopMuenu.setVisibility(View.GONE);//注意此处不要使用View.GONE
                 }
             }
-        });
-        mRefreshLayout.setOnRefreshListener(this);
-
+        }
     }
 
 
@@ -266,7 +313,7 @@ public class ContactFragment extends BasePagerFragment implements View.OnClickLi
 
     @Override
     public void onRefresh() {
-        Log.d("点击刷新了","=============");
+        Log.d("点击刷新了", "=============");
     }
 
     @Override
