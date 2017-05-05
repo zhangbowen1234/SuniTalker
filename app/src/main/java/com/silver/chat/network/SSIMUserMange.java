@@ -10,6 +10,8 @@ import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.responsebean.RegisterRequest;
 import com.silver.chat.network.responsebean.UserInfoBean;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -133,22 +135,29 @@ public class SSIMUserMange {
      * @param userId 当前用户id
      * @param page 请求页数(从0开始)
      * @param count 每页显示条数
+     * @param token
      * @param callBack
      */
-    public static void contactList(String version, String userId, String page, String count, final ResponseCallBack<BaseResponse<ContactListBean>> callBack){
+    public static void contactList(String token,String version, String userId, String page, String count,
+                                   final ResponseCallBack<BaseResponse> callBack){
         ApiService imApi = RetrofitHelper.create().imApi;
-        Call<BaseResponse<ContactListBean>> baseResponseCall = imApi.contactList(version,userId,page,count);
-        baseResponseCall.enqueue(new Callback<BaseResponse<ContactListBean>>() {
+        Call<BaseResponse> baseResponseCall = imApi.contactList(token,version,userId,page,count);
+        baseResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
-            public void onResponse(Call<BaseResponse<ContactListBean>> call, Response<BaseResponse<ContactListBean>> response) {
-                if (response.body().getStatusCode() == 200){
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                System.out.println(response.body().getStatusCode());
+                System.out.println(response.body().getStatusMsg());
+                System.out.println(response.body());
+
+                if (response.body().getStatusCode() == 200||response.body().getStatusCode()==502){
                     callBack.onSuccess(response.body());
                 }else{
                     callBack.onFailed(response.body());
                 }
             }
+
             @Override
-            public void onFailure(Call<BaseResponse<ContactListBean>> call, Throwable t) {
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
 
             }
         });

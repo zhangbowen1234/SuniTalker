@@ -90,7 +90,11 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
          * 是否自动登陆
          */
         redirectByTime();
-        getUserInfo();
+        if (NetUtils.isConnected(mContext)) {//是否联网
+            getUserInfo();
+        }else {
+            ToastUtils.showMessage(mContext,"请检查网络");
+        }
     }
 
     @Override
@@ -239,7 +243,8 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                     SSIMUserMange.getUserInfo(Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
                         @Override
                         public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
-                            ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
+//                            ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
+                            Log.d("userInfo",userInfoBeanBaseResponse.getStatusMsg());
                             /**
                              * 保存用户信息
                              */
@@ -255,6 +260,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                         @Override
                         public void onFailed(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
                             ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
+//                            Log.d("userInfo",userInfoBeanBaseResponse.getStatusMsg());
                         }
 
                         @Override
