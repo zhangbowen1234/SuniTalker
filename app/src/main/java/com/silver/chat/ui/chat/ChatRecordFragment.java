@@ -98,7 +98,7 @@ public class ChatRecordFragment extends BasePagerFragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt(TOP_STATES, chatBean.getTop());
                 TopDeleteDialog topDeleteDialog = new TopDeleteDialog(mActivity);
-                topDeleteDialog.setArguments(bundle);
+                topDeleteDialog.setArguments(bundle);//传参
                 topDeleteDialog.builder()
                         .setCanceledOnTouchOutside(true)
                         .setTopTextview(new View.OnClickListener() {

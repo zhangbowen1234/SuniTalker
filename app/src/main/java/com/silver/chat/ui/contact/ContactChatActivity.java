@@ -17,6 +17,7 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.ChatEntity;
+import com.silver.chat.util.ConstUtils;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
 
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 
 public class ContactChatActivity extends BaseActivity implements View.OnClickListener {
@@ -152,6 +154,9 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount()-1);
                 break;
 
+            case R.id.chat_btn_emote:
+
+                break;
             case R.id.title_left_back:
                 finish();
                 break;

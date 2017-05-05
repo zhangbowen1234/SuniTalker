@@ -1,5 +1,7 @@
 package com.silver.chat.adapter;
 
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.silver.chat.R;
@@ -35,14 +37,8 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
 
 
     @Override
-    protected void convert(BaseViewHolder holder, ChatBean item ,int position) {
-        //置顶颜色
-        ChatBean chatBean = chatBeen.get(position);
-        if (chatBean.getTop() == 1) {
-            holder.itemView.setBackgroundResource(R.color.viewfinder_frame);
-        } else {
-            holder.itemView.setBackgroundResource(R.color.translate);
-        }
+    protected void convert(final BaseViewHolder holder, ChatBean item , int position) {
+        //item多布局
         switch (holder.getItemViewType()) {
             case ChatBean.CHAT_SINGLR:
                 ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
@@ -75,6 +71,13 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
                 holder.setText(R.id.tv_name, "群通知=" + holder.getPosition());
                 break;
+        }
+        //置顶颜色
+        ChatBean chatBean = chatBeen.get(position);
+        if (chatBean.getTop() == 1) {
+            holder.itemView.setBackgroundResource(R.color.topdialog);
+        } else {
+            holder.itemView.setBackgroundResource(R.color.translate);
         }
     }
     public void updateData(List<ChatBean> sessionList) {

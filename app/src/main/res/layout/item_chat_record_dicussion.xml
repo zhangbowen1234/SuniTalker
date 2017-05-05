@@ -1,104 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<com.silver.chat.view.RippleView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/translate"
-    android:orientation="horizontal"
-    android:paddingLeft="@dimen/dp_10">
-
-    <ImageView
-        android:id="@id/iv_avatar"
-        android:layout_width="@dimen/dp_45"
-        android:layout_height="@dimen/dp_45"
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/avatar_bg"
-        android:layout_marginTop="@dimen/dp_7"
-        android:src="@drawable/default_badged_count_bg"/>
-
-    <TextView
-        android:id="@id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_11"
-        android:singleLine="true"
-        android:text="2016/11/16"
-        android:textColor="@color/chat_time"
-        android:textSize="@dimen/font_11"/>
-
-    <LinearLayout
-        android:id="@id/lly_name"
+    android:layout_height="60dp"
+    >
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_12"
-        android:layout_marginRight="@dimen/dp_12"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_toLeftOf="@id/tv_time"
-        android:layout_toRightOf="@id/iv_avatar"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:background="@color/translate"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/dp_10">
 
+        <ImageView
+            android:id="@id/iv_avatar"
+            android:layout_width="@dimen/dp_45"
+            android:layout_height="@dimen/dp_45"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/avatar_bg"
+            android:layout_marginTop="@dimen/dp_7"
+            android:src="@drawable/default_badged_count_bg"/>
 
         <TextView
-            android:id="@id/tv_name"
+            android:id="@id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLength="8"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_11"
             android:singleLine="true"
-            android:text="昵称"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_15"/>
+            android:text="2016/11/16"
+            android:textColor="@color/chat_time"
+            android:textSize="@dimen/font_11"/>
 
-        <TextView
+        <LinearLayout
+            android:id="@id/lly_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_12"
+            android:layout_marginRight="@dimen/dp_12"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_toLeftOf="@id/tv_time"
+            android:layout_toRightOf="@id/iv_avatar"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLength="8"
+                android:singleLine="true"
+                android:text="昵称"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_15"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:background="@drawable/shape_bg_blue"
+                android:paddingLeft="@dimen/dp_8"
+                android:paddingRight="@dimen/dp_8"
+                android:text="@string/dicussion_group"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_10"/>
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@id/iv_notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_8"
-            android:background="@drawable/shape_bg_blue"
-            android:paddingLeft="@dimen/dp_8"
-            android:paddingRight="@dimen/dp_8"
-            android:text="@string/dicussion_group"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_10"/>
+            android:layout_alignBottom="@id/iv_avatar"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_time"
+            android:layout_marginRight="@dimen/dp_10"
+            android:src="@drawable/ic_notification"/>
 
-    </LinearLayout>
-
-
-    <ImageView
-        android:id="@id/iv_notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/iv_avatar"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/tv_time"
-        android:layout_marginRight="@dimen/dp_10"
-        android:src="@drawable/ic_notification"/>
-
-    <TextView
-        android:id="@id/tv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/lly_name"
-        android:layout_marginLeft="@dimen/dp_12"
-        android:layout_marginRight="@dimen/dp_12"
-        android:layout_marginTop="@dimen/dp_4"
-        android:layout_toLeftOf="@id/iv_notification"
-        android:layout_toRightOf="@id/iv_avatar"
-        android:singleLine="true"
-        android:text="飘飘落叶一叶秋"
-        android:textColor="@color/chat_time"
-        android:textSize="@dimen/font_12"/>
+        <TextView
+            android:id="@id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lly_name"
+            android:layout_marginLeft="@dimen/dp_12"
+            android:layout_marginRight="@dimen/dp_12"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_toLeftOf="@id/iv_notification"
+            android:layout_toRightOf="@id/iv_avatar"
+            android:singleLine="true"
+            android:text="飘飘落叶一叶秋"
+            android:textColor="@color/chat_time"
+            android:textSize="@dimen/font_12"/>
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_0.5"
-        android:layout_below="@id/iv_avatar"
-        android:layout_marginLeft="@dimen/dp_12"
-        android:layout_marginTop="@dimen/dp_7"
-        android:layout_toRightOf="@id/iv_avatar"
-        android:background="@color/white_10"
-        />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0.5"
+            android:layout_below="@id/iv_avatar"
+            android:layout_marginLeft="@dimen/dp_12"
+            android:layout_marginTop="@dimen/dp_7"
+            android:layout_toRightOf="@id/iv_avatar"
+            android:background="@color/white_10"
+            />
 
-</RelativeLayout>
+    </RelativeLayout>
+</com.silver.chat.view.RippleView>
