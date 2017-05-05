@@ -13,10 +13,13 @@ import com.silver.chat.adapter.MainPagerAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.ui.chat.SearchChatRecordActivity;
 import com.silver.chat.ui.contact.SearchContactActivity;
+import com.silver.chat.ui.mine.ScanActivity;
 import com.silver.chat.ui.mine.SettingActivity;
+import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.BadgedTabCustomView;
 import com.silver.chat.view.TabLayoutPlus;
 
+import static com.silver.chat.R.id.cancel_action;
 import static com.silver.chat.R.id.tabLayout;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -107,6 +110,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mIvSearch.setOnClickListener(this);
         mIvMore.setOnClickListener(this);
         mIvBack.setOnClickListener(this);
+        mTvScan.setOnClickListener(this);
+        mTvSearch.setOnClickListener(this);
+        mTvStartChat.setOnClickListener(this);
+        mTvRead.setOnClickListener(this);
+        mTvUnRead.setOnClickListener(this);
+        mTvClear.setOnClickListener(this);
         mButtonOutAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -152,14 +161,34 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.iv_more:
-                if (mTabLayout.getSelectedTabPosition() == 2) {
-                    startActivity(SettingActivity.class);
-                } else {
+                if (mTabLayout.getSelectedTabPosition() == 0){
                     openPanelView();
+                } else if (mTabLayout.getSelectedTabPosition() == 1) {
+                    ToastUtils.showMessage(mContext,"正在修改中...");
+                } else if (mTabLayout.getSelectedTabPosition() == 2){
+                    startActivity(SettingActivity.class);
                 }
                 break;
             case R.id.iv_back:
                 closePanelView();
+                break;
+            case R.id.tv_scan:
+                startActivity(ScanActivity.class);
+                break;
+            case R.id.tv_search:
+                ToastUtils.showMessage(mContext,"正在修改中...");
+                break;
+            case R.id.tv_start_chat:
+                ToastUtils.showMessage(mContext,"正在修改中...");
+                break;
+            case R.id.tv_unread:
+                ToastUtils.showMessage(mContext,"正在修改中...");
+                break;
+            case R.id.tv_read:
+                ToastUtils.showMessage(mContext,"正在修改中...");
+                break;
+            case R.id.tv_clear:
+                ToastUtils.showMessage(mContext,"正在修改中...");
                 break;
         }
     }

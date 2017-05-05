@@ -52,14 +52,15 @@ import com.silver.chat.R;
  *
  * Custom Layout that allows to use Ripple UI pattern above API 21
  *
- * @author zhangbowen
+ * @author Chutaux Robin
+ * @version 2015.0512
  */
 public class RippleView extends RelativeLayout {
 
     private int WIDTH;
     private int HEIGHT;
-    private int frameRate = 10;
-    private int rippleDuration = 400;
+    private int frameRate = 10;//帧率
+    private int rippleDuration = 400;//波动持续时间
     private int rippleAlpha = 90;
     private Handler canvasHandler;
     private float radiusMax = 0;
@@ -79,7 +80,7 @@ public class RippleView extends RelativeLayout {
     private Bitmap originBitmap;
     private int rippleColor;
     private int ripplePadding;
-    private GestureDetector gestureDetector;
+    private GestureDetector gestureDetector;//手势识别
     private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -104,7 +105,7 @@ public class RippleView extends RelativeLayout {
     }
 
     /**
-     * Method that initializes all fields and sets listeners
+     * 方法初始化所有字段并设置侦听器
      *
      * @param context Context used to create this view
      * @param attrs Attribute used to initialize fields
@@ -224,7 +225,7 @@ public class RippleView extends RelativeLayout {
 
     /**
      * Launch Ripple animation for the current view with a MotionEvent
-     *
+     *推出波纹动画与位移事件的当前视图
      * @param event MotionEvent registered by the Ripple gesture listener
      */
     public void animateRipple(MotionEvent event) {
@@ -233,7 +234,7 @@ public class RippleView extends RelativeLayout {
 
     /**
      * Launch Ripple animation for the current view centered at x and y position
-     *
+     *为当前视图在x和y位置中心发射纹波动画
      * @param x Horizontal position of the ripple center
      * @param y Vertical position of the ripple center
      */
@@ -293,7 +294,7 @@ public class RippleView extends RelativeLayout {
 
     /**
      * Send a click event if parent view is a Listview instance
-     *
+     *ListView实例发送单击事件
      * @param isLongClick Is the event a long click ?
      */
     private void sendClickEvent(final Boolean isLongClick) {
@@ -348,7 +349,7 @@ public class RippleView extends RelativeLayout {
 
     /**
      * Set Ripple type, default is RippleType.SIMPLE
-     *
+     *设置波纹的颜色，默认是# ffffff
      * @param rippleType New Ripple type for next animation
      */
     public void setRippleType(final RippleType rippleType)
@@ -363,7 +364,7 @@ public class RippleView extends RelativeLayout {
 
     /**
      * Set if ripple animation has to be centered in its parent view or not, default is False
-     *
+     *如果纹波动画必须以父视图为中心，默认为false
      * @param isCentered
      */
     public void setCentered(final Boolean isCentered)
@@ -378,7 +379,7 @@ public class RippleView extends RelativeLayout {
 
     /**
      * Set Ripple padding if you want to avoid some graphic glitch
-     *
+     *设置波纹填充，如果你想避免一些图形毛刺
      * @param ripplePadding New Ripple padding in pixel, default is 0px
      */
     public void setRipplePadding(int ripplePadding)
@@ -393,7 +394,7 @@ public class RippleView extends RelativeLayout {
 
     /**
      * At the end of Ripple effect, the child views has to zoom
-     *
+     *在涟漪效应结束时，子视图必须缩放
      * @param hasToZoom Do the child views have to zoom ? default is False
      */
     public void setZooming(Boolean hasToZoom)
@@ -423,7 +424,7 @@ public class RippleView extends RelativeLayout {
 
     /**
      * Duration of the ending animation in ms
-     *
+     *时间的结局动画在ms
      * @param zoomDuration Duration, default is 200ms
      */
     public void setZoomDuration(int zoomDuration)
@@ -453,7 +454,7 @@ public class RippleView extends RelativeLayout {
 
     /**
      * Set framerate for Ripple animation
-     *
+     *纹波动画设置帧率
      * @param frameRate New framerate value, default is 10
      */
     public void setFrameRate(int frameRate)
@@ -468,7 +469,7 @@ public class RippleView extends RelativeLayout {
 
     /**
      * Set alpha for ripple effect color
-     *
+     *设置alpha纹波效果颜色
      * @param rippleAlpha Alpha value between 0 and 255, default is 90
      */
     public void setRippleAlpha(int rippleAlpha)
@@ -482,6 +483,7 @@ public class RippleView extends RelativeLayout {
 
     /**
      * Defines a callback called at the end of the Ripple effect
+     * 定义在涟漪效应结束时调用的回调
      */
     public interface OnRippleCompleteListener {
         void onComplete(RippleView rippleView);
