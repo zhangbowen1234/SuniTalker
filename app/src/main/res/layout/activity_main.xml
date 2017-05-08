@@ -65,4 +65,6 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <include layout="@layout/dialog_more"/>
+    <include layout="@layout/dialog_chat_more"/>
+
 </FrameLayout>
