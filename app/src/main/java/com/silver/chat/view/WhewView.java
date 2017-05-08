@@ -56,7 +56,7 @@ public class WhewView extends View {
             int startWidth = Integer.parseInt(startWidthList.get(i));
             paint.setAlpha(alpha);
 // 这个半径决定你想要多大的扩散面积
-            canvas.drawCircle(getWidth() / 2, getHeight() / 2, startWidth + 120,
+            canvas.drawCircle(getWidth() / 2, getHeight() / 2, startWidth + 50,
                     paint);
 // 同心圆扩散
             if (isStarting && alpha > 0 && startWidth < maxWidth) {
@@ -66,12 +66,12 @@ public class WhewView extends View {
         }
         if (isStarting
                 && Integer
-                .parseInt(startWidthList.get(startWidthList.size() - 1)) == maxWidth / 5) {
+                .parseInt(startWidthList.get(startWidthList.size() - 1)) == maxWidth / 8) {
             alphaList.add("255");
             startWidthList.add("0");
         }
 // 同心圆数量达到10个，删除最外层圆
-        if (isStarting && startWidthList.size() == 20) {
+        if (isStarting && startWidthList.size() == 10) {
             startWidthList.remove(0);
             alphaList.remove(0);
         }
