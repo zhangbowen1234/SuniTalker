@@ -2,6 +2,7 @@ package com.silver.chat.network;
 
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
+import com.silver.chat.network.responsebean.CreatGroupBean;
 import com.silver.chat.network.responsebean.LoginRequest;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.responsebean.RegisterRequest;
@@ -42,5 +43,8 @@ public interface ApiService {
     @GET("imx/{version}/userfriend/{userId}/{page}/{count}")
     Call<BaseResponse<List<ContactListBean>>> contactList(@Header("token")String token, @Path("version") String version, @Path("userId") String userId, @Path("page") String page, @Path("count") String count);
 
+    //创建群组
+    @GET("imx/{version}/user/group")
+    Call<BaseResponse<CreatGroupBean>> creatgroup(@Path("version")String version, @Header("token")String token,@Body CreatGroupBean creatGroupBean);
 
 }
