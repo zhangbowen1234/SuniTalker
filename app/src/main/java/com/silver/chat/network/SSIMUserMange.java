@@ -139,17 +139,15 @@ public class SSIMUserMange {
      * @param callBack
      */
     public static void contactList(String token,String version, String userId, String page, String count,
-                                   final ResponseCallBack<BaseResponse> callBack){
+                                   final ResponseCallBack<BaseResponse<List<ContactListBean>>> callBack){
         ApiService imApi = RetrofitHelper.create().imApi;
-        Call<BaseResponse> baseResponseCall = imApi.contactList(token,version,userId,page,count);
-        baseResponseCall.enqueue(new Callback<BaseResponse>() {
+        Call<BaseResponse<List<ContactListBean>>> baseResponseCall = imApi.contactList(token,version,userId,page,count);
+        baseResponseCall.enqueue(new Callback<BaseResponse<List<ContactListBean>>>() {
             @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                System.out.println(response.body().getStatusCode());
-                System.out.println(response.body().getStatusMsg());
+            public void onResponse(Call<BaseResponse<List<ContactListBean>>> call, Response<BaseResponse<List<ContactListBean>>> response) {
                 System.out.println(response.body());
 
-                if (response.body().getStatusCode() == 200||response.body().getStatusCode()==502){
+                if (response.body().getStatusCode() == 200){
                     callBack.onSuccess(response.body());
                 }else{
                     callBack.onFailed(response.body());
@@ -157,7 +155,7 @@ public class SSIMUserMange {
             }
 
             @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
+            public void onFailure(Call<BaseResponse<List<ContactListBean>>> call, Throwable t) {
 
             }
         });

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
+    android:id="@+id/contact_btn"
     android:clickable="true"
     android:paddingBottom="@dimen/dp_5"
     android:paddingTop="@dimen/dp_5">
@@ -16,7 +17,7 @@
         android:layout_marginLeft="@dimen/dp_10"/>
 
     <TextView
-        android:id="@id/tv_contact_name"
+        android:id="@+id/tv_contact_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"

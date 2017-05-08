@@ -1,6 +1,8 @@
 package com.silver.chat.entity;
 
-public class ContactMemberBean {
+
+public class ContactMemberBean  {
+
 
 	private String contactName;    //显示的数据
 	private String sortLetters;  //显示数据拼音的首字母
@@ -30,4 +32,5 @@ public class ContactMemberBean {
 				"contactName='" + contactName + '\'' +", sortLetters='" + sortLetters + '\'' +
 				'}';
 	}
+
 }

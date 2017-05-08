@@ -9,6 +9,33 @@ public class ContactListBean {
     private int FriendId;
     private String RemarkName;
     private String Avatar;
+    private int Sex;
+    private String NickName;
+    private String Signature;
+
+    public int getSex() {
+        return Sex;
+    }
+
+    public void setSex(int sex) {
+        Sex = sex;
+    }
+
+    public String getNickName() {
+        return NickName;
+    }
+
+    public void setNickName(String nickName) {
+        NickName = nickName;
+    }
+
+    public String getSignature() {
+        return Signature;
+    }
+
+    public void setSignature(String signature) {
+        Signature = signature;
+    }
 
     public int getFriendId() {
         return FriendId;
@@ -40,6 +67,9 @@ public class ContactListBean {
                 "FriendId=" + FriendId +
                 ", RemarkName='" + RemarkName + '\'' +
                 ", Avatar='" + Avatar + '\'' +
+                ", Sex=" + Sex +
+                ", NickName='" + NickName + '\'' +
+                ", Signature='" + Signature + '\'' +
                 '}';
     }
 }
