@@ -40,7 +40,7 @@ public interface ApiService {
     Call<BaseResponse<UserInfoBean>> userInfo(@Path("version")String version, @Header("token")String token);
     //获取联系人列表
     @GET("imx/{version}/userfriend/{userId}/{page}/{count}")
-    Call<BaseResponse> contactList(@Header("token")String token, @Path("version") String version, @Path("userId") String userId, @Path("page") String page, @Path("count") String count);
+    Call<BaseResponse<List<ContactListBean>>> contactList(@Header("token")String token, @Path("version") String version, @Path("userId") String userId, @Path("page") String page, @Path("count") String count);
 
 
 }
