@@ -55,4 +55,7 @@
     <color name="green_theme">#01c702</color>
     <color name="red_theme">#fe2901</color>
     <color name="purple_theme">#ff00ff</color>
+
+    <color name="topdialog">#19e64dff</color><!--置顶色 -->
+    <color name="lavenderblush">#fff0f5</color><!--淡紫红 -->
 </resources>

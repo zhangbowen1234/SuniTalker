@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.ui.contact.ContactChatActivity;
+import com.silver.chat.view.RoundImageView;
+import com.silver.chat.view.WhewView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +25,7 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
     private TextView tvName,mChat;
     private ImageView mIvBack;
     private String contactName;
+    private WhewView whewView;
 
     @Override
     protected int getLayoutId() {
@@ -35,9 +38,15 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
         mIvBack = (ImageView) findViewById(R.id.iv_back);
         tvName = (TextView) findViewById(R.id.tv_name);
         mChat = (TextView)findViewById(R.id.tv_detail);
+        whewView = (WhewView) findViewById(R.id.wv);
+        // 执行动画
+//        whewView.start();
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
 
     }
-
     @Override
     protected void initData() {
         Intent intent = getIntent();
@@ -66,5 +75,12 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
                 break;
         }
     }
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (whewView.isStarting()){
+            //如果动画正在运行就停止，否则就继续执行
+            whewView.stop();
+        }
+    }
 }

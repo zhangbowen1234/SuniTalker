@@ -10,9 +10,11 @@ import android.view.View;
 
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatApater;
+import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.entity.ChatBean;
 import com.silver.chat.entity.DataServer;
+import com.silver.chat.qrcode.mqzing.decoding.FinishListener;
 import com.silver.chat.ui.contact.ContactChatActivity;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.dialog.TopDeleteDialog;
@@ -57,34 +59,34 @@ public class ChatRecordFragment extends BasePagerFragment {
         mList.addAll(DataServer.getChatData());
         mChatApater = new ChatApater(mList);
         mRecycleContent.setAdapter(mChatApater);
-        ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                int fromPosition = viewHolder.getAdapterPosition();
-                int toPosition = target.getAdapterPosition();
-                if (fromPosition < toPosition) {
-                    for (int i = fromPosition; i < toPosition; i++) {
-                        Collections.swap(mList, i, i + 1);
-                    }
-                } else {
-                    for (int i = toPosition; i < fromPosition; i++) {
-                        Collections.swap(mList, i, i + 1);
-                    }
-                }
-
-                mChatApater.notifyItemMoved(fromPosition, toPosition);
-
-                return true;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(mRecycleContent);
-        refreshView();
+//        ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
+//            @Override
+//            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+//                int fromPosition = viewHolder.getAdapterPosition();
+//                int toPosition = target.getAdapterPosition();
+//                if (fromPosition < toPosition) {
+//                    for (int i = fromPosition; i < toPosition; i++) {
+//                        Collections.swap(mList, i, i + 1);
+//                    }
+//                } else {
+//                    for (int i = toPosition; i < fromPosition; i++) {
+//                        Collections.swap(mList, i, i + 1);
+//                    }
+//                }
+//
+//                mChatApater.notifyItemMoved(fromPosition, toPosition);
+//
+//                return true;
+//            }
+//
+//            @Override
+//            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+//
+//            }
+//        };
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+//        itemTouchHelper.attachToRecyclerView(mRecycleContent);
+//        refreshView();
     }
 
     @Override
@@ -98,7 +100,7 @@ public class ChatRecordFragment extends BasePagerFragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt(TOP_STATES, chatBean.getTop());
                 TopDeleteDialog topDeleteDialog = new TopDeleteDialog(mActivity);
-                topDeleteDialog.setArguments(bundle);
+                topDeleteDialog.setArguments(bundle);//传参
                 topDeleteDialog.builder()
                         .setCanceledOnTouchOutside(true)
                         .setTopTextview(new View.OnClickListener() {
@@ -133,7 +135,7 @@ public class ChatRecordFragment extends BasePagerFragment {
             public void SimpleOnItemClick(BaseQuickAdapter adapter, final View view,
                                           final int position) {
 
-                ChatBean chatBean = (ChatBean) mChatApater.getItem(position);
+//                ChatBean chatBean = (ChatBean) mChatApater.getItem(position);
                 Intent mIntent = new Intent(mActivity, ContactChatActivity.class);
 //                        mIntent.putExtra("contactName",chatBean.getContactName());
                 startActivity(mIntent);

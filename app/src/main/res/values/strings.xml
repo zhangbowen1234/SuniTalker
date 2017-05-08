@@ -18,6 +18,10 @@
     <string name="global_scan">扫码</string>
     <string name="global_search">搜索</string>
     <string name="global_start_chat">发起聊天</string>
+    <string name="global_creat_group_chat">创建群聊</string>
+    <string name="global_add_friend">添加好友</string>
+    <string name="global_find_group">查找群组</string>
+    <string name="global_chat_more">更多</string>
     <string name="global_read">已读</string>
     <string name="global_clear">清空</string>
     <string name="global_stick">置顶</string>
