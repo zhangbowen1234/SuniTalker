@@ -1,16 +1,12 @@
 package com.silver.chat.ui.contact;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.silver.chat.R;
@@ -18,19 +14,14 @@ import com.silver.chat.adapter.ContactListAdapter;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.base.Common;
 import com.silver.chat.entity.ContactMemberBean;
-import com.silver.chat.entity.User;
-import com.silver.chat.network.SSIMUserMange;
+import com.silver.chat.network.SSIMUserManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
-import com.silver.chat.ui.mine.FriendInfoActivity;
 import com.silver.chat.util.CharacterParser;
 import com.silver.chat.util.PinyinComparator;
 import com.silver.chat.util.PreferenceUtil;
-import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
-import com.silver.chat.view.recycleview.BaseQuickAdapter;
-import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -173,7 +164,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         new Thread(new Runnable() {
             @Override
             public void run() {
-                SSIMUserMange.contactList(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, ""), Common.version, PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""),
+                SSIMUserManger.contactList(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, ""), Common.version, PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""),
                         "0", "10", new ResponseCallBack<BaseResponse<List<ContactListBean>>>() {
 
                             @Override
