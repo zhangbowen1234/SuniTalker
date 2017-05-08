@@ -73,8 +73,9 @@
         <activity
             android:name=".ui.mine.MyPRScanCodeActivity"
             android:label="扫描二维码" />
-        <activity android:name=".ui.contact.NewFriendActivity"
-            android:label="新朋友"/>
+        <activity
+            android:name=".ui.contact.NewFriendActivity"
+            android:label="新朋友" />
         <activity
             android:name=".ui.mine.setting.ChangeBackgroundActivity"
             android:label="主色调" />
@@ -88,6 +89,12 @@
             android:value="@integer/google_play_services_version" />
         <activity android:name=".ui.contact.CreatGroupActivity"
             android:label="创建群组" />
+            android:launchMode="singleTask"
+            android:label="我的群" />
+        <activity
+            android:name=".ui.contact.DiscussGroupActivity"
+            android:launchMode="singleTask"
+            android:label="讨论组" />
     </application>
 
 </manifest>

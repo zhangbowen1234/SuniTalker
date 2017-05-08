@@ -2,7 +2,6 @@ package com.silver.chat.ui.contact;
 
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,12 +10,11 @@ import android.widget.ImageView;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
-import com.silver.chat.network.SSIMUserMange;
+import com.silver.chat.network.SSIMGroupManger;
+import com.silver.chat.network.SSIMUserManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
-import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.CreatGroupBean;
-import com.silver.chat.network.responsebean.RegisterRequest;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 
@@ -84,7 +82,7 @@ public class CreatGroupActivity extends BaseActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    SSIMUserMange.creatgroup(Common.version, token, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
+                    SSIMGroupManger.creatgroup(Common.version, token, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
                         @Override
                         public void onSuccess(BaseResponse<CreatGroupBean> creatGroupBeanBaseResponse) {
                             ToastUtils.showMessage(mContext, creatGroupBeanBaseResponse.getStatusMsg());

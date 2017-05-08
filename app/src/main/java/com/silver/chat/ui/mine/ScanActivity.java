@@ -345,4 +345,5 @@ public class ScanActivity extends AppCompatActivity  implements SurfaceHolder.Ca
         }
     };
 
+
 }

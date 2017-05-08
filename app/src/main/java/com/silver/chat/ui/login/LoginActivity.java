@@ -15,17 +15,16 @@ import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
-import com.silver.chat.network.SSIMUserMange;
+import com.silver.chat.network.SSIMUserManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
-import com.silver.chat.network.responsebean.LoginRequest;
+import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
 import com.silver.chat.util.NetUtils;
 import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
-import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
 
@@ -156,7 +155,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            SSIMUserMange.goLogin(Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
+                            SSIMUserManger.goLogin(Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
                                 @Override
                                 public void onSuccess(BaseResponse<LoginRequestBean> loginRequestBaseResponse) {
                                     ToastUtils.showMessage(mContext, loginRequestBaseResponse.getStatusMsg());
@@ -240,7 +239,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    SSIMUserMange.getUserInfo(Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
+                    SSIMUserManger.getUserInfo(Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
                         @Override
                         public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
 //                            ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());

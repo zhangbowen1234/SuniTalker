@@ -1,6 +1,4 @@
-package com.silver.chat.network.responsebean;
-
-import com.silver.chat.network.RetrofitHelper;
+package com.silver.chat.network.requestbean;
 
 import java.io.Serializable;
 

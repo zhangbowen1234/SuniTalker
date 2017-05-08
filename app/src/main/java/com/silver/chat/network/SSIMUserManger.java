@@ -6,9 +6,9 @@ import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.CreatGroupBean;
-import com.silver.chat.network.responsebean.LoginRequest;
+import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.responsebean.LoginRequestBean;
-import com.silver.chat.network.responsebean.RegisterRequest;
+import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.network.responsebean.UserInfoBean;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import retrofit2.Response;
  * Created by joe on 2017/4/26.
  */
 
-public class SSIMUserMange {
+public class SSIMUserManger {
 
     /**
      * 验证手机号是否注册
@@ -40,11 +40,12 @@ public class SSIMUserMange {
                 } else {
                     callBack.onFailed(response.body());
                 }
-                Log.e("response", response.body().toString());
+                //Log.e("response", response.body().toString());
             }
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
+
                 callBack.onError();
             }
         });
@@ -189,31 +190,4 @@ public class SSIMUserMange {
 
 
     }
-    /**
-     * 创建群组
-     * @param version
-     * @param token
-     * @param callBack
-     */
-    public static void creatgroup(String version,  String token, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack){
-        ApiService imApi = RetrofitHelper.create().imApi;
-        Call<BaseResponse> baseResponseCall = imApi.checkPhoneCode(version,token);
-        baseResponseCall.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.body().getStatusCode() == 200) {
-                    callBack.onSuccess(response.body());
-                } else {
-                    callBack.onFailed(response.body());
-                }
-                Log.e("response", response.body().toString());
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                callBack.onError();
-            }
-        });
-    }
-
 }

@@ -1,6 +1,7 @@
 package com.silver.chat.ui.contact;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,12 +13,17 @@ import android.widget.TextView;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.entity.DataServer;
+import com.silver.chat.base.Common;
 import com.silver.chat.entity.GroupBean;
+import com.silver.chat.network.SSIMGroupManger;
+import com.silver.chat.network.SSIMUserManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.JoinedGroupRequest;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.CircleImageView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.OnClick;
 
@@ -27,14 +33,15 @@ import butterknife.OnClick;
 
 public class GroupChatActivity extends BaseActivity {
 
-    ImageView titleLeftBack;
-    ImageView imageSeach;
-    ListView listView;
-    RelativeLayout rlSeach;
+    private ImageView titleLeftBack;
+    private ImageView imageSeach;
+    private ListView listView;
+    private RelativeLayout rlSeach;
     private ArrayList<GroupBean> mCreatGroups;
     private ArrayList<GroupBean> mManagerGroups;
     private ArrayList<GroupBean> mJoinGroups;
     private GoogleApiClient client;
+    private ImageView ivMyGroup;
 
     @Override
     protected void initView() {
@@ -42,6 +49,7 @@ public class GroupChatActivity extends BaseActivity {
         imageSeach = (ImageView) findViewById(R.id.image_seach);
         listView = (ListView) findViewById(R.id.listview);
         rlSeach = (RelativeLayout) findViewById(R.id.rl_seach);
+        ivMyGroup = (ImageView)findViewById(R.id.iv_mygroup);
 
 
 
@@ -53,17 +61,55 @@ public class GroupChatActivity extends BaseActivity {
         mCreatGroups = new ArrayList<>();
         mManagerGroups = new ArrayList<>();
         mJoinGroups = new ArrayList<>();
-        GroupBean groupBean = new GroupBean();
-        for (int i = 0; i < 1; i++) {
-            groupBean.setGroupName("今天中午吃了" + i +"碗牛肉面");
-            mCreatGroups.add(groupBean);
-            mJoinGroups.add(groupBean);
-        }
-
+        getGroupInfo();
         listView.setAdapter(new MyAdapter());
     }
 
-    @OnClick({R.id.title_left_back,R.id.rl_seach})
+    /**
+     * 请求网络获取群组信息
+     */
+    private void getGroupInfo() {
+        String userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
+        int i = Integer.parseInt(userId);
+        JoinedGroupRequest request = JoinedGroupRequest.getInstance();
+        request.setUserId(i);
+        SSIMGroupManger.getJoinGroupList(Common.version, request, new ResponseCallBack<BaseResponse<GroupBean>>() {
+            @Override
+            public void onSuccess(BaseResponse<GroupBean> groupBeanBaseResponse) {
+                Log.e(TAG, groupBeanBaseResponse.toString());
+                distinguishGroupInfo(groupBeanBaseResponse);
+            }
+
+            @Override
+            public void onFailed(BaseResponse<GroupBean> groupBeanBaseResponse) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+
+    /**
+     * 根据字段区分群组信息
+     * @param groupBeanBaseResponse
+     */
+    private void distinguishGroupInfo(BaseResponse<GroupBean> groupBeanBaseResponse) {
+        GroupBean data = groupBeanBaseResponse.data;
+        int privilege = data.getPrivilege();
+        if(privilege == 1) {
+            mCreatGroups.add(data);
+        }else if(privilege == 2) {
+            mJoinGroups.add(data);
+        }else if(privilege == 3) {
+            mManagerGroups.add(data);
+        }
+    }
+
+
+    @OnClick({R.id.title_left_back,R.id.rl_seach, R.id.iv_mygroup})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_left_back:
@@ -71,6 +117,10 @@ public class GroupChatActivity extends BaseActivity {
                 break;
             case R.id.rl_seach:
                 startActivity(SearchContactActivity.class);
+                break;
+            case R.id.iv_mygroup:
+                startActivity(DiscussGroupActivity.class);
+                break;
 
         }
     }
