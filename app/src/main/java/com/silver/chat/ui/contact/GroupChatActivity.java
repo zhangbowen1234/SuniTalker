@@ -17,7 +17,7 @@ import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
-import com.silver.chat.entity.GroupBean;
+import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;

@@ -1,4 +1,4 @@
-package com.silver.chat.network.responsebean;
+package com.silver.chat.network.requestbean;
 
 import java.util.List;
 

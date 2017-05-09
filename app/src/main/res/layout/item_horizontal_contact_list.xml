@@ -11,14 +11,14 @@
     android:paddingRight="@dimen/dp_2">
 
     <com.silver.chat.view.CircleImageView
-        android:id="@id/im_contact_image"
+        android:id="@+id/im_contact_image"
         android:layout_width="@dimen/dp_47"
         android:layout_height="@dimen/dp_47"
-        android:src="@drawable/ic_contact_portrait"
+        android:src="@drawable/system_head_portrait"
         android:scaleType="centerCrop"/>
 
     <TextView
-        android:id="@id/tv_contact_name"
+        android:id="@+id/tv_contact_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="阿拉"
