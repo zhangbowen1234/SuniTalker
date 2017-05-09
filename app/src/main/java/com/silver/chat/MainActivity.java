@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.silver.chat.adapter.MainPagerAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.ui.chat.SearchChatRecordActivity;
+import com.silver.chat.ui.contact.CreatGroupActivity;
 import com.silver.chat.ui.contact.SearchContactActivity;
 import com.silver.chat.ui.mine.ScanActivity;
 import com.silver.chat.ui.mine.SettingActivity;
@@ -32,14 +33,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ImageView mIvMore;
     private Animation mButtonInAnimation;
     private Animation mButtonOutAnimation;
-    private RelativeLayout mLlyMore;
-    private TextView mTvScan;
-    private TextView mTvSearch;
-    private TextView mTvStartChat;
-    private TextView mTvUnRead;
-    private TextView mTvRead;
-    private TextView mTvClear;
-    private ImageView mIvBack;
+    private RelativeLayout mLlyMore,mLlyChatMore;
+    private TextView mTvScan,mTvChatScan;
+    private TextView mTvSearch,mTvChatSearch;
+    private TextView mTvStartChat,mTvAddGroup;
+    private TextView mTvUnRead,mTvAddFriend;
+    private TextView mTvRead,mTvSearchGroup;
+    private TextView mTvClear,mTvChatMore;
+    private ImageView mIvBack,mIvMoreBack;
 
     @Override
     protected int getLayoutId() {
@@ -53,6 +54,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mTabLayout = (TabLayoutPlus) findViewById(tabLayout);
         mIvSearch = (ImageView) findViewById(R.id.iv_toolbar_search);
+
+        mLlyChatMore = (RelativeLayout) findViewById(R.id.lly_chat_more);
+        mTvChatScan = (TextView) findViewById(R.id.tv_scan_chat);
+        mTvChatSearch = (TextView) findViewById(R.id.tv_search_chat);
+        mTvAddFriend = (TextView) findViewById(R.id.tv_add_friend);
+        mTvAddGroup = (TextView) findViewById(R.id.tv_start_group_chat);
+        mTvSearchGroup = (TextView) findViewById(R.id.tv_search_group);
+        mTvChatMore = (TextView) findViewById(R.id.tv_more_chat);
+        mIvMoreBack = (ImageView) findViewById(R.id.iv_back_chat);
 
         mLlyMore = (RelativeLayout) findViewById(R.id.lly_more);
         mIvMore = (ImageView) findViewById(R.id.iv_more);
@@ -86,36 +96,62 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void openPanelView() {
-        mLlyMore.setVisibility(View.VISIBLE);
-        mTvScan.startAnimation(mButtonInAnimation);
-        mTvSearch.startAnimation(mButtonInAnimation);
-        mTvStartChat.startAnimation(mButtonInAnimation);
-        mTvRead.startAnimation(mButtonInAnimation);
-        mTvUnRead.startAnimation(mButtonInAnimation);
-        mTvClear.startAnimation(mButtonInAnimation);
+        if (mTabLayout.getSelectedTabPosition() == 0){
+            mLlyMore.setVisibility(View.VISIBLE);
+            mTvScan.startAnimation(mButtonInAnimation);
+            mTvSearch.startAnimation(mButtonInAnimation);
+            mTvStartChat.startAnimation(mButtonInAnimation);
+            mTvRead.startAnimation(mButtonInAnimation);
+            mTvUnRead.startAnimation(mButtonInAnimation);
+            mTvClear.startAnimation(mButtonInAnimation);
+        } else if (mTabLayout.getSelectedTabPosition() == 1) {
+            mLlyChatMore.setVisibility(View.VISIBLE);
+            mTvChatScan.startAnimation(mButtonInAnimation);
+            mTvChatSearch.startAnimation(mButtonInAnimation);
+            mTvAddGroup.startAnimation(mButtonInAnimation);
+            mTvAddFriend.startAnimation(mButtonInAnimation);
+            mTvSearchGroup.startAnimation(mButtonInAnimation);
+            mTvChatMore.startAnimation(mButtonInAnimation);
+        }
     }
 
     private void closePanelView() {
-        mTvScan.startAnimation(mButtonOutAnimation);
-        mTvSearch.startAnimation(mButtonOutAnimation);
-        mTvStartChat.startAnimation(mButtonOutAnimation);
-        mTvRead.startAnimation(mButtonOutAnimation);
-        mTvUnRead.startAnimation(mButtonOutAnimation);
-        mTvClear.startAnimation(mButtonOutAnimation);
+        if (mTabLayout.getSelectedTabPosition() == 0){
+            mTvScan.startAnimation(mButtonOutAnimation);
+            mTvSearch.startAnimation(mButtonOutAnimation);
+            mTvStartChat.startAnimation(mButtonOutAnimation);
+            mTvRead.startAnimation(mButtonOutAnimation);
+            mTvUnRead.startAnimation(mButtonOutAnimation);
+            mTvClear.startAnimation(mButtonOutAnimation);
+        } else if (mTabLayout.getSelectedTabPosition() == 1) {
+            mTvChatScan.startAnimation(mButtonOutAnimation);
+            mTvChatSearch.startAnimation(mButtonOutAnimation);
+            mTvAddGroup.startAnimation(mButtonOutAnimation);
+            mTvAddFriend.startAnimation(mButtonOutAnimation);
+            mTvSearchGroup.startAnimation(mButtonOutAnimation);
+            mTvChatMore.startAnimation(mButtonOutAnimation);
+        }
     }
 
     @Override
     protected void initListener() {
         super.initListener();
-        mIvSearch.setOnClickListener(this);
         mIvMore.setOnClickListener(this);
+        mIvSearch.setOnClickListener(this);
         mIvBack.setOnClickListener(this);
         mTvScan.setOnClickListener(this);
-        mTvSearch.setOnClickListener(this);
         mTvStartChat.setOnClickListener(this);
         mTvRead.setOnClickListener(this);
         mTvUnRead.setOnClickListener(this);
         mTvClear.setOnClickListener(this);
+
+        mTvChatScan.setOnClickListener(this);
+        mTvChatSearch.setOnClickListener(this);
+        mTvAddGroup.setOnClickListener(this);
+        mTvAddFriend.setOnClickListener(this);
+        mTvSearchGroup.setOnClickListener(this);
+        mIvMoreBack.setOnClickListener(this);
+        mTvChatMore.setOnClickListener(this);
         mButtonOutAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -125,6 +161,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onAnimationEnd(Animation animation) {
                 mLlyMore.setVisibility(View.GONE);
+                mLlyChatMore.setVisibility(View.GONE);
             }
 
             @Override
@@ -161,19 +198,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
             case R.id.iv_more:
-                if (mTabLayout.getSelectedTabPosition() == 0){
-                    openPanelView();
-                } else if (mTabLayout.getSelectedTabPosition() == 1) {
-                    ToastUtils.showMessage(mContext,"正在修改中...");
-                } else if (mTabLayout.getSelectedTabPosition() == 2){
+                if (mTabLayout.getSelectedTabPosition() == 2){
                     startActivity(SettingActivity.class);
+                }else {
+                    openPanelView();
                 }
                 break;
             case R.id.iv_back:
                 closePanelView();
                 break;
+            case R.id.iv_back_chat:
+                closePanelView();
+                break;
             case R.id.tv_scan:
                 startActivity(ScanActivity.class);
+                finish();
                 break;
             case R.id.tv_search:
                 ToastUtils.showMessage(mContext,"正在修改中...");
@@ -188,6 +227,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 ToastUtils.showMessage(mContext,"正在修改中...");
                 break;
             case R.id.tv_clear:
+                ToastUtils.showMessage(mContext,"正在修改中...");
+                break;
+            case R.id.tv_scan_chat:
+                startActivity(ScanActivity.class);
+                finish();
+                break;
+            case R.id.tv_search_chat:
+                ToastUtils.showMessage(mContext,"正在修改中...");
+                break;
+            case R.id.tv_add_friend:
+                ToastUtils.showMessage(mContext,"正在修改中...");
+                break;
+            case R.id.tv_search_group:
+                ToastUtils.showMessage(mContext,"正在修改中...");
+                break;
+            case R.id.tv_start_group_chat:
+                startActivity(CreatGroupActivity.class);
+                finish();
+                break;
+            case R.id.tv_more_chat:
                 ToastUtils.showMessage(mContext,"正在修改中...");
                 break;
         }

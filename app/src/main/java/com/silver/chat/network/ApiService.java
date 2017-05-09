@@ -4,6 +4,7 @@ import com.silver.chat.entity.GroupBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
+import com.silver.chat.network.responsebean.CreatGroupBean;
 import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.requestbean.RegisterRequest;
@@ -44,6 +45,10 @@ public interface ApiService {
     //获取联系人列表
     @GET("imx/{version}/userfriend/{userId}/{page}/{count}")
     Call<BaseResponse<List<ContactListBean>>> contactList(@Header("token")String token, @Path("version") String version, @Path("userId") String userId, @Path("page") String page, @Path("count") String count);
+
+    //创建群组
+    @POST("imx/{version}/user/group")
+    Call<BaseResponse<CreatGroupBean>> creatgroup(@Path("version")String version, @Header("token")String token,@Body CreatGroupBean creatGroupBean);
     //获取已经加入的群信息列表
     @POST("imx/{version}/user/group/addgrouplist")
     Call<BaseResponse<ArrayList<GroupBean>>> joinedGroupList(@Path("version")String version, @Body JoinedGroupRequest joinedGroupRequest, @Header("token")String token);

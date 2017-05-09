@@ -2,12 +2,10 @@ package com.silver.chat.network;
 
 import android.util.Log;
 
-import com.silver.chat.base.Common;
-import com.silver.chat.entity.GroupBean;
 import com.silver.chat.network.callback.ResponseCallBack;
-import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
+import com.silver.chat.network.responsebean.CreatGroupBean;
 import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.requestbean.RegisterRequest;
@@ -192,8 +190,4 @@ public class SSIMUserManger {
 
 
     }
-
-
-
-
 }
