@@ -108,9 +108,18 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:src="@drawable/ic_head_little" />
-
+            <ImageView
+                android:id="@+id/iv_header2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/iv_header1"
+                android:layout_toRightOf="@+id/iv_header1"
+                android:paddingTop="5dp"
+                android:src="@drawable/ic_head_little" />
             <ImageView
                 android:id="@+id/iv_header3"
+
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -146,15 +155,7 @@
                 android:paddingRight="@dimen/dp_10"
                 android:src="@drawable/ic_arrow_into" />
 
-            <ImageView
-                android:id="@+id/iv_header2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/iv_header1"
-                android:layout_toRightOf="@+id/iv_header1"
-                android:paddingTop="5dp"
-                android:src="@drawable/ic_head_little" />
+
         </RelativeLayout>
 
         <View
