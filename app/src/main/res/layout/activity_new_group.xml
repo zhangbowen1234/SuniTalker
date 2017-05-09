@@ -127,12 +127,24 @@
             android:layout_weight="1">
 
         </android.support.v7.widget.RecyclerView>
-        <Button
-            android:id="@+id/bt_determine"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="确定"
-            android:background="@color/color_lucency"/>
+            android:layout_height="45dp">
+
+            <Button
+                android:id="@+id/bt_determine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="确定"
+                android:background="@null"
+                android:textColor="#99ffffff"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/seach_bg"
+                android:scaleType="fitXY"
+               />
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

@@ -10,7 +10,11 @@ import com.silver.chat.ui.login.LoginActivity;
 import com.silver.chat.ui.mine.setting.AboutActivity;
 import com.silver.chat.ui.mine.setting.AccountActivity;
 import com.silver.chat.ui.mine.setting.ChangeBackgroundActivity;
+import com.silver.chat.util.ChooseBackgroudUtils;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.dialog.TvLoginOutDialog;
+
+import static com.silver.chat.util.Utils.context;
 
 /**
  * 作者：Fandy on 2016/12/9 10:38
@@ -28,6 +32,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected int getLayoutId() {
         return R.layout.activity_setting;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String ChooseBackgroud = PreferenceUtil.getInstance(this).getString(PreferenceUtil.ChooseBackground, "");
+        PreferenceUtil.getInstance(context).getString("ChooseBackgroud", ChooseBackgroud);
+        ChooseBackgroudUtils.choosebackgroud(mContext, ChooseBackgroud);
     }
 
     @Override

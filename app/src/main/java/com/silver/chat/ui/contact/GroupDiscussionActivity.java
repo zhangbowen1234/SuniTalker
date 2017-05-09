@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +13,7 @@ import com.silver.chat.base.Common;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
-import com.silver.chat.network.responsebean.CreatGroupBean;
+import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 
@@ -64,9 +63,11 @@ public class GroupDiscussionActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.bt_creat_group:
-                getContactList();
+                getContactList(view);
+                finish();
                 break;
             case R.id.bt_creat_discussion:
+                getContactList(view);
                 break;
             case R.id.bt_cancel:
                 finish();
@@ -74,38 +75,53 @@ public class GroupDiscussionActivity extends BaseActivity {
         }
     }
 
-    //传参
-    private String token;
-
-    public void getContactList() {
+    public void getContactList(View view) {
         CreatGroupBean instance = CreatGroupBean.getInstance();
         instance.setUserId(PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""));
         instance.setGroupName(tvGroupName.getText().toString());
         instance.setAddMethod(1);
 //        instance.setDescribe("新建群组");
-        token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         if (token != null && !"".equals(token)) {
+            if (view.getId() == R.id.bt_creat_group){
+                SSIMGroupManger.Getcreatgroup(Common.version, token, instance, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<CreatGroupBean> creatGroupBeanBaseResponse) {
+                        ToastUtils.showMessage(mContext, creatGroupBeanBaseResponse.getStatusMsg());
+                        Log.e("onSuccess", creatGroupBeanBaseResponse.toString() + "");
+                    }
 
-            SSIMGroupManger.Getcreatgroup(Common.version, token, instance, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
-                @Override
-                public void onSuccess(BaseResponse<CreatGroupBean> creatGroupBeanBaseResponse) {
-                    ToastUtils.showMessage(mContext, creatGroupBeanBaseResponse.getStatusMsg());
-                    Log.e("onSuccess", creatGroupBeanBaseResponse.toString() + "");
-                }
+                    @Override
+                    public void onFailed(BaseResponse<CreatGroupBean> creatGroupBeanBaseResponse) {
+                        Log.e("ContactList_onFailed", creatGroupBeanBaseResponse.toString() + "");
+                        ToastUtils.showMessage(mContext, creatGroupBeanBaseResponse.getStatusMsg());
+                    }
 
-                @Override
-                public void onFailed(BaseResponse<CreatGroupBean> creatGroupBeanBaseResponse) {
-                    Log.e("ContactList_onFailed", creatGroupBeanBaseResponse.toString() + "");
-                    ToastUtils.showMessage(mContext, creatGroupBeanBaseResponse.getStatusMsg());
-                }
+                    @Override
+                    public void onError() {
+                        ToastUtils.showMessage(mContext, "创建失败");
+                    }
+                });
+            }else if (view.getId() == R.id.bt_creat_discussion){
+                SSIMGroupManger.Getcreatdicugroup(Common.version, token, instance, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<CreatGroupBean> creatGroupBeanBaseResponse) {
+                        ToastUtils.showMessage(mContext, creatGroupBeanBaseResponse.getStatusMsg());
+                        Log.e("onSuccess", creatGroupBeanBaseResponse.toString() + "");
+                    }
 
-                @Override
-                public void onError() {
-                    ToastUtils.showMessage(mContext, "创建失败");
-                }
-            });
+                    @Override
+                    public void onFailed(BaseResponse<CreatGroupBean> creatGroupBeanBaseResponse) {
+                        Log.e("ContactList_onFailed", creatGroupBeanBaseResponse.toString() + "");
+                        ToastUtils.showMessage(mContext, creatGroupBeanBaseResponse.getStatusMsg());
+                    }
 
-
+                    @Override
+                    public void onError() {
+                        ToastUtils.showMessage(mContext, "创建失败");
+                    }
+                });
+            }
         }
     }
 }

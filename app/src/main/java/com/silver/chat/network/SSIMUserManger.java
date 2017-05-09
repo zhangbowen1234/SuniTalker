@@ -5,8 +5,8 @@ import android.util.Log;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
-import com.silver.chat.network.responsebean.CreatGroupBean;
 import com.silver.chat.network.requestbean.LoginRequest;
+import com.silver.chat.network.responsebean.FriendInfo;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.network.responsebean.UserInfoBean;
@@ -189,5 +189,33 @@ public class SSIMUserManger {
         });
 
 
+    }
+    /**
+     * 获取好友信息
+     * @param version
+     * @param userId 当前用户id
+     * @param friendid 好友id
+     * @param token
+     * @param callBack
+     */
+    public static void friendinfo(String token,String version, String userId, String friendid,
+                                   final ResponseCallBack<BaseResponse<List<FriendInfo>>> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse<List<FriendInfo>>> baseResponseCall = imApi.friendinfo(token,version,userId,friendid);
+        baseResponseCall.enqueue(new Callback<BaseResponse<List<FriendInfo>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<List<FriendInfo>>> call, Response<BaseResponse<List<FriendInfo>>> response) {
+                if (response.body().getStatusCode() == 200){
+                    callBack.onSuccess(response.body());
+                }else{
+                    callBack.onFailed(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<List<FriendInfo>>> call, Throwable t) {
+
+            }
+        });
     }
 }

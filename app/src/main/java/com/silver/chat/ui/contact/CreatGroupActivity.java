@@ -6,14 +6,28 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.silver.chat.R;
+import com.silver.chat.adapter.FriendInfoAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
+import com.silver.chat.network.SSIMGroupManger;
+import com.silver.chat.network.SSIMUserManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.CreatGroupBean;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.ContactListBean;
+import com.silver.chat.network.responsebean.FriendInfo;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +52,8 @@ public class CreatGroupActivity extends BaseActivity {
     Button btDetermine;
     private String Name;
     private int len;
+    private FriendInfoAdapter mAdapter;
+    private List<FriendInfo> friendInfo = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -48,6 +64,60 @@ public class CreatGroupActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
+        mAdapter = new FriendInfoAdapter(mContext,friendInfo);
+        getFriendInfo();
+        //输入框
+        getEditlisten();
+    }
+
+    @OnClick({R.id.title_left_back, R.id.image_seach, R.id.bt_determine})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.title_left_back:
+                finish();
+                break;
+            case R.id.image_seach:
+
+                break;
+            case R.id.bt_determine:
+                if (len != 0) {
+                    Name = edNewGroup.getText().toString();
+                    Intent intent = new Intent(mContext, GroupDiscussionActivity.class);
+                    intent.putExtra("Name", Name);
+                    startActivity(intent);
+                } else {
+                    ToastUtils.showMessage(mContext, "请填写群组名称");
+                }
+                break;
+        }
+    }
+
+    private void getFriendInfo() {
+        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+        if (token != null && !"".equals(token)) {
+//            SSIMUserManger.contactList(Common.version,token, PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""),
+//                    PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.FRIENDID,""), new ResponseCallBack<BaseResponse<List<FriendInfo>>>() {
+//
+//                        @Override
+//                        public void onSuccess(BaseResponse<List<FriendInfo>> listBaseResponse) {
+//                            ToastUtils.showMessage(mContext,listBaseResponse.getStatusMsg());
+//                            Log.e("ContactList,onSuccess",listBaseResponse.data+"");
+//                        }
+//
+//                        @Override
+//                        public void onFailed(BaseResponse<List<FriendInfo>> listBaseResponse) {
+//                            ToastUtils.showMessage(mContext,listBaseResponse.getStatusMsg());
+//                            Log.e("ContactList_onFailed",listBaseResponse.data+"");
+//                        }
+//                        @Override
+//                        public void onError() {
+//                            ToastUtils.showMessage(mContext, "获取失败");
+//                        }
+//                    });
+        }
+    }
+
+    public void getEditlisten() {
         edNewGroup.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -97,28 +167,7 @@ public class CreatGroupActivity extends BaseActivity {
 
             }
         });
-    }
 
-    @OnClick({R.id.title_left_back, R.id.image_seach, R.id.bt_determine})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.title_left_back:
-                finish();
-                break;
-            case R.id.image_seach:
-
-                break;
-            case R.id.bt_determine:
-                if (len != 0) {
-                    Name = edNewGroup.getText().toString();
-                    Intent intent = new Intent(mContext, GroupDiscussionActivity.class);
-                    intent.putExtra("Name", Name);
-                    startActivity(intent);
-                } else {
-                    ToastUtils.showMessage(mContext, "请填写群组名称");
-                }
-                break;
-        }
     }
 
     @Override
