@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Created by bowen on 2017/5/8.
+ * 创建群组实体类
  */
 
 public class CreatGroupBean {

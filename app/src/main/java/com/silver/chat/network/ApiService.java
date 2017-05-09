@@ -46,7 +46,7 @@ public interface ApiService {
     Call<BaseResponse<List<ContactListBean>>> contactList(@Header("token")String token, @Path("version") String version, @Path("userId") String userId, @Path("page") String page, @Path("count") String count);
 
     //创建群组
-    @GET("imx/{version}/user/group")
+    @POST("imx/{version}/user/group")
     Call<BaseResponse<CreatGroupBean>> creatgroup(@Path("version")String version, @Header("token")String token,@Body CreatGroupBean creatGroupBean);
     //获取已经加入的群信息列表
     @POST("imx/{version}/user/group/addgrouplist")

@@ -51,8 +51,8 @@
             android:layout_gravity="center">
             <com.silver.chat.view.WhewView
                 android:id="@+id/wv"
-                android:layout_width="270dp"
-                android:layout_height="270dp" />
+                android:layout_width="260dp"
+                android:layout_height="260dp" />
             <com.silver.chat.view.RoundImageView
                 android:id="@+id/my_photo"
                 android:layout_width="190dp"

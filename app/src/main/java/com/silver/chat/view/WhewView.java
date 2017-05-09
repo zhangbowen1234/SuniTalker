@@ -56,7 +56,7 @@ public class WhewView extends View {
             int startWidth = Integer.parseInt(startWidthList.get(i));
             paint.setAlpha(alpha);
 // 这个半径决定你想要多大的扩散面积
-            canvas.drawCircle(getWidth() / 2, getHeight() / 2, startWidth + 50,
+            canvas.drawCircle(getWidth() / 2, getHeight() / 2, startWidth ,
                     paint);
 // 同心圆扩散
             if (isStarting && alpha > 0 && startWidth < maxWidth) {
