@@ -222,7 +222,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
          */
 //        mRefreshLayout.setOnRefreshListener(this);
 
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

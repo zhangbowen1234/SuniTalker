@@ -45,7 +45,11 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
 
     }
 
+    @Override
+    protected void initData() {
 
+
+    }
 
     @Override
     protected void initListener() {

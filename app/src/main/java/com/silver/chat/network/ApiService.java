@@ -52,4 +52,7 @@ public interface ApiService {
     @POST("imx/{version}/user/group/addgrouplist")
     Call<BaseResponse<ArrayList<GroupBean>>> joinedGroupList(@Path("version")String version, @Body JoinedGroupRequest joinedGroupRequest, @Header("token")String token);
 
+    //申请添加好友
+
+
 }
