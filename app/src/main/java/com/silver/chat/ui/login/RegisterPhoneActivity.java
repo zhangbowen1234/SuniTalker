@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
+import com.silver.chat.entity.GroupBean;
 import com.silver.chat.network.SSIMUserManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
@@ -17,6 +18,8 @@ import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
+
+import java.util.ArrayList;
 
 
 /**
@@ -73,6 +76,8 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 
 
                 SSIMUserManger.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
+
+
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         int statusCode = baseResponse.getStatusCode();
@@ -133,6 +138,8 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 
     private void sendSmsCode(String uPhone) {
         SSIMUserManger.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+
+
             @Override
             public void onSuccess(BaseResponse baseResponse) {
                 Log.e(TAG, baseResponse.getStatusMsg());

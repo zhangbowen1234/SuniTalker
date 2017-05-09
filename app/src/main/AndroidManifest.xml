@@ -87,6 +87,7 @@
         <activity
             android:name=".ui.contact.DiscussGroupActivity"
             android:launchMode="singleTask"
+
             android:label="讨论组" />
     </application>
 

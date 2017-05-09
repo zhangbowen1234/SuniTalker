@@ -20,7 +20,7 @@ public class GroupBean {
     private int userId;
     private String avatar;
     private String groupName;
-    private int GroupId;
+    private int groupId;
     private String groupRemark;
     private long createTime;
     private int privilege;
@@ -50,11 +50,11 @@ public class GroupBean {
     }
 
     public int getGroupId() {
-        return GroupId;
+        return groupId;
     }
 
     public void setGroupId(int GroupId) {
-        this.GroupId = GroupId;
+        this.groupId = GroupId;
     }
 
     public String getGroupRemark() {
@@ -87,7 +87,7 @@ public class GroupBean {
                 "userId=" + userId +
                 ", avatar='" + avatar + '\'' +
                 ", groupName='" + groupName + '\'' +
-                ", GroupId=" + GroupId +
+                ", groupId=" + groupId +
                 ", groupRemark='" + groupRemark + '\'' +
                 ", createTime=" + createTime +
                 ", privilege=" + privilege +

@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 
@@ -57,5 +58,10 @@ public class DiscussGroupActivity extends BaseActivity{
                 break;
 
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(MainActivity.class);
     }
 }

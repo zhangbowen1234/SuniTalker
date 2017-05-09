@@ -9,6 +9,7 @@ import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.network.responsebean.UserInfoBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,6 +46,6 @@ public interface ApiService {
     Call<BaseResponse<List<ContactListBean>>> contactList(@Header("token")String token, @Path("version") String version, @Path("userId") String userId, @Path("page") String page, @Path("count") String count);
     //获取已经加入的群信息列表
     @POST("imx/{version}/user/group/addgrouplist")
-    Call<BaseResponse<GroupBean>> joinedGroupList(@Path("version")String version, @Body JoinedGroupRequest joinedGroupRequest);
+    Call<BaseResponse<ArrayList<GroupBean>>> joinedGroupList(@Path("version")String version, @Body JoinedGroupRequest joinedGroupRequest, @Header("token")String token);
 
 }

@@ -15,6 +15,7 @@ import com.silver.chat.adapter.ContactListAdapter;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.base.Common;
 import com.silver.chat.entity.ContactMemberBean;
+import com.silver.chat.entity.GroupBean;
 import com.silver.chat.network.SSIMUserManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
@@ -171,6 +172,7 @@ public class ContactFragment2 extends BasePagerFragment implements View.OnClickL
             public void run() {
                 SSIMUserManger.contactList(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, ""), Common.version, PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""),
                         "0", "10", new ResponseCallBack<BaseResponse<List<ContactListBean>>>() {
+
 
                             @Override
                             public void onSuccess(BaseResponse<List<ContactListBean>> listBaseResponse) {

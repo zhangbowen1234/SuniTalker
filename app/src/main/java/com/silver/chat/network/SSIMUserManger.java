@@ -37,7 +37,7 @@ public class SSIMUserManger {
         baseResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.body().getStatusCode() == 1 || response.body().getStatusCode() == 2) {
+                if (response.body().getStatusCode() == 200 || response.body().getStatusCode() == 2) {
                     callBack.onSuccess(response.body());
                 } else {
                     callBack.onFailed(response.body());
