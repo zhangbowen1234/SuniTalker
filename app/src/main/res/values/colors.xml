@@ -58,4 +58,5 @@
 
     <color name="topdialog">#19e64dff</color><!--置顶色 -->
     <color name="lavenderblush">#fff0f5</color><!--淡紫红 -->
+    <color name="light_gray">#aeacac</color>
 </resources>

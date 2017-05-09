@@ -2,179 +2,87 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
     <!--<android.support.v4.widget.SwipeRefreshLayout-->
-        <!--android:id="@+id/swipe_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+    <!--android:id="@+id/swipe_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-            <!--<LinearLayout-->
-                <!--android:id="@+id/new_friend_btn"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/dp_50"-->
-                <!--android:gravity="center_vertical"-->
-                <!--android:orientation="horizontal">-->
-
-                <!--<ImageView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="@dimen/dp_10"-->
-                    <!--android:src="@drawable/new_friend_img" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="@dimen/dp_10"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:text="@string/contact_new_friend"-->
-                    <!--android:textColor="@color/white"-->
-                    <!--android:textSize="@dimen/font_15" />-->
-
-                <!--<ImageView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginRight="@dimen/dp_10"-->
-                    <!--android:src="@drawable/right_in_img" />-->
-            <!--</LinearLayout>-->
-
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="0.2dp"-->
-                <!--android:background="@color/white_26" />-->
-
-            <!--<LinearLayout-->
-                <!--android:id="@+id/group_chat_btn"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/dp_50"-->
-                <!--android:gravity="center_vertical"-->
-                <!--android:orientation="horizontal">-->
-
-                <!--<ImageView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="@dimen/dp_10"-->
-                    <!--android:src="@drawable/group_chat_img" />-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="@dimen/dp_10"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:text="@string/contact_group_chat"-->
-                    <!--android:textColor="@color/white"-->
-                    <!--android:textSize="@dimen/font_15" />-->
-
-                <!--<ImageView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginRight="@dimen/dp_10"-->
-                    <!--android:src="@drawable/right_in_img" />-->
-            <!--</LinearLayout>-->
-
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="0.2dp"-->
-                <!--android:background="@color/white_26" />-->
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
 
-            <!--<LinearLayout-->
-                <!--android:id="@+id/Horizontal_contact_layout"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="@dimen/dp_9"-->
-                <!--android:orientation="vertical"-->
-                <!--android:visibility="visible">-->
-
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="@dimen/dp_10"-->
-                    <!--android:text="常用联系人"-->
-                    <!--android:textColor="@color/contact_textcolor"-->
-                    <!--android:textSize="@dimen/font_12" />-->
-
-                <!--<android.support.v7.widget.RecyclerView-->
-                    <!--android:id="@id/horizontal_recyle_content"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:divider="@null" />-->
-            <!--</LinearLayout>-->
+            <android.support.v7.widget.RecyclerView
+                android:id="@id/recyle_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:divider="@null" />
 
 
             <TextView
-                android:id="@id/content_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:paddingBottom="@dimen/dp_5"
-                android:paddingLeft="@dimen/dp_10"
-                android:text="联系人"
-                android:textColor="@color/contact_textcolor"
-                android:textSize="@dimen/dp_12" />
-
-
-            <FrameLayout
+                android:id="@+id/title_layout_no_friends"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_height="30dp"
+                android:layout_gravity="right|top"
+                android:background="#E0E0E0"
+                android:gravity="center_vertical"
+                android:text="没有匹配的联系人"
+                android:textColor="#454545"
+                android:visibility="gone" />
 
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@id/recyle_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:divider="@null" />
+            <LinearLayout
+                android:id="@+id/title_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="right|top"
+                android:background="@color/color_lucency"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/title_layout_no_friends"
+                    android:id="@+id/title_layout_catalog"
                     android:layout_width="fill_parent"
-                    android:layout_height="30dp"
-                    android:layout_gravity="right|top"
-                    android:background="#E0E0E0"
-                    android:gravity="center_vertical"
-                    android:text="没有匹配的联系人"
-                    android:textColor="#454545"
-                    android:visibility="gone" />
-
-                <LinearLayout
-                    android:id="@+id/title_layout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="30dp"
-                    android:layout_gravity="right|top"
+                    android:layout_height="fill_parent"
                     android:background="@color/color_lucency"
-                    android:orientation="vertical">
+                    android:paddingBottom="5dip"
+                    android:paddingLeft="5dip"
+                    android:paddingTop="5dip"
+                    android:textColor="@color/contact_textcolor" />
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/title_layout_catalog"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:background="@color/color_lucency"
-                        android:paddingBottom="5dip"
-                        android:paddingLeft="5dip"
-                        android:paddingTop="5dip"
-                        android:textColor="@color/contact_textcolor" />
-                </LinearLayout>
+            <TextView
+                android:id="@+id/dialog"
+                android:layout_width="80.0dip"
+                android:layout_height="80.0dip"
+                android:layout_gravity="center"
+                android:background="@drawable/show_head_toast_bg"
+                android:gravity="center"
+                android:textColor="#ffffffff"
+                android:textSize="30.0dip"
+                android:visibility="invisible" />
 
-                <TextView
-                    android:id="@+id/dialog"
-                    android:layout_width="80.0dip"
-                    android:layout_height="80.0dip"
-                    android:layout_gravity="center"
-                    android:background="@drawable/show_head_toast_bg"
-                    android:gravity="center"
-                    android:textColor="#ffffffff"
-                    android:textSize="30.0dip"
-                    android:visibility="invisible" />
+        </FrameLayout>
+    </LinearLayout>
 
-            </FrameLayout>
-        </LinearLayout>
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_80"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/dp_20" />
     <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 </RelativeLayout>
