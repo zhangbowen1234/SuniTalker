@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
-import com.silver.chat.network.SSIMUserManger;
+import com.silver.chat.network.SSIMLoginManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.NumberUtils;
@@ -70,25 +70,16 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                 }
 //                //去后台请求获取验证码
 //                getIndentifyCode();
-
-
-                SSIMUserManger.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
+                SSIMLoginManger.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         int statusCode = baseResponse.getStatusCode();
                         Log.d(TAG, statusCode + "");
                         if (statusCode == 1) { //未注册
-
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    /**
-                                     * 获取短信验证码
-                                     */
-                                    sendSmsCode(uPhone);
-                                }
-                            }).start();
-
+                            /**
+                             * 获取短信验证码
+                             */
+                            sendSmsCode(uPhone);
                             Intent regPIntent = new Intent(mContext, RegisterPWDActivity.class);
                             regPIntent.putExtra("uPhone", uPhone);
                             ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
@@ -132,7 +123,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
     }
 
     private void sendSmsCode(String uPhone) {
-        SSIMUserManger.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+        SSIMLoginManger.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse baseResponse) {
                 Log.e(TAG, baseResponse.getStatusMsg());
@@ -155,7 +146,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 
 
 //    private void getIndentifyCode() {
-//        SSIMUserManger.userReginstCode(new ResponseCallBack<BaseResponse>() {
+//        SSIMLoginManger.userReginstCode(new ResponseCallBack<BaseResponse>() {
 //            @Override
 //            public void onSuccess(BaseResponse baseResponse) {
 //                Toast.makeText(mContext, "获取验证码成功", Toast.LENGTH_SHORT).show();
@@ -165,14 +156,11 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 //            public void onFailed(BaseResponse baseResponse) {
 //                //Log.e(TAG, code+"" );
 //                Toast.makeText(mContext, "获取验证码失败", Toast.LENGTH_SHORT).show();
-//
 //            }
 //
 //            @Override
 //            public void onError() {
 //                //Log.e(TAG, "onError" );
-//
-//
 //            }
 //        }, mUserPhone.getText().toString());
 //    }

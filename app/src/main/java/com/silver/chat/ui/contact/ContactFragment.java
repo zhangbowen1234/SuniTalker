@@ -5,16 +5,19 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import com.melnykov.fab.FloatingActionButton;
+import com.melnykov.fab.ScrollDirectionListener;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ContactListAdapter;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.base.Common;
 import com.silver.chat.entity.ContactMemberBean;
-import com.silver.chat.network.SSIMUserManger;
+import com.silver.chat.network.SSIMFrendManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
@@ -22,6 +25,7 @@ import com.silver.chat.util.CharacterParser;
 import com.silver.chat.util.PinyinComparator;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
+import com.silver.chat.view.UIUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,13 +33,10 @@ import java.util.List;
 
 /**
  * 作者：hibon on 2016/11/16 14:14
+ * 联系人
  */
 
-/*
- *  联系人
- */
-
-public class ContactFragment extends BasePagerFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ContactFragment extends BasePagerFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     /**
      * 静止没有滚动
      */
@@ -53,8 +54,9 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     private LinearLayout mNewFriend, mGroupChat;
     private RecyclerView mRecycleContent, mHorizontalRecycleContent;
     private ContactListAdapter contactAdapter;
-    private LinearLayout mContactTopMuenu;
+//    private LinearLayout mContactTopMuenu;
     private SwipeRefreshLayout mRefreshLayout;
+    private RelativeLayout mToolbar;
 
     private List<ContactMemberBean> SourceDateList;
     private ContactListAdapter contactListAdapter, oftenContactListAdapter;
@@ -71,6 +73,9 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
      * 是否获取全部联系人
      */
     private boolean isAllContact;
+    private GestureDetector mGestureDetector;
+    LinearLayoutManager linearLayoutManager;
+    FloatingActionButton fab;
 
     public static ContactFragment newInstance(boolean isAllContact) {
         Bundle args = new Bundle();
@@ -84,30 +89,54 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     protected void initView(View view) {
         super.initView(view);
         mRecycleContent = (RecyclerView) view.findViewById(R.id.recyle_content);
-//        mHorizontalRecycleContent = (RecyclerView) view.findViewById(R.id.horizontal_recyle_content);
-//        mNewFriend = (LinearLayout) view.findViewById(R.id.new_friend_btn);
-//        mGroupChat = (LinearLayout) view.findViewById(R.id.group_chat_btn);
-//        mContactTopMuenu = (LinearLayout) view.findViewById(R.id.Horizontal_contact_layout);
-//        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
+        fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.hide();
 
+        linearLayoutManager = new LinearLayoutManager(mActivity);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         //设置布局管理器
-        mRecycleContent.setLayoutManager(new LinearLayoutManager(mActivity));
-        //设置布局管理器及指定RecyclerView方向
-//        mHorizontalRecycleContent.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
+        mRecycleContent.setLayoutManager(linearLayoutManager);
         // 实例化汉字转拼音类
         characterParser = CharacterParser.getInstance();
         pinyinComparator = new PinyinComparator();
         //初始化联系人数据
         SourceDateList = filledData(getResources().getStringArray(R.array.date));
 
-        //控件显示的动画
-        mShowAnim = new AlphaAnimation(0.0f, 1.0f);
-        mShowAnim.setDuration(300);
 
-        //控件隐藏的动画
-        mHiddenAmin = new AlphaAnimation(1.0f, 0.0f);
-        mHiddenAmin.setDuration(300);
+        fab.attachToRecyclerView(mRecycleContent, new ScrollDirectionListener() {
+            @Override
+            public void onScrollDown() {
+                fab.hide();
+            }
+
+            @Override
+            public void onScrollUp() {
+                fab.show();
+            }
+        }, new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                RecyclerView.LayoutManager layoutManager = mRecycleContent.getLayoutManager();
+                if (layoutManager instanceof LinearLayoutManager) {
+                    LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
+                    int firstVisibleItemPosition = linearManager.findFirstVisibleItemPosition();
+                    if (firstVisibleItemPosition > 5) {
+                        fab.show();
+                    } else {
+                        fab.hide();
+                    }
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
     }
+
 
     /**
      * 为ListView填充数据
@@ -140,11 +169,8 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         // 根据a-z进行排序源数据
         Collections.sort(SourceDateList, pinyinComparator);
         //联系人列表的adapter
-        contactListAdapter = new ContactListAdapter(mActivity,SourceDateList);
+        contactListAdapter = new ContactListAdapter(mActivity, SourceDateList);
         mRecycleContent.setAdapter(contactListAdapter);
-        //常用联系人列表的adapter
-//        oftenContactListAdapter = new ContactListAdapter(R.layout.item_horizontal_contact_list,SourceDateList);
-//        mHorizontalRecycleContent.setAdapter(oftenContactListAdapter);
 
 //        if (isAllContact && contactListAdapter.getData().isEmpty()) {
         //请求所有文件目录数据
@@ -161,146 +187,55 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
      * 联网获取联系人列表
      */
     public void getContactList() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SSIMUserManger.contactList(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, ""), Common.version, PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""),
-                        "0", "10", new ResponseCallBack<BaseResponse<List<ContactListBean>>>() {
+        String token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
+        String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
+        Log.e("aaa",token+"==="+userId);
+        SSIMFrendManger.contactList(Common.version, userId ,"0", "1000", token ,new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
 
                             @Override
-                            public void onSuccess(BaseResponse<List<ContactListBean>> listBaseResponse) {
-                                ToastUtils.showMessage(mActivity,listBaseResponse.getStatusMsg());
-                                Log.e("ContactList,onSuccess",listBaseResponse.data+"");
+                            public void onSuccess(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
+                                ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
+                                Log.e("ContactList,onSuccess", listBaseResponse.data + "");
                             }
 
                             @Override
-                            public void onFailed(BaseResponse<List<ContactListBean>> listBaseResponse) {
-                                ToastUtils.showMessage(mActivity,listBaseResponse.getStatusMsg());
-                                Log.e("ContactList_onFailed",listBaseResponse.data+"");
+                            public void onFailed(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
+                                ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
+                                Log.e("ContactList_onFailed", listBaseResponse.toString());
                             }
 
-
-//                            @Override
-//                            public void onSuccess(BaseResponse baseResponse) {
-//                                ToastUtils.showMessage(mActivity, baseResponse.getStatusMsg());
-////                                Log.e("ContactList",listBaseResponse.data+"");
-//                            }
-//
-//                            @Override
-//                            public void onFailed(BaseResponse baseResponse) {
-//                                ToastUtils.showMessage(mActivity, baseResponse.getStatusMsg());
-////                                Log.e("ContactList",listBaseResponse.data+"");
-//                            }
-//
                             @Override
                             public void onError() {
                                 ToastUtils.showMessage(mActivity, "获取失败");
                             }
                         });
-            }
-        }).start();
-
 
     }
 
+    int firstposition;
 
     @Override
     protected void initListener() {
         super.initListener();
-//        mNewFriend.setOnClickListener(this);
-//        mGroupChat.setOnClickListener(this);
-        /**
-         * 联系人点击
-         */
-//        mRecycleContent.addOnItemTouchListener(new OnItemClickListener() {
-//            @Override
-//            public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                ContactMemberBean contactMemberBean = (ContactMemberBean) adapter.getItem(position);
-//                Intent mIntent = new Intent(mActivity, FriendInfoActivity.class);
-//                mIntent.putExtra("contactName", contactMemberBean.getContactName());
-//                startActivity(mIntent);
-//
-//            }
-//        });
-        /**
-         * 常用联系人点击
-         */
-//        mHorizontalRecycleContent.addOnItemTouchListener(new OnItemClickListener() {
-//            @Override
-//            public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                ContactMemberBean contactMemberBean = (ContactMemberBean) adapter.getItem(position);
-//                ToastUtil.toastMessage(mActivity, contactMemberBean.getContactName());
-
-//            }
-//        });
-
-        /**
-         * 滑动监听
-         */
-//        mRecycleContent.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//
-//            }
-//
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                Log.i("onScrollStateChanged", "newState: " + newState);
-//                if (newState == SCROLL_STATE_IDLE) {
-////                    mContactTopMuenu.setVisibility(View.GONE);
-//                }
-//            }
-//        });
-//        mRecycleContent.addOnScrollListener(new MyRecyclerViewScrollListener());
         /**
          * 刷新页面监听
          */
 //        mRefreshLayout.setOnRefreshListener(this);
 
-    }
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UIUtils.MoveToPosition(linearLayoutManager,0);
+                UIUtils.MoveToPosition(new LinearLayoutManager(mActivity), mRecycleContent, 0);
+                fab.hide();
 
-    private AlphaAnimation mShowAnim, mHiddenAmin;//控件的显示和隐藏动画
-
-
-    //滑动监听
-    private class MyRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-            LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-            int lastVisibleItem = manager.findLastCompletelyVisibleItemPosition();//获取最后一个完全显示的ItemPosition
-                    // 当不滚动时
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        // 判断是否滚动到顶部
-                        if (lastVisibleItem == 0) {
-                    mContactTopMuenu.startAnimation(mShowAnim);
-                    mContactTopMuenu.setVisibility(View.VISIBLE);
-                }
-            } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {//拖动中
-                if (mContactTopMuenu.getVisibility() == View.VISIBLE) {
-                    mContactTopMuenu.startAnimation(mHiddenAmin);
-                    mContactTopMuenu.setVisibility(View.GONE);//注意此处不要使用View.GONE
-                }
             }
-        }
+        });
     }
-
-
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.new_friend_btn:
-//                startActivity(NewFriendActivity.class);
-//                break;
-//            case R.id.group_chat_btn:
-//                startActivity(GroupChatActivity.class);
-//                break;
-//        }
-//    }
 
     @Override
-    protected void getData() {
+    public void onClick(View v) {
+
     }
 
     @Override
@@ -321,4 +256,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     }
 
 
+    @Override
+    protected void getData() {
+    }
 }

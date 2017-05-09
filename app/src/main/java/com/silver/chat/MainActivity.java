@@ -20,7 +20,6 @@ import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.BadgedTabCustomView;
 import com.silver.chat.view.TabLayoutPlus;
 
-import static com.silver.chat.R.id.cancel_action;
 import static com.silver.chat.R.id.tabLayout;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -184,6 +183,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             }
         });
+
     }
 
     @Override
@@ -251,4 +251,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
         }
     }
+
+
 }

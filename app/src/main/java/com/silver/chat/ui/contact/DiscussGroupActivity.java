@@ -4,7 +4,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 
@@ -19,6 +21,8 @@ public class DiscussGroupActivity extends BaseActivity{
     ListView listView;
     RelativeLayout rlSeach;
     ImageView ivDiscussGroup;
+    private TextView tvTaoLunZu;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_discussgroup;
@@ -31,12 +35,14 @@ public class DiscussGroupActivity extends BaseActivity{
         listView = (ListView) findViewById(R.id.listview);
         rlSeach = (RelativeLayout) findViewById(R.id.rl_seach);
         ivDiscussGroup = (ImageView)findViewById(R.id.iv_discussgroup);
+        tvTaoLunZu = (TextView) findViewById(R.id.tv_taolunzu);
 
     }
 
     @Override
     protected void initData() {
         super.initData();
+
     }
 
     @Override
@@ -57,5 +63,9 @@ public class DiscussGroupActivity extends BaseActivity{
                 break;
 
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

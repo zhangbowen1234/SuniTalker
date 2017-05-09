@@ -9,10 +9,10 @@ import android.widget.TextView;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
-import com.silver.chat.network.SSIMUserManger;
+import com.silver.chat.network.SSIMLoginManger;
 import com.silver.chat.network.callback.ResponseCallBack;
-import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.requestbean.RegisterRequest;
+import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.TimeCountUtil;
@@ -115,42 +115,18 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
                 RegisterRequest.getInstance().setPws(uSetP);
                 RegisterRequest.getInstance().setRepws(uASetP);
                 RegisterRequest.getInstance().setSmsCode(uAuthC);
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        SSIMUserManger.goReginst(Common.version, RegisterRequest.getInstance(), new ResponseCallBack<BaseResponse>() {
-                            @Override
-                            public void onSuccess(BaseResponse baseResponse) {
-                                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
-                                PreferenceUtil.getInstance(mContext).setString("phone",uPhone);
-                                PreferenceUtil.getInstance(mContext).setString("pwd",uSetP);
-                                finish();
-                            }
-
-                            @Override
-                            public void onFailed(BaseResponse baseResponse) {
-                                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
-                            }
-
-                            @Override
-                            public void onError() {
-                                ToastUtils.showMessage(mContext, "网络连接错误");
-                            }
-                        });
-                    }
-                }).start();
-
+                /**
+                 * 注册
+                 */
+                goReginst();
                 break;
             case R.id.btn_auth_code:
                 //重新发送验证码并计时
                 TimePiece();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        sendSmsCode(uPhone);
-                    }
-                }).start();
+                /**
+                 * 重新获取验证码
+                 */
+                sendSmsCode(uPhone);
                 break;
             case R.id.btn_auth_code_other:
                 ScreenManager.getScreenManager().goBlackPage();
@@ -164,8 +140,34 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
 
     }
 
+    private void goReginst() {
+        SSIMLoginManger.goReginst(Common.version, RegisterRequest.getInstance(), new ResponseCallBack<BaseResponse>() {
+
+            @Override
+            public void onSuccess(BaseResponse baseResponse) {
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                PreferenceUtil.getInstance(mContext).setString("phone", uPhone);
+                PreferenceUtil.getInstance(mContext).setString("pwd", uSetP);
+                finish();
+            }
+
+            @Override
+            public void onFailed(BaseResponse baseResponse) {
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onError() {
+                ToastUtils.showMessage(mContext, "网络连接错误");
+            }
+        });
+
+    }
+
     private void sendSmsCode(String uPhone) {
-        SSIMUserManger.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+        SSIMLoginManger.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+
+
             @Override
             public void onSuccess(BaseResponse baseResponse) {
                 Log.e(TAG, baseResponse.getStatusMsg());

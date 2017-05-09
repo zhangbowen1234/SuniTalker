@@ -1,9 +1,11 @@
 package com.silver.chat.ui.contact;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -11,16 +13,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
-import com.silver.chat.entity.GroupBean;
+import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.SSIMGroupManger;
-import com.silver.chat.network.SSIMUserManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.view.CircleImageView;
 
 import java.util.ArrayList;
@@ -42,6 +45,8 @@ public class GroupChatActivity extends BaseActivity {
     private ArrayList<GroupBean> mJoinGroups;
     private GoogleApiClient client;
     private ImageView ivMyGroup;
+    private MyAdapter myAdapter;
+    private TextView tvChatCount;
 
     @Override
     protected void initView() {
@@ -50,9 +55,7 @@ public class GroupChatActivity extends BaseActivity {
         listView = (ListView) findViewById(R.id.listview);
         rlSeach = (RelativeLayout) findViewById(R.id.rl_seach);
         ivMyGroup = (ImageView)findViewById(R.id.iv_mygroup);
-
-
-
+        tvChatCount = (TextView) findViewById(R.id.tv_chatcount);
     }
 
     @Override
@@ -62,26 +65,31 @@ public class GroupChatActivity extends BaseActivity {
         mManagerGroups = new ArrayList<>();
         mJoinGroups = new ArrayList<>();
         getGroupInfo();
-        listView.setAdapter(new MyAdapter());
+        myAdapter = new MyAdapter();
+        listView.setAdapter(myAdapter);
     }
+
+
 
     /**
      * 请求网络获取群组信息
      */
     private void getGroupInfo() {
         String userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
+        String token = PreferenceUtil.getInstance(this).getString(PreferenceUtil.TOKEN, "");
         int i = Integer.parseInt(userId);
         JoinedGroupRequest request = JoinedGroupRequest.getInstance();
         request.setUserId(i);
-        SSIMGroupManger.getJoinGroupList(Common.version, request, new ResponseCallBack<BaseResponse<GroupBean>>() {
+        SSIMGroupManger.getJoinGroupList(Common.version, request,token, new ResponseCallBack<BaseResponse<ArrayList<GroupBean>>>() {
+
+
             @Override
-            public void onSuccess(BaseResponse<GroupBean> groupBeanBaseResponse) {
-                Log.e(TAG, groupBeanBaseResponse.toString());
-                distinguishGroupInfo(groupBeanBaseResponse);
+            public void onSuccess(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
+                distinguishGroupInfo(arrayListBaseResponse);
             }
 
             @Override
-            public void onFailed(BaseResponse<GroupBean> groupBeanBaseResponse) {
+            public void onFailed(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
 
             }
 
@@ -90,22 +98,32 @@ public class GroupChatActivity extends BaseActivity {
 
             }
         });
+
+
+
     }
+
+
 
     /**
      * 根据字段区分群组信息
      * @param groupBeanBaseResponse
      */
-    private void distinguishGroupInfo(BaseResponse<GroupBean> groupBeanBaseResponse) {
-        GroupBean data = groupBeanBaseResponse.data;
-        int privilege = data.getPrivilege();
-        if(privilege == 1) {
-            mCreatGroups.add(data);
-        }else if(privilege == 2) {
-            mJoinGroups.add(data);
-        }else if(privilege == 3) {
-            mManagerGroups.add(data);
+    private void distinguishGroupInfo(BaseResponse<ArrayList<GroupBean>> groupBeanBaseResponse) {
+        ArrayList<GroupBean> data = groupBeanBaseResponse.data;
+        for (int i = 0; i < data.size(); i++) {
+            int privilege = data.get(i).getPrivilege();
+            if(privilege == 1) {
+                mCreatGroups.add(data.get(i));
+            }else if(privilege == 2) {
+                mJoinGroups.add(data.get(i));
+            }else if(privilege == 3) {
+                mManagerGroups.add(data.get(i));
+            }
+
         }
+        tvChatCount.setText("("+(mCreatGroups.size()+mManagerGroups.size()+mJoinGroups.size())+")个群聊");
+        myAdapter.notifyDataSetChanged();
     }
 
 
@@ -125,6 +143,10 @@ public class GroupChatActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     @Override
     protected int getLayoutId() {
@@ -212,11 +234,20 @@ public class GroupChatActivity extends BaseActivity {
                     } else {
                         holder = (ViewHolder) convertView.getTag();
                     }
+                    //点击跳转群详情的界面
+                    convertView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(GroupChatActivity.this,GroupDetailActivity.class);
+                            startActivity(intent);
+                        }
+                    });
                     GroupBean item = getItem(position);
                     holder.tvName.setText(item.getGroupName());
                     break;
                 default:
                     break;
+
             }
             return convertView;
         }

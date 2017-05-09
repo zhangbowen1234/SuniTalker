@@ -16,6 +16,8 @@ import com.silver.chat.ui.contact.GroupChatActivity;
 import com.silver.chat.ui.contact.NewFriendActivity;
 import com.silver.chat.ui.mine.FriendInfoActivity;
 import com.silver.chat.view.CircleImageView;
+import com.silver.chat.view.recycleview.BaseQuickAdapter;
+import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
 
 import java.util.List;
 
@@ -139,9 +141,21 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             //设置布局管理器及指定RecyclerView方向
             ((OftenContactViewHolder)holder).mOftenContact.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
             //常用联系人列表的adapter
-
+            OftenContactViewAdapter oftenContactViewAdapter = new OftenContactViewAdapter(R.layout.item_horizontal_contact_list,contactList);
+            ((OftenContactViewHolder)holder).mOftenContact.setAdapter(oftenContactViewAdapter);
+            ((OftenContactViewHolder)holder).mOftenContact.addOnItemTouchListener(new OnItemClickListener() {
+            @Override
+            public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ContactMemberBean contactMemberBean = (ContactMemberBean) adapter.getItem(position);
+//                ToastUtil.toastMessage(mContext, contactMemberBean.getContactName());
+                Intent mCantactIntent = new Intent(mContext,FriendInfoActivity.class);
+                mCantactIntent.putExtra("contactName",contactList.get(position).getContactName());
+                mContext.startActivity(mCantactIntent);
+            }
+        });
         }else if (holder instanceof ContactViewHolder) {//联系人
             ((ContactViewHolder) holder).mTextView.setText(contactList.get(position).getContactName());
+
             ((ContactViewHolder) holder).mContact.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

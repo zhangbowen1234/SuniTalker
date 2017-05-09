@@ -58,4 +58,7 @@
 
     <color name="topdialog">#19e64dff</color><!--置顶色 -->
     <color name="lavenderblush">#fff0f5</color><!--淡紫红 -->
+    <color name="light_gray">#aeacac</color>
+    <color name="to_top">#00FFFFFF</color>
+    <color name="add_friend_bottom">#80FFFFFF</color>
 </resources>

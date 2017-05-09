@@ -4,7 +4,6 @@ import android.util.Log;
 
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
-import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.responsebean.FriendInfo;
 import com.silver.chat.network.responsebean.LoginRequestBean;
@@ -18,10 +17,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by joe on 2017/4/26.
+ * Created by hibon on 2017/4/26.
+ * 登录注册请求
  */
 
-public class SSIMUserManger {
+public class SSIMLoginManger {
 
     /**
      * 验证手机号是否注册
@@ -35,7 +35,7 @@ public class SSIMUserManger {
         baseResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.body().getStatusCode() == 1 || response.body().getStatusCode() == 2) {
+                if (response.body().getStatusCode() == 200 || response.body().getStatusCode() == 2) {
                     callBack.onSuccess(response.body());
                 } else {
                     callBack.onFailed(response.body());
@@ -45,7 +45,6 @@ public class SSIMUserManger {
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
-
                 callBack.onError();
             }
         });
@@ -126,42 +125,11 @@ public class SSIMUserManger {
 
             @Override
             public void onFailure(Call<BaseResponse<LoginRequestBean>> call, Throwable t) {
-
+                callBack.onError();
             }
         });
     }
 
-    /**
-     * 获取联系人列表
-     * @param version
-     * @param userId 当前用户id
-     * @param page 请求页数(从0开始)
-     * @param count 每页显示条数
-     * @param token
-     * @param callBack
-     */
-    public static void contactList(String token,String version, String userId, String page, String count,
-                                   final ResponseCallBack<BaseResponse<List<ContactListBean>>> callBack){
-        ApiService imApi = RetrofitHelper.create().imApi;
-        Call<BaseResponse<List<ContactListBean>>> baseResponseCall = imApi.contactList(token,version,userId,page,count);
-        baseResponseCall.enqueue(new Callback<BaseResponse<List<ContactListBean>>>() {
-            @Override
-            public void onResponse(Call<BaseResponse<List<ContactListBean>>> call, Response<BaseResponse<List<ContactListBean>>> response) {
-                System.out.println(response.body());
-
-                if (response.body().getStatusCode() == 200){
-                    callBack.onSuccess(response.body());
-                }else{
-                    callBack.onFailed(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse<List<ContactListBean>>> call, Throwable t) {
-
-            }
-        });
-    }
 
     /**
      * 获取用户信息
@@ -184,12 +152,11 @@ public class SSIMUserManger {
 
             @Override
             public void onFailure(Call<BaseResponse<UserInfoBean>> call, Throwable t) {
-
+                callBack.onError();
             }
         });
-
-
     }
+
     /**
      * 获取好友信息
      * @param version

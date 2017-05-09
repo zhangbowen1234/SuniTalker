@@ -3,11 +3,13 @@ package com.silver.chat.network;
 import android.util.Log;
 
 import com.silver.chat.base.Common;
-import com.silver.chat.entity.GroupBean;
 import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
-import com.silver.chat.network.requestbean.CreatGroupBean;
+import com.silver.chat.network.responsebean.GroupBean;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,26 +27,30 @@ public class SSIMGroupManger {
      * @param request
      * @param callBack
      */
-    public static void getJoinGroupList(String version, JoinedGroupRequest request, final ResponseCallBack<BaseResponse<GroupBean>> callBack) {
+    public static void getJoinGroupList(String version, final JoinedGroupRequest request, String token, final ResponseCallBack<BaseResponse<ArrayList<GroupBean>>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
-        Call<BaseResponse<GroupBean>> baseResponseCall = imApi.joinedGroupList(Common.version,request);
-        baseResponseCall.enqueue(new Callback<BaseResponse<GroupBean>>() {
+        final Call<BaseResponse<ArrayList<GroupBean>>> baseResponseCall = imApi.joinedGroupList(version, request, token);
+        imApi.joinedGroupList(version, request, token);
+        baseResponseCall.enqueue(new Callback<BaseResponse<ArrayList<GroupBean>>>() {
             @Override
-            public void onResponse(Call<BaseResponse<GroupBean>> call, Response<BaseResponse<GroupBean>> response) {
-                if (response.body().getStatusCode() == 200){
+            public void onResponse(Call<BaseResponse<ArrayList<GroupBean>>> call, Response<BaseResponse<ArrayList<GroupBean>>> response) {
+                //请求成功返回的状态码在此处是1
+                if (response.body().getStatusCode() == 1) {
                     callBack.onSuccess(response.body());
-                }else{
+                    Log.e("GroupChatActivity", response.body().toString() );
+                } else {
                     callBack.onFailed(response.body());
+                    Log.e("GroupChatActivity", response.body().toString() );
+
                 }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<GroupBean>> call, Throwable t) {
-                callBack.onError();
+            public void onFailure(Call<BaseResponse<ArrayList<GroupBean>>> call, Throwable t) {
+                Log.e("GroupChatActivity", t.toString() );
             }
         });
-    }
-    /**
+    }    /**
      * 创建群组的post请求
      * @param version
      * @param token

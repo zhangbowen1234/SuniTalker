@@ -20,6 +20,7 @@ public interface ResponseCallBack<T> {
 
     /**
      * 请求失败时的回调
+     * @param
      */
     void onError();
 

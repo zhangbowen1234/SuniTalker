@@ -15,10 +15,10 @@ import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
-import com.silver.chat.network.SSIMUserManger;
+import com.silver.chat.network.SSIMLoginManger;
 import com.silver.chat.network.callback.ResponseCallBack;
-import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.requestbean.LoginRequest;
+import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
 import com.silver.chat.util.NetUtils;
@@ -89,11 +89,10 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
          * 是否自动登陆
          */
         redirectByTime();
-        if (NetUtils.isConnected(mContext)) {//是否联网
-            getUserInfo();
-        }else {
-            ToastUtils.showMessage(mContext,"请检查网络");
-        }
+        /**
+         * 获取用户信息
+         */
+        getUserInfo();
     }
 
     @Override
@@ -115,12 +114,11 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                 } else {
                     if (PreferenceUtil.getInstance(mContext).isLog()) {
                         mBtnLogin.setClickable(false);
-                        startActivity(MainActivity.class);
+//                        goLogin();//走登录接口
+                        startActivity(MainActivity.class);//不走登录接口
                         finish();
                     }
-
                 }
-
             }
         }, DELAY_TIME);
     }
@@ -151,48 +149,10 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                 LoginRequest.getInstance().setPhone(uPhone);
                 LoginRequest.getInstance().setPassword(uPwd);
                 LoginRequest.getInstance().setPhoneUuid(PreferenceUtil.getInstance(mContext).getString("androidID", ""));
-                if (NetUtils.isConnected(this)) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            SSIMUserManger.goLogin(Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
-                                @Override
-                                public void onSuccess(BaseResponse<LoginRequestBean> loginRequestBaseResponse) {
-                                    ToastUtils.showMessage(mContext, loginRequestBaseResponse.getStatusMsg());
-                                    /**
-                                     * 登录成功后保存信息
-                                     */
-                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.USERID, loginRequestBaseResponse.data.getUserId() + "");
-                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.TOKEN, loginRequestBaseResponse.data.getToken() + "");
-                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.IMTOKEN, loginRequestBaseResponse.data.getImToken() + "");
-                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.IMUSERID, loginRequestBaseResponse.data.getImUserId() + "");
-                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR, loginRequestBaseResponse.data.getAvatar() + "");
-                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME, loginRequestBaseResponse.data.getNickName() + "");
-                                    PreferenceUtil.getInstance(LoginActivity.this).setLog(true);
-                                    PreferenceUtil.getInstance(mContext).setString("phone",uPhone);
-                                    PreferenceUtil.getInstance(mContext).setString("pwd",uPwd);
-                                    Message logMsg = new Message();
-                                    logMsg.what = 0;
-                                    logHandler.sendMessage(logMsg);
-
-                                }
-
-                                @Override
-                                public void onFailed(BaseResponse<LoginRequestBean> loginRequestBaseResponse) {
-                                    ToastUtils.showMessage(mContext, loginRequestBaseResponse.getStatusMsg());
-                                }
-
-                                @Override
-                                public void onError() {
-                                    ToastUtils.showMessage(mContext, "连接异常");
-                                }
-                            });
-                        }
-                    }).start();
-                } else {
-                    ToastUtils.showMessage(this, "请检查网络!");
-                }
-
+                /**
+                 * 登录
+                 */
+                goLogin();
 
                 break;
             case R.id.go_reg:
@@ -207,14 +167,61 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+    /**
+     * 登录入口
+     */
+    private void goLogin() {
+        if (NetUtils.isConnected(this)) {
+            SSIMLoginManger.goLogin(Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
+                @Override
+                public void onSuccess(BaseResponse<LoginRequestBean> loginRequestBeanBaseResponse) {
+                    ToastUtils.showMessage(mContext, loginRequestBeanBaseResponse.getStatusMsg());
+                    /**
+                     * 登录成功后保存信息
+                     */
+                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.USERID, loginRequestBeanBaseResponse.data.getUserId() + "");
+                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.TOKEN, loginRequestBeanBaseResponse.data.getToken());
+                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.IMTOKEN, loginRequestBeanBaseResponse.data.getImToken());
+                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.IMUSERID, loginRequestBeanBaseResponse.data.getImUserId() + "");
+                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR, loginRequestBeanBaseResponse.data.getAvatar());
+                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME, loginRequestBeanBaseResponse.data.getNickName());
+                    PreferenceUtil.getInstance(LoginActivity.this).setLog(true);
+                    PreferenceUtil.getInstance(mContext).setString("phone", uPhone);
+                    PreferenceUtil.getInstance(mContext).setString("pwd", uPwd);
+                    Log.e("登录得到toKen", loginRequestBeanBaseResponse.data.getToken());
+                    Message logMsg = new Message();
+                    logMsg.what = 0;
+                    logMsg.obj = loginRequestBeanBaseResponse.getStatusMsg();
+                    logHandler.sendMessage(logMsg);
+                }
+
+                @Override
+                public void onFailed(BaseResponse<LoginRequestBean> loginRequestBaseResponse) {
+                    ToastUtils.showMessage(mContext, loginRequestBaseResponse.getStatusMsg());
+                }
+
+                @Override
+                public void onError() {
+                    ToastUtils.showMessage(mContext, "连接异常");
+                }
+            });
+        } else {
+            ToastUtils.showMessage(this, "请检查网络!");
+        }
+
+    }
+
     Handler logHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0: //跳转启动主页
                     getUserInfo();
+                    Object obj = msg.obj;
+                    Log.e("AAAA",obj+"");
                     PreferenceUtil.getInstance(LoginActivity.this).setLog(true);
                     startActivity(MainActivity.class);
+                    finish();
                     break;
             }
         }
@@ -232,44 +239,41 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 获取用户信息
      */
-    private String token;
-    private void getUserInfo(){
-        token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
-        if (token != null && !"".equals(token)) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    SSIMUserManger.getUserInfo(Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
-                        @Override
-                        public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
-//                            ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
-                            Log.d("userInfo",userInfoBeanBaseResponse.getStatusMsg());
-                            /**
-                             * 保存用户信息
-                             */
-                            PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.USERPHONE, userInfoBeanBaseResponse.data.getMobile() + "");
-                            PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR, userInfoBeanBaseResponse.data.getAvatar() + "");
-                            PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME, userInfoBeanBaseResponse.data.getNickName() + "");
-                            PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.SEX, userInfoBeanBaseResponse.data.getSex());
-                            PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.SEX, userInfoBeanBaseResponse.data.getAge());
-                            PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.SIGNATURE, userInfoBeanBaseResponse.data.getSignature());
-                            PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.LEVEL, userInfoBeanBaseResponse.data.getLevel());
-                        }
+    private void getUserInfo() {
+        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+        if (NetUtils.isConnected(mContext)) {//是否联网
+            if (token != null && !"".equals(token)) {
+                SSIMLoginManger.getUserInfo(Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
+                    @Override
+                    public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
+//                        ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
+                        Log.e("getUserInfo", userInfoBeanBaseResponse.getStatusMsg());
+                        /**
+                         * 保存用户信息
+                         */
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.USERPHONE, userInfoBeanBaseResponse.data.getMobile() + "");
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR, userInfoBeanBaseResponse.data.getAvatar() + "");
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME, userInfoBeanBaseResponse.data.getNickName() + "");
+                        PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.SEX, userInfoBeanBaseResponse.data.getSex());
+                        PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.SEX, userInfoBeanBaseResponse.data.getAge());
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.SIGNATURE, userInfoBeanBaseResponse.data.getSignature());
+                        PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.LEVEL, userInfoBeanBaseResponse.data.getLevel());
+                    }
 
-                        @Override
-                        public void onFailed(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
-                            ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
+                    @Override
+                    public void onFailed(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
+                        ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
 //                            Log.d("userInfo",userInfoBeanBaseResponse.getStatusMsg());
-                        }
+                    }
 
-                        @Override
-                        public void onError() {
-                            ToastUtils.showMessage(mContext, "连接失败");
-                        }
-                    });
-                }
-            }).start();
+                    @Override
+                    public void onError() {
+                        ToastUtils.showMessage(mContext, "连接失败");
+                    }
+                });
+            }
+        } else {
+            ToastUtils.showMessage(mContext, "请检查网络");
         }
     }
-
 }
