@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
     android:orientation="vertical">
 
 
@@ -77,12 +78,16 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginRight="@dimen/dp_20"
+        android:src="@drawable/to_top"
+        fab:fab_shadow="false"
+        fab:fab_type="mini"
+        fab:fab_colorNormal="@color/to_top"
+        fab:fab_colorPressed="@color/to_top"
+        android:layout_marginRight="@dimen/dp_23"
         android:layout_marginBottom="@dimen/dp_80"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/dp_20" />
+        android:layout_marginEnd="@dimen/dp_23" />
     <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 </RelativeLayout>

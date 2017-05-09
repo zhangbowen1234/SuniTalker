@@ -1,4 +1,4 @@
-package com.silver.chat.entity;
+package com.silver.chat.network.responsebean;
 
 /**
  * Created by Joe on 2017/4/28.

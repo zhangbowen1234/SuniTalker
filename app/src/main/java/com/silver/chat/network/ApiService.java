@@ -1,17 +1,16 @@
 package com.silver.chat.network;
 
-import com.silver.chat.entity.GroupBean;
+import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
+import com.silver.chat.network.requestbean.LoginRequest;
+import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
-import com.silver.chat.network.responsebean.CreatGroupBean;
-import com.silver.chat.network.requestbean.LoginRequest;
+import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.responsebean.LoginRequestBean;
-import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.network.responsebean.UserInfoBean;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -42,9 +41,9 @@ public interface ApiService {
     //获取用户信息
     @GET("imx/{version}/user/information")
     Call<BaseResponse<UserInfoBean>> userInfo(@Path("version")String version, @Header("token")String token);
-    //获取联系人列表
+    //获取好友列表
     @GET("imx/{version}/userfriend/{userId}/{page}/{count}")
-    Call<BaseResponse<List<ContactListBean>>> contactList(@Header("token")String token, @Path("version") String version, @Path("userId") String userId, @Path("page") String page, @Path("count") String count);
+    Call<BaseResponse<ArrayList<ContactListBean>>> contactList( @Path("version") String version, @Path("userId") String userId, @Path("page") String page, @Path("count") String count,@Header("token")String token);
 
     //创建群组
     @POST("imx/{version}/user/group")

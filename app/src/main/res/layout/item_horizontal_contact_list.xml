@@ -14,7 +14,7 @@
         android:id="@+id/im_contact_image"
         android:layout_width="@dimen/dp_47"
         android:layout_height="@dimen/dp_47"
-        android:src="@drawable/ic_contact_portrait"
+        android:src="@drawable/system_head_portrait"
         android:scaleType="centerCrop"/>
 
     <TextView

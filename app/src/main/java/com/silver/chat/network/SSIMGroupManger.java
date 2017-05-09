@@ -1,12 +1,15 @@
 package com.silver.chat.network;
 
 import android.util.Log;
-import com.silver.chat.entity.GroupBean;
+
 import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.GroupBean;
+
 import java.util.ArrayList;
-import com.silver.chat.network.responsebean.CreatGroupBean;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

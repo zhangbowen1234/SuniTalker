@@ -7,8 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.View;
-import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -19,8 +17,7 @@ import com.silver.chat.adapter.ContactListAdapter;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.base.Common;
 import com.silver.chat.entity.ContactMemberBean;
-import com.silver.chat.entity.GroupBean;
-import com.silver.chat.network.SSIMUserManger;
+import com.silver.chat.network.SSIMFrendManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
@@ -36,10 +33,7 @@ import java.util.List;
 
 /**
  * 作者：hibon on 2016/11/16 14:14
- */
-
-/*
- *  联系人
+ * 联系人
  */
 
 public class ContactFragment extends BasePagerFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
@@ -97,6 +91,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         mRecycleContent = (RecyclerView) view.findViewById(R.id.recyle_content);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.hide();
+
         linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         //设置布局管理器
@@ -106,6 +101,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         pinyinComparator = new PinyinComparator();
         //初始化联系人数据
         SourceDateList = filledData(getResources().getStringArray(R.array.date));
+
 
         fab.attachToRecyclerView(mRecycleContent, new ScrollDirectionListener() {
             @Override
@@ -191,23 +187,21 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
      * 联网获取联系人列表
      */
     public void getContactList() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SSIMUserManger.contactList(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, ""), Common.version, PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""),
-                        "0", "10", new ResponseCallBack<BaseResponse<List<ContactListBean>>>() {
-
+        String token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
+        String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
+        Log.e("aaa",token+"==="+userId);
+        SSIMFrendManger.contactList(Common.version, userId ,"0", "1000", token ,new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
 
                             @Override
-                            public void onSuccess(BaseResponse<List<ContactListBean>> listBaseResponse) {
+                            public void onSuccess(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
                                 ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
                                 Log.e("ContactList,onSuccess", listBaseResponse.data + "");
                             }
 
                             @Override
-                            public void onFailed(BaseResponse<List<ContactListBean>> listBaseResponse) {
+                            public void onFailed(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
                                 ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
-                                Log.e("ContactList_onFailed", listBaseResponse.data + "");
+                                Log.e("ContactList_onFailed", listBaseResponse.toString());
                             }
 
                             @Override
@@ -215,9 +209,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                                 ToastUtils.showMessage(mActivity, "获取失败");
                             }
                         });
-            }
-        }).start();
-
 
     }
 
@@ -236,7 +227,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
             @Override
             public void onClick(View view) {
                 UIUtils.MoveToPosition(linearLayoutManager,0);
-//                UIUtils.MoveToPosition(new LinearLayoutManager(mContext), recyclerview, 0);
+                UIUtils.MoveToPosition(new LinearLayoutManager(mActivity), mRecycleContent, 0);
                 fab.hide();
 
             }
