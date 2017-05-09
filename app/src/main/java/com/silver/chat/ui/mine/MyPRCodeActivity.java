@@ -71,7 +71,6 @@ public class MyPRCodeActivity extends BaseActivity implements View.OnClickListen
 //                startActivity(MyPRScanCodeActivity.class);
                 Intent intent = new Intent(this,ScanActivity.class);
                 startActivityForResult(intent,REQUEST_CODE);
-                startActivity(intent);
                 break;
             case R.id.iv_back:
                 finish();

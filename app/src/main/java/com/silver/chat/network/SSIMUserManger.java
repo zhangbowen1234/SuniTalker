@@ -3,11 +3,11 @@ package com.silver.chat.network;
 import android.util.Log;
 
 import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.LoginRequest;
+import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
-import com.silver.chat.network.responsebean.LoginRequest;
 import com.silver.chat.network.responsebean.LoginRequestBean;
-import com.silver.chat.network.responsebean.RegisterRequest;
 import com.silver.chat.network.responsebean.UserInfoBean;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import retrofit2.Response;
  * Created by joe on 2017/4/26.
  */
 
-public class SSIMUserMange {
+public class SSIMUserManger {
 
     /**
      * 验证手机号是否注册
@@ -34,16 +34,17 @@ public class SSIMUserMange {
         baseResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.body().getStatusCode() == 1 || response.body().getStatusCode() == 2) {
+                if (response.body().getStatusCode() == 200 || response.body().getStatusCode() == 2) {
                     callBack.onSuccess(response.body());
                 } else {
                     callBack.onFailed(response.body());
                 }
-                Log.e("response", response.body().toString());
+                //Log.e("response", response.body().toString());
             }
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
+
                 callBack.onError();
             }
         });
@@ -188,6 +189,4 @@ public class SSIMUserMange {
 
 
     }
-
-
 }

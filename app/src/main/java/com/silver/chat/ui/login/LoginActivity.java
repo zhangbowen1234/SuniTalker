@@ -15,20 +15,21 @@ import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
-import com.silver.chat.network.SSIMUserMange;
+import com.silver.chat.entity.GroupBean;
+import com.silver.chat.network.SSIMUserManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
-import com.silver.chat.network.responsebean.LoginRequest;
+import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
 import com.silver.chat.util.NetUtils;
 import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
-import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class
@@ -156,26 +157,27 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            SSIMUserMange.goLogin(Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
+                            SSIMUserManger.goLogin(Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
+
+
                                 @Override
-                                public void onSuccess(BaseResponse<LoginRequestBean> loginRequestBaseResponse) {
-                                    ToastUtils.showMessage(mContext, loginRequestBaseResponse.getStatusMsg());
+                                public void onSuccess(BaseResponse<LoginRequestBean> loginRequestBeanBaseResponse) {
+                                    ToastUtils.showMessage(mContext, loginRequestBeanBaseResponse.getStatusMsg());
                                     /**
                                      * 登录成功后保存信息
                                      */
-                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.USERID, loginRequestBaseResponse.data.getUserId() + "");
-                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.TOKEN, loginRequestBaseResponse.data.getToken() + "");
-                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.IMTOKEN, loginRequestBaseResponse.data.getImToken() + "");
-                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.IMUSERID, loginRequestBaseResponse.data.getImUserId() + "");
-                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR, loginRequestBaseResponse.data.getAvatar() + "");
-                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME, loginRequestBaseResponse.data.getNickName() + "");
+                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.USERID, loginRequestBeanBaseResponse.data.getUserId() + "");
+                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.TOKEN, loginRequestBeanBaseResponse.data.getToken() + "");
+                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.IMTOKEN, loginRequestBeanBaseResponse.data.getImToken() + "");
+                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.IMUSERID, loginRequestBeanBaseResponse.data.getImUserId() + "");
+                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR, loginRequestBeanBaseResponse.data.getAvatar() + "");
+                                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME, loginRequestBeanBaseResponse.data.getNickName() + "");
                                     PreferenceUtil.getInstance(LoginActivity.this).setLog(true);
                                     PreferenceUtil.getInstance(mContext).setString("phone",uPhone);
                                     PreferenceUtil.getInstance(mContext).setString("pwd",uPwd);
                                     Message logMsg = new Message();
                                     logMsg.what = 0;
                                     logHandler.sendMessage(logMsg);
-
                                 }
 
                                 @Override
@@ -240,10 +242,12 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    SSIMUserMange.getUserInfo(Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
+                    SSIMUserManger.getUserInfo(Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
+
+
                         @Override
                         public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
-//                            ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
+                            ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
                             Log.d("userInfo",userInfoBeanBaseResponse.getStatusMsg());
                             /**
                              * 保存用户信息

@@ -23,10 +23,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="我的群"
+            android:text="讨论组"
             android:textColor="@color/white"
             android:textSize="@dimen/dp_15" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_35">
@@ -65,14 +66,13 @@
             android:layout_alignParentBottom="true"
             android:background="@color/txt_font_one_color" />
     </RelativeLayout>
-<FrameLayout
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
-            android:clickable="true"
-            android:id="@+id/iv_mygroup"
+            android:id="@+id/iv_discussgroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
@@ -85,7 +85,6 @@
             android:divider="@null" />
 
     </FrameLayout>
-
 
 
 </LinearLayout>

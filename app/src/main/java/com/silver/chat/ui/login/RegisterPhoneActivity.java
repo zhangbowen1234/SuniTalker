@@ -1,26 +1,25 @@
 package com.silver.chat.ui.login;
 
 import android.content.Intent;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
-import com.silver.chat.network.SSIMUserMange;
+import com.silver.chat.entity.GroupBean;
+import com.silver.chat.network.SSIMUserManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.NumberUtils;
-import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
-import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
+
+import java.util.ArrayList;
 
 
 /**
@@ -76,7 +75,9 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 //                getIndentifyCode();
 
 
-                SSIMUserMange.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
+                SSIMUserManger.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
+
+
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         int statusCode = baseResponse.getStatusCode();
@@ -136,7 +137,9 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
     }
 
     private void sendSmsCode(String uPhone) {
-        SSIMUserMange.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+        SSIMUserManger.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+
+
             @Override
             public void onSuccess(BaseResponse baseResponse) {
                 Log.e(TAG, baseResponse.getStatusMsg());
@@ -159,7 +162,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 
 
 //    private void getIndentifyCode() {
-//        SSIMUserMange.userReginstCode(new ResponseCallBack<BaseResponse>() {
+//        SSIMUserManger.userReginstCode(new ResponseCallBack<BaseResponse>() {
 //            @Override
 //            public void onSuccess(BaseResponse baseResponse) {
 //                Toast.makeText(mContext, "获取验证码成功", Toast.LENGTH_SHORT).show();

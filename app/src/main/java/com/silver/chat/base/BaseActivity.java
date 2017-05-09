@@ -37,7 +37,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         mContext = this;
         ToastUtil.cancelToast();
         AppManager.getInstance().addActivity(this);
-        ButterKnife.bind(this);
         initView();
         initListener();
         initData();

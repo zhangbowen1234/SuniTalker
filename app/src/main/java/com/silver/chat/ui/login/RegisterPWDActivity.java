@@ -1,6 +1,5 @@
 package com.silver.chat.ui.login;
 
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,16 +9,18 @@ import android.widget.TextView;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
-import com.silver.chat.network.SSIMUserMange;
+import com.silver.chat.entity.GroupBean;
+import com.silver.chat.network.SSIMUserManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
-import com.silver.chat.network.responsebean.RegisterRequest;
+import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.TimeCountUtil;
-import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
+
+import java.util.ArrayList;
 
 
 /**
@@ -121,7 +122,9 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        SSIMUserMange.goReginst(Common.version, RegisterRequest.getInstance(), new ResponseCallBack<BaseResponse>() {
+                        SSIMUserManger.goReginst(Common.version, RegisterRequest.getInstance(), new ResponseCallBack<BaseResponse>() {
+
+
                             @Override
                             public void onSuccess(BaseResponse baseResponse) {
                                 ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
@@ -167,7 +170,9 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void sendSmsCode(String uPhone) {
-        SSIMUserMange.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+        SSIMUserManger.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+
+
             @Override
             public void onSuccess(BaseResponse baseResponse) {
                 Log.e(TAG, baseResponse.getStatusMsg());

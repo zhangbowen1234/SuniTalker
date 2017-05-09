@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@id/lly_more"
+    android:id="@+id/lly_chat_more"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:clickable="true"
     android:orientation="vertical"
+    android:visibility="gone"
     >
 
     <LinearLayout
@@ -16,7 +17,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@id/tv_scan"
+            android:id="@+id/tv_scan_chat"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -27,7 +28,7 @@
             android:text="@string/global_scan"/>
 
         <TextView
-            android:id="@id/tv_search"
+            android:id="@+id/tv_search_chat"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -37,7 +38,7 @@
             android:text="@string/global_search"/>
 
         <TextView
-            android:id="@id/tv_start_chat"
+            android:id="@+id/tv_start_group_chat"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -55,12 +56,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:orientation="horizontal"
-        android:layout_above="@+id/iv_back"
+        android:layout_above="@+id/iv_back_chat"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
         <TextView
-            android:id="@id/tv_unread"
+            android:id="@+id/tv_add_friend"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_40"
@@ -71,7 +72,7 @@
             android:text="@string/global_add_friend"/>
 
         <TextView
-            android:id="@id/tv_read"
+            android:id="@+id/tv_search_group"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -81,7 +82,7 @@
             android:text="@string/global_find_group"/>
 
         <TextView
-            android:id="@+id/tv_chat_more"
+            android:id="@+id/tv_more_chat"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -94,7 +95,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@id/iv_back"
+        android:id="@+id/iv_back_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="19dp"
