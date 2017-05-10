@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:id="@+id/friendinfo_btn"
+    android:clickable="true"
+    android:paddingBottom="@dimen/dp_5"
+    android:paddingTop="@dimen/dp_5"
+    >
+    <ImageView
+        android:id="@+id/iv_friendinfo_choose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/choose"
+        android:layout_marginLeft="10dp"/>
+
+    <com.silver.chat.view.CircleImageView
+        android:id="@id/im_contact_image"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="@dimen/dp_32"
+        android:src="@drawable/system_head_portrait"
+        android:scaleType="centerCrop"
+        android:layout_marginLeft="@dimen/dp_10"/>
+
+    <TextView
+        android:id="@+id/tv_contact_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:text="18610927144"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_15" />
+
+
+</LinearLayout>

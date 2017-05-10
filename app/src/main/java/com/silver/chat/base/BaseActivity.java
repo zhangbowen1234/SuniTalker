@@ -2,6 +2,7 @@ package com.silver.chat.base;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.View;
 
 import com.silver.chat.R;
 import com.silver.chat.util.AppManager;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
 
 import butterknife.ButterKnife;
@@ -26,6 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      **/
     protected final String TAG = this.getClass().getSimpleName();
     protected Context mContext;
+
     @Optional
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -3,6 +3,14 @@ package com.silver.chat.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
+import android.util.Base64;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 /**
  * Created by hibon on 2016/2/26.
@@ -26,7 +34,7 @@ public class PreferenceUtil {
     public static final String AGE = "age";
     public static final String SIGNATURE = "signature";
     public static final String LEVEL = "level";
-
+    public static final String ChooseBackground = "background";
 
 
     public static synchronized PreferenceUtil getInstance(Context context) {
@@ -94,6 +102,4 @@ public class PreferenceUtil {
         edit.putFloat(name, value);
         edit.commit();
     }
-
-
 }

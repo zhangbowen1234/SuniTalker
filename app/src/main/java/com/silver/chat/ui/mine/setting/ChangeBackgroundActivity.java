@@ -1,16 +1,27 @@
 package com.silver.chat.ui.mine.setting;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.util.ChooseBackgroudUtils;
 import com.silver.chat.util.PreferenceUtil;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.silver.chat.util.Utils.context;
 
 /**
  * Created by bowen on 2017/4/28.
@@ -96,16 +107,27 @@ public class ChangeBackgroundActivity extends BaseActivity {
                 redChoose.setVisibility(View.INVISIBLE);
                 break;
             case R.id.preservation_theme:
-//                PreferenceUtil.getInstance(mContext).setLog(true);
+                if (view.getId() == R.id.purple_theme){
+                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.ChooseBackground, 0 + "");
+                }else if (view.getId() == R.id.black_theme){
+                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.ChooseBackground, 1 + "");
+                }else if (view.getId() == R.id.blue_theme){
+                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.ChooseBackground, 2 + "");
+                }else if (view.getId() == R.id.green_theme){
+                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.ChooseBackground, 3 + "");
+                }else if (view.getId() == R.id.red_theme){
+                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.ChooseBackground, 4 + "");
+                }
                 finish();
                 break;
-
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        String ChooseBackgroud = PreferenceUtil.getInstance(this).getString(PreferenceUtil.ChooseBackground, "");
+        PreferenceUtil.getInstance(context).getString("ChooseBackgroud", ChooseBackgroud);
+        ChooseBackgroudUtils.choosebackgroud(mContext, ChooseBackgroud);
     }
 }

@@ -1,89 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.silver.chat.view.RippleView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<com.silver.chat.view.RippleView--><!--android:layout_width="match_parent"--><!--android:layout_height="60dp"--><!--&gt;-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    >
-    <RelativeLayout
+    android:background="@color/translate"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/dp_10">
 
+    <com.silver.chat.view.CircleImageView
+        android:id="@id/iv_avatar"
+        android:layout_width="@dimen/dp_45"
+        android:layout_height="@dimen/dp_45"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="@dimen/dp_7"
+        android:src="@drawable/system_head_portrait"
+        app:civ_border_color="@color/white_10"
+        app:civ_border_width="@dimen/dp_1" />
+
+    <TextView
+        android:id="@id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_11"
+        android:singleLine="true"
+        android:text="2016/11/16"
+        android:textColor="@color/chat_time"
+        android:textSize="@dimen/font_11" />
+
+    <TextView
+        android:id="@id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginRight="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_toLeftOf="@id/tv_time"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:singleLine="true"
+        android:text="昵称"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_15" />
+
+    <ImageView
+        android:id="@id/iv_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/iv_avatar"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv_time"
+        android:layout_marginRight="@dimen/dp_10"
+        android:src="@drawable/ic_notification" />
+
+    <TextView
+        android:id="@id/tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginRight="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_4"
+        android:layout_toLeftOf="@id/iv_notification"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:singleLine="true"
+        android:text="飘飘落叶一叶秋"
+        android:textColor="@color/chat_time"
+        android:textSize="@dimen/font_12" />
+
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/translate"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/dp_10"
-        >
-        <com.silver.chat.view.CircleImageView
-            android:id="@id/iv_avatar"
-            android:layout_width="@dimen/dp_45"
-            android:layout_height="@dimen/dp_45"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="@dimen/dp_7"
-            app:civ_border_width="@dimen/dp_1"
-            app:civ_border_color="@color/white_10"
-            android:src="@drawable/system_head_portrait"/>
+        android:layout_height="@dimen/dp_0.5"
+        android:layout_below="@id/iv_avatar"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_7"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:background="@color/white_10" />
 
-        <TextView
-            android:id="@id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_11"
-            android:singleLine="true"
-            android:text="2016/11/16"
-            android:textColor="@color/chat_time"
-            android:textSize="@dimen/font_11"/>
-
-        <TextView
-            android:id="@id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_12"
-            android:layout_marginRight="@dimen/dp_12"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_toLeftOf="@id/tv_time"
-            android:layout_toRightOf="@id/iv_avatar"
-            android:singleLine="true"
-            android:text="昵称"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_15"/>
-
-        <ImageView
-            android:id="@id/iv_notification"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/iv_avatar"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/tv_time"
-            android:layout_marginRight="@dimen/dp_10"
-            android:src="@drawable/ic_notification"/>
-
-        <TextView
-            android:id="@id/tv_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_name"
-            android:layout_marginLeft="@dimen/dp_12"
-            android:layout_marginRight="@dimen/dp_12"
-            android:layout_marginTop="@dimen/dp_4"
-            android:layout_toLeftOf="@id/iv_notification"
-            android:layout_toRightOf="@id/iv_avatar"
-            android:singleLine="true"
-            android:text="飘飘落叶一叶秋"
-            android:textColor="@color/chat_time"
-            android:textSize="@dimen/font_12"/>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0.5"
-            android:layout_below="@id/iv_avatar"
-            android:layout_marginLeft="@dimen/dp_12"
-            android:layout_marginTop="@dimen/dp_7"
-            android:layout_toRightOf="@id/iv_avatar"
-            android:background="@color/white_10"
-            />
-
-    </RelativeLayout>
-</com.silver.chat.view.RippleView>
+</RelativeLayout><!--</com.silver.chat.view.RippleView>-->

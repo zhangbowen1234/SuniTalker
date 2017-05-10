@@ -84,17 +84,21 @@
             android:name=".ui.contact.GroupChatActivity"
             android:label="我的群"
             android:launchMode="singleTask"/>
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+
         <activity android:name=".ui.contact.CreatGroupActivity"
-            android:label="创建群组" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+
         <activity
             android:name=".ui.contact.DiscussGroupActivity"
-            android:launchMode="singleTask"
+            android:label="讨论组"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.contact.GroupDiscussionActivity"
+            android:label="创建讨论组" />
 
-            android:label="讨论组" />
-        <activity android:name=".ui.contact.GroupDiscussionActivity"/>
+        <activity
+            android:name=".ui.contact.GroupDetailActivity"
+            android:label="群组详情的" />
     </application>
 
 </manifest>

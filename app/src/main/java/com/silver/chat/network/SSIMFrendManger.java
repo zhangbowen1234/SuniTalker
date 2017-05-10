@@ -53,5 +53,26 @@ public class SSIMFrendManger {
         });
     }
 
+    public static void addFriends(String userId,String friendId,String comment,String token,final ResponseCallBack<BaseResponse> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> baseResponseCall = imApi.addFriend(userId, friendId, comment, token);
+        baseResponseCall.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.body().getStatusCode() == 200){
+                    callBack.onSuccess(response.body());
+                }else{
+                    callBack.onFailed(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                callBack.onError();
+            }
+        });
+
+
+    }
 
 }

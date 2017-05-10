@@ -1,9 +1,11 @@
 package com.silver.chat.ui.contact;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -21,6 +23,7 @@ import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.view.CircleImageView;
 
 import java.util.ArrayList;
@@ -43,6 +46,7 @@ public class GroupChatActivity extends BaseActivity {
     private GoogleApiClient client;
     private ImageView ivMyGroup;
     private MyAdapter myAdapter;
+    private TextView tvChatCount;
 
     @Override
     protected void initView() {
@@ -51,6 +55,7 @@ public class GroupChatActivity extends BaseActivity {
         listView = (ListView) findViewById(R.id.listview);
         rlSeach = (RelativeLayout) findViewById(R.id.rl_seach);
         ivMyGroup = (ImageView)findViewById(R.id.iv_mygroup);
+        tvChatCount = (TextView) findViewById(R.id.tv_chatcount);
     }
 
     @Override
@@ -62,8 +67,6 @@ public class GroupChatActivity extends BaseActivity {
         getGroupInfo();
         myAdapter = new MyAdapter();
         listView.setAdapter(myAdapter);
-
-
     }
 
 
@@ -119,6 +122,7 @@ public class GroupChatActivity extends BaseActivity {
             }
 
         }
+        tvChatCount.setText("("+(mCreatGroups.size()+mManagerGroups.size()+mJoinGroups.size())+")个群聊");
         myAdapter.notifyDataSetChanged();
     }
 
@@ -142,7 +146,6 @@ public class GroupChatActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(MainActivity.class);
     }
 
     @Override
@@ -175,7 +178,6 @@ public class GroupChatActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            Log.e(TAG, "getCount: "+mCreatGroups.size() + mJoinGroups.size()+mManagerGroups.size() );
             return mCreatGroups.size() + mJoinGroups.size()+mManagerGroups.size()+3;
         }
 
@@ -232,11 +234,20 @@ public class GroupChatActivity extends BaseActivity {
                     } else {
                         holder = (ViewHolder) convertView.getTag();
                     }
+                    //点击跳转群详情的界面
+                    convertView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(GroupChatActivity.this,GroupDetailActivity.class);
+                            startActivity(intent);
+                        }
+                    });
                     GroupBean item = getItem(position);
                     holder.tvName.setText(item.getGroupName());
                     break;
                 default:
                     break;
+
             }
             return convertView;
         }

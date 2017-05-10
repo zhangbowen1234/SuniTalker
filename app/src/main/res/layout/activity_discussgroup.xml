@@ -66,6 +66,17 @@
             android:layout_alignParentBottom="true"
             android:background="@color/txt_font_one_color" />
     </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_taolunzu"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="@dimen/dp_12"
+        android:paddingLeft="@dimen/dp_5"
+        android:paddingRight="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
+        android:textColor="#788796"
+        android:text="(0)个讨论组"
+        />
 
     <FrameLayout
         android:layout_width="match_parent"
