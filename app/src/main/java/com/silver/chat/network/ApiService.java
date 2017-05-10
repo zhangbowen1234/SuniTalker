@@ -53,6 +53,6 @@ public interface ApiService {
     Call<BaseResponse<ArrayList<GroupBean>>> joinedGroupList(@Path("version")String version, @Body JoinedGroupRequest joinedGroupRequest, @Header("token")String token);
 
     //申请添加好友
-
-
+//    @POST("imx/leaf/friend/:userId/:friendId/:comment")
+//    Call<>
 }
