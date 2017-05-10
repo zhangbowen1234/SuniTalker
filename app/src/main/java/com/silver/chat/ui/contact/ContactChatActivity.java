@@ -1,25 +1,38 @@
 package com.silver.chat.ui.contact;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.lqr.emoji.EmotionKeyboard;
+import com.lqr.emoji.EmotionLayout;
+import com.lqr.emoji.IEmotionExtClickListener;
+import com.lqr.emoji.IEmotionSelectedListener;
+import com.lqr.emoji.LQREmotionKit;
+import com.lqr.emoji.MoonUtils;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.ChatEntity;
 import com.silver.chat.util.ConstUtils;
+import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
+import com.silver.chat.view.UIUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +59,9 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private ImageView mBack;
 
     int lastItemPosition;
+    private EmotionLayout mElEmotion;
+    private EmotionKeyboard mEmotionKeyboard;
+    private RelativeLayout mLlContent;
 
     @Override
     protected int getLayoutId() {
@@ -62,15 +78,21 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mTitleBar = (TitleBarView) findViewById(R.id.title_bar);
         mChatMsgList = (RecyclerView) findViewById(R.id.recyle_content);
         mEmoteBtn = (ImageButton) findViewById(R.id.chat_btn_emote);
-        mExpression = (LinearLayout) findViewById(R.id.expression);
-        mFaceViewPager = (ViewPager) findViewById(R.id.face_viewpager);
+//        mExpression = (LinearLayout) findViewById(R.id.expression);
+//        mFaceViewPager = (ViewPager) findViewById(R.id.face_viewpager);
         inputEdit = (EditText) findViewById(R.id.chat_edit_input);
         mShowHead = (RelativeLayout) findViewById(R.id.show_contact_head);
         mBack = (ImageView)findViewById(R.id.title_left_back);
+        mElEmotion = (EmotionLayout) findViewById(R.id.elEmotion);
+        mLlContent = (RelativeLayout) findViewById(R.id.rl_recyle_content);
 
         //设置管理
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mChatMsgList.setLayoutManager(linearLayoutManager);
+        //将内容输入框交给EmotionLayout管理
+//        mElEmotion.attachEditText(inputEdit);
+        //实现内容区与表情区仿微信切换效果
+        initEmotionKeyboard();
 
         //判断是当前layoutManager是否为LinearLayoutManager
         // 只有LinearLayoutManager才有查找第一个和最后一个可见view位置的方法
@@ -124,6 +146,50 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mEmoteBtn.setOnClickListener(this);
         mSendMsg.setOnClickListener(this);
         mBack.setOnClickListener(this);
+        //实现IEmotionSelectedListener接口，手动实现图文混排
+//        mElEmotion.setEmotionSelectedListener(this);
+        mElEmotion.setEmotionAddVisiable(true);
+        mElEmotion.setEmotionSettingVisiable(true);
+        mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
+            @Override
+            public void onEmotionAddClick(View view) {
+                ToastUtils.showMessage(mContext,"add");
+            }
+
+            @Override
+            public void onEmotionSettingClick(View view) {
+                ToastUtils.showMessage(mContext,"setting");
+            }
+        });
+        //文字表情混合输入
+        mElEmotion.setEmotionSelectedListener(new IEmotionSelectedListener() {
+            @Override
+            public void onEmojiSelected(String key) {
+                if (inputEdit == null)
+                    return;
+                Editable editable = inputEdit.getText();
+                if (key.equals("/DEL")) {
+                    inputEdit.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
+                } else {
+                    int start = inputEdit.getSelectionStart();
+                    int end = inputEdit.getSelectionEnd();
+                    start = (start < 0 ? 0 : start);
+                    end = (start < 0 ? 0 : end);
+                    editable.replace(start, end, key);
+
+                    int editEnd = inputEdit.getSelectionEnd();
+                    MoonUtils.replaceEmoticons(LQREmotionKit.getContext(), editable, 0, editable.toString().length());
+                    inputEdit.setSelection(editEnd);
+                }
+
+            }
+
+            @Override
+            public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
+                //得到贴图的存放位置
+                String stickerPath = LQREmotionKit.getStickerPath();
+            }
+        });
     }
 
     @Override
@@ -155,13 +221,37 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 break;
 
             case R.id.chat_btn_emote:
-
+                inputEdit.clearFocus();
+                if (!mElEmotion.isShown()){
+                    showEmotionLayout();
+                    return ;
+                }else if (mElEmotion.isShown()){
+                    hideEmotionLayout();
+                    return;
+                }
+                showEmotionLayout();
                 break;
             case R.id.title_left_back:
                 finish();
                 break;
         }
+    }
 
 
+    private void showEmotionLayout() {
+        mElEmotion.setVisibility(View.VISIBLE);
+//        mEmoteBtn.setImageResource(R.mipmap.ic_cheat_keyboard);
+    }
+
+    private void hideEmotionLayout() {
+//        mElEmotion.setVisibility(View.GONE);
+        mEmoteBtn.setImageResource(R.drawable.ic_chat_emote_selected);
+    }
+    private void initEmotionKeyboard() {
+        mEmotionKeyboard = EmotionKeyboard.with(this);
+        mEmotionKeyboard.bindToContent(mLlContent);
+        mEmotionKeyboard.bindToEmotionButton(mEmoteBtn);
+//        mEmotionKeyboard.bindToEditText(inputEdit);
+        mEmotionKeyboard.setEmotionLayout(mElEmotion);
     }
 }

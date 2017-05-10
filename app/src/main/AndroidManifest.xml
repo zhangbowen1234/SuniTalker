@@ -57,7 +57,10 @@
         <activity
             android:name=".ui.mine.MyPRCodeActivity"
             android:label="我的二维码" />
-        <activity android:name=".ui.contact.ContactChatActivity" />
+        <activity android:name=".ui.contact.ContactChatActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/><!--进入界面隐藏软键盘-->
+
         <activity
             android:name=".ui.mine.SettingActivity"
             android:label="设置" />

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.silver.chat"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -65,4 +65,5 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
+    compile 'com.lqr.emoji:library:1.0.2'
 }

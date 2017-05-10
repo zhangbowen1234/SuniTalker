@@ -68,6 +68,7 @@ public class GroupDiscussionActivity extends BaseActivity {
                 break;
             case R.id.bt_creat_discussion:
                 getContactList(view);
+                finish();
                 break;
             case R.id.bt_cancel:
                 finish();

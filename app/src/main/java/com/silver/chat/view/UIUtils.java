@@ -1,7 +1,11 @@
 package com.silver.chat.view;
 
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import com.silver.chat.AppContext;
+import com.silver.chat.base.BaseApp;
 
 /**
  * Created by hibon on 2017/5/8.
@@ -41,6 +45,23 @@ public class UIUtils {
     public static void MoveToPosition(LinearLayoutManager manager, int n) {
         manager.scrollToPositionWithOffset(n, 0);
         manager.setStackFromEnd(true);
+    }
+    /**
+     * 延迟执行任务
+     *
+     * @param task
+     * @param delayMillis
+     */
+    public static void postTaskDelay(Runnable task, int delayMillis) {
+        getMainThreadHandler().postDelayed(task, delayMillis);
+    }
+    /**
+     * 得到主线程Handler
+     *
+     * @return
+     */
+    public static Handler getMainThreadHandler() {
+        return BaseApp.getMainHandler();
     }
 
 
