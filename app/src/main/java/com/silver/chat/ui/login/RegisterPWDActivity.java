@@ -59,6 +59,8 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
         mBtnAuthCodeOther = (Button) findViewById(R.id.btn_auth_code_other);
         tv_send_number = (TextView) findViewById(R.id.tv_send_number);
 
+        uPhone = getIntent().getStringExtra("uPhone");
+        tv_send_number.setText("短信已发送至" + uPhone);
 
         mBtnReg.setOnClickListener(this);
         mBtnAuthCode.setOnClickListener(this);
@@ -68,13 +70,6 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
 //        mAuthCode.addTextChangedListener(new EditChangedListener());
         //计时器
         TimePiece();
-    }
-
-    @Override
-    protected void initData() {
-        super.initData();
-        uPhone = getIntent().getStringExtra("uPhone");
-        tv_send_number.setText("短信已发送至" + uPhone);
     }
 
 

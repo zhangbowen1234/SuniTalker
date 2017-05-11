@@ -1,17 +1,27 @@
 package com.silver.chat.ui.mine;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
+import com.silver.chat.network.SSIMLoginManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.ui.login.LoginActivity;
 import com.silver.chat.ui.mine.setting.AboutActivity;
 import com.silver.chat.ui.mine.setting.AccountActivity;
 import com.silver.chat.ui.mine.setting.ChangeBackgroundActivity;
+import com.silver.chat.util.AppManager;
 import com.silver.chat.util.ChooseBackgroudUtils;
+import com.silver.chat.util.NetUtils;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.dialog.TvLoginOutDialog;
 
 import static com.silver.chat.util.Utils.context;
@@ -87,8 +97,35 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         .setPositiveButton(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(LoginActivity.class);
-                                finish();
+                                String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+                                if (NetUtils.isConnected(mContext)) {//是否联网
+                                    if (token != null && !"".equals(token)) {
+                                        SSIMLoginManger.outLogin(Common.version, token, new ResponseCallBack<BaseResponse>() {
+                                            @Override
+                                            public void onSuccess(BaseResponse baseResponse) {
+                                                PreferenceUtil.getInstance(mContext).setFirst(false);
+                                                PreferenceUtil.getInstance(mContext).setLog(false);
+                                                Bundle loginBundle = new Bundle();
+                                                loginBundle.putInt("type",Common.LoginType);
+                                                startActivity(LoginActivity.class,loginBundle);
+                                                finish();
+                                                AppManager.getInstance().finishActivity(MainActivity.class);
+                                                Toast.makeText(mContext,"退出成功",Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            @Override
+                                            public void onFailed(BaseResponse baseResponse) {
+                                                Toast.makeText(mContext,baseResponse.getStatusMsg(),Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            @Override
+                                            public void onError() {
+                                                Toast.makeText(mContext,"连接异常",Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }}else {
+                                    ToastUtils.showMessage(mContext, "请检查网络!");
+                                }
                             }
                         }).show();
                 break;

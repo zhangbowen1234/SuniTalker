@@ -80,9 +80,6 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                              * 获取短信验证码
                              */
                             sendSmsCode(uPhone);
-                            Intent regPIntent = new Intent(mContext, RegisterPWDActivity.class);
-                            regPIntent.putExtra("uPhone", uPhone);
-                            ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
                         }
                         if (statusCode == 2) {//已注册
                             ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
@@ -100,6 +97,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                     }
                 });
                 Intent regPIntent = new Intent(RegisterPhoneActivity.this, RegisterPWDActivity.class);
+                regPIntent.putExtra("uPhone", uPhone);
                 ScreenManager.getScreenManager().StartPage(RegisterPhoneActivity.this, regPIntent, true);
                 break;
 

@@ -1,5 +1,6 @@
 package com.silver.chat.network;
 
+import com.silver.chat.network.requestbean.ForgetPasswordBean;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.requestbean.LoginRequest;
@@ -9,6 +10,7 @@ import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.responsebean.FriendInfo;
 import com.silver.chat.network.responsebean.LoginRequestBean;
+import com.silver.chat.network.responsebean.UpdateUserInfoBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
 
 import java.util.ArrayList;
@@ -44,9 +46,21 @@ public interface ApiService {
     @POST("imx/{version}/user/login")
     Call<BaseResponse<LoginRequestBean>> goLogin(@Path("version") String version, @Body LoginRequest loginRequest);
 
+    //退出登陆
+    @GET("imx/{version}/user/logout")
+    Call<BaseResponse> outLogin(@Path("version") String version,@Header("token") String token);
+
     //获取用户信息
     @GET("imx/{version}/user/information")
     Call<BaseResponse<UserInfoBean>> userInfo(@Path("version") String version, @Header("token") String token);
+
+    //修改用户信息
+    @POST("imx/{version}/user/update/information")
+    Call<BaseResponse<UpdateUserInfoBean>> updateInfo(@Path("version") String version, @Header("token") String token, @Body UpdateUserInfoBean userinfobean);
+
+    //忘记密码
+    @POST("imx/{version}/user/back/password")
+    Call<BaseResponse<ForgetPasswordBean>> backpassword(@Path("version") String version, @Body ForgetPasswordBean forgetPasswordBean);
 
     //获取好友列表
     @GET("imx/{version}/userfriend/{userId}/{page}/{count}")

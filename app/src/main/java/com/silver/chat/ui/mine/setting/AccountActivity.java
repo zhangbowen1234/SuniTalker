@@ -3,6 +3,7 @@ package com.silver.chat.ui.mine.setting;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,8 +13,18 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
+import com.silver.chat.network.SSIMLoginManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.UpdateUserInfoBean;
+import com.silver.chat.network.responsebean.UserInfoBean;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 
+import java.util.Objects;
+
+import static android.webkit.WebViewDatabase.getInstance;
 import static com.silver.chat.util.Utils.context;
 
 /**
@@ -42,6 +53,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
      */
     private LinearLayout mLlyName;
     private EditText mTvName,mEdPhone;
+    private String spName,nickName,spPhone;
 
     @Override
     protected int getLayoutId() {
@@ -71,6 +83,11 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void initData() {
         super.initData();
+        spName = PreferenceUtil.getInstance(mContext).getString("nickName","");
+        spPhone = PreferenceUtil.getInstance(mContext).getString("phone","");
+        mTvName.setText(spName);
+        mEdPhone.setText(spPhone);
+
         mTvName.setSelection(mTvName.getText().length());
         mEdPhone.setSelection(mEdPhone.getText().length());
         mTvName.addTextChangedListener(new TextWatcher() {
@@ -134,10 +151,39 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
                 finish();
                 break;
             case R.id.iv_save:
+                getUpdateInfo();
                 finish();
                 break;
             case R.id.rly_avatar:
                 break;
         }
+    }
+    public void getUpdateInfo(){
+        nickName = mTvName.getText().toString();
+        if (Objects.equals(nickName, spName) || spName.equals(nickName)){
+            //ToastUtils.showMessage(mContext,"无需重复请求");
+            return;
+        }
+        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+        UpdateUserInfoBean instance = UpdateUserInfoBean.getInstance();
+        instance.setNickName(mTvName.getText().toString());
+        instance.setSex(1);
+        instance.setAge(18);
+        instance.setSignature("生命在于运动，啪啪啪");
+
+        SSIMLoginManger.updateUserInfo(Common.version, token, instance, new ResponseCallBack<BaseResponse<UpdateUserInfoBean>>() {
+            @Override
+            public void onSuccess(BaseResponse<UpdateUserInfoBean> userInfoBeanBaseResponse) {
+                Log.e("getUserInfo", userInfoBeanBaseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onFailed(BaseResponse<UpdateUserInfoBean> userInfoBeanBaseResponse) {
+            }
+
+            @Override
+            public void onError() {
+            }
+        });
     }
 }

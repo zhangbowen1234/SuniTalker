@@ -1,6 +1,7 @@
 package com.silver.chat.ui.login;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,7 +9,13 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
+import com.silver.chat.network.SSIMLoginManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.ForgetPasswordBean;
+import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.NumberUtils;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
@@ -82,9 +89,13 @@ public class UserForgotPWDActivity extends BaseActivity implements View.OnClickL
                     ToastUtils.showMessage(UserForgotPWDActivity.this, "手机号不正确!");
                     return;
                 }
-
+                //去后台请求获取验证码
+                getIndentifyCode();
 
                 Intent forgotIntent = new Intent(this, ForgotVerificationActivity.class);
+                forgotIntent.putExtra("uPhone", uPhone);
+                forgotIntent.putExtra("newPwd",uSetP);
+                forgotIntent.putExtra("reNewPwd",uASetP);
                 ScreenManager.getScreenManager().StartPage(UserForgotPWDActivity.this, forgotIntent, true);
 
                 break;
@@ -95,6 +106,52 @@ public class UserForgotPWDActivity extends BaseActivity implements View.OnClickL
 
         }
     }
+    private void getIndentifyCode() {
+        SSIMLoginManger.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
+            @Override
+            public void onSuccess(BaseResponse baseResponse) {
+                int statusCode = baseResponse.getStatusCode();
+                Log.d(TAG, statusCode + "");
+                if (statusCode == 2) {//已注册
+                    /**
+                     * 获取短信验证码
+                     */
+                    sendSmsCode(uPhone);
+                }
+            }
+
+            @Override
+            public void onFailed(BaseResponse baseResponse) {
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onError() {
+                ToastUtils.showMessage(mContext, "网络连接错误");
+            }
+        });
+    }
+    private void sendSmsCode(String uPhone) {
+        SSIMLoginManger.userReginstCode(Common.version, uPhone, Common.RecoverPwdType, new ResponseCallBack<BaseResponse>() {
 
 
+            @Override
+            public void onSuccess(BaseResponse baseResponse) {
+                Log.e(TAG, baseResponse.getStatusMsg());
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onFailed(BaseResponse baseResponse) {
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onError() {
+                Log.e(TAG, "onError");
+                ToastUtils.showMessage(mContext, "网络连接错误");
+            }
+        });
+
+    }
 }

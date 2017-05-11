@@ -255,7 +255,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                         PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR, userInfoBeanBaseResponse.data.getAvatar() + "");
                         PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME, userInfoBeanBaseResponse.data.getNickName() + "");
                         PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.SEX, userInfoBeanBaseResponse.data.getSex());
-                        PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.SEX, userInfoBeanBaseResponse.data.getAge());
+                        PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.AGE, userInfoBeanBaseResponse.data.getAge());
                         PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.SIGNATURE, userInfoBeanBaseResponse.data.getSignature());
                         PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.LEVEL, userInfoBeanBaseResponse.data.getLevel());
                     }

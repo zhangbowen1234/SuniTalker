@@ -1,13 +1,17 @@
 package com.silver.chat.network;
 
+import android.media.session.MediaSession;
 import android.util.Log;
 
 import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.CreatGroupBean;
+import com.silver.chat.network.requestbean.ForgetPasswordBean;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.responsebean.FriendInfo;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.requestbean.RegisterRequest;
+import com.silver.chat.network.responsebean.UpdateUserInfoBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
 
 import java.util.List;
@@ -181,6 +185,82 @@ public class SSIMLoginManger {
 
             @Override
             public void onFailure(Call<BaseResponse<List<FriendInfo>>> call, Throwable t) {
+
+            }
+        });
+    }
+    /**
+     * 退出登录
+     * @param version
+     * @param token
+     * @param callBack
+     */
+    public static void outLogin(String version, String token, final ResponseCallBack<BaseResponse> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> baseResponseCall = imApi.outLogin(version,token);
+        baseResponseCall.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.body().getStatusCode() == 200){
+                    callBack.onSuccess(response.body());
+                }else{
+                    callBack.onFailed(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                callBack.onError();
+            }
+        });
+    }
+    /**
+     * 修改好友信息
+     * @param version
+     * @param userInfoBean 实体类
+     * @param token
+     * @param callBack
+     */
+    public static void updateUserInfo(String version, String token, UpdateUserInfoBean userInfoBean, final ResponseCallBack<BaseResponse<UpdateUserInfoBean>> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse<UpdateUserInfoBean>> baseResponseCall = imApi.updateInfo(version,token,userInfoBean);
+        baseResponseCall.enqueue(new Callback<BaseResponse<UpdateUserInfoBean>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<UpdateUserInfoBean>> call, Response<BaseResponse<UpdateUserInfoBean>> response) {
+                if (response.body().getStatusCode() == 200){
+                    callBack.onSuccess(response.body());
+                }else{
+                    callBack.onFailed(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<UpdateUserInfoBean>> call, Throwable t) {
+
+            }
+        });
+    }
+    /**
+     * 忘记密码
+     * @param version
+     * @param forgetPasswordBean 实体类
+     * @param callBack
+     */
+    public static void forgetpwd(String version, ForgetPasswordBean forgetPasswordBean, final ResponseCallBack<BaseResponse<ForgetPasswordBean>> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse<ForgetPasswordBean>> baseResponseCall = imApi.backpassword(version,forgetPasswordBean);
+        baseResponseCall.enqueue(new Callback<BaseResponse<ForgetPasswordBean>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<ForgetPasswordBean>> call, Response<BaseResponse<ForgetPasswordBean>> response) {
+                if (response.body().getStatusCode() == 200){
+                    callBack.onSuccess(response.body());
+                }else{
+                    callBack.onFailed(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<ForgetPasswordBean>> call, Throwable t) {
 
             }
         });

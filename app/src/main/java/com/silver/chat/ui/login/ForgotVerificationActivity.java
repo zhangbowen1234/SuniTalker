@@ -1,10 +1,19 @@
 package com.silver.chat.ui.login;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
+import com.silver.chat.network.SSIMLoginManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.ForgetPasswordBean;
+import com.silver.chat.network.requestbean.RegisterRequest;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.TimeCountUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
@@ -19,7 +28,8 @@ public class ForgotVerificationActivity extends BaseActivity implements View.OnC
     private MyLineEditText mAuthCode;
     TimeCountUtil timeCountUtil;//倒计时工具
     private Button mBtnAuthCode, mVerification;
-    private String uAuthCode;
+    private TextView tv_send_sms_phone;
+    private String uSetP, uASetP, uPhone,uAuthCode;
 
     private void TimePiece() {
         if (timeCountUtil == null) {
@@ -33,11 +43,20 @@ public class ForgotVerificationActivity extends BaseActivity implements View.OnC
         mAuthCode = (MyLineEditText) findViewById(R.id.edit_auth_code);
         mBtnAuthCode = (Button) findViewById(R.id.btn_auth_code);
         mVerification = (Button) findViewById(R.id.verification_bt_register);
+        tv_send_sms_phone = (TextView) findViewById(R.id.tv_send_sms_phone);
+
+        uSetP = getIntent().getStringExtra("newPwd");
+        uASetP = getIntent().getStringExtra("reNewPwd");
+        uPhone = getIntent().getStringExtra("uPhone");
+
+        tv_send_sms_phone.setText("已发送短信至" + uPhone);
 
         mVerification.setOnClickListener(this);
         //计时器
         TimePiece();
+
     }
+
 
     @Override
     protected int getLayoutId() {
@@ -55,17 +74,65 @@ public class ForgotVerificationActivity extends BaseActivity implements View.OnC
                     ToastUtils.showMessage(ForgotVerificationActivity.this, "请输入验证码!");
                     return;
                 }
-
-
+                goForgetPwd();
                 break;
             case R.id.btn_auth_code:
-
                 //重新发送验证码并计时
                 TimePiece();
-
+                /**
+                 * 重新获取验证码
+                 */
+                sendSmsCode(uPhone);
                 break;
         }
-
-
     }
+    private void goForgetPwd() {
+        ForgetPasswordBean instance = ForgetPasswordBean.getInstance();
+        instance.setSmsCode(uAuthCode);
+        instance.setNewPwd(uSetP);
+        instance.setReNewPwd(uASetP);
+        instance.setPhone(uPhone);
+        SSIMLoginManger.forgetpwd(Common.version, instance, new ResponseCallBack<BaseResponse<ForgetPasswordBean>>() {
+            @Override
+            public void onSuccess(BaseResponse<ForgetPasswordBean> forgetPasswordBeanBaseResponse) {
+                ToastUtils.showMessage(mContext, forgetPasswordBeanBaseResponse.getStatusMsg());
+                PreferenceUtil.getInstance(mContext).setString("phone", uPhone);
+                PreferenceUtil.getInstance(mContext).setString("pwd", uSetP);
+                finish();
+            }
+
+            @Override
+            public void onFailed(BaseResponse<ForgetPasswordBean> forgetPasswordBeanBaseResponse) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+    private void sendSmsCode(String uPhone) {
+        SSIMLoginManger.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+
+
+            @Override
+            public void onSuccess(BaseResponse baseResponse) {
+                Log.e(TAG, baseResponse.getStatusMsg());
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onFailed(BaseResponse baseResponse) {
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onError() {
+                Log.e(TAG, "onError");
+                ToastUtils.showMessage(mContext, "网络连接错误");
+            }
+        });
+    }
+
 }
