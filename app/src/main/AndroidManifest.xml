@@ -82,7 +82,6 @@
         <activity
             android:name=".ui.mine.setting.ChangeBackgroundActivity"
             android:label="主色调" />
-
         <activity
             android:name=".ui.contact.group.GroupChatActivity"
             android:label="我的群"
@@ -91,7 +90,6 @@
         <activity
             android:name=".ui.contact.group.CreatGroupActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
-
         <activity
             android:name=".ui.contact.group.DiscussGroupActivity"
             android:label="讨论组"
@@ -99,7 +97,6 @@
         <activity
             android:name=".ui.contact.CreatDiscussionActivity"
             android:label="创建讨论组" />
-
         <activity
             android:name=".ui.contact.group.GroupDetailActivity"
             android:label="群组详情的" />
@@ -107,6 +104,8 @@
             android:label="加群邀请"/>
         <activity android:name=".ui.chat.notification.GroupNotificationActivity"
             android:label="群通知"/>
+        <activity android:name=".ui.contact.AddFriendActivity" />
+        <activity android:name=".ui.contact.AddFriendVerifyActivity"></activity>
         <activity
             android:name=".ui.contact.group.DeleteGroupMemActivity"
             android:label="删除群成员" />

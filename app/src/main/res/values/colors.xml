@@ -61,4 +61,7 @@
     <color name="light_gray">#aeacac</color>
     <color name="to_top">#00FFFFFF</color>
     <color name="add_friend_bottom">#80FFFFFF</color>
+    <color name="search_ed">#99ffffff</color>
+
+
 </resources>

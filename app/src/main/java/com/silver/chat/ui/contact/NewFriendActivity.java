@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.silver.chat.R;
 import com.silver.chat.adapter.NewFriendAdapter;
@@ -23,6 +24,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     private RecyclerView mNFRecyclerList;
     LinearLayoutManager linearLayoutManager;
     ArrayList<ContactMemberBean> newFriendList;
+    private LinearLayout mAddFriend;
 
     @Override
     protected int getLayoutId() {
@@ -34,6 +36,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         super.initView();
         mBack = (ImageView) findViewById(R.id.title_left_back);
         mNFRecyclerList = (RecyclerView) findViewById(R.id.new_friend_list);
+        mAddFriend = (LinearLayout)findViewById(R.id.ll_add_friend);
 
         linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -54,6 +57,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void initListener() {
         mBack.setOnClickListener(this);
+        mAddFriend.setOnClickListener(this);
     }
 
     @Override
@@ -61,6 +65,9 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.title_left_back:
                 finish();
+                break;
+            case R.id.ll_add_friend:
+                startActivity(AddFriendActivity.class);
                 break;
 
         }
