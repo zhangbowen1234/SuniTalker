@@ -17,4 +17,11 @@ public class Common {
     public final static int RevampPwdType = 3; //修改
     public final static int RecoverPwdType = 3; //找回
 
+    /**
+     * 搜索方式类型
+     */
+    public final static String Login = "1"; //注册
+    public final static String Phone = "2"; //登录
+    public final static String Email = "3"; //修改
+
 }

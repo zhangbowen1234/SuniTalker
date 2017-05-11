@@ -6,70 +6,70 @@ package com.silver.chat.network.responsebean;
 
 public class ContactListBean {
 
-    private int FriendId;
-    private String RemarkName;
-    private String Avatar;
-    private int Sex;
-    private String NickName;
-    private String Signature;
-
-    public int getSex() {
-        return Sex;
-    }
-
-    public void setSex(int sex) {
-        Sex = sex;
-    }
-
-    public String getNickName() {
-        return NickName;
-    }
-
-    public void setNickName(String nickName) {
-        NickName = nickName;
-    }
+    private int friendId;
+    private String remarkName;
+    private String avatar;
+    private int sex;
+    private String nickName;
+    private String signature;
 
     public String getSignature() {
-        return Signature;
+        return signature;
     }
 
     public void setSignature(String signature) {
-        Signature = signature;
+        this.signature = signature;
     }
 
     public int getFriendId() {
-        return FriendId;
+        return friendId;
     }
 
     public void setFriendId(int friendId) {
-        FriendId = friendId;
+        this.friendId = friendId;
     }
 
     public String getRemarkName() {
-        return RemarkName;
+        return remarkName;
     }
 
     public void setRemarkName(String remarkName) {
-        RemarkName = remarkName;
+        this.remarkName = remarkName;
     }
 
     public String getAvatar() {
-        return Avatar;
+        return avatar;
     }
 
     public void setAvatar(String avatar) {
-        Avatar = avatar;
+        this.avatar = avatar;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     @Override
     public String toString() {
         return "ContactListBean{" +
-                "FriendId=" + FriendId +
-                ", RemarkName='" + RemarkName + '\'' +
-                ", Avatar='" + Avatar + '\'' +
-                ", Sex=" + Sex +
-                ", NickName='" + NickName + '\'' +
-                ", Signature='" + Signature + '\'' +
+                "friendId=" + friendId +
+                ", remarkName='" + remarkName + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", sex=" + sex +
+                ", nickName='" + nickName + '\'' +
+                ", signature='" + signature + '\'' +
                 '}';
     }
 }

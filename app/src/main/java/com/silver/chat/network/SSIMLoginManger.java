@@ -181,7 +181,7 @@ public class SSIMLoginManger {
 
             @Override
             public void onFailure(Call<BaseResponse<List<FriendInfo>>> call, Throwable t) {
-
+                callBack.onError();
             }
         });
     }

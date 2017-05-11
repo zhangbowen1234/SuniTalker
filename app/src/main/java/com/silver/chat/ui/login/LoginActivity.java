@@ -41,6 +41,10 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
     private String uPhone, uPwd;
     private CustomVideoView mVideoView;
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_login;
+    }
 
     @Override
     protected void initView() {
@@ -93,11 +97,6 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
          * 获取用户信息
          */
         getUserInfo();
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_login;
     }
 
     /**

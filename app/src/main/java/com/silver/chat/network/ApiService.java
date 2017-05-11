@@ -1,14 +1,15 @@
 package com.silver.chat.network;
 
-import com.silver.chat.network.responsebean.GroupBean;
+import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
-import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.responsebean.FriendInfo;
+import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.responsebean.LoginRequestBean;
+import com.silver.chat.network.responsebean.SearchIdBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -69,7 +71,12 @@ public interface ApiService {
     Call<BaseResponse<List<FriendInfo>>> friendinfo(@Header("token") String token, @Path("version") String version, @Path("userId") String userId, @Path("friendId") String friendId);
 
     //申请添加好友
-    @POST("imx/leaf/friend/{userId}/{friendId}/{comment}")
-    Call<BaseResponse>addFriend(@Path("userId")String userId,@Path("friendId")String friendId,@Path("comment")String comment,@Header("token")String token);
+    @PUT("imx/leaf/friend/{userId}/{friendId}/{comment}")
+    Call<BaseResponse>addFriend(@Path("userId")String userId, @Path("friendId")String friendId, @Path("comment")String comment, @Header("token")String token);
+
+    //搜索用户
+    @GET("imx/leaf/searchuser/{type}/{condition}/{page}/{count}")
+    Call<BaseResponse<ArrayList<SearchIdBean>>>searchUser(@Path("type")String type,@Path("condition")String condition,@Path("page")String page,@Path("count")String count,@Header("token")String token);
+
 
 }

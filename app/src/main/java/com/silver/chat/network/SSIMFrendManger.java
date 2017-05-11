@@ -5,6 +5,7 @@ import android.util.Log;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
+import com.silver.chat.network.responsebean.SearchIdBean;
 
 import java.util.ArrayList;
 
@@ -36,7 +37,7 @@ public class SSIMFrendManger {
         baseResponseCall.enqueue(new Callback<BaseResponse<ArrayList<ContactListBean>>>() {
             @Override
             public void onResponse(Call<BaseResponse<ArrayList<ContactListBean>>> call, Response<BaseResponse<ArrayList<ContactListBean>>> response) {
-                System.out.println(response.body());
+                Log.e("contactList",response.body()+"");
 
                 if (response.body().getStatusCode() == 200){
                     callBack.onSuccess(response.body());
@@ -53,12 +54,54 @@ public class SSIMFrendManger {
         });
     }
 
-    public static void addFriends(String userId,String friendId,String comment,String token,final ResponseCallBack<BaseResponse> callBack){
+
+    /**
+     * 申请添加好友
+     * @param userId
+     * @param friendId
+     * @param comment
+     * @param token
+     * @param callBack
+     */
+    public static void goAddFriends(String userId,String friendId,String comment,String token,final ResponseCallBack<BaseResponse> callBack){
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.addFriend(userId, friendId, comment, token);
         baseResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                Log.e("addFriends",response.toString()+"");
+                if (response.body().getStatusCode() == 200){
+                    callBack.onSuccess(response.body());
+
+                }else{
+                    callBack.onFailed(response.body());
+                }
+                Log.e("response", response.body().toString());
+
+            }
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                callBack.onError();
+            }
+        });
+    }
+
+    /**
+     * 搜素用户
+     * @param type
+     * @param condition
+     * @param page
+     * @param count
+     * @param token
+     * @param callBack
+     */
+    public static void searchUser(String type,String condition,String page,String count,String token,final ResponseCallBack<BaseResponse<ArrayList<SearchIdBean>>> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse<ArrayList<SearchIdBean>>> baseResponseCall = imApi.searchUser(type, condition, page,count, token);
+        baseResponseCall.enqueue(new Callback<BaseResponse<ArrayList<SearchIdBean>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<ArrayList<SearchIdBean>>> call, Response<BaseResponse<ArrayList<SearchIdBean>>> response) {
+                Log.e("searchUser",response.body()+"");
                 if (response.body().getStatusCode() == 200){
                     callBack.onSuccess(response.body());
                 }else{
@@ -67,12 +110,10 @@ public class SSIMFrendManger {
             }
 
             @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
+            public void onFailure(Call<BaseResponse<ArrayList<SearchIdBean>>> call, Throwable t) {
                 callBack.onError();
             }
         });
-
-
     }
 
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.silver.chat.adapter.MainPagerAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.ui.chat.SearchChatRecordActivity;
+import com.silver.chat.ui.contact.AddFriendActivity;
 import com.silver.chat.ui.contact.CreatGroupActivity;
 import com.silver.chat.ui.contact.SearchContactActivity;
 import com.silver.chat.ui.mine.ScanActivity;
@@ -237,7 +238,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 ToastUtils.showMessage(mContext,"正在修改中...");
                 break;
             case R.id.tv_add_friend:
-                ToastUtils.showMessage(mContext,"正在修改中...");
+//                ToastUtils.showMessage(mContext,"正在修改中...");
+                startActivity(AddFriendActivity.class);
                 break;
             case R.id.tv_search_group:
                 ToastUtils.showMessage(mContext,"正在修改中...");

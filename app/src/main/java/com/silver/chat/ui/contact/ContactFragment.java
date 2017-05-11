@@ -53,13 +53,14 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
     private LinearLayout mNewFriend, mGroupChat;
     private RecyclerView mRecycleContent, mHorizontalRecycleContent;
-    private ContactListAdapter contactAdapter;
-//    private LinearLayout mContactTopMuenu;
     private SwipeRefreshLayout mRefreshLayout;
     private RelativeLayout mToolbar;
-
+    /**
+     * 联系人集合
+     */
     private List<ContactMemberBean> SourceDateList;
-    private ContactListAdapter contactListAdapter, oftenContactListAdapter;
+    List<ContactMemberBean> mContactList;
+    private ContactListAdapter contactListAdapter;
 
     /**
      * 汉字转换成拼音的类
@@ -101,7 +102,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         pinyinComparator = new PinyinComparator();
         //初始化联系人数据
         SourceDateList = filledData(getResources().getStringArray(R.array.date));
-
 
         fab.attachToRecyclerView(mRecycleContent, new ScrollDirectionListener() {
             @Override
@@ -179,8 +179,10 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 //        } else if (!isAllContact &&contactListAdapter.getData().isEmpty()) {
 //            //优先从数据库中读取数据
 ////            QueryDbParent();
-//
 //        }
+
+
+
     }
 
     /**
@@ -189,30 +191,45 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     public void getContactList() {
         String token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
         String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
-        Log.e("aaa",token+"==="+userId);
-        SSIMFrendManger.contactList(Common.version, userId ,"0", "1000", token ,new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
+        SSIMFrendManger.contactList(Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
 
-                            @Override
-                            public void onSuccess(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
-                                ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
-                                Log.e("ContactList,onSuccess", listBaseResponse.data + "");
-                            }
+            @Override
+            public void onSuccess(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
+                ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
+                Log.e("ContactList,onSuccess", listBaseResponse.data.toString() + "");
 
-                            @Override
-                            public void onFailed(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
-                                ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
-                                Log.e("ContactList_onFailed", listBaseResponse.toString());
-                            }
+                mContactList = new ArrayList<ContactMemberBean>();
+                for (ContactListBean contactListBean : listBaseResponse.data) {
+                    ContactMemberBean sortModel = new ContactMemberBean();
+                    sortModel.setContactName(contactListBean.getNickName());
+                    String pinyin = characterParser.getSelling(contactListBean.getNickName());
+                    String sortString = pinyin.substring(0, 1).toUpperCase();
+                    // 正则表达式，判断首字母是否是英文字母
+                    if (sortString.matches("[A-Z]")) {
+                        sortModel.setSortLetters(sortString.toUpperCase());
+                    } else {
+                        sortModel.setSortLetters("#");
+                    }
+                    mContactList.add(sortModel);
 
-                            @Override
-                            public void onError() {
-                                ToastUtils.showMessage(mActivity, "获取失败");
-                            }
-                        });
+                }
+                Log.e("mContactList",mContactList + "");
+
+            }
+
+            @Override
+            public void onFailed(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
+                ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onError() {
+                ToastUtils.showMessage(mActivity, "获取失败");
+            }
+        });
 
     }
 
-    int firstposition;
 
     @Override
     protected void initListener() {
@@ -225,7 +242,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UIUtils.MoveToPosition(linearLayoutManager,0);
+                UIUtils.MoveToPosition(linearLayoutManager, 0);
                 UIUtils.MoveToPosition(new LinearLayoutManager(mActivity), mRecycleContent, 0);
                 fab.hide();
 
@@ -252,7 +269,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     public void onPause() {
         super.onPause();
 //        contactListAdapter.notifyDataSetChanged();
-//        oftenContactListAdapter.notifyDataSetChanged();
     }
 
 
