@@ -19,10 +19,10 @@ public class DataServer {
         List<ChatBean> list = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL1, ChatBean.CHAT_SINGLR));
-            list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL2, ChatBean.CHAT_SYSTEM));
+            list.add(new ChatBean("user_id=" + i, "userName=" + i, null, ChatBean.CHAT_SYSTEM));
             list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL3, ChatBean.CHAT_GROUP));
             list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL4, ChatBean.CHAT_DISCUSSION_GROUP));
-            list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL5, ChatBean.CHAT_GROUP_NOTICE));
+            list.add(new ChatBean("user_id=" + i, "userName=" + i, null, ChatBean.CHAT_GROUP_NOTICE));
         }
         return list;
     }

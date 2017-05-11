@@ -15,7 +15,7 @@
             android:layout_marginTop="@dimen/dp_7"
             app:civ_border_width="@dimen/dp_1"
             app:civ_border_color="@color/white_10"
-            android:src="@drawable/default_badged_count_bg"/>
+            android:src="@drawable/quntongzhi"/>
 
         <TextView
             android:id="@id/tv_time"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="8"
                 android:singleLine="true"
-                android:text="昵称"
+                android:text="群通知"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_15"/>
 
@@ -87,7 +87,7 @@
             android:layout_toLeftOf="@id/iv_notification"
             android:layout_toRightOf="@id/iv_avatar"
             android:singleLine="true"
-            android:text="飘飘落叶一叶秋"
+            android:text="XXX 退出群 XXX"
             android:textColor="@color/chat_time"
             android:textSize="@dimen/font_12"/>
 

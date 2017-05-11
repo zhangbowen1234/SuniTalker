@@ -96,12 +96,16 @@
             android:label="讨论组"
             android:launchMode="singleTask" />
         <activity
-            android:name=".ui.contact.GroupDiscussionActivity"
+            android:name=".ui.contact.CreatDiscussionActivity"
             android:label="创建讨论组" />
 
         <activity
             android:name=".ui.contact.GroupDetailActivity"
             android:label="群组详情的" />
+        <activity android:name=".ui.chat.notification.AddGroupNotifiActivity"
+            android:label="加群邀请"/>
+        <activity android:name=".ui.chat.notification.GroupNotificationActivity"
+            android:label="群通知"/>
     </application>
 
 </manifest>

@@ -46,10 +46,11 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 break;
             case ChatBean.CHAT_GROUP:
                 ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
-                holder.setText(R.id.tv_name ,"群组聊天=" + holder.getPosition());
+                holder.setText(R.id.tv_name ,"群消息=" + holder.getPosition());
+
                 break;
             case ChatBean.CHAT_SYSTEM:
-                ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
+//                ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
                 holder.setText(R.id.tv_name, "系统消息=" + holder.getPosition());
                 break;
             case ChatBean.CHAT_DISCUSSION_GROUP:
@@ -68,7 +69,7 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 holder.setText(R.id.tv_name, "讨论组消息=" + holder.getPosition());
                 break;
             case ChatBean.CHAT_GROUP_NOTICE:
-                ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
+//                ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
                 holder.setText(R.id.tv_name, "群通知=" + holder.getPosition());
                 break;
         }
@@ -79,6 +80,7 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
         } else {
             holder.itemView.setBackgroundResource(R.color.translate);
         }
+
     }
     public void updateData(List<ChatBean> sessionList) {
         clear();

@@ -4,17 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatApater;
-import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.entity.ChatBean;
 import com.silver.chat.entity.DataServer;
-import com.silver.chat.qrcode.mqzing.decoding.FinishListener;
+import com.silver.chat.ui.chat.notification.GroupNotificationActivity;
 import com.silver.chat.ui.contact.ContactChatActivity;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.dialog.TopDeleteDialog;
@@ -134,11 +131,14 @@ public class ChatRecordFragment extends BasePagerFragment {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter adapter, final View view,
                                           final int position) {
-
+                if (adapter.getItemViewType(position) == ChatBean.CHAT_GROUP_NOTICE){
+                    startActivity(GroupNotificationActivity.class);
+                }else {
 //                ChatBean chatBean = (ChatBean) mChatApater.getItem(position);
-                Intent mIntent = new Intent(mActivity, ContactChatActivity.class);
+                    Intent mIntent = new Intent(mActivity, ContactChatActivity.class);
 //                        mIntent.putExtra("contactName",chatBean.getContactName());
-                startActivity(mIntent);
+                    startActivity(mIntent);
+                }
             }
         });
     }

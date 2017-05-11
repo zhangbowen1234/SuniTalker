@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,7 +74,7 @@ public class CreatGroupActivity extends BaseActivity {
             case R.id.bt_determine:
                 if (len != 0) {
                     Name = edNewGroup.getText().toString();
-                    Intent intent = new Intent(mContext, GroupDiscussionActivity.class);
+                    Intent intent = new Intent(mContext, CreatDiscussionActivity.class);
                     intent.putExtra("Name", Name);
                     startActivity(intent);
                 } else {

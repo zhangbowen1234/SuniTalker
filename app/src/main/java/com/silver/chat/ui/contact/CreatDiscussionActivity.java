@@ -25,7 +25,7 @@ import butterknife.OnClick;
  * Created by bowen on 2017/5/8.
  */
 
-public class GroupDiscussionActivity extends BaseActivity {
+public class CreatDiscussionActivity extends BaseActivity {
     @BindView(R.id.title_left_back)
     ImageView titleLeftBack;
     @BindView(R.id.tv_group_name)
