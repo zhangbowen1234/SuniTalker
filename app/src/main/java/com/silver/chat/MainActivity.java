@@ -13,7 +13,7 @@ import com.silver.chat.adapter.MainPagerAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.ui.chat.SearchChatRecordActivity;
 import com.silver.chat.ui.contact.AddFriendActivity;
-import com.silver.chat.ui.contact.CreatGroupActivity;
+import com.silver.chat.ui.contact.group.CreatGroupActivity;
 import com.silver.chat.ui.contact.SearchContactActivity;
 import com.silver.chat.ui.mine.ScanActivity;
 import com.silver.chat.ui.mine.SettingActivity;

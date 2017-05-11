@@ -50,5 +50,36 @@
         <item>Jack</item>
         <item>~夏先生</item>
     </string-array>
+    <string-array name="group_qunzhu">
+        <item>删除成员</item>
+        <item>群资料</item>
+        <item>群管理</item>
+        <item>解散群组</item>
+        <item>退出本群</item>
+        <item>消息免扰</item>
+        <item>置顶聊天</item>
+        <item>投诉</item>
+        <item>清空记录</item>
+        <item>更多</item>
+    </string-array>
+    <string-array name="group_guanliyuan">
+        <item>删除成员</item>
+        <item>群资料</item>
+        <item>退出本群</item>
+        <item>消息免扰</item>
+        <item>置顶聊天</item>
+        <item>投诉</item>
+        <item>清空记录</item>
+        <item>更多</item>
+    </string-array>
+    <string-array name="group_commonmember">
+        <item>群资料</item>
+        <item>退出本群</item>
+        <item>消息免扰</item>
+        <item>置顶聊天</item>
+        <item>投诉</item>
+        <item>清空记录</item>
+        <item>更多</item>
+    </string-array>
 
 </resources>
