@@ -84,15 +84,16 @@
             android:label="主色调" />
 
         <activity
-            android:name=".ui.contact.GroupChatActivity"
+            android:name=".ui.contact.group.GroupChatActivity"
             android:label="我的群"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
 
-        <activity android:name=".ui.contact.CreatGroupActivity"
+        <activity
+            android:name=".ui.contact.group.CreatGroupActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
         <activity
-            android:name=".ui.contact.DiscussGroupActivity"
+            android:name=".ui.contact.group.DiscussGroupActivity"
             android:label="讨论组"
             android:launchMode="singleTask" />
         <activity
@@ -100,12 +101,37 @@
             android:label="创建讨论组" />
 
         <activity
-            android:name=".ui.contact.GroupDetailActivity"
+            android:name=".ui.contact.group.GroupDetailActivity"
             android:label="群组详情的" />
         <activity android:name=".ui.chat.notification.AddGroupNotifiActivity"
             android:label="加群邀请"/>
         <activity android:name=".ui.chat.notification.GroupNotificationActivity"
             android:label="群通知"/>
+        <activity
+            android:name=".ui.contact.group.DeleteGroupMemActivity"
+            android:label="删除群成员" />
+        <activity
+            android:name=".ui.contact.group.GroupMemberActivity"
+            android:label="群成员" />
+        <activity
+            android:name=".ui.contact.group.InviteFriendsActivity"
+            android:label="邀请新朋友" />
+        <activity
+            android:name=".ui.contact.group.GroupQRCodeActivity"
+            android:label="群二维码" />
+        <activity
+            android:name=".ui.contact.group.ModifyNickNameActivity"
+            android:label="修改群昵称" />
+        <activity
+            android:name=".ui.contact.group.GroupManagerActivity"
+            android:label="添加管理员" />
+        <activity
+            android:name=".ui.contact.group.GroupMangerActivity2"
+            android:label="添加管理员2" />
+        <activity android:name=".ui.contact.group.GroupDataActivity"
+            android:label="编辑群资料" />
+        <activity android:name=".ui.contact.group.AlertGroupNameActivity"
+            android:label="修改群名称" />
     </application>
 
 </manifest>

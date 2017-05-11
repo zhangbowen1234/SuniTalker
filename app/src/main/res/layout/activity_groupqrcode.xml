@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:gravity="center"
+        android:text="群二维码"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_15"
+        />
+
+
+
+    <ImageView
+
+        android:id="@id/iv_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_code_scan"/>
+    <TextView
+        android:id="@+id/tv_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="保存本地"
+        android:layout_below="@+id/iv_scan"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_10"
+        />
+
+    <ImageView
+        android:id="@id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:padding="@dimen/dp_15"
+        android:src="@drawable/ic_back_white"/>
+
+    <ImageView
+        android:id="@id/iv_code"
+        android:layout_width="@dimen/dp_255"
+        android:layout_height="@dimen/dp_255"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_rectangle_white"
+        android:padding="@dimen/dp_10"
+        android:layout_below="@+id/tv_title"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:gravity="center"
+        android:layout_below="@+id/iv_code"
+        android:text="扫一扫二维码，申请加入群聊"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_15"
+        />
+
+
+
+</RelativeLayout>

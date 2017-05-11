@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.entity.ContactMemberBean;
-import com.silver.chat.ui.contact.GroupChatActivity;
+import com.silver.chat.ui.contact.group.GroupChatActivity;
 import com.silver.chat.ui.contact.NewFriendActivity;
 import com.silver.chat.ui.mine.FriendInfoActivity;
 import com.silver.chat.view.CircleImageView;

@@ -1,4 +1,4 @@
-package com.silver.chat.ui.contact;
+package com.silver.chat.ui.contact.group;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.FriendInfoAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.network.responsebean.FriendInfo;
+import com.silver.chat.ui.contact.CreatDiscussionActivity;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 
