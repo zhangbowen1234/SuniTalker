@@ -1,4 +1,4 @@
-package com.silver.chat.ui.contact;
+package com.silver.chat.ui.contact.group;
 
 import android.content.Intent;
 import android.os.Bundle;

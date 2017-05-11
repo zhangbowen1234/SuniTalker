@@ -56,17 +56,8 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/shape_rectangle_white"
         android:padding="@dimen/dp_10"
-        android:layout_below="@+id/iv_avatar"
-        android:layout_centerHorizontal="true" />
-
-    <com.silver.chat.view.CircleImageView
-        android:id="@id/iv_avatar"
-        android:layout_width="@dimen/dp_45"
-        android:layout_height="@dimen/dp_45"
-        android:layout_marginTop="12dp"
-        android:src="@drawable/default_badged_count_bg"
-        app:civ_border_color="@color/white_10"
-        app:civ_border_width="@dimen/dp_1"
         android:layout_below="@+id/tv_name"
         android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>

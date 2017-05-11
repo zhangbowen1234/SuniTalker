@@ -10,14 +10,23 @@
         android:layout_height="180dp"
         android:orientation="vertical">
 
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_20">
 
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_marginRight="200dp"
+                android:id="@+id/iv_conversation"
+                android:src="@drawable/ic_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             <com.silver.chat.view.WhewView
                 android:id="@+id/wv"
+                android:layout_centerInParent="true"
                 android:layout_width="90dp"
                 android:layout_height="90dp" />
 
@@ -27,9 +36,17 @@
                 android:layout_height="80dp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/system_head" />
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="200dp"
+                android:id="@+id/iv_qrcode"
+                android:src="@drawable/ic_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_groupname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -46,6 +63,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/rl_group_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -83,6 +101,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/tv_group_mem_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -99,6 +118,7 @@
             android:background="#706A8F" />
 
         <RelativeLayout
+            android:id="@+id/rl_group_member"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -108,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:src="@drawable/ic_head_little" />
+
             <ImageView
                 android:id="@+id/iv_header2"
                 android:layout_width="wrap_content"
@@ -117,6 +138,7 @@
                 android:layout_toRightOf="@+id/iv_header1"
                 android:paddingTop="5dp"
                 android:src="@drawable/ic_head_little" />
+
             <ImageView
                 android:id="@+id/iv_header3"
 
@@ -166,130 +188,50 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="250dp">
 
             <ImageView
+                android:id="@+id/iv_arrow_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:clickable="true"
                 android:paddingRight="@dimen/dp_10"
-                android:src="@drawable/ic_arrow_into" />
+                android:src="@drawable/ic_arrow_into"
+                />
 
             <ImageView
+                android:visibility="gone"
+                android:id="@+id/iv_arrow_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:clickable="true"
                 android:paddingLeft="@dimen/dp_10"
                 android:src="@drawable/ic_back_white" />
 
 
-            <LinearLayout
+            <android.support.v4.view.ViewPager
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="80dp"
+                android:id="@+id/viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="250dp"
+                android:layout_centerInParent="true"
+                 />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp"
-                        android:layout_marginTop="@dimen/dp_20"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@id/tv_stick"
-                            android:layout_width="@dimen/dp_0"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawablePadding="@dimen/dp_9"
-                            android:drawableTop="@drawable/ic_stick_white"
-                            android:gravity="center_horizontal"
-                            android:text="删除成员"
-                            android:textColor="@color/white" />
-
-                        <TextView
-                            android:id="@id/tv_silence"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawablePadding="@dimen/dp_9"
-                            android:drawableTop="@drawable/ic_silence_white"
-                            android:gravity="center_horizontal"
-                            android:text="群资料"
-                            android:textColor="@color/white" />
-
-                        <TextView
-                            android:id="@id/tv_clear"
-                            android:layout_width="@dimen/dp_0"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawablePadding="@dimen/dp_9"
-                            android:drawableTop="@drawable/ic_clear_white"
-                            android:gravity="center_horizontal"
-                            android:text="群管理"
-                            android:textColor="@color/white" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="40dp"
-                        android:layout_marginTop="@dimen/dp_9"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@id/tv_detail"
-                            android:layout_width="@dimen/dp_0"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawablePadding="@dimen/dp_9"
-                            android:drawableTop="@drawable/ic_detail_white"
-                            android:gravity="center_horizontal"
-                            android:text="解散群组"
-                            android:textColor="@color/white" />
-
-                        <TextView
-                            android:id="@id/tv_report"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawablePadding="@dimen/dp_9"
-                            android:drawableTop="@drawable/ic_report_white"
-                            android:gravity="center_horizontal"
-                            android:text="退出本群"
-                            android:textColor="@color/white" />
-
-                        <TextView
-                            android:id="@id/tv_delete"
-                            android:layout_width="@dimen/dp_0"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:drawablePadding="@dimen/dp_9"
-                            android:drawableTop="@drawable/ic_delete_white"
-                            android:gravity="center_horizontal"
-                            android:text="消息免扰"
-                            android:textColor="@color/white" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
         </RelativeLayout>
 
 
         <ImageView
-            android:id="@id/iv_back"
+            android:id="@+id/iv_arrow_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginTop="@dimen/dp_17"
-            android:padding="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_30"
+
             android:src="@drawable/ic_back_white" />
     </LinearLayout>
 </LinearLayout>

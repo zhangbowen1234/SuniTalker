@@ -1,4 +1,4 @@
-package com.silver.chat.ui.contact;
+package com.silver.chat.ui.contact.group;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -6,9 +6,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.ui.contact.SearchContactActivity;
+import com.silver.chat.ui.contact.group.GroupChatActivity;
 
 import butterknife.OnClick;
 
