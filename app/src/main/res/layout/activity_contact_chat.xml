@@ -1,16 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@id/rl_recyle_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <com.silver.chat.view.TitleBarView
         android:id="@id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
 
     <RelativeLayout
@@ -112,19 +111,18 @@
         android:id="@+id/chatLayoutMsg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@null"
-        android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:background="@null"
+        android:orientation="vertical">
 
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@id/chat_btn_emote"
@@ -228,38 +226,11 @@
 
         </LinearLayout>
 
-        <!--<LinearLayout-->
-            <!--android:id="@+id/expression"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="#DDDDDD"-->
-            <!--android:gravity="center"-->
-            <!--android:orientation="vertical"-->
-            <!--android:visibility="visible">-->
-
-            <!--<android.support.v4.view.ViewPager-->
-                <!--android:id="@+id/face_viewpager"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="350px"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:padding="10dip" />-->
-
-            <!--<LinearLayout-->
-                <!--android:id="@+id/face_dots_container"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/dp_10"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:gravity="center"-->
-                <!--android:orientation="horizontal">-->
-                <!--表情区-->
-                <com.lqr.emoji.EmotionLayout
-                    android:id="@+id/elEmotion"
-                    android:layout_width="match_parent"
-                    android:layout_height="270dp"
-                    android:visibility="gone"/>
-            <!--</LinearLayout>-->
-
-        <!--</LinearLayout>-->
+        <com.lqr.emoji.EmotionLayout
+            android:id="@+id/elEmotion"
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 
