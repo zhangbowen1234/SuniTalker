@@ -151,8 +151,9 @@ public class GroupDetailActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.wv:
-                break;
+
             case R.id.my_photo:
+                //startActivity();
                 break;
             case R.id.tv_nickname:
             case R.id.rl_group_nickname:

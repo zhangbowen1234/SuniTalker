@@ -131,6 +131,8 @@
             android:label="编辑群资料" />
         <activity android:name=".ui.contact.group.AlertGroupNameActivity"
             android:label="修改群名称" />
+        <activity android:name=".ui.contact.group.FindGroupActivity"
+            android:label="添加群组" />
     </application>
 
 </manifest>
