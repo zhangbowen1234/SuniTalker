@@ -1,6 +1,8 @@
 package com.silver.chat.ui.contact;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,8 +60,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     /**
      * 联系人集合
      */
-    private List<ContactMemberBean> SourceDateList;
-    List<ContactMemberBean> mContactList;
+    private List<ContactMemberBean> mContactList;
     private ContactListAdapter contactListAdapter;
 
     /**
@@ -75,9 +76,8 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
      */
     private boolean isAllContact;
     private GestureDetector mGestureDetector;
-    LinearLayoutManager linearLayoutManager;
-    FloatingActionButton fab;
-    ArrayList<ContactListBean> listBeen;
+    private LinearLayoutManager linearLayoutManager;
+    private FloatingActionButton fab;
 
     public static ContactFragment newInstance(boolean isAllContact) {
         Bundle args = new Bundle();
@@ -94,7 +94,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.hide();
         mContactList = new ArrayList<ContactMemberBean>();
-        listBeen = new ArrayList<ContactListBean>();
         linearLayoutManager = new LinearLayoutManager(mActivity);
         //设置布局管理器
         mRecycleContent.setLayoutManager(linearLayoutManager);
@@ -138,19 +137,34 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
     }
 
-
-
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 0:
+                    // 根据a-z进行排序源数据
+                    Collections.sort(mContactList, pinyinComparator);
+                    //联系人列表的adapter
+                    contactListAdapter = new ContactListAdapter(mActivity, mContactList);
+                    mRecycleContent.setAdapter(contactListAdapter);
+                    contactListAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void initData() {
         super.initData();
-
+        /**
+         * 联网获取联系人
+         */
         getContactList();
     }
 
 
     /**
-     * 联网获取联系人列表
+     * 联网获取联系人
      */
     public void getContactList() {
         String token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
@@ -177,15 +191,9 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     mContactList.add(sortModel);
                 }
 
-                listBeen = listBaseResponse.data;
-                // 根据a-z进行排序源数据
-                Collections.sort(mContactList, pinyinComparator);
-                //联系人列表的adapter
-                contactListAdapter = new ContactListAdapter(mActivity, mContactList);
-                mRecycleContent.setAdapter(contactListAdapter);
-
-                contactListAdapter.notifyDataSetChanged();
-                Log.e("mContactList", listBeen +"");
+                Message contactMsg = new Message();
+                contactMsg.what = 0;
+                mHandler.sendMessage(contactMsg);
 
             }
 
