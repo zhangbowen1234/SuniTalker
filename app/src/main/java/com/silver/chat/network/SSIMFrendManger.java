@@ -97,6 +97,7 @@ public class SSIMFrendManger {
     public static void goAddFriends(String userId,String friendId,String comment,String token,final ResponseCallBack<BaseResponse> callBack){
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.addFriend(userId, friendId, comment, token);
+        enqueueBase(baseResponseCall,callBack);
         baseResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
@@ -128,23 +129,61 @@ public class SSIMFrendManger {
      */
     public static void searchUser(String type,String condition,String page,String count,String token,final ResponseCallBack<BaseResponse<ArrayList<SearchIdBean>>> callBack){
         ApiService imApi = RetrofitHelper.create().imApi;
-        Call<BaseResponse<ArrayList<SearchIdBean>>> baseResponseCall = imApi.searchUser(type, condition, page,count, token);
-        baseResponseCall.enqueue(new Callback<BaseResponse<ArrayList<SearchIdBean>>>() {
+        Call<BaseResponse<ArrayList<SearchIdBean>>> baseResponseCall = imApi.searchUser(type, condition, page, count, token);
+        enqueue(baseResponseCall,callBack);
+
+    }
+
+
+
+    /**
+     * 后台返回的数据没有data调用这个
+     */
+    public static <T>void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
+        baseResponseCall.enqueue(new Callback<BaseResponse<T>>() {
             @Override
-            public void onResponse(Call<BaseResponse<ArrayList<SearchIdBean>>> call, Response<BaseResponse<ArrayList<SearchIdBean>>> response) {
-                Log.e("searchUser",response.body()+"");
-                if (response.body().getStatusCode() == 200){
+            public void onResponse(Call<BaseResponse<T>> call, Response<BaseResponse<T>> response) {
+                Log.e("contactList", response.body() + "");
+
+                if (response.body().getStatusCode() == 200) {
                     callBack.onSuccess(response.body());
-                }else{
+                } else if(response.body().getStatusCode() == 300){
+
+
+                }else {
                     callBack.onFailed(response.body());
+
                 }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<ArrayList<SearchIdBean>>> call, Throwable t) {
+            public void onFailure(Call<BaseResponse<T>> call, Throwable t) {
+                Log.e("aaa", t.toString());
                 callBack.onError();
             }
         });
     }
+    public static <T>void enqueueBase(Call<BaseResponse> baseResponseCall, final ResponseCallBack<BaseResponse> callBack) {
+        baseResponseCall.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
+                if (response.body().getStatusCode() == 200) {
+                    callBack.onSuccess(response.body());
+                } else if (response.body().getStatusCode() == 300) {
+
+
+                } else {
+                    callBack.onFailed(response.body());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("aaa", t.toString());
+                callBack.onError();
+            }
+        });
+    }
 }

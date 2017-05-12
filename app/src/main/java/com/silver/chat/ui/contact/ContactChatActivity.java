@@ -187,7 +187,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
                 //得到贴图的存放位置
-                String stickerPath = LQREmotionKit.getStickerPath();
+//                String stickerPath = LQREmotionKit.getStickerPath();
             }
         });
     }
