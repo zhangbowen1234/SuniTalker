@@ -163,7 +163,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                 Log.e("ContactList,onSuccess", listBaseResponse.data.toString() + "");
 
                 for (int i = 0;i< listBaseResponse.data.size();i++){
-                    Log.e("listBaseResponse.data ==:",listBaseResponse.data.get(i).getNickName()+"");
                     ContactMemberBean sortModel = new ContactMemberBean();
                     sortModel.setNickName(listBaseResponse.data.get(i).getNickName());
                     String pinyin = characterParser.getSelling(listBaseResponse.data.get(i).getNickName());
@@ -186,6 +185,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
                 contactListAdapter.notifyDataSetChanged();
                 Log.e("mContactList", listBeen +"");
+//                Log.e("mContactList",mContactList + "setSortLetters"+mContactList.get(0).getSortLetters());
 
             }
 
