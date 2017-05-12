@@ -1,8 +1,7 @@
 package com.silver.chat.network;
 
-import com.silver.chat.network.requestbean.ForgetPasswordBean;
-import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.requestbean.CreatGroupBean;
+import com.silver.chat.network.requestbean.ForgetPasswordBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.requestbean.RegisterRequest;
@@ -11,8 +10,8 @@ import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.FriendInfo;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.responsebean.LoginRequestBean;
-import com.silver.chat.network.responsebean.UpdateUserInfoBean;
 import com.silver.chat.network.responsebean.SearchIdBean;
+import com.silver.chat.network.responsebean.UpdateUserInfoBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
 
 import java.util.ArrayList;
@@ -65,9 +64,13 @@ public interface ApiService {
     @POST("imx/{version}/user/back/password")
     Call<BaseResponse<ForgetPasswordBean>> backpassword(@Path("version") String version, @Body ForgetPasswordBean forgetPasswordBean);
 
-    //获取好友列表
+    //分页获取好友列表
     @GET("imx/{version}/userfriend/{userId}/{page}/{count}")
     Call<BaseResponse<ArrayList<ContactListBean>>> contactList( @Path("version") String version, @Path("userId") String userId, @Path("page") String page, @Path("count") String count,@Header("token")String token);
+
+    //获取全部好友列表
+    @GET("imx/{version}/userfriend/{userId}")
+    Call<BaseResponse<ArrayList<ContactListBean>>> allContactList( @Path("version") String version, @Path("userId") String userId,@Header("token")String token);
 
     //创建群组
     @POST("imx/{version}/user/group")

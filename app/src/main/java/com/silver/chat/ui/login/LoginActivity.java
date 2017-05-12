@@ -217,7 +217,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                 case 0: //跳转启动主页
                     getUserInfo();
                     Object obj = msg.obj;
-                    Log.e("AAAA",obj+"");
+                    Log.e("AAAA", obj + "");
                     PreferenceUtil.getInstance(LoginActivity.this).setLog(true);
                     startActivity(MainActivity.class);
                     finish();
@@ -239,40 +239,50 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
      * 获取用户信息
      */
     private void getUserInfo() {
-        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
-        if (NetUtils.isConnected(mContext)) {//是否联网
-            if (token != null && !"".equals(token)) {
-                SSIMLoginManger.getUserInfo(Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
-                    @Override
-                    public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
-//                        ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
-                        Log.e("getUserInfo", userInfoBeanBaseResponse.getStatusMsg());
-                        /**
-                         * 保存用户信息
-                         */
-                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.USERPHONE, userInfoBeanBaseResponse.data.getMobile() + "");
-                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR, userInfoBeanBaseResponse.data.getAvatar() + "");
-                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME, userInfoBeanBaseResponse.data.getNickName() + "");
-                        PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.SEX, userInfoBeanBaseResponse.data.getSex());
-                        PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.AGE, userInfoBeanBaseResponse.data.getAge());
-                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.SIGNATURE, userInfoBeanBaseResponse.data.getSignature());
-                        PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.LEVEL, userInfoBeanBaseResponse.data.getLevel());
-                    }
-
-                    @Override
-                    public void onFailed(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
-                        ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
-//                            Log.d("userInfo",userInfoBeanBaseResponse.getStatusMsg());
-                    }
-
-                    @Override
-                    public void onError() {
-                        ToastUtils.showMessage(mContext, "连接失败");
-                    }
-                });
-            }
+        if (!PreferenceUtil.getInstance(mContext).isFirst()) {
+            /**
+             * 是第一次登陆不做操作
+             */
         } else {
-            ToastUtils.showMessage(mContext, "请检查网络");
+            if (PreferenceUtil.getInstance(mContext).isLog()) {
+
+                String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+                if (NetUtils.isConnected(mContext)) {//是否联网
+                    if (token != null && !"".equals(token)) {
+                        SSIMLoginManger.getUserInfo(Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
+                            @Override
+                            public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
+//                        ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
+                                Log.e("getUserInfo", userInfoBeanBaseResponse.getStatusMsg());
+                                /**
+                                 * 保存用户信息
+                                 */
+                                PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.USERPHONE, userInfoBeanBaseResponse.data.getMobile() + "");
+                                PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR, userInfoBeanBaseResponse.data.getAvatar() + "");
+                                PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME, userInfoBeanBaseResponse.data.getNickName() + "");
+                                PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.SEX, userInfoBeanBaseResponse.data.getSex());
+                                PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.AGE, userInfoBeanBaseResponse.data.getAge());
+                                PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.SIGNATURE, userInfoBeanBaseResponse.data.getSignature());
+                                PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.LEVEL, userInfoBeanBaseResponse.data.getLevel());
+                            }
+
+                            @Override
+                            public void onFailed(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
+                                ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
+//                            Log.d("userInfo",userInfoBeanBaseResponse.getStatusMsg());
+                            }
+
+                            @Override
+                            public void onError() {
+                                ToastUtils.showMessage(mContext, "连接失败");
+                            }
+                        });
+                    }
+                } else {
+                    ToastUtils.showMessage(mContext, "请检查网络");
+                }
+
+            }
         }
     }
 }
