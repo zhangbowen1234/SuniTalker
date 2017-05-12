@@ -17,6 +17,7 @@ import com.silver.chat.ui.chat.SearchChatRecordActivity;
 import com.silver.chat.ui.contact.AddFriendActivity;
 import com.silver.chat.ui.contact.SearchContactActivity;
 import com.silver.chat.ui.contact.group.CreatGroupActivity;
+import com.silver.chat.ui.contact.group.FindGroupActivity;
 import com.silver.chat.ui.mine.ScanActivity;
 import com.silver.chat.ui.mine.SettingActivity;
 import com.silver.chat.util.ScreenManager;
@@ -27,6 +28,7 @@ import com.silver.chat.view.TabLayoutPlus;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.http.HEAD;
 
 public class MainActivity extends BaseActivity {
 
@@ -198,11 +200,11 @@ public class MainActivity extends BaseActivity {
                 ToastUtils.showMessage(mContext, "正在修改中...");
                 break;
             case R.id.tv_add_friend:
-//                ToastUtils.showMessage(mContext,"正在修改中...");
                 startActivity(AddFriendActivity.class);
                 break;
             case R.id.tv_search_group:
                 ToastUtils.showMessage(mContext, "正在修改中...");
+                startActivity(FindGroupActivity.class);
                 break;
             case R.id.tv_start_group_chat:
                 startActivity(CreatGroupActivity.class);

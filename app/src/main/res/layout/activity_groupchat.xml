@@ -73,6 +73,7 @@
         android:paddingLeft="@dimen/dp_5"
         android:paddingRight="@dimen/dp_10"
         android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
         android:textColor="#788796"
         android:text="(0)个群聊"
         />
@@ -81,19 +82,19 @@
     android:layout_height="0dp"
     android:layout_weight="1">
 
-        <ImageView
-            android:clickable="true"
-            android:id="@+id/iv_mygroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:padding="@dimen/dp_25"
-            android:src="@drawable/action_more" />
+
         <ListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@null" />
+    <ImageView
+        android:id="@+id/iv_mygroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:padding="@dimen/dp_25"
+        android:src="@drawable/action_more" />
 
     </FrameLayout>
 
