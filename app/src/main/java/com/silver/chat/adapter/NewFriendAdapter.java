@@ -8,7 +8,7 @@ import com.silver.chat.view.recycleview.BaseViewHolder;
 import java.util.List;
 
 /**
- * Created by lenovo on 2017/5/9.
+ * Created by hibon on 2017/5/9.
  */
 
 public class NewFriendAdapter extends BaseQuickAdapter<ContactMemberBean,BaseViewHolder> {
@@ -23,6 +23,6 @@ public class NewFriendAdapter extends BaseQuickAdapter<ContactMemberBean,BaseVie
 
     @Override
     protected void convert(BaseViewHolder helper, ContactMemberBean item, int position) {
-        helper.setText(R.id.add_user_name,item.getContactName());
+        helper.setText(R.id.add_user_name,item.getNickName());
     }
 }

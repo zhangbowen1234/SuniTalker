@@ -8,7 +8,7 @@ import com.silver.chat.view.recycleview.BaseViewHolder;
 import java.util.List;
 
 /**
- * Created by lenovo on 2017/5/8.
+ * Created by hibon on 2017/5/8.
  */
 
 public class OftenContactViewAdapter extends BaseQuickAdapter<ContactMemberBean,BaseViewHolder>{
@@ -19,6 +19,6 @@ public class OftenContactViewAdapter extends BaseQuickAdapter<ContactMemberBean,
 
     @Override
     protected void convert(BaseViewHolder helper, ContactMemberBean item, int position) {
-        helper.setText(R.id.tv_contact_name,item.getContactName());
+        helper.setText(R.id.tv_contact_name,item.getNickName());
     }
 }

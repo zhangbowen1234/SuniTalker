@@ -2,7 +2,6 @@ package com.silver.chat.network;
 
 import android.util.Log;
 
-import com.silver.chat.base.Common;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
@@ -23,6 +22,7 @@ import retrofit2.Response;
 public class SSIMGroupManger {
     /**
      * 获取用户加入的群组的post请求
+     *
      * @param version
      * @param request
      * @param callBack
@@ -31,29 +31,67 @@ public class SSIMGroupManger {
         ApiService imApi = RetrofitHelper.create().imApi;
         final Call<BaseResponse<ArrayList<GroupBean>>> baseResponseCall = imApi.joinedGroupList(version, request, token);
         imApi.joinedGroupList(version, request, token);
-        enqueue(baseResponseCall,callBack);
-    }    /**
+        baseResponseCall.enqueue(new Callback<BaseResponse<ArrayList<GroupBean>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<ArrayList<GroupBean>>> call, Response<BaseResponse<ArrayList<GroupBean>>> response) {
+                //请求成功返回的状态码在此处是1
+                if (response.body().getStatusCode() == 1) {
+                    callBack.onSuccess(response.body());
+                    Log.e("GroupChatActivity", response.body().toString());
+                } else {
+                    callBack.onFailed(response.body());
+                    Log.e("GroupChatActivity", response.body().toString());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<ArrayList<GroupBean>>> call, Throwable t) {
+                Log.e("GroupChatActivity", t.toString());
+            }
+        });
+    }
+
+    /**
      * 创建群组的post请求
+     *
      * @param version
      * @param token
      * @param callBack
      */
-    public static void Getcreatgroup(String version,  String token, CreatGroupBean creatGroupBean, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack){
+    public static void Getcreatgroup(String version, String token, CreatGroupBean creatGroupBean, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
-        Call<BaseResponse<CreatGroupBean>> baseResponseCall = imApi.creatgroup(version,token ,creatGroupBean);
-        enqueue(baseResponseCall,callBack);
+        Call<BaseResponse<CreatGroupBean>> baseResponseCall = imApi.creatgroup(version, token, creatGroupBean);
+        baseResponseCall.enqueue(new Callback<BaseResponse<CreatGroupBean>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<CreatGroupBean>> call, Response<BaseResponse<CreatGroupBean>> response) {
+                if (response.body().getStatusCode() == 200) {
+                    callBack.onSuccess(response.body());
+                } else {
+                    callBack.onFailed(response.body());
+                }
+                Log.e("response", response.body().toString());
+            }
 
+            @Override
+            public void onFailure(Call<BaseResponse<CreatGroupBean>> call, Throwable t) {
+                callBack.onError();
+                Log.e("response", t.toString());
+            }
+        });
     }
+
     /**
      * 创建讨论组的post请求
+     *
      * @param version
      * @param token
      * @param callBack
      */
-    public static void Getcreatdicugroup(String version,  String token, CreatGroupBean creatGroupBean, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack){
+    public static void Getcreatdicugroup(String version, String token, CreatGroupBean creatGroupBean, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
-        Call<BaseResponse<CreatGroupBean>> baseResponseCall = imApi.creatdiscugroup(version,token ,creatGroupBean);
-        enqueue(baseResponseCall,callBack);
+        Call<BaseResponse<CreatGroupBean>> baseResponseCall = imApi.creatdiscugroup(version, token, creatGroupBean);
+        enqueue(baseResponseCall, callBack);
 
     }
 
@@ -61,7 +99,7 @@ public class SSIMGroupManger {
     /**
      * 后台返回的数据没有data调用这个
      */
-    public static <T>void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
+    public static <T> void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
         baseResponseCall.enqueue(new Callback<BaseResponse<T>>() {
             @Override
             public void onResponse(Call<BaseResponse<T>> call, Response<BaseResponse<T>> response) {
@@ -69,10 +107,10 @@ public class SSIMGroupManger {
 
                 if (response.body().getStatusCode() == 200) {
                     callBack.onSuccess(response.body());
-                } else if(response.body().getStatusCode() == 300){
+                } else if (response.body().getStatusCode() == 300) {
 
 
-                }else {
+                } else {
                     callBack.onFailed(response.body());
 
                 }
@@ -85,7 +123,8 @@ public class SSIMGroupManger {
             }
         });
     }
-    public static <T>void enqueueBase(Call<BaseResponse> baseResponseCall, final ResponseCallBack<BaseResponse> callBack) {
+
+    public static <T> void enqueueBase(Call<BaseResponse> baseResponseCall, final ResponseCallBack<BaseResponse> callBack) {
         baseResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {

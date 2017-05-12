@@ -1,16 +1,14 @@
 package com.silver.chat.network;
 
-import android.media.session.MediaSession;
 import android.util.Log;
 
 import com.silver.chat.network.callback.ResponseCallBack;
-import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.requestbean.ForgetPasswordBean;
-import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.requestbean.LoginRequest;
+import com.silver.chat.network.requestbean.RegisterRequest;
+import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.FriendInfo;
 import com.silver.chat.network.responsebean.LoginRequestBean;
-import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.network.responsebean.UpdateUserInfoBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
 
@@ -80,7 +78,7 @@ public class SSIMLoginManger {
     public static void goLogin(String version, LoginRequest loginRequest, final ResponseCallBack<BaseResponse<LoginRequestBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<LoginRequestBean>> baseResponseCall = imApi.goLogin(version, loginRequest);
-        enqueue(baseResponseCall, callBack);
+        enqueue(baseResponseCall,callBack);
 
     }
 
@@ -95,8 +93,7 @@ public class SSIMLoginManger {
     public static void getUserInfo(String version, String token, final ResponseCallBack<BaseResponse<UserInfoBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<UserInfoBean>> baseResponseCall = imApi.userInfo(version, token);
-        enqueue(baseResponseCall, callBack);
-
+        enqueue(baseResponseCall,callBack);
     }
 
     /**
@@ -112,8 +109,7 @@ public class SSIMLoginManger {
                                   final ResponseCallBack<BaseResponse<List<FriendInfo>>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<List<FriendInfo>>> baseResponseCall = imApi.friendinfo(token, version, userId, friendid);
-        enqueue(baseResponseCall, callBack);
-
+        enqueue(baseResponseCall,callBack);
     }
 
     /**
@@ -158,15 +154,10 @@ public class SSIMLoginManger {
         enqueue(baseResponseCall, callBack);
 
     }
-
-
     /**
-     * 后台返回的数据没有调用这个
-     * @param baseResponseCall
-     * @param callBack
-     * @param <T>
+     * 后台返回的数据没有data调用这个
      */
-    public static <T>void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
+    public static <T> void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
         baseResponseCall.enqueue(new Callback<BaseResponse<T>>() {
             @Override
             public void onResponse(Call<BaseResponse<T>> call, Response<BaseResponse<T>> response) {
@@ -190,17 +181,18 @@ public class SSIMLoginManger {
             }
         });
     }
-    public static <T>void enqueueBase(Call<BaseResponse> baseResponseCall, final ResponseCallBack<BaseResponse> callBack) {
+
+    public static <T> void enqueueBase(Call<BaseResponse> baseResponseCall, final ResponseCallBack<BaseResponse> callBack) {
         baseResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
                 if (response.body().getStatusCode() == 200) {
                     callBack.onSuccess(response.body());
-                } else if(response.body().getStatusCode() == 300){
+                } else if (response.body().getStatusCode() == 300) {
 
 
-                }else {
+                } else {
                     callBack.onFailed(response.body());
 
                 }

@@ -28,6 +28,7 @@ import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.UIUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -76,6 +77,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     private GestureDetector mGestureDetector;
     LinearLayoutManager linearLayoutManager;
     FloatingActionButton fab;
+    ArrayList<ContactListBean> listBeen;
 
     public static ContactFragment newInstance(boolean isAllContact) {
         Bundle args = new Bundle();
@@ -91,18 +93,15 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         mRecycleContent = (RecyclerView) view.findViewById(R.id.recyle_content);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.hide();
-
+        mContactList = new ArrayList<ContactMemberBean>();
+        listBeen = new ArrayList<ContactListBean>();
         linearLayoutManager = new LinearLayoutManager(mActivity);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         //设置布局管理器
         mRecycleContent.setLayoutManager(linearLayoutManager);
 
         // 实例化汉字转拼音类
         characterParser = CharacterParser.getInstance();
         pinyinComparator = new PinyinComparator();
-
-        //初始化联系人数据
-        SourceDateList = filledData(getResources().getStringArray(R.array.date));
 
         fab.attachToRecyclerView(mRecycleContent, new ScrollDirectionListener() {
             @Override
@@ -140,51 +139,15 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     }
 
 
-    /**
-     * 为ListView填充数据
-     *
-     * @return
-     * @params
-     */
-    private List<ContactMemberBean> filledData(String[] date) {
-        List<ContactMemberBean> mSortList = new ArrayList<ContactMemberBean>();
-        for (int i = 0; i < date.length; i++) {
-            ContactMemberBean sortModel = new ContactMemberBean();
-            sortModel.setContactName(date[i]);
-            // 汉字转换成拼音
-            String pinyin = characterParser.getSelling(date[i]);
-            String sortString = pinyin.substring(0, 1).toUpperCase();
-            // 正则表达式，判断首字母是否是英文字母
-            if (sortString.matches("[A-Z]")) {
-                sortModel.setSortLetters(sortString.toUpperCase());
-            } else {
-                sortModel.setSortLetters("#");
-            }
-            mSortList.add(sortModel);
-        }
-        return mSortList;
-    }
+
 
     @Override
     protected void initData() {
         super.initData();
 
-//        if (isAllContact && contactListAdapter.getData().isEmpty()) {
-        //请求所有文件目录数据
         getContactList();
-
-//        } else if (!isAllContact &&contactListAdapter.getData().isEmpty()) {
-//            //优先从数据库中读取数据
-////            QueryDbParent();
-//        }
-
-        // 根据a-z进行排序源数据
-//        Collections.sort(SourceDateList, pinyinComparator);
-        //联系人列表的adapter
-        contactListAdapter = new ContactListAdapter(mActivity, mContactList);
-        mRecycleContent.setAdapter(contactListAdapter);
-
     }
+
 
     /**
      * 联网获取联系人列表
@@ -199,12 +162,10 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                 ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
                 Log.e("ContactList,onSuccess", listBaseResponse.data.toString() + "");
 
-                mContactList = new ArrayList<ContactMemberBean>();
-
-                for (ContactListBean contactListBean : listBaseResponse.data) {
+                for (int i = 0;i< listBaseResponse.data.size();i++){
                     ContactMemberBean sortModel = new ContactMemberBean();
-                    sortModel.setContactName(contactListBean.getNickName());
-                    String pinyin = characterParser.getSelling(contactListBean.getNickName());
+                    sortModel.setNickName(listBaseResponse.data.get(i).getNickName());
+                    String pinyin = characterParser.getSelling(listBaseResponse.data.get(i).getNickName());
                     String sortString = pinyin.substring(0, 1).toUpperCase();
                     // 正则表达式，判断首字母是否是英文字母
                     if (sortString.matches("[A-Z]")) {
@@ -215,6 +176,15 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     mContactList.add(sortModel);
                 }
 
+                listBeen = listBaseResponse.data;
+                // 根据a-z进行排序源数据
+                Collections.sort(mContactList, pinyinComparator);
+                //联系人列表的adapter
+                contactListAdapter = new ContactListAdapter(mActivity, mContactList);
+                mRecycleContent.setAdapter(contactListAdapter);
+
+                contactListAdapter.notifyDataSetChanged();
+                Log.e("mContactList", listBeen +"");
 //                Log.e("mContactList",mContactList + "setSortLetters"+mContactList.get(0).getSortLetters());
 
             }
@@ -254,7 +224,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
     @Override
     public void onClick(View v) {
-
     }
 
     @Override
