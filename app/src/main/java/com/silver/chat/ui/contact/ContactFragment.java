@@ -215,7 +215,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     mContactList.add(sortModel);
                 }
 
-                Log.e("mContactList",mContactList + "setSortLetters"+mContactList.get(0).getSortLetters());
+//                Log.e("mContactList",mContactList + "setSortLetters"+mContactList.get(0).getSortLetters());
 
             }
 
