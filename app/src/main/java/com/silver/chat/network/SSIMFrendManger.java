@@ -54,7 +54,7 @@ public class SSIMFrendManger {
     public static void goAddFriends(String userId, String friendId, String comment, String token, final ResponseCallBack<BaseResponse> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.addFriend(userId, friendId, comment, token);
-        enqueue(baseResponseCall,callBack);
+        enqueueBase(baseResponseCall,callBack);
 
     }
 
@@ -77,8 +77,10 @@ public class SSIMFrendManger {
 
 
 
-
-    public static <T> void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
+    /**
+     * 后台返回的数据没有data调用这个
+     */
+    public static <T>void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
         baseResponseCall.enqueue(new Callback<BaseResponse<T>>() {
             @Override
             public void onResponse(Call<BaseResponse<T>> call, Response<BaseResponse<T>> response) {
@@ -87,6 +89,12 @@ public class SSIMFrendManger {
                 if (response.body().getStatusCode() == 200) {
                     callBack.onSuccess(response.body());
                 } else if(response.body().getStatusCode() == 300){
+
+
+
+
+
+
 
 
                 }else {
@@ -102,5 +110,27 @@ public class SSIMFrendManger {
             }
         });
     }
+    public static void enqueueBase(Call<BaseResponse> baseResponseCall, final ResponseCallBack<BaseResponse> callBack) {
+        baseResponseCall.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
+                if (response.body().getStatusCode() == 200) {
+                    callBack.onSuccess(response.body());
+                } else if(response.body().getStatusCode() == 300){
+
+
+                }else {
+                    callBack.onFailed(response.body());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("aaa", t.toString());
+                callBack.onError();
+            }
+        });
+    }
 }

@@ -58,11 +58,10 @@ public class SSIMGroupManger {
     }
 
 
-
-
-
-
-    public static <T> void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
+    /**
+     * 后台返回的数据没有data调用这个
+     */
+    public static <T>void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
         baseResponseCall.enqueue(new Callback<BaseResponse<T>>() {
             @Override
             public void onResponse(Call<BaseResponse<T>> call, Response<BaseResponse<T>> response) {
@@ -81,6 +80,29 @@ public class SSIMGroupManger {
 
             @Override
             public void onFailure(Call<BaseResponse<T>> call, Throwable t) {
+                Log.e("aaa", t.toString());
+                callBack.onError();
+            }
+        });
+    }
+    public static <T>void enqueueBase(Call<BaseResponse> baseResponseCall, final ResponseCallBack<BaseResponse> callBack) {
+        baseResponseCall.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                if (response.body().getStatusCode() == 200) {
+                    callBack.onSuccess(response.body());
+                } else if (response.body().getStatusCode() == 300) {
+
+
+                } else {
+                    callBack.onFailed(response.body());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
                 Log.e("aaa", t.toString());
                 callBack.onError();
             }

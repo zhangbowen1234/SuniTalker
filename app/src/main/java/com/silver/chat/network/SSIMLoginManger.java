@@ -37,7 +37,7 @@ public class SSIMLoginManger {
     public static void checkPhone(String version, String phone, final ResponseCallBack<BaseResponse> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.checkPhoneCode(version, phone);
-        enqueue(baseResponseCall, callBack);
+        enqueueBase(baseResponseCall, callBack);
 
     }
 
@@ -52,7 +52,7 @@ public class SSIMLoginManger {
     public static void userReginstCode(String version, String phone, int genre, final ResponseCallBack<BaseResponse> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.registCode(version, phone, genre);
-        enqueue(baseResponseCall, callBack);
+        enqueueBase(baseResponseCall, callBack);
 
     }
 
@@ -66,7 +66,7 @@ public class SSIMLoginManger {
     public static void goReginst(String version, RegisterRequest request, final ResponseCallBack<BaseResponse> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.registPhone(version, request);
-        enqueue(baseResponseCall, callBack);
+        enqueueBase(baseResponseCall, callBack);
 
     }
 
@@ -126,7 +126,7 @@ public class SSIMLoginManger {
     public static void outLogin(String version, String token, final ResponseCallBack<BaseResponse> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.outLogin(version, token);
-        enqueue(baseResponseCall, callBack);
+        enqueueBase(baseResponseCall, callBack);
 
     }
 
@@ -160,9 +160,13 @@ public class SSIMLoginManger {
     }
 
 
-
-
-    public static <T> void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
+    /**
+     * 后台返回的数据没有调用这个
+     * @param baseResponseCall
+     * @param callBack
+     * @param <T>
+     */
+    public static <T>void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
         baseResponseCall.enqueue(new Callback<BaseResponse<T>>() {
             @Override
             public void onResponse(Call<BaseResponse<T>> call, Response<BaseResponse<T>> response) {
@@ -181,6 +185,29 @@ public class SSIMLoginManger {
 
             @Override
             public void onFailure(Call<BaseResponse<T>> call, Throwable t) {
+                Log.e("aaa", t.toString());
+                callBack.onError();
+            }
+        });
+    }
+    public static <T>void enqueueBase(Call<BaseResponse> baseResponseCall, final ResponseCallBack<BaseResponse> callBack) {
+        baseResponseCall.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                if (response.body().getStatusCode() == 200) {
+                    callBack.onSuccess(response.body());
+                } else if(response.body().getStatusCode() == 300){
+
+
+                }else {
+                    callBack.onFailed(response.body());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
                 Log.e("aaa", t.toString());
                 callBack.onError();
             }
