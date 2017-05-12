@@ -241,7 +241,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
     private void getUserInfo() {
         if (!PreferenceUtil.getInstance(mContext).isFirst()) {
             /**
-             * 是第一次登陆不做跳转
+             * 是第一次登陆不做操作
              */
         } else {
             if (PreferenceUtil.getInstance(mContext).isLog()) {

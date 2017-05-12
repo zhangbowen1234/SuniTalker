@@ -28,7 +28,6 @@ import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.UIUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -97,9 +96,11 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         //设置布局管理器
         mRecycleContent.setLayoutManager(linearLayoutManager);
+
         // 实例化汉字转拼音类
         characterParser = CharacterParser.getInstance();
         pinyinComparator = new PinyinComparator();
+
         //初始化联系人数据
         SourceDateList = filledData(getResources().getStringArray(R.array.date));
 
@@ -131,6 +132,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
@@ -166,11 +168,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     @Override
     protected void initData() {
         super.initData();
-        // 根据a-z进行排序源数据
-        Collections.sort(SourceDateList, pinyinComparator);
-        //联系人列表的adapter
-        contactListAdapter = new ContactListAdapter(mActivity, SourceDateList);
-        mRecycleContent.setAdapter(contactListAdapter);
 
 //        if (isAllContact && contactListAdapter.getData().isEmpty()) {
         //请求所有文件目录数据
@@ -181,7 +178,11 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 ////            QueryDbParent();
 //        }
 
-
+        // 根据a-z进行排序源数据
+//        Collections.sort(SourceDateList, pinyinComparator);
+        //联系人列表的adapter
+        contactListAdapter = new ContactListAdapter(mActivity, mContactList);
+        mRecycleContent.setAdapter(contactListAdapter);
 
     }
 
@@ -199,6 +200,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                 Log.e("ContactList,onSuccess", listBaseResponse.data.toString() + "");
 
                 mContactList = new ArrayList<ContactMemberBean>();
+
                 for (ContactListBean contactListBean : listBaseResponse.data) {
                     ContactMemberBean sortModel = new ContactMemberBean();
                     sortModel.setContactName(contactListBean.getNickName());
@@ -211,9 +213,9 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                         sortModel.setSortLetters("#");
                     }
                     mContactList.add(sortModel);
-
                 }
-                Log.e("mContactList",mContactList + "");
+
+                Log.e("mContactList",mContactList + "setSortLetters"+mContactList.get(0).getSortLetters());
 
             }
 
