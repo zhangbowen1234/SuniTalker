@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.silver.chat.R;
-import com.silver.chat.entity.ContactMemberBean;
+import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.ui.contact.NewFriendActivity;
 import com.silver.chat.ui.contact.group.GroupChatActivity;
 import com.silver.chat.ui.mine.FriendInfoActivity;
@@ -35,11 +35,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         CANTACT
     }
 
-    private List<ContactMemberBean> contactList = new ArrayList<>();
+    private List<ContactListBean> contactList = new ArrayList<>();
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
 
-    public ContactListAdapter(Context context, List<ContactMemberBean> data) {
+    public ContactListAdapter(Context context, List<ContactListBean> data) {
         contactList = data;
         Log.e("data", data + "");
         mContext = context;
@@ -89,6 +89,9 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 public void onClick(View v) {
                     Intent mCantactIntent = new Intent(mContext, FriendInfoActivity.class);
                     mCantactIntent.putExtra("contactName", contactList.get(position-3).getNickName());
+                    mCantactIntent.putExtra("sex", contactList.get(position-3).getSex()+"");
+                    mCantactIntent.putExtra("signature", contactList.get(position-3).getSignature());
+                    mCantactIntent.putExtra("friendId", contactList.get(position-3).getFriendId()+"");
                     mContext.startActivity(mCantactIntent);
                 }
             });

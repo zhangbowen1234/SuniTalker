@@ -116,6 +116,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                                             @Override
                                             public void onFailed(BaseResponse baseResponse) {
                                                 Toast.makeText(mContext,baseResponse.getStatusMsg(),Toast.LENGTH_SHORT).show();
+                                                if (baseResponse.getStatusCode() ==Common.AnewLoginCode){
+                                                    PreferenceUtil.getInstance(mContext).setFirst(false);
+                                                    PreferenceUtil.getInstance(mContext).setLog(false);
+                                                    Bundle loginBundle = new Bundle();
+                                                    loginBundle.putInt("type",Common.LoginType);
+                                                    startActivity(LoginActivity.class,loginBundle);
+                                                    finish();
+                                                    AppManager.getInstance().finishActivity(MainActivity.class);
+                                                    Toast.makeText(mContext,"退出成功",Toast.LENGTH_SHORT).show();
+                                                }
                                             }
 
                                             @Override

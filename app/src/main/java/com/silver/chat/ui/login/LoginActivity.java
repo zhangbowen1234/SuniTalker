@@ -269,7 +269,6 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                             @Override
                             public void onFailed(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
                                 ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
-//                            Log.d("userInfo",userInfoBeanBaseResponse.getStatusMsg());
                             }
 
                             @Override

@@ -1,7 +1,6 @@
 package com.silver.chat;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,8 +15,8 @@ import com.silver.chat.base.BaseActivity;
 import com.silver.chat.ui.chat.SearchChatRecordActivity;
 import com.silver.chat.ui.contact.AddFriendActivity;
 import com.silver.chat.ui.contact.SearchContactActivity;
-import com.silver.chat.ui.contact.group.FindGroupActivity;
 import com.silver.chat.ui.contact.group.CreatGroupActivity;
+import com.silver.chat.ui.contact.group.FindGroupActivity;
 import com.silver.chat.ui.mine.ScanActivity;
 import com.silver.chat.ui.mine.SettingActivity;
 import com.silver.chat.util.ScreenManager;
@@ -26,7 +25,6 @@ import com.silver.chat.view.BadgedTabCustomView;
 import com.silver.chat.view.TabLayoutPlus;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity {
@@ -252,11 +250,5 @@ public class MainActivity extends BaseActivity {
             tvSearchGroup.startAnimation(mButtonOutAnimation);
             tvMoreChat.startAnimation(mButtonOutAnimation);
         }
-    }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

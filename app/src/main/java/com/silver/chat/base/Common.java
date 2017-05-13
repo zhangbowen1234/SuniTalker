@@ -24,4 +24,10 @@ public class Common {
     public final static String Phone = "2"; //登录
     public final static String Email = "3"; //修改
 
+    /**
+     * 重新登录提示
+     */
+//    public final static String AnewLogin = "请重新登录";
+    public final static int AnewLoginCode = 300;
+
 }
