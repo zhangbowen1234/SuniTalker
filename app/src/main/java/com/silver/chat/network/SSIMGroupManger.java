@@ -31,25 +31,7 @@ public class SSIMGroupManger {
         ApiService imApi = RetrofitHelper.create().imApi;
         final Call<BaseResponse<ArrayList<GroupBean>>> baseResponseCall = imApi.joinedGroupList(version, request, token);
         imApi.joinedGroupList(version, request, token);
-        baseResponseCall.enqueue(new Callback<BaseResponse<ArrayList<GroupBean>>>() {
-            @Override
-            public void onResponse(Call<BaseResponse<ArrayList<GroupBean>>> call, Response<BaseResponse<ArrayList<GroupBean>>> response) {
-                //请求成功返回的状态码在此处是1
-                if (response.body().getStatusCode() == 1) {
-                    callBack.onSuccess(response.body());
-                    Log.e("GroupChatActivity", response.body().toString());
-                } else {
-                    callBack.onFailed(response.body());
-                    Log.e("GroupChatActivity", response.body().toString());
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse<ArrayList<GroupBean>>> call, Throwable t) {
-                Log.e("GroupChatActivity", t.toString());
-            }
-        });
+        BaseCallBack.enqueue(baseResponseCall,callBack);
     }
 
     /**

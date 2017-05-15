@@ -31,6 +31,8 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 
+import com.github.library.listener.OnRecyclerItemClickListener;
+import com.github.library.listener.OnRecyclerItemLongClickListener;
 import com.silver.chat.R;
 import com.silver.chat.view.recycleview.animation.AlphaInAnimation;
 import com.silver.chat.view.recycleview.animation.BaseAnimation;
@@ -95,7 +97,8 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     public static final int FOOTER_VIEW = 0x00000333;
     public static final int EMPTY_VIEW = 0x00000555;
     private View mLoadingView;
-
+    private OnRecyclerItemClickListener onRecyclerItemClickListener;
+    private OnRecyclerItemLongClickListener onRecyclerItemLongClickListener;
 
 
     @IntDef({ALPHAIN, SCALEIN, SLIDEIN_BOTTOM, SLIDEIN_LEFT, SLIDEIN_RIGHT})
@@ -157,7 +160,27 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         return this.pageSize;
     }
 
-
+    /**
+     * @param baseViewHolder
+     */
+    private void initItemClickListener(final BaseViewHolder baseViewHolder) {
+        if (onRecyclerItemClickListener != null) {
+            baseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onRecyclerItemClickListener.onItemClick(v, baseViewHolder.getLayoutPosition() - getHeaderViewsCount());
+                }
+            });
+        }
+        if (onRecyclerItemLongClickListener != null) {
+            baseViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return onRecyclerItemLongClickListener.onItemLongClick(v, baseViewHolder.getLayoutPosition() - getHeaderViewsCount());
+                }
+            });
+        }
+    }
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
      * some initialization data.
@@ -198,6 +221,17 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         notifyItemInserted(position);
     }
 
+    /**
+     * @param data
+     */
+    public void setData(List<T> data) {
+        this.mData = data;
+        if (mRequestLoadMoreListener != null) {
+            mNextLoadEnable = true;
+        }
+        mLastPosition = -1;
+        notifyDataSetChanged();
+    }
 
     /**
      * setting up a new instance to data;
@@ -488,6 +522,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
                 break;
             default:
                 baseViewHolder = onCreateDefViewHolder(parent, viewType);
+                initItemClickListener(baseViewHolder);
         }
         return baseViewHolder;
 
@@ -1277,5 +1312,18 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
             }
         }
         return -1;
+    }
+    /**
+     * @param onRecyclerViewItemClickListener
+     */
+    public void setOnRecyclerItemClickListener(OnRecyclerItemClickListener onRecyclerViewItemClickListener) {
+        this.onRecyclerItemClickListener = onRecyclerViewItemClickListener;
+    }
+
+    /**
+     * @param onRecyclerViewItemLongClickListener
+     */
+    public void setOnRecyclerItemLongClickListener(OnRecyclerItemLongClickListener onRecyclerViewItemLongClickListener) {
+        this.onRecyclerItemLongClickListener = onRecyclerViewItemLongClickListener;
     }
 }

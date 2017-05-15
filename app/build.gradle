@@ -65,6 +65,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'com.lqr.emoji:library:1.0.2'
-//    compile 'com.alibaba:fastjson:1.2.31'
-
+    //    compile 'com.alibaba:fastjson:1.2.31'
+    compile 'com.github.baserecycleradapter:library:1.0.9'
 }

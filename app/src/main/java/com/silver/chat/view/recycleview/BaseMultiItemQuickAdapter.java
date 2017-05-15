@@ -4,6 +4,8 @@ import android.support.annotation.LayoutRes;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.github.library.listener.OnRecyclerItemClickListener;
+import com.github.library.listener.OnRecyclerItemLongClickListener;
 import com.silver.chat.view.recycleview.entity.MultiItemEntity;
 
 import java.util.List;
@@ -58,7 +60,6 @@ public abstract class BaseMultiItemQuickAdapter<T extends MultiItemEntity, K ext
         }
         layouts.put(type, layoutResId);
     }
-
 
 }
 
