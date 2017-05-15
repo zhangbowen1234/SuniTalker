@@ -1,18 +1,17 @@
 package com.silver.chat.network;
 
-import android.util.Log;
 
 import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.AskJoinGroup;
 import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.GroupBean;
+import com.silver.chat.network.responsebean.SearchGroupBean;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Joe on 2017/5/8.
@@ -41,10 +40,10 @@ public class SSIMGroupManger {
      * @param token
      * @param callBack
      */
-    public static void Getcreatgroup(String version, String token, CreatGroupBean creatGroupBean, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack) {
+    public static void getcreatgroup(String version, String token, CreatGroupBean creatGroupBean, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<CreatGroupBean>> baseResponseCall = imApi.creatgroup(version, token, creatGroupBean);
-        BaseCallBack.enqueue(baseResponseCall,callBack);
+        BaseCallBack.enqueue(baseResponseCall, callBack);
     }
 
     /**
@@ -54,64 +53,39 @@ public class SSIMGroupManger {
      * @param token
      * @param callBack
      */
-    public static void Getcreatdicugroup(String version, String token, CreatGroupBean creatGroupBean, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack) {
+    public static void getcreatdicugroup(String version, String token, CreatGroupBean creatGroupBean, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<CreatGroupBean>> baseResponseCall = imApi.creatdiscugroup(version, token, creatGroupBean);
         BaseCallBack.enqueue(baseResponseCall, callBack);
     }
 
-//    /**
-//     * 后台返回的数据有data调用这个
-//     */
-//    public static <T> void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
-//        baseResponseCall.enqueue(new Callback<BaseResponse<T>>() {
-//            @Override
-//            public void onResponse(Call<BaseResponse<T>> call, Response<BaseResponse<T>> response) {
-//                Log.e("contactList", response.body() + "");
-//
-//                if (response.body().getStatusCode() == 200) {
-//                    callBack.onSuccess(response.body());
-//                } else if (response.body().getStatusCode() == 300) {
-//
-//
-//                } else {
-//                    callBack.onFailed(response.body());
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<BaseResponse<T>> call, Throwable t) {
-//                Log.e("aaa", t.toString());
-//                callBack.onError();
-//            }
-//        });
-//    }
-//
-//    /**
-//     * 后台返回的数据没有data调用这个
-//     */
-//    public static <T> void enqueueBase(Call<BaseResponse> baseResponseCall, final ResponseCallBack<BaseResponse> callBack) {
-//        baseResponseCall.enqueue(new Callback<BaseResponse>() {
-//            @Override
-//            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-//
-//                if (response.body().getStatusCode() == 200) {
-//                    callBack.onSuccess(response.body());
-//                } else if (response.body().getStatusCode() == 300) {
-//
-//
-//                } else {
-//                    callBack.onFailed(response.body());
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<BaseResponse> call, Throwable t) {
-//                Log.e("aaa", t.toString());
-//                callBack.onError();
-//            }
-//        });
-//    }
+    /**
+     * 获取搜索群组信息
+     * @param token
+     * @param condition
+     * @param page
+     * @param count
+     */
+    public static void getSearchGroupInfo(String token,String condition,String page,String count, final ResponseCallBack<BaseResponse<SearchGroupBean>> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse<SearchGroupBean>> baseResponseCall = imApi.searchGroup(token, condition, page, count);
+        BaseCallBack.enqueue(baseResponseCall,callBack);
+
+    }
+
+    /**
+     * 申请加群
+     * @param token
+     * @param askJoinGroup
+     * @param callBack
+     */
+    public static void askJionGroup(String token, AskJoinGroup askJoinGroup,final ResponseCallBack<BaseResponse> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> baseResponseCall = imApi.addGroup(token, askJoinGroup);
+        BaseCallBack.enqueueBase(baseResponseCall,callBack);
+
+    }
+
+
+
 }

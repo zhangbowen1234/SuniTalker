@@ -2,6 +2,7 @@ package com.silver.chat.ui.contact;
 
 import android.content.Intent;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.network.SSIMFrendManger;
+import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.PreferenceUtil;
@@ -24,9 +26,10 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
 
     private String nickName, friendId;
     private ImageView mBack;
-    private TextView mSend, mNickName, mTextCount;
+    private TextView mSend, mNickName, mTextCount,mTitle;
     private CircleImageView mFriendHead;
     private EditText mMsgVerify, mRemarksName;
+    private String action;
 
 
     @Override
@@ -39,6 +42,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
         super.initView();
         mBack = (ImageView) findViewById(R.id.title_left_back);
         mSend = (TextView) findViewById(R.id.send_btn);
+        mTitle = (TextView) findViewById(R.id.tv_title);
         mNickName = (TextView) findViewById(R.id.add_nick_name);
         mFriendHead = (CircleImageView) findViewById(R.id.friend_head);
         mMsgVerify = (EditText) findViewById(R.id.edit_msg_verify);
@@ -51,9 +55,20 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
     protected void initData() {
         super.initData();
         Intent intent = getIntent();
-        nickName = intent.getStringExtra("nickName");
-        friendId = intent.getStringExtra("friendId");
-        mNickName.setText(nickName + "");
+        action = intent.getAction();
+        if(TextUtils.equals(action,"AddFriendActivity")) {
+            nickName = intent.getStringExtra("nickName");
+            friendId = intent.getStringExtra("friendId");
+            mNickName.setText(nickName + "");
+            mTitle.setText("添加好友验证");
+        }else {
+            nickName = intent.getStringExtra("groupName");
+            friendId = intent.getStringExtra("groupId");
+            mNickName.setText(nickName + "");
+            mTitle.setText("添加群组验证");
+
+        }
+
     }
 
     @Override
@@ -106,12 +121,26 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.send_btn:
                 /**
-                 * 发送添加好友
+                 * 发送添加信息
                  */
-                sendAddFriend();
+                if(TextUtils.equals(action,"AddFriendActivity")) {
+                    sendAddFriend();
+
+                }else {
+                    sendAddGroup();
+
+                }
                 break;
 
         }
+    }
+
+    /**
+     * 请求添加群组
+     */
+    private void sendAddGroup() {
+        //SSIMGroupManger.askJionGroup();
+
     }
 
     private void sendAddFriend() {
