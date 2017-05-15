@@ -3,6 +3,7 @@ package com.silver.chat.ui.contact;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -93,6 +94,7 @@ public class AddFriendActivity extends BaseActivity implements View.OnClickListe
             public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
                 SearchIdBean searchIdBean = (SearchIdBean) adapter.getItem(position);
                 Intent mIntent = new Intent(mContext, AddFriendVerifyActivity.class);
+                mIntent.setAction(TAG);
                 mIntent.putExtra("nickName", searchIdBean.getNickName());
                 mIntent.putExtra("friendId",searchIdBean.getUserId());
                 startActivity(mIntent);
