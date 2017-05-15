@@ -73,22 +73,20 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                 SSIMLoginManger.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        int statusCode = baseResponse.getStatusCode();
-                        Log.d(TAG, statusCode + "");
-                        if (statusCode == 1) { //未注册
+                        Log.d(TAG, baseResponse.getStatusCode() + "");
+                        if (baseResponse.getStatusCode() == 1) { //未注册
                             /**
                              * 获取短信验证码
                              */
                             sendSmsCode(uPhone);
                         }
-                        if (statusCode == 2) {//已注册
-                            ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
-                        }
                     }
-
                     @Override
                     public void onFailed(BaseResponse baseResponse) {
                         ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                        if (baseResponse.getStatusCode() == 2) {//已注册
+                            ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                        }
                     }
 
                     @Override
@@ -142,24 +140,4 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
 
     }
 
-
-//    private void getIndentifyCode() {
-//        SSIMLoginManger.userReginstCode(new ResponseCallBack<BaseResponse>() {
-//            @Override
-//            public void onSuccess(BaseResponse baseResponse) {
-//                Toast.makeText(mContext, "获取验证码成功", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailed(BaseResponse baseResponse) {
-//                //Log.e(TAG, code+"" );
-//                Toast.makeText(mContext, "获取验证码失败", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onError() {
-//                //Log.e(TAG, "onError" );
-//            }
-//        }, mUserPhone.getText().toString());
-//    }
 }

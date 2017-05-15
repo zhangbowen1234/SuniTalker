@@ -1,19 +1,20 @@
 package com.silver.chat.ui.mine;
 
+import android.app.Dialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.network.SSIMFrendManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.ui.contact.ContactChatActivity;
-import com.silver.chat.view.RoundImageView;
+import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.WhewView;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 作者：Fandy on 2016/12/1 09:51
@@ -22,10 +23,12 @@ import butterknife.ButterKnife;
 
 public class FriendInfoActivity extends BaseActivity implements View.OnClickListener {
 
-    private TextView tvName,mChat;
+    private TextView tvName,mChat ,tvSex ,tvSign,mTvdelete;
     private ImageView mIvBack;
-    private String contactName;
+    private String contactName ,contactSex ,contactSignature,friendId;
     private WhewView whewView;
+    private int tag = 0;
+    private Dialog dialog = null;
 
     @Override
     protected int getLayoutId() {
@@ -37,21 +40,26 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
         super.initView();
         mIvBack = (ImageView) findViewById(R.id.iv_back);
         tvName = (TextView) findViewById(R.id.tv_name);
+        tvSex = (TextView) findViewById(R.id.tv_sex);
+        tvSign = (TextView) findViewById(R.id.tv_sign);
         mChat = (TextView)findViewById(R.id.tv_detail);
         whewView = (WhewView) findViewById(R.id.wv);
+        mTvdelete = (TextView)findViewById(R.id.tv_delete);
+
         // 执行动画
 //        whewView.start();
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-
     }
     @Override
     protected void initData() {
         Intent intent = getIntent();
         contactName = intent.getStringExtra("contactName");
-        tvName.setText(contactName + "");
+        contactSex = intent.getStringExtra("sex");
+        contactSignature = intent.getStringExtra("signature");
+        friendId = intent.getStringExtra("friendId");
+        tvName.setText(contactName);
+        tvSex.setText(contactSex);
+        tvSign.setText(contactSignature);
+
     }
 
     @Override
@@ -59,6 +67,7 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
         super.initListener();
         mIvBack.setOnClickListener(this);
         mChat.setOnClickListener(this);
+        mTvdelete.setOnClickListener(this);
 
     }
 
@@ -73,8 +82,53 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
                 mIntent.putExtra("contactName",contactName);
                 startActivity(mIntent);
                 break;
+            case R.id.tv_delete:
+                //删除好友
+                DeleteItemDialog(0);
+                break;
+            case R.id.ok_btn:
+                String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+                String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
+                SSIMFrendManger.deleteFriend(token, userId, friendId, "innerapp", new ResponseCallBack<BaseResponse>() {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                    }
+                    @Override
+                    public void onFailed(BaseResponse baseResponse) {
+                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                    }
+                    @Override
+                    public void onError() {
+                        ToastUtils.showMessage(mContext,"请求失败");
+                    }
+                });
+
+                dialog.dismiss();
+                break;
+            case R.id.cancel_btn:
+                dialog.dismiss();
+                break;
         }
     }
+
+    private void DeleteItemDialog(int i) {
+        tag = i;
+        dialog = new Dialog(mContext, R.style.AlertDialogStyle);
+        dialog.setContentView(R.layout.dialog_item);
+        dialog.show();
+        // 将自定义的对话框布局写在这里
+        System.out.println("=======自定义对话框设置完毕，下面开始设置对话框中的信息=========");
+        final TextView title = (TextView) dialog.findViewById(R.id.dialog_title);
+        final TextView okBtn = (TextView) dialog.findViewById(R.id.ok_btn);
+        final TextView cancel = (TextView) dialog.findViewById(R.id.cancel_btn);
+        if (i == 0) {
+            title.setText("是否删除好友？");
+        }
+        okBtn.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

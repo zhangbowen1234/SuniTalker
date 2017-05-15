@@ -12,10 +12,8 @@ import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
 import com.silver.chat.network.SSIMLoginManger;
 import com.silver.chat.network.callback.ResponseCallBack;
-import com.silver.chat.network.requestbean.ForgetPasswordBean;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.NumberUtils;
-import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
@@ -53,12 +51,9 @@ public class UserForgotPWDActivity extends BaseActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_auth_code:
-
-
                 uSetP = mSetPwd.getText().toString();
                 uASetP = mAgainSetPwd.getText().toString();
                 uPhone = mUserPhone.getText().toString();
-                String autoCode = "123456";
 
                 if (uSetP == null || "".equals(uSetP)) {
                     ToastUtils.showMessage(UserForgotPWDActivity.this, "请输入6-16位字母或数字!");
@@ -91,13 +86,6 @@ public class UserForgotPWDActivity extends BaseActivity implements View.OnClickL
                 }
                 //去后台请求获取验证码
                 getIndentifyCode();
-
-                Intent forgotIntent = new Intent(this, ForgotVerificationActivity.class);
-                forgotIntent.putExtra("uPhone", uPhone);
-                forgotIntent.putExtra("newPwd",uSetP);
-                forgotIntent.putExtra("reNewPwd",uASetP);
-                ScreenManager.getScreenManager().StartPage(UserForgotPWDActivity.this, forgotIntent, true);
-
                 break;
             case R.id.return_last:
                 ScreenManager.getScreenManager().goBlackPage();
@@ -110,19 +98,23 @@ public class UserForgotPWDActivity extends BaseActivity implements View.OnClickL
         SSIMLoginManger.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse baseResponse) {
-                int statusCode = baseResponse.getStatusCode();
-                Log.d(TAG, statusCode + "");
-                if (statusCode == 2) {//已注册
-                    /**
-                     * 获取短信验证码
-                     */
-                    sendSmsCode(uPhone);
+                Log.d(TAG, baseResponse.getStatusCode() + "");
+                if (baseResponse.getStatusMsg() == "账号可用"){
+                    ToastUtils.showMessage(mContext, baseResponse.getStatusMsg()+"，请先注册");
+                }else {
+                    ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
                 }
             }
 
             @Override
             public void onFailed(BaseResponse baseResponse) {
-                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+//                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                if (baseResponse.getStatusCode() == 2) {//已注册
+                    /**
+                     * 获取短信验证码
+                     */
+                    sendSmsCode();
+                }
             }
 
             @Override
@@ -131,14 +123,17 @@ public class UserForgotPWDActivity extends BaseActivity implements View.OnClickL
             }
         });
     }
-    private void sendSmsCode(String uPhone) {
+    private void sendSmsCode() {
         SSIMLoginManger.userReginstCode(Common.version, uPhone, Common.RecoverPwdType, new ResponseCallBack<BaseResponse>() {
-
-
             @Override
             public void onSuccess(BaseResponse baseResponse) {
                 Log.e(TAG, baseResponse.getStatusMsg());
                 ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                Intent forgotIntent = new Intent(UserForgotPWDActivity.this, ForgotVerificationActivity.class);
+                forgotIntent.putExtra("uPhone", uPhone);
+                forgotIntent.putExtra("newPwd",uSetP);
+                forgotIntent.putExtra("reNewPwd",uASetP);
+                ScreenManager.getScreenManager().StartPage(UserForgotPWDActivity.this, forgotIntent, true);
             }
 
             @Override

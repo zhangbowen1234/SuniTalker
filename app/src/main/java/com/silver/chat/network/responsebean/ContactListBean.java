@@ -12,6 +12,7 @@ public class ContactListBean {
     private int sex;
     private String nickName;
     private String signature;
+    private String sortLetters;  //显示数据拼音的首字母
 
     public String getSignature() {
         return signature;
@@ -61,6 +62,14 @@ public class ContactListBean {
         this.nickName = nickName;
     }
 
+    public String getSortLetters() {
+        return sortLetters;
+    }
+
+    public void setSortLetters(String sortLetters) {
+        this.sortLetters = sortLetters;
+    }
+
     @Override
     public String toString() {
         return "ContactListBean{" +
@@ -70,6 +79,7 @@ public class ContactListBean {
                 ", sex=" + sex +
                 ", nickName='" + nickName + '\'' +
                 ", signature='" + signature + '\'' +
+                ", sortLetters='" + sortLetters + '\'' +
                 '}';
     }
 }

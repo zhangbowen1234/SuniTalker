@@ -11,7 +11,6 @@ import com.silver.chat.base.Common;
 import com.silver.chat.network.SSIMLoginManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.ForgetPasswordBean;
-import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.TimeCountUtil;
@@ -27,7 +26,7 @@ public class ForgotVerificationActivity extends BaseActivity implements View.OnC
 
     private MyLineEditText mAuthCode;
     TimeCountUtil timeCountUtil;//倒计时工具
-    private Button mBtnAuthCode, mVerification;
+    private Button mBtnAuthCode, mVerification,returnLast;
     private TextView tv_send_sms_phone;
     private String uSetP, uASetP, uPhone,uAuthCode;
 
@@ -38,38 +37,41 @@ public class ForgotVerificationActivity extends BaseActivity implements View.OnC
         timeCountUtil.start();
     }
 
-    protected void initView() {
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_forgot_verification;
+    }
 
+
+    protected void initView() {
         mAuthCode = (MyLineEditText) findViewById(R.id.edit_auth_code);
         mBtnAuthCode = (Button) findViewById(R.id.btn_auth_code);
         mVerification = (Button) findViewById(R.id.verification_bt_register);
         tv_send_sms_phone = (TextView) findViewById(R.id.tv_send_sms_phone);
+        returnLast = (Button) findViewById(R.id.return_last);
 
         uSetP = getIntent().getStringExtra("newPwd");
         uASetP = getIntent().getStringExtra("reNewPwd");
         uPhone = getIntent().getStringExtra("uPhone");
-
         tv_send_sms_phone.setText("已发送短信至" + uPhone);
 
-        mVerification.setOnClickListener(this);
         //计时器
         TimePiece();
-
     }
 
-
     @Override
-    protected int getLayoutId() {
-        return R.layout.activity_forgot_verification;
+    protected void initListener() {
+        super.initListener();
+        mBtnAuthCode.setOnClickListener(this);
+        mVerification.setOnClickListener(this);
+        returnLast.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.verification_bt_register:
-
                 uAuthCode = mAuthCode.getText().toString();
-
                 if (uAuthCode == null || "".equals(uAuthCode)) {
                     ToastUtils.showMessage(ForgotVerificationActivity.this, "请输入验证码!");
                     return;
@@ -83,6 +85,9 @@ public class ForgotVerificationActivity extends BaseActivity implements View.OnC
                  * 重新获取验证码
                  */
                 sendSmsCode(uPhone);
+                break;
+            case R.id.return_last:
+                finish();
                 break;
         }
     }
@@ -103,12 +108,12 @@ public class ForgotVerificationActivity extends BaseActivity implements View.OnC
 
             @Override
             public void onFailed(BaseResponse<ForgetPasswordBean> forgetPasswordBeanBaseResponse) {
-
+                ToastUtils.showMessage(mContext, forgetPasswordBeanBaseResponse.getStatusMsg());
             }
 
             @Override
             public void onError() {
-
+                ToastUtils.showMessage(mContext, "请求失败");
             }
         });
     }

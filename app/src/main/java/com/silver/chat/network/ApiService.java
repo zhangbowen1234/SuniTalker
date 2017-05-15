@@ -19,6 +19,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -70,7 +71,7 @@ public interface ApiService {
 
     //获取全部好友列表
     @GET("imx/{version}/userfriend/{userId}")
-    Call<BaseResponse<ArrayList<ContactListBean>>> allContactList( @Path("version") String version, @Path("userId") String userId,@Header("token")String token);
+    Call<BaseResponse<ArrayList<ContactListBean>>> allContact( @Path("version") String version, @Path("userId") String userId,@Header("token")String token);
 
     //创建群组
     @POST("imx/{version}/user/group")
@@ -96,5 +97,8 @@ public interface ApiService {
     @GET("imx/leaf/searchuser/{type}/{condition}/{page}/{count}")
     Call<BaseResponse<ArrayList<SearchIdBean>>>searchUser(@Path("type")String type,@Path("condition")String condition,@Path("page")String page,@Path("count")String count,@Header("token")String token);
 
+    //删除好友
+    @DELETE("imx/leaf/removebuddy/{userId}/{friendId}/{appName}")
+    Call<BaseResponse>deleteFriend(@Header("token")String token,@Path("userId")String userId,@Path("friendId")String friendId,@Path("appName")String appName);
 
 }

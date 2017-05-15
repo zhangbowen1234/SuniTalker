@@ -64,6 +64,7 @@
             android:layout_below="@id/edit_auth_code"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
+            android:gravity="center"
             android:background="@drawable/reg_verification_code_shape"
             android:text="修改"
             android:textColor="@color/white"
@@ -87,6 +88,7 @@
                 android:layout_below="@id/edit_auth_code"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="80dp"
+                android:gravity="center"
                 android:background="@drawable/lg_button_shape"
                 android:text="再次发送验证码至13621153700"
                 android:textColor="@color/txt_font_one_color"
@@ -102,6 +104,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/lg_button_shape"
                 android:text="重新输入注册手机号码"
+                android:gravity="center"
                 android:textColor="@color/txt_font_one_color"
                 android:textSize="12.0sp"/>
         </LinearLayout>

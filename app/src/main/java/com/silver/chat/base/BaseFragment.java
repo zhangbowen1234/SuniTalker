@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -101,4 +100,9 @@ public abstract class BaseFragment extends SupportFragment {
     public void startActivity(Class<?> clz) {
         mActivity.startActivity(new Intent(mActivity, clz));
     }
+
+    public void startActivity(Class<?> clz,Bundle bundle) {
+        mActivity.startActivity(new Intent(mActivity,clz), new Bundle());
+    }
+
 }

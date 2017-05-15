@@ -27,6 +27,27 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- dialog的样式 -->
+    <style name="AlertDialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+    <!-- 设置上下10左右20内边距 -->
+    <style name="padding_setting" parent="txt_size_18sp">
+        <item name="android:paddingLeft">@dimen/dp_5</item>
+        <item name="android:paddingRight">@dimen/dp_5</item>
+        <item name="android:paddingBottom">@dimen/dp_1</item>
+        <item name="android:paddingTop">@dimen/dp_1</item>
+    </style>
+    <style name="txt_size_18sp" parent="txt_color">
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="txt_color">
+        <item name="android:textColor">#6e6e6e</item>
+    </style>
+
 
     <!-- 设置弹出窗口的属性，frame叠加，isfloat是否浮动，tarnslucent是否半透明，dim是背景是否变暗 -->
     <style name="Theme_audioDialog" parent="@android:style/Theme.Dialog">
