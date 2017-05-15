@@ -45,14 +45,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        String ChooseBackgroud = PreferenceUtil.getInstance(this).getString(PreferenceUtil.ChooseBackground, "");
-        PreferenceUtil.getInstance(context).getString("ChooseBackgroud", ChooseBackgroud);
-        ChooseBackgroudUtils.choosebackgroud(mContext, ChooseBackgroud);
-    }
-
-    @Override
     protected void initView() {
         super.initView();
         mTvMyAccount = (TextView) findViewById(R.id.tv_account);

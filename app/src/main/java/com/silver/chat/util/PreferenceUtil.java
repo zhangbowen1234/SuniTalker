@@ -34,7 +34,6 @@ public class PreferenceUtil {
     public static final String AGE = "age";
     public static final String SIGNATURE = "signature";
     public static final String LEVEL = "level";
-    public static final String ChooseBackground = "background";
 
 
     public static synchronized PreferenceUtil getInstance(Context context) {

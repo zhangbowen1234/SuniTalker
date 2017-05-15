@@ -7,10 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
+import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.util.AppManager;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.SkinSettingManager;
 import com.silver.chat.util.ToastUtil;
 
 import butterknife.ButterKnife;
@@ -28,14 +32,12 @@ public abstract class BaseActivity extends AppCompatActivity {
      **/
     protected final String TAG = this.getClass().getSimpleName();
     protected Context mContext;
-
+    private int[] layouts={R.id.ll_common_bg_view};
     @Optional
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
-        view = this.getWindow().getDecorView();//getDecorView 获得window最顶层的View
-        view.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.purple_theme));
         ButterKnife.bind(this);
         mContext = this;
         ToastUtil.cancelToast();
@@ -79,6 +81,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        LinearLayout[] layout = new LinearLayout[layouts.length];
+        for(int i=0; i<layouts.length; i++){
+            layout[i]=(LinearLayout) findViewById(layouts[i]);
+            SkinSettingManager mSettingManager = new SkinSettingManager(BaseActivity.this, layout[i]);
+            mSettingManager.initSkins();
+        }
         super.onResume();
     }
 
