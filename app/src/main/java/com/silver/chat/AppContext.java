@@ -15,8 +15,6 @@ import com.squareup.okhttp.OkHttpClient;
 
 import java.io.InputStream;
 
-import static android.R.attr.path;
-
 /**
  * 作者：Fandy on 2016/11/22 14:21
  * 邮箱：fandy618@hotmail.com
@@ -43,5 +41,9 @@ public class AppContext extends Application {
                 Glide.with(context).load(path).centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
             }
         });
+    }
+
+    public static AppContext getInstance() {
+        return appContext;
     }
 }

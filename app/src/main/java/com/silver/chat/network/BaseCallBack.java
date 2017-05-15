@@ -15,12 +15,15 @@ import retrofit2.Response;
  */
 
 public class BaseCallBack {
-
+    /**
+     * 后台返回的数据有data调用这个
+     */
     public static <T>void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
         baseResponseCall.enqueue(new Callback<BaseResponse<T>>() {
             @Override
             public void onResponse(Call<BaseResponse<T>> call, Response<BaseResponse<T>> response) {
-                Log.e("contactList", response.body() + "");
+                Log.e("onResponse", response.body() + "");
+                Log.e("onResponse", response.body().data + "");
 
                 if (response.body().getStatusCode() == 200) {
                     callBack.onSuccess(response.body());
@@ -44,7 +47,7 @@ public class BaseCallBack {
         baseResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                Log.e("response.body() ==",response.body().toString());
+                Log.e("response.body() =",response.body().toString());
 
                 if (response.body().getStatusCode() == 200 || response.body().getStatusCode() ==1) {
                     callBack.onSuccess(response.body());

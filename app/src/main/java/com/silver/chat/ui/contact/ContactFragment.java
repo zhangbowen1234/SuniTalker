@@ -18,6 +18,9 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.ContactListAdapter;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.base.Common;
+import com.silver.chat.database.callback.EasyRun;
+import com.silver.chat.database.dao.BaseDao;
+import com.silver.chat.database.helper.DBHelper;
 import com.silver.chat.network.SSIMFrendManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
@@ -30,7 +33,6 @@ import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.UIUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -61,6 +63,10 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
      * 联系人集合
      */
     private List<ContactListBean> mContactList;
+    /**
+     * 排序后的联系人集合
+     */
+    private List<ContactListBean> mConList;
     private ContactListAdapter contactListAdapter;
 
     /**
@@ -78,6 +84,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     private GestureDetector mGestureDetector;
     private LinearLayoutManager linearLayoutManager;
     private FloatingActionButton fab;
+    private BaseDao<ContactListBean> mDao;
 
     public static ContactFragment newInstance(boolean isAllContact) {
         Bundle args = new Bundle();
@@ -94,10 +101,11 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.hide();
         mContactList = new ArrayList<ContactListBean>();
+        mConList = new ArrayList<ContactListBean>();
         linearLayoutManager = new LinearLayoutManager(mActivity);
         //设置布局管理器
         mRecycleContent.setLayoutManager(linearLayoutManager);
-
+        mDao = DBHelper.get().dao(ContactListBean.class);
         // 实例化汉字转拼音类
         characterParser = CharacterParser.getInstance();
         pinyinComparator = new PinyinComparator();
@@ -139,14 +147,29 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
     }
 
-    Handler mHandler = new Handler(){
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
+//                    for (int i = 0; i < mContactList.size(); i++) {
+//                        ContactListBean sortModel = new ContactListBean();
+//                        sortModel.setNickName(mContactList.get(i).getNickName());
+//                        String pinyin = characterParser.getSelling(mContactList.get(i).getNickName());
+//                        String sortString = pinyin.substring(0, 1).toUpperCase();
+//                        // 正则表达式，判断首字母是否是英文字母
+//                        if (sortString.matches("[A-Z]")) {
+//                            sortModel.setSortLetters(sortString.toUpperCase());
+//                        } else {
+//                            sortModel.setSortLetters("#");
+//                        }
+//                        sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID,""));
+//                        mConList.add(sortModel);
+//                    }
+                    Log.e("mHandler_mContactList",mContactList+"");
                     // 根据a-z进行排序源数据
-                    Collections.sort(mContactList, pinyinComparator);
-                    if (contactListAdapter ==null){
+//                    Collections.sort(mContactList, pinyinComparator);
+                    if (contactListAdapter == null) {
                         //联系人列表的adapter
                         contactListAdapter = new ContactListAdapter(mActivity, mContactList);
                     }
@@ -163,10 +186,40 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         /**
          * 联网获取联系人
          */
+//        if (isAllContact && mContactList == null) {
+//        //请求所有文件目录数据
         getContactList();
+//        } else if (!isAllContact &&mContactList == null) {
+        //优先从数据库中读取数据
+//        QueryDbParent();
+//        }
 
     }
 
+    /**
+     * 查询数据库所有联系人
+     */
+    private void QueryDbParent() {
+        mDao.asyncTask(new EasyRun<List<ContactListBean>>() {
+            @Override
+            public List<ContactListBean> run() throws Exception {
+                return getSortData();
+            }
+
+            @Override
+            public void onMainThread(List<ContactListBean> data) throws Exception {
+                if (data.isEmpty()) {
+                    //其次从网络获取数据
+//                    HttpFileList();
+//                    getContactList();
+                } else {
+                    mContactList = data;
+                    mHandler.sendEmptyMessage(0);
+                }
+            }
+        });
+
+    }
 
     /**
      * 联网获取联系人
@@ -176,10 +229,10 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
         SSIMFrendManger.contactList(Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
             @Override
-            public void onSuccess(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
+            public void onSuccess(final BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
                 ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
 
-                for (int i = 0;i< listBaseResponse.data.size();i++){
+                for (int i = 0; i < listBaseResponse.data.size(); i++) {
                     ContactListBean sortModel = new ContactListBean();
                     sortModel.setNickName(listBaseResponse.data.get(i).getNickName());
                     String pinyin = characterParser.getSelling(listBaseResponse.data.get(i).getNickName());
@@ -190,18 +243,45 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     } else {
                         sortModel.setSortLetters("#");
                     }
-                    mContactList.add(sortModel);
+                    sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID,""));
+                    mConList.add(sortModel);
                 }
+
                 /**
-                 * 通知显示联系人列表
+                 *  数据库操作内容
                  */
-                mHandler.sendEmptyMessage(0);
+                mDao.asyncTask(new EasyRun<List<ContactListBean>>() {
+                    @Override
+                    public List<ContactListBean> run() throws Exception {
+                        List<ContactListBean> query = mDao.queryForAll();
+                        //删除原始文件
+                        mDao.delete(query);
+                        //保存新数据
+                        mDao.create(mConList);
+                        return getSortData();
+                    }
+
+                    @Override
+                    public void onMainThread(List<ContactListBean> data) throws Exception {
+                        if (data.isEmpty()) {
+                            ToastUtils.showMessage(mActivity, mActivity.getResources().getString(R.string.contactlist_null));
+                        } else {
+                            mContactList = data;
+                            /**
+                             * 通知显示联系人列表
+                             */
+                            mHandler.sendEmptyMessage(0);
+                        }
+                    }
+
+                });
+
             }
 
             @Override
             public void onFailed(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
                 ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
-                if (listBaseResponse.getStatusCode() == Common.AnewLoginCode){
+                if (listBaseResponse.getStatusCode() == Common.AnewLoginCode) {
                     PreferenceUtil.getInstance(mActivity).setFirst(false);
                     PreferenceUtil.getInstance(mActivity).setLog(false);
                     startActivity(LoginActivity.class);
@@ -212,9 +292,15 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
             @Override
             public void onError() {
                 ToastUtils.showMessage(mActivity, "获取失败");
+//                QueryDbParent();
             }
         });
 
+    }
+
+    public List<ContactListBean> getSortData() {
+        Log.e(" mDao.queryForAll():", mDao.queryForAll() + "");
+        return mDao.queryForAll();
     }
 
 

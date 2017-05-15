@@ -53,6 +53,7 @@
     <string name="global_notop_talk">取消置顶</string>
     <string name="isout_login">是否返回登陆界面</string>
     <string name="hint_search">ID号/手机号</string>
+    <string name="contactlist_null">"您还未添加任何好友，快去添加吧！"</string>
 
 
 </resources>
