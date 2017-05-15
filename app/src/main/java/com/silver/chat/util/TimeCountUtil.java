@@ -33,7 +33,6 @@ public class TimeCountUtil extends CountDownTimer {
 	public void onTick(long millisUntilFinished) {
 		btn.setClickable(false);//设置不能点击
 		btn.setText(millisUntilFinished / 1000 + " s后重新获取验证码");//设置倒计时时间
-
 		//设置按钮为灰色，这时是不能点击的
 //		btn.setBackground(mActivity.getResources().getDrawable(R.drawable.bg_duck_back));
 		Spannable span = new SpannableString(btn.getText().toString());//获取按钮的文字

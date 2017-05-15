@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public class AddFriendAdapter extends BaseQuickAdapter<SearchIdBean,BaseViewHolder> {
-    public AddFriendAdapter(int layoutResId, List<SearchIdBean> data) {
+    public AddFriendAdapter(int layoutResId, List data) {
         super(layoutResId, data);
     }
 

@@ -24,7 +24,10 @@ import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
 
 import java.util.ArrayList;
-
+/**
+ * 作者：hibon on 2016/11/16 14:14
+ * 添加好友
+ */
 public class AddFriendActivity extends BaseActivity implements View.OnClickListener {
 
     private LinearLayout mLLAddTitle;
@@ -93,6 +96,7 @@ public class AddFriendActivity extends BaseActivity implements View.OnClickListe
             public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
                 SearchIdBean searchIdBean = (SearchIdBean) adapter.getItem(position);
                 Intent mIntent = new Intent(mContext, AddFriendVerifyActivity.class);
+                mIntent.setAction(TAG);
                 mIntent.putExtra("nickName", searchIdBean.getNickName());
                 mIntent.putExtra("friendId",searchIdBean.getUserId());
                 startActivity(mIntent);

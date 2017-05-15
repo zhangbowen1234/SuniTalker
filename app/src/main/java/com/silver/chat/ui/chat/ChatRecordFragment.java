@@ -2,10 +2,15 @@ package com.silver.chat.ui.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Trace;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.github.library.listener.OnRecyclerItemClickListener;
+import com.github.library.listener.OnRecyclerItemLongClickListener;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatApater;
 import com.silver.chat.base.BasePagerFragment;
@@ -17,8 +22,10 @@ import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.dialog.TopDeleteDialog;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
+import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,10 +37,11 @@ import java.util.List;
 
 public class ChatRecordFragment extends BasePagerFragment {
 
-    private RecyclerView mRecycleContent;
+    private WSRecyclerView mRecycleContent;
     private ChatApater mChatApater;
     private List<ChatBean> mList;
     public static String TOP_STATES = "TOP";
+    private MyHandler mMyHandler;
 
     public static ChatRecordFragment newInstance() {
         Bundle args = new Bundle();
@@ -45,7 +53,8 @@ public class ChatRecordFragment extends BasePagerFragment {
     @Override
     protected void initView(View view) {
         super.initView(view);
-        mRecycleContent = (RecyclerView) view.findViewById(R.id.recyle_content);
+        mMyHandler = new MyHandler(this);
+        mRecycleContent = (WSRecyclerView) view.findViewById(R.id.recyle_content);
         mRecycleContent.setLayoutManager(new LinearLayoutManager(mActivity));
     }
 
@@ -56,44 +65,23 @@ public class ChatRecordFragment extends BasePagerFragment {
         mList.addAll(DataServer.getChatData());
         mChatApater = new ChatApater(mList);
         mRecycleContent.setAdapter(mChatApater);
-//        ItemTouchHelper.Callback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
-//            @Override
-//            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-//                int fromPosition = viewHolder.getAdapterPosition();
-//                int toPosition = target.getAdapterPosition();
-//                if (fromPosition < toPosition) {
-//                    for (int i = fromPosition; i < toPosition; i++) {
-//                        Collections.swap(mList, i, i + 1);
-//                    }
-//                } else {
-//                    for (int i = toPosition; i < fromPosition; i++) {
-//                        Collections.swap(mList, i, i + 1);
-//                    }
-//                }
-//
-//                mChatApater.notifyItemMoved(fromPosition, toPosition);
-//
-//                return true;
-//            }
-//
-//            @Override
-//            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-//
-//            }
-//        };
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-//        itemTouchHelper.attachToRecyclerView(mRecycleContent);
-//        refreshView();
-    }
+        mChatApater.addHeaderView(mRecycleContent.getRefreshView());
 
-    @Override
-    protected void initListener() {
-        super.initListener();
-        mRecycleContent.addOnItemTouchListener(new OnItemClickListener() {
+        mChatApater.setOnRecyclerItemClickListener(new OnRecyclerItemClickListener() {
             @Override
-            public void onItemLongClick(BaseQuickAdapter adapter, View view, final int position) {
-                super.onItemLongClick(adapter, view, position);
-                final ChatBean chatBean = (ChatBean) adapter.getItem(position);
+            public void onItemClick(View view, int position) {
+                if (mChatApater.getItemViewType(position) == ChatBean.CHAT_GROUP_NOTICE){
+                    startActivity(GroupNotificationActivity.class);
+                }else {
+                    Intent mIntent = new Intent(mActivity, ContactChatActivity.class);
+                    startActivity(mIntent);
+                }
+            }
+        });
+        mChatApater.setOnRecyclerItemLongClickListener(new OnRecyclerItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(View view, final int position) {
+                final ChatBean chatBean = mChatApater.getItem(position);
                 Bundle bundle = new Bundle();
                 bundle.putInt(TOP_STATES, chatBean.getTop());
                 TopDeleteDialog topDeleteDialog = new TopDeleteDialog(mActivity);
@@ -126,26 +114,21 @@ public class ChatRecordFragment extends BasePagerFragment {
                                 refreshView();
                             }
                         }).show();
-            }
-
-            @Override
-            public void SimpleOnItemClick(BaseQuickAdapter adapter, final View view,
-                                          final int position) {
-                if (adapter.getItemViewType(position) == ChatBean.CHAT_GROUP_NOTICE){
-                    startActivity(GroupNotificationActivity.class);
-                }else {
-//                ChatBean chatBean = (ChatBean) mChatApater.getItem(position);
-                    Intent mIntent = new Intent(mActivity, ContactChatActivity.class);
-//                        mIntent.putExtra("contactName",chatBean.getContactName());
-                    startActivity(mIntent);
-                }
+                return false;
             }
         });
-    }
-
-
-    @Override
-    protected void getData() {
+        mRecycleContent.setOnRefreshCompleteListener(new WSRecyclerView.OnRefreshCompleteListener() {
+            @Override
+            public void onRefreshComplete() {
+                mMyHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mChatApater.setData(mList);
+                        mRecycleContent.refreshComplete();
+                    }
+                }, 3000);
+            }
+        });
 
     }
 
@@ -159,4 +142,26 @@ public class ChatRecordFragment extends BasePagerFragment {
         Collections.sort(mList);
         mChatApater.notifyDataSetChanged();
     }
+
+    @Override
+    protected void getData() {
+
+    }
+
+    private static class MyHandler extends Handler {
+        private WeakReference<ChatRecordFragment> activityWeakReference;
+
+        public MyHandler(ChatRecordFragment fragment) {
+            activityWeakReference = new WeakReference<ChatRecordFragment>(fragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            ChatRecordFragment fragment = activityWeakReference.get();
+            if (fragment == null) {
+                return;
+            }
+        }
+    }
+
 }

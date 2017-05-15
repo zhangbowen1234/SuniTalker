@@ -1,5 +1,6 @@
 package com.silver.chat.network;
 
+import com.silver.chat.network.requestbean.AskJoinGroup;
 import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.requestbean.ForgetPasswordBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
@@ -10,6 +11,7 @@ import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.FriendInfo;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.responsebean.LoginRequestBean;
+import com.silver.chat.network.responsebean.SearchGroupBean;
 import com.silver.chat.network.responsebean.SearchIdBean;
 import com.silver.chat.network.responsebean.UpdateUserInfoBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
@@ -91,7 +93,7 @@ public interface ApiService {
 
     //申请添加好友
     @PUT("imx/leaf/friend/{userId}/{friendId}/{comment}")
-    Call<BaseResponse>addFriend(@Path("userId")String userId, @Path("friendId")String friendId, @Path("comment")String comment, @Header("token")String token);
+    Call<BaseResponse> addFriend(@Path("userId")String userId, @Path("friendId")String friendId, @Path("comment")String comment, @Header("token")String token);
 
     //搜索用户
     @GET("imx/leaf/searchuser/{type}/{condition}/{page}/{count}")
@@ -99,6 +101,13 @@ public interface ApiService {
 
     //删除好友
     @DELETE("imx/leaf/removebuddy/{userId}/{friendId}/{appName}")
-    Call<BaseResponse>deleteFriend(@Header("token")String token,@Path("userId")String userId,@Path("friendId")String friendId,@Path("appName")String appName);
+    Call<BaseResponse> deleteFriend(@Header("token")String token,@Path("userId")String userId,@Path("friendId")String friendId,@Path("appName")String appName);
 
+    //搜索群组
+    @GET("imx/leaf/user/group/search/{condition}/{page}/{count}")
+    Call<BaseResponse<SearchGroupBean>> searchGroup(@Header("token")String token,@Path("condition")String condition,@Path("page")String page,@Path("count")String count);
+
+    //申请添加群组
+    @POST("imx/leaf/user/group/application")
+    Call<BaseResponse> addGroup(@Header("token")String token, @Body AskJoinGroup askJoinGroup);
 }

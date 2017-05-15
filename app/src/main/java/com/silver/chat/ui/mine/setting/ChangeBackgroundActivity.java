@@ -14,6 +14,7 @@ import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.util.ChooseBackgroudUtils;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.SkinSettingManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -50,28 +51,36 @@ public class ChangeBackgroundActivity extends BaseActivity {
     LinearLayout purpleTheme;
     @BindView(R.id.preservation_theme)
     ImageView preservationTheme;
-    @BindView(R.id.ll_change_background)
-    LinearLayout llChangeBackground;
+    @BindView(R.id.ll_common_bg_view)
+    LinearLayout iv_common_bg;
+    private SkinSettingManager mSettingManager;
 
     @Override
     protected int getLayoutId() {
         return R.layout.acyivity_change_background;
     }
 
+    @Override
+    protected void initView() {
+        super.initView();
+        mSettingManager = new SkinSettingManager(this);
+        mSettingManager.initSkins();
+    }
 
     @OnClick({R.id.black_theme, R.id.blue_theme, R.id.green_theme, R.id.red_theme, R.id.purple_theme,R.id.preservation_theme})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.black_theme:
-                BaseActivity.getBackgroundView().setBackgroundDrawable(this.getResources().getDrawable(R.drawable.black_theme));
+                iv_common_bg.setBackgroundResource(R.drawable.black_theme);
                 blackChoose.setVisibility(View.VISIBLE);
                 blueChoose.setVisibility(View.INVISIBLE);
                 greenChoose.setVisibility(View.INVISIBLE);
                 redChoose.setVisibility(View.INVISIBLE);
                 purpleChoose.setVisibility(View.INVISIBLE);
+
                 break;
             case R.id.blue_theme:
-                BaseActivity.getBackgroundView().setBackgroundDrawable(this.getResources().getDrawable(R.drawable.blue_theme));
+                iv_common_bg.setBackgroundResource(R.drawable.blue_theme);
                 blackChoose.setVisibility(View.INVISIBLE);
                 blueChoose.setVisibility(View.VISIBLE);
                 greenChoose.setVisibility(View.INVISIBLE);
@@ -81,53 +90,48 @@ public class ChangeBackgroundActivity extends BaseActivity {
                 break;
 
             case R.id.green_theme:
-                BaseActivity.getBackgroundView().setBackgroundDrawable(this.getResources().getDrawable(R.drawable.green_theme));
+                iv_common_bg.setBackgroundResource(R.drawable.green_theme);
                 greenChoose.setVisibility(View.VISIBLE);
                 blackChoose.setVisibility(View.INVISIBLE);
                 blueChoose.setVisibility(View.INVISIBLE);
                 redChoose.setVisibility(View.INVISIBLE);
                 purpleChoose.setVisibility(View.INVISIBLE);
+
                 break;
 
             case R.id.red_theme:
-                BaseActivity.getBackgroundView().setBackgroundDrawable(this.getResources().getDrawable(R.drawable.red_theme));
+                iv_common_bg.setBackgroundResource(R.drawable.red_theme);
                 redChoose.setVisibility(View.VISIBLE);
                 blackChoose.setVisibility(View.INVISIBLE);
                 blueChoose.setVisibility(View.INVISIBLE);
                 greenChoose.setVisibility(View.INVISIBLE);
                 purpleChoose.setVisibility(View.INVISIBLE);
+
                 break;
 
             case R.id.purple_theme:
-                BaseActivity.getBackgroundView().setBackgroundDrawable(this.getResources().getDrawable(R.drawable.purple_theme));
+                iv_common_bg.setBackgroundResource(R.drawable.purple_theme);
                 purpleChoose.setVisibility(View.VISIBLE);
                 blackChoose.setVisibility(View.INVISIBLE);
                 blueChoose.setVisibility(View.INVISIBLE);
                 greenChoose.setVisibility(View.INVISIBLE);
                 redChoose.setVisibility(View.INVISIBLE);
+
                 break;
             case R.id.preservation_theme:
                 if (view.getId() == R.id.purple_theme){
-                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.ChooseBackground, 0 + "");
+                    mSettingManager.toggleSkins(0);
                 }else if (view.getId() == R.id.black_theme){
-                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.ChooseBackground, 1 + "");
+                    mSettingManager.toggleSkins(1);
                 }else if (view.getId() == R.id.blue_theme){
-                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.ChooseBackground, 2 + "");
+                    mSettingManager.toggleSkins(2);
                 }else if (view.getId() == R.id.green_theme){
-                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.ChooseBackground, 3 + "");
+                    mSettingManager.toggleSkins(3);
                 }else if (view.getId() == R.id.red_theme){
-                    PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.ChooseBackground, 4 + "");
+                    mSettingManager.toggleSkins(4);
                 }
                 finish();
                 break;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        String ChooseBackgroud = PreferenceUtil.getInstance(this).getString(PreferenceUtil.ChooseBackground, "");
-        PreferenceUtil.getInstance(context).getString("ChooseBackgroud", ChooseBackgroud);
-        ChooseBackgroudUtils.choosebackgroud(mContext, ChooseBackgroud);
     }
 }

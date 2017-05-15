@@ -84,7 +84,7 @@ public class GroupDiscussionActivity extends BaseActivity {
         String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         if (token != null && !"".equals(token)) {
             if (view.getId() == R.id.bt_creat_group){
-                SSIMGroupManger.Getcreatgroup(Common.version, token, instance, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
+                SSIMGroupManger.getcreatgroup(Common.version, token, instance, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
                     @Override
                     public void onSuccess(BaseResponse<CreatGroupBean> creatGroupBeanBaseResponse) {
                         ToastUtils.showMessage(mContext, creatGroupBeanBaseResponse.getStatusMsg());
@@ -103,7 +103,7 @@ public class GroupDiscussionActivity extends BaseActivity {
                     }
                 });
             }else if (view.getId() == R.id.bt_creat_discussion){
-                SSIMGroupManger.Getcreatdicugroup(Common.version, token, instance, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
+                SSIMGroupManger.getcreatdicugroup(Common.version, token, instance, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
                     @Override
                     public void onSuccess(BaseResponse<CreatGroupBean> creatGroupBeanBaseResponse) {
                         ToastUtils.showMessage(mContext, creatGroupBeanBaseResponse.getStatusMsg());
