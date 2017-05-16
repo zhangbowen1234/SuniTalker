@@ -16,6 +16,7 @@ import com.silver.chat.adapter.ChatApater;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.entity.ChatBean;
 import com.silver.chat.entity.DataServer;
+import com.silver.chat.ui.chat.notification.AddGroupNotifiActivity;
 import com.silver.chat.ui.chat.notification.GroupNotificationActivity;
 import com.silver.chat.ui.contact.ContactChatActivity;
 import com.silver.chat.util.ToastUtils;
