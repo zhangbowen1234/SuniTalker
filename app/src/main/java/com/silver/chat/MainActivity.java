@@ -197,17 +197,16 @@ public class MainActivity extends BaseActivity {
                 ToastUtils.showMessage(mContext, "正在修改中...");
                 break;
             case R.id.tv_add_friend:
+                closePanelView();
                 startActivity(AddFriendActivity.class);
                 break;
             case R.id.tv_search_group:
-                ToastUtils.showMessage(mContext, "正在修改中...");
+                closePanelView();
                 startActivity(FindGroupActivity.class);
-                startActivity(FindGroupActivity.class);
-                ToastUtils.showMessage(mContext, "正在修改中...");
                 break;
             case R.id.tv_start_group_chat:
+                closePanelView();
                 startActivity(CreatGroupActivity.class);
-                finish();
                 break;
             case R.id.tv_more_chat:
                 ToastUtils.showMessage(mContext, "正在修改中...");
