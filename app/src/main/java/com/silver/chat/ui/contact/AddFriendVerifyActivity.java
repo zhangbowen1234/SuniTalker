@@ -153,7 +153,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
         String mMsgText = mMsgVerify.getText().toString();
         if (mMsgText != null || !mMsgText.equals("")) {
             String comment = toURLEncoded(mMsgText);
-            SSIMFrendManger.goAddFriends(userId, friendId, comment, token, new ResponseCallBack<BaseResponse>() {
+            SSIMFrendManger.goAddFriends(mContext,userId, friendId, comment, token, new ResponseCallBack<BaseResponse>() {
                 @Override
                 public void onSuccess(BaseResponse baseResponse) {
                     ToastUtils.showMessage(mContext, "申请已发出");

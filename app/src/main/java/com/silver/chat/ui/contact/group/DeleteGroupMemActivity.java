@@ -77,7 +77,7 @@ public class DeleteGroupMemActivity extends BaseActivity {
      * 获取群成员信息
      */
     private void getGroupMemInfo() {
-        String userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
+       /* String userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
         String token = PreferenceUtil.getInstance(this).getString(PreferenceUtil.TOKEN, "");
         int i = Integer.parseInt(userId);
         JoinedGroupRequest request = JoinedGroupRequest.getInstance();
@@ -99,7 +99,7 @@ public class DeleteGroupMemActivity extends BaseActivity {
             public void onError() {
 
             }
-        });
+        });*/
 
     }
 

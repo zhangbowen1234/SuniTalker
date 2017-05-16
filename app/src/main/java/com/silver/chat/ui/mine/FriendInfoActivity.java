@@ -89,7 +89,7 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
             case R.id.ok_btn:
                 String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
                 String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
-                SSIMFrendManger.deleteFriend(token, userId, friendId, "innerapp", new ResponseCallBack<BaseResponse>() {
+                SSIMFrendManger.deleteFriend(mContext,token, userId, friendId, "innerapp", new ResponseCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
