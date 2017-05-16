@@ -113,7 +113,7 @@ public class FindGroupActivity extends BaseActivity {
     private void httpGetSearchGroupList() {
         String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         String condition = edSearch.getContent();
-        SSIMGroupManger.getSearchGroupInfo(token, condition, "1", "20", new ResponseCallBack<BaseResponse<SearchGroupBean>>() {
+        SSIMGroupManger.getSearchGroupInfo(mContext,token, condition, "1", "20", new ResponseCallBack<BaseResponse<SearchGroupBean>>() {
             @Override
             public void onSuccess(BaseResponse<SearchGroupBean> searchGroupBeanBaseResponse) {
 

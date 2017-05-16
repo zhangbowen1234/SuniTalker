@@ -200,10 +200,8 @@ public class MainActivity extends BaseActivity {
                 startActivity(AddFriendActivity.class);
                 break;
             case R.id.tv_search_group:
-                ToastUtils.showMessage(mContext, "正在修改中...");
                 startActivity(FindGroupActivity.class);
                 startActivity(FindGroupActivity.class);
-                ToastUtils.showMessage(mContext, "正在修改中...");
                 break;
             case R.id.tv_start_group_chat:
                 startActivity(CreatGroupActivity.class);

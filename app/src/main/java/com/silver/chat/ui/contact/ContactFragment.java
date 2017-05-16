@@ -227,7 +227,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     public void getContactList() {
         String token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
         String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
-        SSIMFrendManger.contactList(Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
+        SSIMFrendManger.contactList(getContext(),Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
             @Override
             public void onSuccess(final BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
                 ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());

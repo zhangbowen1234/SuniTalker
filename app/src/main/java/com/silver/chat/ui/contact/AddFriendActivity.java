@@ -126,7 +126,7 @@ public class AddFriendActivity extends BaseActivity implements View.OnClickListe
     private void httpGetSearchList(){
         String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         String condition = mSearchContent.getContent();
-        SSIMFrendManger.searchUser(Common.Phone, condition, "0", "20", token, new ResponseCallBack<BaseResponse<ArrayList<SearchIdBean>>>() {
+        SSIMFrendManger.searchUser(mContext,Common.Phone, condition, "0", "20", token, new ResponseCallBack<BaseResponse<ArrayList<SearchIdBean>>>() {
             @Override
             public void onSuccess(BaseResponse<ArrayList<SearchIdBean>> listBaseResponse) {
                 if (listBaseResponse.data!= null){

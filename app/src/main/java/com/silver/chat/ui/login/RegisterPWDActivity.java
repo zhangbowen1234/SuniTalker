@@ -136,7 +136,7 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void goReginst() {
-        SSIMLoginManger.goReginst(Common.version, RegisterRequest.getInstance(), new ResponseCallBack<BaseResponse>() {
+        SSIMLoginManger.goReginst(mContext,Common.version, RegisterRequest.getInstance(), new ResponseCallBack<BaseResponse>() {
 
             @Override
             public void onSuccess(BaseResponse baseResponse) {
@@ -160,7 +160,7 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void sendSmsCode(String uPhone) {
-        SSIMLoginManger.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+        SSIMLoginManger.userReginstCode(mContext,Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
 
 
             @Override

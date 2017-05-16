@@ -92,7 +92,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                                 String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
                                 if (NetUtils.isConnected(mContext)) {//是否联网
                                     if (token != null && !"".equals(token)) {
-                                        SSIMLoginManger.outLogin(Common.version, token, new ResponseCallBack<BaseResponse>() {
+                                        SSIMLoginManger.outLogin(mContext,Common.version, token, new ResponseCallBack<BaseResponse>() {
                                             @Override
                                             public void onSuccess(BaseResponse baseResponse) {
                                                 PreferenceUtil.getInstance(mContext).setFirst(false);

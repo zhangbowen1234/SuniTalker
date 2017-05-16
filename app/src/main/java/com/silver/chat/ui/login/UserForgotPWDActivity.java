@@ -95,7 +95,7 @@ public class UserForgotPWDActivity extends BaseActivity implements View.OnClickL
         }
     }
     private void getIndentifyCode() {
-        SSIMLoginManger.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
+        SSIMLoginManger.checkPhone(mContext,Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse baseResponse) {
                 Log.d(TAG, baseResponse.getStatusCode() + "");
@@ -124,7 +124,7 @@ public class UserForgotPWDActivity extends BaseActivity implements View.OnClickL
         });
     }
     private void sendSmsCode() {
-        SSIMLoginManger.userReginstCode(Common.version, uPhone, Common.RecoverPwdType, new ResponseCallBack<BaseResponse>() {
+        SSIMLoginManger.userReginstCode(mContext,Common.version, uPhone, Common.RecoverPwdType, new ResponseCallBack<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse baseResponse) {
                 Log.e(TAG, baseResponse.getStatusMsg());
