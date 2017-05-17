@@ -1,13 +1,21 @@
 package com.silver.chat.ui.contact.group;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.silver.chat.R;
+import com.silver.chat.adapter.GroupMemAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.network.responsebean.GroupMemberBean;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -24,6 +32,10 @@ public class GroupMemberActivity extends BaseActivity {
     RelativeLayout rlSeach;
     @BindView(R.id.listview)
     ListView listview;
+    private int groupid;
+    private int privilege;
+    //群成员列表的集合
+    private ArrayList<GroupMemberBean> lists;
 
     @Override
     protected int getLayoutId() {
@@ -33,11 +45,24 @@ public class GroupMemberActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
+        Intent intent = getIntent();
+        groupid = intent.getIntExtra("groupid", -1);
+        privilege = intent.getIntExtra("privilege", -1);
+        lists = (ArrayList<GroupMemberBean>) intent.getSerializableExtra("lists");
+        //listview.setAdapter(new GroupMemAdapter(lists));
     }
 
     @Override
     protected void initData() {
         super.initData();
+        getGroupMenber();
+    }
+
+    /**
+     * 获取群成员列表
+     */
+    private void getGroupMenber() {
+
     }
 
     @Override

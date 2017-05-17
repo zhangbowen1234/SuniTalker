@@ -244,7 +244,7 @@ public class GroupChatActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(GroupChatActivity.this, GroupDetailActivity.class);
-                    intent.putExtra("privilege", item.getPrivilege());
+                    intent.putExtra("groupbean", item);
                     startActivity(intent);
                 }
             });

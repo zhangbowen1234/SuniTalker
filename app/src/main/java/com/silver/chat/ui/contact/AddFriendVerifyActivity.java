@@ -13,9 +13,12 @@ import android.widget.TextView;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.network.SSIMFrendManger;
+import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.AskJoinGroup;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 
@@ -28,12 +31,19 @@ import java.net.URLEncoder;
 
 public class AddFriendVerifyActivity extends BaseActivity implements View.OnClickListener {
 
-    private String nickName, friendId;
+    private String nickName;
+    private String friendId;
     private ImageView mBack;
-    private TextView mSend, mNickName, mTextCount,mTitle;
+    private TextView mSend, mNickName, mTextCount, mTitle;
     private CircleImageView mFriendHead;
     private EditText mMsgVerify, mRemarksName;
     private String action;
+    private int targetimid;
+    private String groupAvatar;
+    //请求体常量
+    private final String INNERAPP = "innerapp";
+    //用户输入的验证信息
+    private String verifyMsg;
 
 
     @Override
@@ -60,14 +70,16 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
         super.initData();
         Intent intent = getIntent();
         action = intent.getAction();
-        if(TextUtils.equals(action,"AddFriendActivity")) {
+        if (TextUtils.equals(action, "AddFriendActivity")) {
             nickName = intent.getStringExtra("nickName");
-            friendId = intent.getStringExtra("friendId");
+            friendId = intent.getIntExtra("friendId",-1)+"";
             mNickName.setText(nickName + "");
             mTitle.setText("添加好友验证");
-        }else {
+        } else {
             nickName = intent.getStringExtra("groupName");
-            friendId = intent.getStringExtra("groupId");
+            friendId = intent.getIntExtra("groupId",-1)+"";
+            targetimid = intent.getIntExtra("targetimid",-1);
+            groupAvatar = intent.getStringExtra("groupAvatar");
             mNickName.setText(nickName + "");
             mTitle.setText("添加群组验证");
 
@@ -125,13 +137,21 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.send_btn:
                 /**
-                 * 发送添加信息
+                 * 根据上个跳转界面传递的数据不同来
+                 * 发送不同的添加信息
+                 *
                  */
-                if(TextUtils.equals(action,"AddFriendActivity")) {
+                if (TextUtils.equals(action, "AddFriendActivity")) {
                     sendAddFriend();
 
-                }else {
-                    sendAddGroup();
+                } else {
+                    verifyMsg = mMsgVerify.getText().toString();
+                    if (verifyMsg.isEmpty()) {
+                        ToastUtil.toastMessage(mContext, "验证信息不能为空");
+                    } else {
+                        sendAddGroup();
+
+                    }
 
                 }
                 break;
@@ -143,7 +163,40 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
      * 请求添加群组
      */
     private void sendAddGroup() {
-        //SSIMGroupManger.askJionGroup();
+        String personAvatar = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
+        String userName = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
+        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+        String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
+
+        AskJoinGroup instance = AskJoinGroup.getInstance();
+        instance.setSourceId(userId);
+        instance.setSourceName(userName);
+        instance.setSourceAvatar(personAvatar);
+        instance.setComment(verifyMsg);
+        instance.setTargetId(targetimid+"");
+        instance.setGroupId(friendId+"");
+        instance.setGroupName(nickName);
+        instance.setGroupAvatar(groupAvatar);
+        instance.setAppName(INNERAPP);
+        Log.e("BaseCallBack", instance.toString() );
+        //
+        SSIMGroupManger.askJoinGroup(mContext, token, instance, new ResponseCallBack<BaseResponse>() {
+            @Override
+            public void onSuccess(BaseResponse baseResponse) {
+                ToastUtil.toastMessage(mContext,baseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onFailed(BaseResponse baseResponse) {
+                ToastUtil.toastMessage(mContext,baseResponse.getStatusMsg());
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
 
     }
 
@@ -153,7 +206,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
         String mMsgText = mMsgVerify.getText().toString();
         if (mMsgText != null || !mMsgText.equals("")) {
             String comment = toURLEncoded(mMsgText);
-            SSIMFrendManger.goAddFriends(mContext,userId, friendId, comment, token, new ResponseCallBack<BaseResponse>() {
+            SSIMFrendManger.goAddFriends(mContext, userId, friendId, comment, token, new ResponseCallBack<BaseResponse>() {
                 @Override
                 public void onSuccess(BaseResponse baseResponse) {
                     ToastUtils.showMessage(mContext, "申请已发出");

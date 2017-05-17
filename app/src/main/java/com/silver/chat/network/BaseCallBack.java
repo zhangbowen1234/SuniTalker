@@ -1,10 +1,14 @@
 package com.silver.chat.network;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.ui.login.LoginActivity;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
 
 import retrofit2.Call;
@@ -30,8 +34,10 @@ public class BaseCallBack {
                 if (response.body().getStatusCode() == 200) {
                     callBack.onSuccess(response.body());
                 } else if (response.body().getStatusCode() == 300) {
+                    PreferenceUtil.getInstance(context).setLog(false);
                     ToastUtil.toastMessage(context, "请重新登录");
-                    //context.startActivity();
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivity(intent);
                 } else {
                     callBack.onFailed(response.body());
 
@@ -46,53 +52,6 @@ public class BaseCallBack {
         });
     }
 
-  /*  public static <T> void enqueue(Call<BaseResponse<T>> baseResponseCall, final ResponseCallBack<BaseResponse<T>> callBack) {
-        baseResponseCall.enqueue(new Callback<BaseResponse<T>>() {
-            @Override
-            public void onResponse(Call<BaseResponse<T>> call, Response<BaseResponse<T>> response) {
-                Log.e("BaseCallBack", response.body() + "");
-                Log.e("BaseCallBack", response.body().data + "");
-
-                if (response.body().getStatusCode() == 200) {
-                    callBack.onSuccess(response.body());
-                } else if (response.body().getStatusCode() == 300) {
-                } else {
-                    callBack.onFailed(response.body());
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse<T>> call, Throwable t) {
-                Log.e("BaseCallBack", t.toString());
-                callBack.onError();
-            }
-        });
-    }*/
-
-/*    *//**
-     * 后台返回的数据没有data调用这个
-     *//*
-    public static <T> void enqueueBase(Call<BaseResponse> baseResponseCall, final ResponseCallBack<BaseResponse> callBack) {
-        baseResponseCall.enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                Log.e("BaseCallBack", response.body().toString());
-
-                if (response.body().getStatusCode() == 200 || response.body().getStatusCode() == 1) {
-                    callBack.onSuccess(response.body());
-                } else {
-                    callBack.onFailed(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                Log.e("BaseCallBack", t.toString());
-                callBack.onError();
-            }
-        });
-    }*/
 
     /**
      * 后台返回的数据没有data调用这个
@@ -106,8 +65,10 @@ public class BaseCallBack {
                 if (response.body().getStatusCode() == 200 || response.body().getStatusCode() == 1) {
                     callBack.onSuccess(response.body());
                 } else if (response.body().getStatusCode() == 300) {
+                    PreferenceUtil.getInstance(context).setLog(false);
                     ToastUtil.toastMessage(context, "请重新登录");
-
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivity(intent);
                 } else {
                     callBack.onFailed(response.body());
                 }

@@ -63,6 +63,21 @@ public class AskJoinGroup {
         return sourceAvatar;
     }
 
+    @Override
+    public String toString() {
+        return "AskJoinGroup{" +
+                "sourceId='" + sourceId + '\'' +
+                ", sourceName='" + sourceName + '\'' +
+                ", sourceAvatar='" + sourceAvatar + '\'' +
+                ", comment='" + comment + '\'' +
+                ", targetId='" + targetId + '\'' +
+                ", groupId='" + groupId + '\'' +
+                ", groupName='" + groupName + '\'' +
+                ", groupAvatar='" + groupAvatar + '\'' +
+                ", appName='" + appName + '\'' +
+                '}';
+    }
+
     public void setSourceAvatar(String sourceAvatar) {
         this.sourceAvatar = sourceAvatar;
     }

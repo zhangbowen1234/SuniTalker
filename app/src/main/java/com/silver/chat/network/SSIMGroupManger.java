@@ -9,6 +9,7 @@ import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.GroupBean;
+import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.network.responsebean.SearchGroupBean;
 
 import java.util.ArrayList;
@@ -81,10 +82,24 @@ public class SSIMGroupManger {
      * @param askJoinGroup
      * @param callBack
      */
-    public static void askJionGroup(Context context,String token, AskJoinGroup askJoinGroup,final ResponseCallBack<BaseResponse> callBack) {
+    public static void askJoinGroup(Context context, String token, AskJoinGroup askJoinGroup, final ResponseCallBack<BaseResponse> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.addGroup(token, askJoinGroup);
         BaseCallBack.enqueueBase(context,baseResponseCall,callBack);
+
+    }
+
+    /**
+     * 获取群成员列表
+     * @param context
+     * @param token
+     * @param groupId
+     * @param callBack
+     */
+    public static void getGroupMem(Context context,String token,String groupId,final ResponseCallBack<BaseResponse<ArrayList<GroupMemberBean>>> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse<ArrayList<GroupMemberBean>>> groupMember = imApi.getGroupMember(token, groupId);
+        BaseCallBack.enqueue(context,groupMember,callBack);
 
     }
 

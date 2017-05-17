@@ -10,6 +10,7 @@ import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.FriendInfo;
 import com.silver.chat.network.responsebean.GroupBean;
+import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.responsebean.SearchGroupBean;
 import com.silver.chat.network.responsebean.SearchIdBean;
@@ -110,4 +111,8 @@ public interface ApiService {
     //申请添加群组
     @POST("imx/leaf/user/group/application")
     Call<BaseResponse> addGroup(@Header("token")String token, @Body AskJoinGroup askJoinGroup);
+
+    //获取群成员
+    @GET("/imx/leaf/user/group/members/{groupId}")
+    Call<BaseResponse<ArrayList<GroupMemberBean>>> getGroupMember(@Header("token")String token,@Path("groupId")String groupId);
 }
