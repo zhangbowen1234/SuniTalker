@@ -21,11 +21,11 @@ import com.silver.chat.base.Common;
 import com.silver.chat.database.callback.EasyRun;
 import com.silver.chat.database.dao.BaseDao;
 import com.silver.chat.database.helper.DBHelper;
+import com.silver.chat.database.info.WhereInfo;
 import com.silver.chat.network.SSIMFrendManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
-import com.silver.chat.ui.login.LoginActivity;
 import com.silver.chat.util.CharacterParser;
 import com.silver.chat.util.PinyinComparator;
 import com.silver.chat.util.PreferenceUtil;
@@ -146,23 +146,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
             }
         });
 
-//        SSEngine.registerApp("123456", "123456789", "987654", mActivity, new HttpResultCallback<VerifyAppKeyAndSecretResponse>() {
-//            @Override
-//            public void onSuccess(VerifyAppKeyAndSecretResponse verifyAppKeyAndSecretResponse) {
-//                Log.d("SSEngine.registerApp","onSuccess");
-//
-//            }
-//
-//            @Override
-//            public void onFailure(int i, String s) {
-//                Log.d("SSEngine.registerApp","onFailure");
-//            }
-//
-//            @Override
-//            public void onError(String s) {
-//                Log.d("SSEngine.registerApp","onError");
-//            }
-//        });
     }
 
     Handler mHandler = new Handler() {
@@ -189,7 +172,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         /**
          * 联网获取联系人
          */
-//        //请求所有文件目录数据
+        //请求所有文件目录数据
         httpContactList();
         //优先从数据库中读取数据
 //        QueryDbParent();
@@ -210,7 +193,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
             public void onMainThread(List<ContactListBean> data) throws Exception {
                 if (data.isEmpty()) {
                     //其次从网络获取数据
-//                    httpContactList();
+                    httpContactList();
                 } else {
                     mContactList = data;
                     mHandler.sendEmptyMessage(0);
@@ -229,7 +212,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         SSIMFrendManger.contactList(getContext(),Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
             @Override
             public void onSuccess(final BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
-                ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
+//                ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
                 ArrayList<ContactListBean> contactData = listBaseResponse.data;
                 /**
                  * 填充其他数据
@@ -254,7 +237,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""));
                     mConList.add(sortModel);
                 }
-                Log.e("mConList",mConList+"");
                 /**
                  *  数据库操作内容
                  */
@@ -290,26 +272,20 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
             @Override
             public void onFailed(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
                 ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
-                if (listBaseResponse.getStatusCode() == Common.AnewLoginCode) {
-                    PreferenceUtil.getInstance(mActivity).setFirst(false);
-                    PreferenceUtil.getInstance(mActivity).setLog(false);
-                    startActivity(LoginActivity.class);
-                    getActivity().finish();
-                }
+                QueryDbParent();
             }
 
             @Override
             public void onError() {
-                ToastUtils.showMessage(mActivity, "获取失败");
-//                QueryDbParent();
+                ToastUtils.showMessage(mActivity, "联网失败");
+                QueryDbParent();
             }
         });
     }
 
     public List<ContactListBean> getSortData() {
         Log.e(" mDao.queryForAll():", mDao.queryForAll() + "");
-        return mDao.queryForAll();
-//        return mDao.query(WhereInfo.get().equal("userId",PreferenceUtil.USERID).order("type",true));
+        return mDao.query(WhereInfo.get().equal("userId",PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID,"")));
     }
 
 
@@ -349,6 +325,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     @Override
     public void onPause() {
         super.onPause();
+        Log.d("ContactFragment_onPause", "=============");
         contactListAdapter.notifyDataSetChanged();
     }
 

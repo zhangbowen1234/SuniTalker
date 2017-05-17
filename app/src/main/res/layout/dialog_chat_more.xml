@@ -38,13 +38,13 @@
             android:text="@string/global_search"/>
 
         <TextView
-            android:id="@+id/tv_start_group_chat"
+            android:id="@+id/start_group_chat"
             android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="@dimen/dp_9"
             android:layout_marginRight="@dimen/dp_40"
-            android:drawableTop="@drawable/ic_start_chat"
+            android:drawableTop="@drawable/start_group_chat"
             android:gravity="center_horizontal"
             android:text="@string/global_creat_group_chat"/>
 
@@ -67,7 +67,7 @@
             android:layout_marginLeft="@dimen/dp_40"
             android:layout_weight="1"
             android:drawablePadding="@dimen/dp_9"
-            android:drawableTop="@drawable/ic_unread"
+            android:drawableTop="@drawable/add_friend"
             android:gravity="center_horizontal"
             android:text="@string/global_add_friend"/>
 
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="@dimen/dp_9"
-            android:drawableTop="@drawable/ic_read"
+            android:drawableTop="@drawable/search_group"
             android:gravity="center_horizontal"
             android:text="@string/global_find_group"/>
 
@@ -88,7 +88,7 @@
             android:layout_weight="1"
             android:drawablePadding="@dimen/dp_9"
             android:layout_marginRight="@dimen/dp_40"
-            android:drawableTop="@drawable/ic_clear"
+            android:drawableTop="@drawable/more_more"
             android:gravity="center_horizontal"
             android:text="@string/global_chat_more"/>
 

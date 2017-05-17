@@ -27,11 +27,13 @@ import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
+import com.ssim.android.engine.SSEngine;
+import com.ssim.android.listener.SSConnectListener;
 
 import java.util.UUID;
 
 public class
-LoginActivity extends BaseActivity implements View.OnClickListener {
+LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectListener {
 
     private static final long DELAY_TIME = 600L;
     private TextView mGoReg, mForgot;
@@ -114,6 +116,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                     if (PreferenceUtil.getInstance(mContext).isLog()) {
                         mBtnLogin.setClickable(false);
 //                        goLogin();//走登录接口
+                        ssConnect();
                         startActivity(MainActivity.class);//不走登录接口
                         finish();
                     }
@@ -147,7 +150,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
 //                }
                 LoginRequest.getInstance().setPhone(uPhone);
                 LoginRequest.getInstance().setPassword(uPwd);
-                LoginRequest.getInstance().setPhoneUuid(PreferenceUtil.getInstance(mContext).getString("androidID", ""));
+                LoginRequest.getInstance().setPhoneUuid(PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.UUIQUEID, ""));
                 /**
                  * 登录
                  */
@@ -167,11 +170,21 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
     }
 
     /**
+     * IM连接服务器入口
+     */
+    private void ssConnect() {
+        //IMSDK 连接服务器
+        SSEngine.getInstance().connect(PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""),
+                PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.UUIQUEID, ""));
+        SSEngine.getInstance().setConnectListener(this);
+    }
+
+    /**
      * 登录入口
      */
     private void goLogin() {
         if (NetUtils.isConnected(this)) {
-            SSIMLoginManger.goLogin(mContext,Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
+            SSIMLoginManger.goLogin(mContext, Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
                 @Override
                 public void onSuccess(BaseResponse<LoginRequestBean> loginRequestBeanBaseResponse) {
                     ToastUtils.showMessage(mContext, loginRequestBeanBaseResponse.getStatusMsg());
@@ -216,8 +229,8 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
             switch (msg.what) {
                 case 0: //跳转启动主页
                     getUserInfo();
-                    Object obj = msg.obj;
-                    Log.e("AAAA", obj + "");
+                    Log.d("AAAA", msg.obj + "");
+                    ssConnect();
                     PreferenceUtil.getInstance(LoginActivity.this).setLog(true);
                     startActivity(MainActivity.class);
                     finish();
@@ -226,6 +239,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
         }
 
     };
+
 
     @Override
     protected void onStart() {
@@ -249,7 +263,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                 String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
                 if (NetUtils.isConnected(mContext)) {//是否联网
                     if (token != null && !"".equals(token)) {
-                        SSIMLoginManger.getUserInfo(mContext,Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
+                        SSIMLoginManger.getUserInfo(mContext, Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
                             @Override
                             public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
 //                        ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
@@ -264,6 +278,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                                 PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.AGE, userInfoBeanBaseResponse.data.getAge());
                                 PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.SIGNATURE, userInfoBeanBaseResponse.data.getSignature());
                                 PreferenceUtil.getInstance(mContext).setInt(PreferenceUtil.LEVEL, userInfoBeanBaseResponse.data.getLevel());
+
                             }
 
                             @Override
@@ -283,5 +298,35 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
 
             }
         }
+    }
+
+    @Override
+    public void didConnect(int i) {
+        Log.e("didConnect()", i + "");
+    }
+
+    @Override
+    public void didDisConnect() {
+        Log.e("didDisConnect()", "didDisConnect");
+    }
+
+    @Override
+    public void turnToWifi() {
+        Log.e("turnToWifi()", "turnToWifi");
+    }
+
+    @Override
+    public void turnToWWAN() {
+        Log.e("turnToWWAN()", "turnToWWAN");
+    }
+
+    @Override
+    public void turnOff() {
+        Log.e("turnOff()", "turnOff");
+    }
+
+    @Override
+    public void turnOn() {
+        Log.e("turnOn()", "turnOn");
     }
 }

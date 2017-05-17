@@ -1,29 +1,23 @@
 package com.silver.chat.ui.contact.group;
 
-import android.app.ExpandableListActivity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
-import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.ui.contact.SearchContactActivity;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.CircleImageView;
@@ -46,7 +40,6 @@ public class GroupChatActivity extends BaseActivity {
     private ArrayList<GroupBean> mCreatGroups;
     private ArrayList<GroupBean> mManagerGroups;
     private ArrayList<GroupBean> mJoinGroups;
-    private GoogleApiClient client;
     private ImageView ivMyGroup;
     private MyAdapter myAdapter;
     private TextView tvChatCount;

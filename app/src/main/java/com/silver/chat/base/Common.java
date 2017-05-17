@@ -5,6 +5,10 @@ package com.silver.chat.base;
  */
 
 public class Common {
+
+    public final static String APPKEY = "651a25166f6e36e3" ;
+    public final static String APPSECRET = "MNyhZZdmrsL_E7v4Fv1Qgx-sziU=" ;
+
     /**
      * 版本号
      */
