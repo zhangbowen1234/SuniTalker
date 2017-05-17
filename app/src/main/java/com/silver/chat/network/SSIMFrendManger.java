@@ -1,5 +1,7 @@
 package com.silver.chat.network;
 
+import android.content.Context;
+
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
@@ -26,11 +28,11 @@ public class SSIMFrendManger {
      * @param token
      * @param callBack
      */
-    public static void contactList(String version, String userId, String page, String count,String token ,
+    public static void contactList(Context context,String version, String userId, String page, String count, String token ,
                                    final ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>> callBack){
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<ArrayList<ContactListBean>>> baseResponseCall = imApi.contactList(version,userId,page,count,token);
-        BaseCallBack.enqueue(baseResponseCall,callBack);
+        BaseCallBack.enqueue(context,baseResponseCall,callBack);
     }
 
     /**
@@ -40,11 +42,11 @@ public class SSIMFrendManger {
      * @param token
      * @param callBack
      */
-    public static void allContactList(String version, String userId,String token ,
+    public static void allContactList(Context context,String version, String userId,String token ,
                                    final ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>> callBack){
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<ArrayList<ContactListBean>>> baseResponseCall = imApi.allContact(version,userId,token);
-        BaseCallBack.enqueue(baseResponseCall,callBack);
+        BaseCallBack.enqueue(context,baseResponseCall,callBack);
     }
 
     /**
@@ -55,10 +57,10 @@ public class SSIMFrendManger {
      * @param token
      * @param callBack
      */
-    public static void goAddFriends(String userId,String friendId,String comment,String token,final ResponseCallBack<BaseResponse> callBack){
+    public static void goAddFriends(Context context,String userId,String friendId,String comment,String token,final ResponseCallBack<BaseResponse> callBack){
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.addFriend(userId, friendId, comment, token);
-        BaseCallBack.enqueueBase(baseResponseCall,callBack);
+        BaseCallBack.enqueueBase(context,baseResponseCall,callBack);
     }
 
     /**
@@ -70,10 +72,10 @@ public class SSIMFrendManger {
      * @param token
      * @param callBack
      */
-    public static void searchUser(String type,String condition,String page,String count,String token,final ResponseCallBack<BaseResponse<ArrayList<SearchIdBean>>> callBack){
+    public static void searchUser(Context context,String type,String condition,String page,String count,String token,final ResponseCallBack<BaseResponse<ArrayList<SearchIdBean>>> callBack){
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<ArrayList<SearchIdBean>>> baseResponseCall = imApi.searchUser(type, condition, page, count, token);
-        BaseCallBack.enqueue(baseResponseCall,callBack);
+        BaseCallBack.enqueue(context,baseResponseCall,callBack);
     }
 
     /**
@@ -84,10 +86,10 @@ public class SSIMFrendManger {
      * @param appName
      * @param callBack
      */
-    public static void deleteFriend(String token,String userId,String friendId,String appName,final ResponseCallBack<BaseResponse> callBack){
+    public static void deleteFriend(Context context,String token,String userId,String friendId,String appName,final ResponseCallBack<BaseResponse> callBack){
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.deleteFriend(token ,userId,friendId,appName);
-        BaseCallBack.enqueueBase(baseResponseCall,callBack);
+        BaseCallBack.enqueueBase(context,baseResponseCall,callBack);
     }
 
 

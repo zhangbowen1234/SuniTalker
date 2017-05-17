@@ -322,7 +322,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         instance.setAge(18);
         instance.setSignature("生命在于运动，啪啪啪");
 
-        SSIMLoginManger.updateUserInfo(Common.version, token, instance, new ResponseCallBack<BaseResponse<UpdateUserInfoBean>>() {
+        SSIMLoginManger.updateUserInfo(mContext,Common.version, token, instance, new ResponseCallBack<BaseResponse<UpdateUserInfoBean>>() {
             @Override
             public void onSuccess(BaseResponse<UpdateUserInfoBean> userInfoBeanBaseResponse) {
                 Log.e("getUserInfo", userInfoBeanBaseResponse.getStatusMsg());

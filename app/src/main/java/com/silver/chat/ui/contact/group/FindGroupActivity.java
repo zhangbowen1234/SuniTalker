@@ -83,7 +83,6 @@ public class FindGroupActivity extends BaseActivity {
         addFriendAdapter = new AddGroupAdapter(R.layout.search_user_item ,mSearchList);
         newFriendList.setAdapter(addFriendAdapter);
     }
-
     @Override
     protected void initListener() {
         super.initListener();
@@ -96,13 +95,16 @@ public class FindGroupActivity extends BaseActivity {
         newFriendList.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
+
                 SearchGroupBean.GroupsBean searchGroupBean = (SearchGroupBean.GroupsBean) adapter.getItem(position);
+                //Log.e("aaaa", searchGroupBean.toString());
                 Intent mIntent = new Intent(mContext, AddFriendVerifyActivity.class);
                 mIntent.setAction(TAG);
                 mIntent.putExtra("groupName", searchGroupBean.getGroupName());
                 mIntent.putExtra("groupId",searchGroupBean.getGroupId());
+                mIntent.putExtra("targetimid",searchGroupBean.getTargetImId());
+                mIntent.putExtra("groupAvatar",searchGroupBean.getAvatar());
                 startActivity(mIntent);
-
             }
         });
     }
@@ -113,7 +115,7 @@ public class FindGroupActivity extends BaseActivity {
     private void httpGetSearchGroupList() {
         String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         String condition = edSearch.getContent();
-        SSIMGroupManger.getSearchGroupInfo(token, condition, "1", "20", new ResponseCallBack<BaseResponse<SearchGroupBean>>() {
+        SSIMGroupManger.getSearchGroupInfo(mContext,token, condition, "1", "20", new ResponseCallBack<BaseResponse<SearchGroupBean>>() {
             @Override
             public void onSuccess(BaseResponse<SearchGroupBean> searchGroupBeanBaseResponse) {
 

@@ -10,6 +10,7 @@ import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.FriendInfo;
 import com.silver.chat.network.responsebean.GroupBean;
+import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.responsebean.SearchGroupBean;
 import com.silver.chat.network.responsebean.SearchIdBean;
@@ -117,4 +118,7 @@ public interface ApiService {
     @POST("imicom/uploadImIcom")
     Call<BaseResponse>upLoadHead(@Header("token")String token, @Part MultipartBody.Part file);
 
+    //获取群成员
+    @GET("/imx/leaf/user/group/members/{groupId}")
+    Call<BaseResponse<ArrayList<GroupMemberBean>>> getGroupMember(@Header("token")String token,@Path("groupId")String groupId);
 }

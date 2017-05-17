@@ -18,12 +18,14 @@
             android:layout_marginTop="@dimen/dp_20">
 
             <ImageView
+
                 android:layout_centerVertical="true"
                 android:layout_marginRight="200dp"
                 android:id="@+id/iv_conversation"
                 android:src="@drawable/ic_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:padding="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
             <com.silver.chat.view.WhewView
                 android:id="@+id/wv"
                 android:layout_centerInParent="true"
@@ -37,12 +39,13 @@
                 android:layout_centerInParent="true"
                 android:src="@drawable/system_head" />
             <ImageView
+                android:padding="15dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="200dp"
                 android:id="@+id/iv_qrcode"
                 android:src="@drawable/ic_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
         </RelativeLayout>
 
         <TextView
@@ -90,8 +93,9 @@
 
             <ImageView
 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="5dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="20dp"
@@ -191,9 +195,10 @@
             android:layout_height="250dp">
 
             <ImageView
+                android:padding="10dp"
                 android:id="@+id/iv_arrow_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:clickable="true"
@@ -202,10 +207,11 @@
                 />
 
             <ImageView
+                android:padding="10dp"
                 android:visibility="gone"
                 android:id="@+id/iv_arrow_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:clickable="true"
@@ -226,9 +232,10 @@
 
 
         <ImageView
+            android:padding="10dp"
             android:id="@+id/iv_arrow_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginTop="@dimen/dp_30"
 

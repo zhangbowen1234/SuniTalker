@@ -67,5 +67,5 @@ dependencies {
     //    compile 'com.alibaba:fastjson:1.2.31'
     compile 'com.github.baserecycleradapter:library:1.0.9'
     compile 'com.tamic.novate:novate:1.2.8'
-
+    compile project(':ssim-release')
 }

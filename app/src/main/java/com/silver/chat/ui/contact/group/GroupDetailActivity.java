@@ -13,10 +13,17 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.network.SSIMGroupManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.GroupBean;
+import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.ui.contact.ContactChatActivity;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.RoundImageView;
 import com.silver.chat.view.WhewView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -75,6 +82,11 @@ public class GroupDetailActivity extends BaseActivity {
     private ArrayList<Fragment> fragments;
     //修改群名片开启activity的请求码
     private static final int REQUEST_CODE3 = 3;
+    private String groupName;
+    private int groupId;
+    //群成员列表
+    private ArrayList<GroupMemberBean> groupMemlists = new ArrayList<>();
+
 
     @Override
     protected int getLayoutId() {
@@ -83,8 +95,8 @@ public class GroupDetailActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        lists = new ArrayList() {
-        };
+        tvGroupname.setText(groupName);
+        lists = new ArrayList() {};
         String[] stringArray1 = getResources().getStringArray(R.array.group_qunzhu);
         String[] stringArray2 = getResources().getStringArray(R.array.group_commonmember);
         String[] stringArray3 = getResources().getStringArray(R.array.group_guanliyuan);
@@ -103,16 +115,43 @@ public class GroupDetailActivity extends BaseActivity {
         fragments.add(groupLeftFragment);
         fragments.add(groupRightFragment);
         viewpager.setAdapter(new GroupAdapter(getSupportFragmentManager()));
-        super.initData();
+        getGroupMember();
+    }
+
+    /**
+     * 获取群成员
+     */
+    private void getGroupMember() {
+        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+
+        SSIMGroupManger.getGroupMem(mContext,token, groupId+"",new ResponseCallBack<BaseResponse<ArrayList<GroupMemberBean>>>() {
+            @Override
+            public void onSuccess(BaseResponse<ArrayList<GroupMemberBean>> arrayListBaseResponse) {
+                groupMemlists = arrayListBaseResponse.data;
+                int groupMemCount = arrayListBaseResponse.data.size();
+                tvGroupMemCount.setText("群成员("+groupMemCount+")");
+            }
+
+            @Override
+            public void onFailed(BaseResponse<ArrayList<GroupMemberBean>> arrayListBaseResponse) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
     }
 
     @Override
     protected void initView() {
         super.initView();
         Intent intent = getIntent();
-        privilege = intent.getIntExtra("privilege", 0);
-
-
+        GroupBean groupbean = (GroupBean) intent.getSerializableExtra("groupbean");
+        groupName = groupbean.getGroupName();
+        privilege = groupbean.getPrivilege();
+        groupId = groupbean.getGroupId();
     }
 
     @Override
@@ -180,6 +219,11 @@ public class GroupDetailActivity extends BaseActivity {
             case R.id.rl_group_member:
             case R.id.iv_arrow:
                 Intent intent = new Intent(this, GroupMemberActivity.class);
+                intent.putExtra("privilege",privilege);
+                intent.putExtra("groupid",groupId);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("lists",(Serializable)groupMemlists);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 break;
             case R.id.iv_arrow_right:

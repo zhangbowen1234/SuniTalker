@@ -70,7 +70,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
                 }
 //                //去后台请求获取验证码
 //                getIndentifyCode();
-                SSIMLoginManger.checkPhone(Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
+                SSIMLoginManger.checkPhone(mContext,Common.version, uPhone, new ResponseCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         Log.d(TAG, baseResponse.getStatusCode() + "");
@@ -119,7 +119,7 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
     }
 
     private void sendSmsCode(String uPhone) {
-        SSIMLoginManger.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+        SSIMLoginManger.userReginstCode(mContext,Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse baseResponse) {
                 Log.e(TAG, baseResponse.getStatusMsg());

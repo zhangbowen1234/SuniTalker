@@ -74,13 +74,12 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 break;
         }
         //置顶颜色
-        ChatBean chatBean = chatBeen.get(position);
+        ChatBean chatBean = chatBeen.get(position - 1);
         if (chatBean.getTop() == 1) {
             holder.itemView.setBackgroundResource(R.color.topdialog);
         } else {
             holder.itemView.setBackgroundResource(R.color.translate);
         }
-
     }
     public void updateData(List<ChatBean> sessionList) {
         clear();

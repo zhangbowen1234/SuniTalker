@@ -1,10 +1,12 @@
 package com.silver.chat.network.responsebean;
 
+import java.io.Serializable;
+
 /**
  * Created by Joe on 2017/4/28.
  */
 
-public class GroupBean {
+public class GroupBean implements Serializable{
 
 
     /**

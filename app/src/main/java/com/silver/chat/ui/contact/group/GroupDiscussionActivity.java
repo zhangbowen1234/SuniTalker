@@ -84,7 +84,7 @@ public class GroupDiscussionActivity extends BaseActivity {
         String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         if (token != null && !"".equals(token)) {
             if (view.getId() == R.id.bt_creat_group){
-                SSIMGroupManger.getcreatgroup(Common.version, token, instance, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
+                SSIMGroupManger.getcreatgroup(mContext,Common.version, token, instance, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
                     @Override
                     public void onSuccess(BaseResponse<CreatGroupBean> creatGroupBeanBaseResponse) {
                         ToastUtils.showMessage(mContext, creatGroupBeanBaseResponse.getStatusMsg());
@@ -103,16 +103,14 @@ public class GroupDiscussionActivity extends BaseActivity {
                     }
                 });
             }else if (view.getId() == R.id.bt_creat_discussion){
-                SSIMGroupManger.getcreatdicugroup(Common.version, token, instance, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
+                SSIMGroupManger.getcreatdicugroup(mContext,Common.version, token, instance, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {
                     @Override
                     public void onSuccess(BaseResponse<CreatGroupBean> creatGroupBeanBaseResponse) {
                         ToastUtils.showMessage(mContext, creatGroupBeanBaseResponse.getStatusMsg());
-                        Log.e("onSuccess", creatGroupBeanBaseResponse.toString() + "");
                     }
 
                     @Override
                     public void onFailed(BaseResponse<CreatGroupBean> creatGroupBeanBaseResponse) {
-                        Log.e("ContactList_onFailed", creatGroupBeanBaseResponse.toString() + "");
                         ToastUtils.showMessage(mContext, creatGroupBeanBaseResponse.getStatusMsg());
                     }
 

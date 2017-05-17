@@ -24,7 +24,5 @@ public class RetrofitHelper {
         return mInstance;
     }
 
-    private ApiService getImApi() {
-        return imApi;
-    }
+
 }

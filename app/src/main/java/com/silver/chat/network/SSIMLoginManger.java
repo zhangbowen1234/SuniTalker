@@ -1,5 +1,7 @@
 package com.silver.chat.network;
 
+import android.content.Context;
+
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.ForgetPasswordBean;
 import com.silver.chat.network.requestbean.LoginRequest;
@@ -28,10 +30,10 @@ public class SSIMLoginManger {
      * @param phone    手机号
      * @param callBack
      */
-    public static void checkPhone(String version, String phone, final ResponseCallBack<BaseResponse> callBack) {
+    public static void checkPhone(Context context,String version, String phone, final ResponseCallBack<BaseResponse> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.checkPhoneCode(version, phone);
-        BaseCallBack.enqueueBase(baseResponseCall, callBack);
+        BaseCallBack.enqueueBase(context,baseResponseCall, callBack);
     }
 
     /**
@@ -42,10 +44,10 @@ public class SSIMLoginManger {
      * @param genre    请求种类
      * @param callBack 请求回调
      */
-    public static void userReginstCode(String version, String phone, int genre, final ResponseCallBack<BaseResponse> callBack) {
+    public static void userReginstCode(Context context,String version, String phone, int genre, final ResponseCallBack<BaseResponse> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.registCode(version, phone, genre);
-        BaseCallBack.enqueueBase(baseResponseCall, callBack);
+        BaseCallBack.enqueueBase(context,baseResponseCall, callBack);
     }
 
     /**
@@ -55,10 +57,10 @@ public class SSIMLoginManger {
      * @param request  注册对象
      * @param callBack
      */
-    public static void goReginst(String version, RegisterRequest request, final ResponseCallBack<BaseResponse> callBack) {
+    public static void goReginst(Context context,String version, RegisterRequest request, final ResponseCallBack<BaseResponse> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.registPhone(version, request);
-        BaseCallBack.enqueueBase(baseResponseCall, callBack);
+        BaseCallBack.enqueueBase(context,baseResponseCall, callBack);
     }
 
     /**
@@ -68,10 +70,10 @@ public class SSIMLoginManger {
      * @param loginRequest 登录对象
      * @param callBack
      */
-    public static void goLogin(String version, LoginRequest loginRequest, final ResponseCallBack<BaseResponse<LoginRequestBean>> callBack) {
+    public static void goLogin(Context context,String version, LoginRequest loginRequest, final ResponseCallBack<BaseResponse<LoginRequestBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<LoginRequestBean>> baseResponseCall = imApi.goLogin(version, loginRequest);
-        BaseCallBack.enqueue(baseResponseCall,callBack);
+        BaseCallBack.enqueue(context,baseResponseCall,callBack);
 
     }
 
@@ -83,10 +85,10 @@ public class SSIMLoginManger {
      * @param token
      * @param callBack
      */
-    public static void getUserInfo(String version, String token, final ResponseCallBack<BaseResponse<UserInfoBean>> callBack) {
+    public static void getUserInfo(Context context,String version, String token, final ResponseCallBack<BaseResponse<UserInfoBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<UserInfoBean>> baseResponseCall = imApi.userInfo(version, token);
-        BaseCallBack.enqueue(baseResponseCall,callBack);
+        BaseCallBack.enqueue(context,baseResponseCall,callBack);
     }
 
     /**
@@ -98,11 +100,11 @@ public class SSIMLoginManger {
      * @param token
      * @param callBack
      */
-    public static void friendinfo(String token, String version, String userId, String friendid,
+    public static void friendinfo(Context context,String token, String version, String userId, String friendid,
                                   final ResponseCallBack<BaseResponse<List<FriendInfo>>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<List<FriendInfo>>> baseResponseCall = imApi.friendinfo(token, version, userId, friendid);
-        BaseCallBack.enqueue(baseResponseCall,callBack);
+        BaseCallBack.enqueue(context,baseResponseCall,callBack);
     }
 
     /**
@@ -112,10 +114,10 @@ public class SSIMLoginManger {
      * @param token
      * @param callBack
      */
-    public static void outLogin(String version, String token, final ResponseCallBack<BaseResponse> callBack) {
+    public static void outLogin(Context context,String version, String token, final ResponseCallBack<BaseResponse> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.outLogin(version, token);
-        BaseCallBack.enqueueBase(baseResponseCall, callBack);
+        BaseCallBack.enqueueBase(context,baseResponseCall, callBack);
 
     }
 
@@ -127,10 +129,10 @@ public class SSIMLoginManger {
      * @param token
      * @param callBack
      */
-    public static void updateUserInfo(String version, String token, UpdateUserInfoBean userInfoBean, final ResponseCallBack<BaseResponse<UpdateUserInfoBean>> callBack) {
+    public static void updateUserInfo(Context context,String version, String token, UpdateUserInfoBean userInfoBean, final ResponseCallBack<BaseResponse<UpdateUserInfoBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<UpdateUserInfoBean>> baseResponseCall = imApi.updateInfo(version, token, userInfoBean);
-        BaseCallBack.enqueue(baseResponseCall, callBack);
+        BaseCallBack.enqueue(context,baseResponseCall, callBack);
 
     }
 
@@ -141,10 +143,10 @@ public class SSIMLoginManger {
      * @param forgetPasswordBean 实体类
      * @param callBack
      */
-    public static void forgetpwd(String version, ForgetPasswordBean forgetPasswordBean, final ResponseCallBack<BaseResponse<ForgetPasswordBean>> callBack) {
+    public static void forgetpwd(Context context,String version, ForgetPasswordBean forgetPasswordBean, final ResponseCallBack<BaseResponse<ForgetPasswordBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<ForgetPasswordBean>> baseResponseCall = imApi.backpassword(version, forgetPasswordBean);
-        BaseCallBack.enqueue(baseResponseCall, callBack);
+        BaseCallBack.enqueue(context,baseResponseCall, callBack);
 
     }
 

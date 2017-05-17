@@ -146,6 +146,23 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
             }
         });
 
+//        SSEngine.registerApp("123456", "123456789", "987654", mActivity, new HttpResultCallback<VerifyAppKeyAndSecretResponse>() {
+//            @Override
+//            public void onSuccess(VerifyAppKeyAndSecretResponse verifyAppKeyAndSecretResponse) {
+//                Log.d("SSEngine.registerApp","onSuccess");
+//
+//            }
+//
+//            @Override
+//            public void onFailure(int i, String s) {
+//                Log.d("SSEngine.registerApp","onFailure");
+//            }
+//
+//            @Override
+//            public void onError(String s) {
+//                Log.d("SSEngine.registerApp","onError");
+//            }
+//        });
     }
 
     Handler mHandler = new Handler() {
@@ -153,27 +170,12 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-//                for (int i = 0; i < mContactList.size(); i++) {
-//                    ContactListBean sortModel = new ContactListBean();
-//                    sortModel.setNickName(mContactList.get(i).getNickName());
-//                    String pinyin = characterParser.getSelling(mContactList.get(i).getNickName());
-//                    String sortString = pinyin.substring(0, 1).toUpperCase();
-//                    // 正则表达式，判断首字母是否是英文字母
-//                    if (sortString.matches("[A-Z]")) {
-//                        sortModel.setSortLetters(sortString.toUpperCase());
-//                    } else {
-//                        sortModel.setSortLetters("#");
-//                    }
-//                    sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""));
-//                    mConList.add(sortModel);
-//                }
                     // 根据a-z进行排序源数据
                     Collections.sort(mContactList, pinyinComparator);
 //                    if (contactListAdapter == null) {
                     //联系人列表的adapter
                     contactListAdapter = new ContactListAdapter(mActivity, mContactList);
 //                    }
-
                     mRecycleContent.setAdapter(contactListAdapter);
                     contactListAdapter.notifyDataSetChanged();
                     break;
@@ -224,12 +226,14 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     public void httpContactList() {
         String token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
         String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
-        SSIMFrendManger.contactList(Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
+        SSIMFrendManger.contactList(getContext(),Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
             @Override
             public void onSuccess(final BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
                 ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
                 ArrayList<ContactListBean> contactData = listBaseResponse.data;
-
+                /**
+                 * 填充其他数据
+                 */
                 for (int i = 0; i < contactData.size(); i++) {
                     ContactListBean sortModel = new ContactListBean();
                     sortModel.setNickName(contactData.get(i).getNickName());
@@ -280,9 +284,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                             mHandler.sendEmptyMessage(0);
                         }
                     }
-
                 });
-
             }
 
             @Override
@@ -302,12 +304,12 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 //                QueryDbParent();
             }
         });
-
     }
 
     public List<ContactListBean> getSortData() {
         Log.e(" mDao.queryForAll():", mDao.queryForAll() + "");
         return mDao.queryForAll();
+//        return mDao.query(WhereInfo.get().equal("userId",PreferenceUtil.USERID).order("type",true));
     }
 
 

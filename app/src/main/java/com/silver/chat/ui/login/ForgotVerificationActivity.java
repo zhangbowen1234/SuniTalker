@@ -97,7 +97,7 @@ public class ForgotVerificationActivity extends BaseActivity implements View.OnC
         instance.setNewPwd(uSetP);
         instance.setReNewPwd(uASetP);
         instance.setPhone(uPhone);
-        SSIMLoginManger.forgetpwd(Common.version, instance, new ResponseCallBack<BaseResponse<ForgetPasswordBean>>() {
+        SSIMLoginManger.forgetpwd(mContext,Common.version, instance, new ResponseCallBack<BaseResponse<ForgetPasswordBean>>() {
             @Override
             public void onSuccess(BaseResponse<ForgetPasswordBean> forgetPasswordBeanBaseResponse) {
                 ToastUtils.showMessage(mContext, forgetPasswordBeanBaseResponse.getStatusMsg());
@@ -118,7 +118,7 @@ public class ForgotVerificationActivity extends BaseActivity implements View.OnC
         });
     }
     private void sendSmsCode(String uPhone) {
-        SSIMLoginManger.userReginstCode(Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+        SSIMLoginManger.userReginstCode(mContext,Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
 
 
             @Override

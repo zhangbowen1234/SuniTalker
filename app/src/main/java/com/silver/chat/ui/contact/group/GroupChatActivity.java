@@ -113,7 +113,7 @@ public class GroupChatActivity extends BaseActivity {
         int i = Integer.parseInt(userId);
         JoinedGroupRequest request = JoinedGroupRequest.getInstance();
         request.setUserId(i);
-        SSIMGroupManger.getJoinGroupList(Common.version, request, token, new ResponseCallBack<BaseResponse<ArrayList<GroupBean>>>() {
+        SSIMGroupManger.getJoinGroupList(mContext,Common.version, request, token, new ResponseCallBack<BaseResponse<ArrayList<GroupBean>>>() {
 
 
             @Override
@@ -244,7 +244,7 @@ public class GroupChatActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(GroupChatActivity.this, GroupDetailActivity.class);
-                    intent.putExtra("privilege", item.getPrivilege());
+                    intent.putExtra("groupbean", item);
                     startActivity(intent);
                 }
             });

@@ -171,7 +171,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
      */
     private void goLogin() {
         if (NetUtils.isConnected(this)) {
-            SSIMLoginManger.goLogin(Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
+            SSIMLoginManger.goLogin(mContext,Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
                 @Override
                 public void onSuccess(BaseResponse<LoginRequestBean> loginRequestBeanBaseResponse) {
                     ToastUtils.showMessage(mContext, loginRequestBeanBaseResponse.getStatusMsg());
@@ -249,7 +249,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener {
                 String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
                 if (NetUtils.isConnected(mContext)) {//是否联网
                     if (token != null && !"".equals(token)) {
-                        SSIMLoginManger.getUserInfo(Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
+                        SSIMLoginManger.getUserInfo(mContext,Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
                             @Override
                             public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
 //                        ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());

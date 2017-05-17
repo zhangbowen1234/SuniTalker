@@ -1,12 +1,15 @@
 package com.silver.chat.network;
 
 
+import android.content.Context;
+
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.AskJoinGroup;
 import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.GroupBean;
+import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.network.responsebean.SearchGroupBean;
 
 import java.util.ArrayList;
@@ -26,11 +29,11 @@ public class SSIMGroupManger {
      * @param request
      * @param callBack
      */
-    public static void getJoinGroupList(String version, final JoinedGroupRequest request, String token, final ResponseCallBack<BaseResponse<ArrayList<GroupBean>>> callBack) {
+    public static void getJoinGroupList(Context context,String version, final JoinedGroupRequest request, String token, final ResponseCallBack<BaseResponse<ArrayList<GroupBean>>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         final Call<BaseResponse<ArrayList<GroupBean>>> baseResponseCall = imApi.joinedGroupList(version, request, token);
         imApi.joinedGroupList(version, request, token);
-        BaseCallBack.enqueue(baseResponseCall,callBack);
+        BaseCallBack.enqueue(context,baseResponseCall,callBack);
     }
 
     /**
@@ -40,10 +43,10 @@ public class SSIMGroupManger {
      * @param token
      * @param callBack
      */
-    public static void getcreatgroup(String version, String token, CreatGroupBean creatGroupBean, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack) {
+    public static void getcreatgroup(Context context,String version, String token, CreatGroupBean creatGroupBean, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<CreatGroupBean>> baseResponseCall = imApi.creatgroup(version, token, creatGroupBean);
-        BaseCallBack.enqueue(baseResponseCall, callBack);
+        BaseCallBack.enqueue(context,baseResponseCall, callBack);
     }
 
     /**
@@ -53,10 +56,10 @@ public class SSIMGroupManger {
      * @param token
      * @param callBack
      */
-    public static void getcreatdicugroup(String version, String token, CreatGroupBean creatGroupBean, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack) {
+    public static void getcreatdicugroup(Context context,String version, String token, CreatGroupBean creatGroupBean, final ResponseCallBack<BaseResponse<CreatGroupBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<CreatGroupBean>> baseResponseCall = imApi.creatdiscugroup(version, token, creatGroupBean);
-        BaseCallBack.enqueue(baseResponseCall, callBack);
+        BaseCallBack.enqueue(context,baseResponseCall, callBack);
     }
 
     /**
@@ -66,10 +69,10 @@ public class SSIMGroupManger {
      * @param page
      * @param count
      */
-    public static void getSearchGroupInfo(String token,String condition,String page,String count, final ResponseCallBack<BaseResponse<SearchGroupBean>> callBack) {
+    public static void getSearchGroupInfo(Context context,String token,String condition,String page,String count, final ResponseCallBack<BaseResponse<SearchGroupBean>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<SearchGroupBean>> baseResponseCall = imApi.searchGroup(token, condition, page, count);
-        BaseCallBack.enqueue(baseResponseCall,callBack);
+        BaseCallBack.enqueue(context,baseResponseCall,callBack);
 
     }
 
@@ -79,10 +82,24 @@ public class SSIMGroupManger {
      * @param askJoinGroup
      * @param callBack
      */
-    public static void askJionGroup(String token, AskJoinGroup askJoinGroup,final ResponseCallBack<BaseResponse> callBack) {
+    public static void askJoinGroup(Context context, String token, AskJoinGroup askJoinGroup, final ResponseCallBack<BaseResponse> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.addGroup(token, askJoinGroup);
-        BaseCallBack.enqueueBase(baseResponseCall,callBack);
+        BaseCallBack.enqueueBase(context,baseResponseCall,callBack);
+
+    }
+
+    /**
+     * 获取群成员列表
+     * @param context
+     * @param token
+     * @param groupId
+     * @param callBack
+     */
+    public static void getGroupMem(Context context,String token,String groupId,final ResponseCallBack<BaseResponse<ArrayList<GroupMemberBean>>> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse<ArrayList<GroupMemberBean>>> groupMember = imApi.getGroupMember(token, groupId);
+        BaseCallBack.enqueue(context,groupMember,callBack);
 
     }
 
