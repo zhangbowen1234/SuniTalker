@@ -29,11 +29,15 @@ import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSConnectListener;
+import com.ssim.android.listener.SSMessageReceiveListener;
+import com.ssim.android.model.chat.SSGroupMessage;
+import com.ssim.android.model.chat.SSMessage;
+import com.ssim.android.model.chat.SSP2PMessage;
 
 import java.util.UUID;
 
 public class
-LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectListener {
+LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectListener, SSMessageReceiveListener {
 
     private static final long DELAY_TIME = 600L;
     private TextView mGoReg, mForgot;
@@ -174,9 +178,12 @@ LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectLis
      */
     private void ssConnect() {
         //IMSDK 连接服务器
-        SSEngine.getInstance().connect(PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""),
-                PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.UUIQUEID, ""));
-        SSEngine.getInstance().setConnectListener(this);
+        SSEngine instance = SSEngine.getInstance();
+        instance.connect( PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""),
+                PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.IMTOKEN, ""));
+        instance.setConnectListener(this);//连接
+//        SSEngine.getInstance().setNotificationListener(this);//通知
+        instance.setMsgRcvListener(this);
     }
 
     /**
@@ -305,6 +312,9 @@ LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectLis
         Log.e("didConnect()", i + "");
     }
 
+    /**
+     * 断开连接
+     */
     @Override
     public void didDisConnect() {
         Log.e("didDisConnect()", "didDisConnect");
@@ -328,5 +338,16 @@ LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectLis
     @Override
     public void turnOn() {
         Log.e("turnOn()", "turnOn");
+    }
+
+    @Override
+    public void receiveMsg(SSMessage ssMessage) {
+        if (ssMessage instanceof SSP2PMessage){
+            Log.e("ssMessage_SSP2PMessage",ssMessage + "");
+        }else if (ssMessage instanceof SSGroupMessage){
+            Log.e("ssMessage_SSGroupMessage",ssMessage + "");
+        }else {
+            Log.e("ssMessage",ssMessage + "");
+        }
     }
 }

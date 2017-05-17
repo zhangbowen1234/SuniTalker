@@ -72,13 +72,13 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
         action = intent.getAction();
         if (TextUtils.equals(action, "AddFriendActivity")) {
             nickName = intent.getStringExtra("nickName");
-            friendId = intent.getIntExtra("friendId",-1)+"";
+            friendId = intent.getIntExtra("friendId", -1) + "";
             mNickName.setText(nickName + "");
             mTitle.setText("添加好友验证");
         } else {
             nickName = intent.getStringExtra("groupName");
-            friendId = intent.getIntExtra("groupId",-1)+"";
-            targetimid = intent.getIntExtra("targetimid",-1);
+            friendId = intent.getIntExtra("groupId", -1) + "";
+            targetimid = intent.getIntExtra("targetimid", -1);
             groupAvatar = intent.getStringExtra("groupAvatar");
             mNickName.setText(nickName + "");
             mTitle.setText("添加群组验证");
@@ -145,13 +145,13 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                     sendAddFriend();
 
                 } else {
-                    verifyMsg = mMsgVerify.getText().toString();
-                    if (verifyMsg.isEmpty()) {
-                        ToastUtil.toastMessage(mContext, "验证信息不能为空");
-                    } else {
-                        sendAddGroup();
-
-                    }
+//                    verifyMsg = mMsgVerify.getText().toString();
+//                    if (verifyMsg.isEmpty()) {
+//                        ToastUtil.toastMessage(mContext, "验证信息不能为空");
+//                    } else {
+//                        sendAddGroup();
+//
+//                    }
 
                 }
                 break;
@@ -173,22 +173,22 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
         instance.setSourceName(userName);
         instance.setSourceAvatar(personAvatar);
         instance.setComment(verifyMsg);
-        instance.setTargetId(targetimid+"");
-        instance.setGroupId(friendId+"");
+        instance.setTargetId(targetimid + "");
+        instance.setGroupId(friendId + "");
         instance.setGroupName(nickName);
         instance.setGroupAvatar(groupAvatar);
         instance.setAppName(INNERAPP);
-        Log.e("BaseCallBack", instance.toString() );
+        Log.e("BaseCallBack", instance.toString());
         //
         SSIMGroupManger.askJoinGroup(mContext, token, instance, new ResponseCallBack<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse baseResponse) {
-                ToastUtil.toastMessage(mContext,baseResponse.getStatusMsg());
+                ToastUtil.toastMessage(mContext, baseResponse.getStatusMsg());
             }
 
             @Override
             public void onFailed(BaseResponse baseResponse) {
-                ToastUtil.toastMessage(mContext,baseResponse.getStatusMsg());
+                ToastUtil.toastMessage(mContext, baseResponse.getStatusMsg());
 
             }
 
