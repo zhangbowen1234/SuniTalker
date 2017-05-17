@@ -56,7 +56,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.jakewharton:butterknife:8.4.0'
-    compile(name: 'ssim-release', ext: 'aar')
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
@@ -67,4 +66,5 @@ dependencies {
     compile 'com.lqr.emoji:library:1.0.2'
     //    compile 'com.alibaba:fastjson:1.2.31'
     compile 'com.github.baserecycleradapter:library:1.0.9'
+    compile project(':ssim-release')
 }
