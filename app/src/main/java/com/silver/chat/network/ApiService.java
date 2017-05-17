@@ -19,6 +19,7 @@ import com.silver.chat.network.responsebean.UserInfoBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -26,6 +27,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 /**
@@ -110,4 +112,9 @@ public interface ApiService {
     //申请添加群组
     @POST("imx/leaf/user/group/application")
     Call<BaseResponse> addGroup(@Header("token")String token, @Body AskJoinGroup askJoinGroup);
+
+    //上传头像
+    @POST("imicom/uploadImIcom")
+    Call<BaseResponse>upLoadHead(@Header("token")String token, @Part MultipartBody.Part file);
+
 }

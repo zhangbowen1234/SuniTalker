@@ -147,4 +147,12 @@ public class SSIMLoginManger {
         BaseCallBack.enqueue(baseResponseCall, callBack);
 
     }
+
+//    public static void upLoadHead(String token, MultipartBody.Part file ,
+//                                  final ResponseCallBack<BaseResponse> callBack){
+//        ApiService imApi = RetrofitHelperUpLoadHead.create().imApi;
+//        Call<BaseResponse> baseResponseCall = imApi.upLoadHead(token,file);
+//        BaseCallBack.enqueueBase(baseResponseCall,callBack);
+//    }
+
 }

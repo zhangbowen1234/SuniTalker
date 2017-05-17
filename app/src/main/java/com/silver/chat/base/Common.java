@@ -30,4 +30,8 @@ public class Common {
 //    public final static String AnewLogin = "请重新登录";
     public final static int AnewLoginCode = 300;
 
+    public static final String IMAGE_PATH = "IMG";// 头像文件的缓存文件
+    public static final int OPEN_CAMERA_CODE = 12;// 相机
+    public static final int OPEN_GALLERY_CODE = 13;// 相册
+    public static final int CROP_PHOTO_CODE = 14;// 裁剪
 }

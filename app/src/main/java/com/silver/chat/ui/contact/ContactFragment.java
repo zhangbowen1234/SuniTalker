@@ -33,6 +33,7 @@ import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.UIUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -152,27 +153,27 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-//                    for (int i = 0; i < mContactList.size(); i++) {
-//                        ContactListBean sortModel = new ContactListBean();
-//                        sortModel.setNickName(mContactList.get(i).getNickName());
-//                        String pinyin = characterParser.getSelling(mContactList.get(i).getNickName());
-//                        String sortString = pinyin.substring(0, 1).toUpperCase();
-//                        // 正则表达式，判断首字母是否是英文字母
-//                        if (sortString.matches("[A-Z]")) {
-//                            sortModel.setSortLetters(sortString.toUpperCase());
-//                        } else {
-//                            sortModel.setSortLetters("#");
-//                        }
-//                        sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID,""));
-//                        mConList.add(sortModel);
+//                for (int i = 0; i < mContactList.size(); i++) {
+//                    ContactListBean sortModel = new ContactListBean();
+//                    sortModel.setNickName(mContactList.get(i).getNickName());
+//                    String pinyin = characterParser.getSelling(mContactList.get(i).getNickName());
+//                    String sortString = pinyin.substring(0, 1).toUpperCase();
+//                    // 正则表达式，判断首字母是否是英文字母
+//                    if (sortString.matches("[A-Z]")) {
+//                        sortModel.setSortLetters(sortString.toUpperCase());
+//                    } else {
+//                        sortModel.setSortLetters("#");
 //                    }
-                    Log.e("mHandler_mContactList",mContactList+"");
+//                    sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""));
+//                    mConList.add(sortModel);
+//                }
                     // 根据a-z进行排序源数据
-//                    Collections.sort(mContactList, pinyinComparator);
-                    if (contactListAdapter == null) {
-                        //联系人列表的adapter
-                        contactListAdapter = new ContactListAdapter(mActivity, mContactList);
-                    }
+                    Collections.sort(mContactList, pinyinComparator);
+//                    if (contactListAdapter == null) {
+                    //联系人列表的adapter
+                    contactListAdapter = new ContactListAdapter(mActivity, mContactList);
+//                    }
+
                     mRecycleContent.setAdapter(contactListAdapter);
                     contactListAdapter.notifyDataSetChanged();
                     break;
@@ -186,13 +187,10 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         /**
          * 联网获取联系人
          */
-//        if (isAllContact && mContactList == null) {
 //        //请求所有文件目录数据
-        getContactList();
-//        } else if (!isAllContact &&mContactList == null) {
+        httpContactList();
         //优先从数据库中读取数据
 //        QueryDbParent();
-//        }
 
     }
 
@@ -210,8 +208,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
             public void onMainThread(List<ContactListBean> data) throws Exception {
                 if (data.isEmpty()) {
                     //其次从网络获取数据
-//                    HttpFileList();
-//                    getContactList();
+//                    httpContactList();
                 } else {
                     mContactList = data;
                     mHandler.sendEmptyMessage(0);
@@ -224,18 +221,25 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     /**
      * 联网获取联系人
      */
-    public void getContactList() {
+    public void httpContactList() {
         String token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
         String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
         SSIMFrendManger.contactList(Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
             @Override
             public void onSuccess(final BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
                 ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
+                ArrayList<ContactListBean> contactData = listBaseResponse.data;
 
-                for (int i = 0; i < listBaseResponse.data.size(); i++) {
+                for (int i = 0; i < contactData.size(); i++) {
                     ContactListBean sortModel = new ContactListBean();
-                    sortModel.setNickName(listBaseResponse.data.get(i).getNickName());
-                    String pinyin = characterParser.getSelling(listBaseResponse.data.get(i).getNickName());
+                    sortModel.setNickName(contactData.get(i).getNickName());
+                    sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID,""));
+                    sortModel.setAvatar(contactData.get(i).getAvatar());
+                    sortModel.setFriendId(contactData.get(i).getFriendId());
+                    sortModel.setRemarkName(contactData.get(i).getRemarkName());
+                    sortModel.setSex(contactData.get(i).getSex());
+                    sortModel.setSignature(contactData.get(i).getSignature());
+                    String pinyin = characterParser.getSelling(contactData.get(i).getNickName());
                     String sortString = pinyin.substring(0, 1).toUpperCase();
                     // 正则表达式，判断首字母是否是英文字母
                     if (sortString.matches("[A-Z]")) {
@@ -243,26 +247,29 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     } else {
                         sortModel.setSortLetters("#");
                     }
-                    sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID,""));
+                    sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""));
                     mConList.add(sortModel);
                 }
-
+                Log.e("mConList",mConList+"");
                 /**
                  *  数据库操作内容
                  */
                 mDao.asyncTask(new EasyRun<List<ContactListBean>>() {
                     @Override
                     public List<ContactListBean> run() throws Exception {
+
                         List<ContactListBean> query = mDao.queryForAll();
                         //删除原始文件
                         mDao.delete(query);
                         //保存新数据
                         mDao.create(mConList);
+                        Log.e("mDao.asTk_run", "===================");
                         return getSortData();
                     }
 
                     @Override
                     public void onMainThread(List<ContactListBean> data) throws Exception {
+                        Log.e("mDao.asTk_onMainThread", "===================");
                         if (data.isEmpty()) {
                             ToastUtils.showMessage(mActivity, mActivity.getResources().getString(R.string.contactlist_null));
                         } else {
