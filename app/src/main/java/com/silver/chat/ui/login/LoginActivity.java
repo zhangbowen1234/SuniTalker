@@ -34,6 +34,9 @@ import com.ssim.android.model.chat.SSGroupMessage;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.UUID;
 
 public class
@@ -340,9 +343,20 @@ LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectLis
         Log.e("turnOn()", "turnOn");
     }
 
+    /**
+     * 消息接收
+     * @param ssMessage
+     */
     @Override
     public void receiveMsg(SSMessage ssMessage) {
         if (ssMessage instanceof SSP2PMessage){
+            try {
+                JSONObject jsonObject = new JSONObject(ssMessage.toString());
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             Log.e("ssMessage_SSP2PMessage",ssMessage + "");
         }else if (ssMessage instanceof SSGroupMessage){
             Log.e("ssMessage_SSGroupMessage",ssMessage + "");

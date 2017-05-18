@@ -93,6 +93,7 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                        finish();
                     }
                     @Override
                     public void onFailed(BaseResponse baseResponse) {

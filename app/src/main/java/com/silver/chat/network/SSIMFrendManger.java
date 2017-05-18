@@ -3,8 +3,10 @@ package com.silver.chat.network;
 import android.content.Context;
 
 import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.AgreeFriendAddBody;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
+import com.silver.chat.network.responsebean.QueryUserInfoBean;
 import com.silver.chat.network.responsebean.SearchIdBean;
 
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class SSIMFrendManger {
     }
 
     /**
-     * 获取全部联系人列表
+     * 一次性获取全部联系人列表
      * @param version
      * @param userId 当前用户id
      * @param token
@@ -92,6 +94,74 @@ public class SSIMFrendManger {
         BaseCallBack.enqueueBase(context,baseResponseCall,callBack);
     }
 
+    /**
+     * 修改好友备注
+     * @param context
+     * @param token
+     * @param userId
+     * @param friendId
+     * @param note 备注名
+     * @param callBack
+     */
+    public static void revampFriendName(Context context,String token,String userId,String friendId,String note,final ResponseCallBack<BaseResponse> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> baseResponseCall = imApi.revampFriendName(token ,userId,friendId,note);
+        BaseCallBack.enqueueBase(context,baseResponseCall,callBack);
+    }
+
+    /**
+     * 屏蔽好友
+     * @param context
+     * @param token
+     * @param userId
+     * @param friendId
+     * @param callBack
+     */
+    public static void shieldFriend(Context context,String token,String userId,String friendId,final ResponseCallBack<BaseResponse> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> baseResponseCall = imApi.shieldFriend(token ,userId,friendId);
+        BaseCallBack.enqueueBase(context,baseResponseCall,callBack);
+    }
+
+    /**
+     * 拒绝好友申请
+     * @param context
+     * @param token
+     * @param userId
+     * @param friendId
+     * @param callBack
+     */
+    public static void repulseFriend(Context context,String token,String userId,String friendId,final ResponseCallBack<BaseResponse> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> baseResponseCall = imApi.repulseFriendAdd(token ,userId,friendId);
+        BaseCallBack.enqueueBase(context,baseResponseCall,callBack);
+    }
+
+    /**
+     * 通过好友申请
+     * @param context
+     * @param token
+     * @param agreeFriendAddBody
+     * @param callBack
+     */
+    public static void agreeFriend(Context context, String token, AgreeFriendAddBody agreeFriendAddBody, final ResponseCallBack<BaseResponse> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> baseResponseCall = imApi.agreeFriend(token ,agreeFriendAddBody);
+        BaseCallBack.enqueueBase(context,baseResponseCall,callBack);
+    }
+
+    /**
+     *通过用户Id查询用户信息
+     * @param context
+     * @param token
+     * @param userId
+     * @param callBack
+     */
+    public static void idQueryUserInfo(Context context, String token, String userId, final ResponseCallBack<BaseResponse<QueryUserInfoBean>> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse<QueryUserInfoBean>> baseResponseCall = imApi.idQueryUserInfo(token ,userId);
+        BaseCallBack.enqueue(context,baseResponseCall,callBack);
+    }
 
 
 

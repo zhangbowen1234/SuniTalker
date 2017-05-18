@@ -57,18 +57,18 @@ public class AppContext extends MultiDexApplication {
                 appContext, new HttpResultCallback<VerifyAppKeyAndSecretResponse>() {
                     @Override
                     public void onSuccess(VerifyAppKeyAndSecretResponse verifyAppKeyAndSecretResponse) {
-                        Log.e("SSEngine.registerApp", verifyAppKeyAndSecretResponse.getCode()+"");
+                        Log.e("SSEngine.registerApp_onSuccess", verifyAppKeyAndSecretResponse.getCode()+"");
                         verifyAppKeyAndSecretResponse.getAppId();
                     }
 
                     @Override
                     public void onFailure(int i, String s) {
-                        Log.e("SSEngine.registerApp",i+ "/"+s);
+                        Log.e("SSEngine.registerApp_onFailure",i+ "/"+s);
                     }
 
                     @Override
                     public void onError(String s) {
-                        Log.e("SSEngine.registerApp",s);
+                        Log.e("SSEngine.registerApp_onError",s);
                     }
 
                 });

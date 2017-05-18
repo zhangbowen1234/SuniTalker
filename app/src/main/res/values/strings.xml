@@ -25,7 +25,7 @@
     <string name="global_read">已读</string>
     <string name="global_clear">清空</string>
     <string name="global_stick">置顶</string>
-    <string name="global_silence">静音</string>
+    <string name="global_silence">屏蔽</string>
     <string name="global_detail">聊天</string>
     <string name="global_report">举报</string>
     <string name="global_delete">删除</string>
