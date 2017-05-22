@@ -155,10 +155,8 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                 case 0:
                     // 根据a-z进行排序源数据
                     Collections.sort(mContactList, pinyinComparator);
-//                    if (contactListAdapter == null) {
                     //联系人列表的adapter
                     contactListAdapter = new ContactListAdapter(mActivity, mContactList);
-//                    }
                     mRecycleContent.setAdapter(contactListAdapter);
                     contactListAdapter.notifyDataSetChanged();
                     break;
@@ -176,7 +174,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         httpContactList();
         //优先从数据库中读取数据
 //        QueryDbParent();
-
     }
 
     /**

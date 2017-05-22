@@ -29,10 +29,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:text="新朋友"
                 android:textColor="@color/white"
-                android:textSize="@dimen/dp_18" />
+                android:textSize="@dimen/dp_18"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/title_left_back"
+                android:layout_toEndOf="@+id/title_left_back"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:id="@+id/textView" />
         </RelativeLayout>
 
         <TextView

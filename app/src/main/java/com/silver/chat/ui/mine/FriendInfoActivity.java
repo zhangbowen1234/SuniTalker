@@ -23,12 +23,13 @@ import com.silver.chat.view.WhewView;
 
 public class FriendInfoActivity extends BaseActivity implements View.OnClickListener {
 
-    private TextView tvName,mChat ,tvSex ,tvSign,mTvdelete;
+    private TextView tvName,mChat ,tvSex ,tvSign,mTvdelete ,mTvSilence;
     private ImageView mIvBack;
     private String contactName ,contactSex ,contactSignature,friendId;
     private WhewView whewView;
     private int tag = 0;
     private Dialog dialog = null;
+    private String token ,userId;
 
     @Override
     protected int getLayoutId() {
@@ -45,6 +46,7 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
         mChat = (TextView)findViewById(R.id.tv_detail);
         whewView = (WhewView) findViewById(R.id.wv);
         mTvdelete = (TextView)findViewById(R.id.tv_delete);
+        mTvSilence = (TextView)findViewById(R.id.tv_silence);
 
         // 执行动画
 //        whewView.start();
@@ -59,7 +61,8 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
         tvName.setText(contactName);
         tvSex.setText(contactSex);
         tvSign.setText(contactSignature);
-
+        token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+        userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
     }
 
     @Override
@@ -68,6 +71,7 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
         mIvBack.setOnClickListener(this);
         mChat.setOnClickListener(this);
         mTvdelete.setOnClickListener(this);
+        mTvSilence.setOnClickListener(this);
 
     }
 
@@ -87,8 +91,6 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
                 DeleteItemDialog(0);
                 break;
             case R.id.ok_btn:
-                String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
-                String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
                 SSIMFrendManger.deleteFriend(mContext,token, userId, friendId, "innerapp", new ResponseCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
@@ -109,6 +111,24 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.cancel_btn:
                 dialog.dismiss();
+                break;
+            case R.id.tv_silence:
+                SSIMFrendManger.shieldFriend(mContext, token, userId, friendId, new ResponseCallBack<BaseResponse>() {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                    }
+
+                    @Override
+                    public void onFailed(BaseResponse baseResponse) {
+                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                    }
+
+                    @Override
+                    public void onError() {
+                        ToastUtils.showMessage(mContext,"请求失败");
+                    }
+                });
                 break;
         }
     }
