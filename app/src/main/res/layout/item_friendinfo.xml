@@ -12,7 +12,7 @@
         android:id="@+id/iv_friendinfo_choose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/choose"
+        android:src="@drawable/check_box"
         android:layout_marginLeft="10dp"/>
 
     <com.silver.chat.view.CircleImageView

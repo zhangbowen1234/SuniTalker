@@ -7,12 +7,9 @@ import com.silver.chat.network.requestbean.ForgetPasswordBean;
 import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
-import com.silver.chat.network.responsebean.FriendInfo;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.responsebean.UpdateUserInfoBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
-
-import java.util.List;
 
 import retrofit2.Call;
 
@@ -91,21 +88,6 @@ public class SSIMLoginManger {
         BaseCallBack.enqueue(context,baseResponseCall,callBack);
     }
 
-    /**
-     * 获取好友信息
-     *
-     * @param version
-     * @param userId   当前用户id
-     * @param friendid 好友id
-     * @param token
-     * @param callBack
-     */
-    public static void friendinfo(Context context,String token, String version, String userId, String friendid,
-                                  final ResponseCallBack<BaseResponse<List<FriendInfo>>> callBack) {
-        ApiService imApi = RetrofitHelper.create().imApi;
-        Call<BaseResponse<List<FriendInfo>>> baseResponseCall = imApi.friendinfo(token, version, userId, friendid);
-        BaseCallBack.enqueue(context,baseResponseCall,callBack);
-    }
 
     /**
      * 退出登录

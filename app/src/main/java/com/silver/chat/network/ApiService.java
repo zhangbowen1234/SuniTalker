@@ -14,7 +14,6 @@ import com.silver.chat.network.requestbean.SetDiscuMsgRemindBody;
 import com.silver.chat.network.requestbean.SetGroupManagerBody;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
-import com.silver.chat.network.responsebean.FriendInfo;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.network.responsebean.LoginRequestBean;
@@ -97,9 +96,9 @@ public interface ApiService {
     @POST("imx/{version}/user/discugroup/creatediscugroup")
     Call<BaseResponse<CreatGroupBean>> creatdiscugroup(@Path("version") String version, @Header("token") String token, @Body CreatGroupBean creatGroupBean);
 
-    //获取好友信息
-    @GET("imx/{version}/friendinfo/{userId}/{friendId}")
-    Call<BaseResponse<List<FriendInfo>>> friendinfo(@Header("token") String token, @Path("version") String version, @Path("userId") String userId, @Path("friendId") String friendId);
+//    //获取好友信息
+//    @GET("imx/{version}/friendinfo/{userId}/{friendId}")
+//    Call<BaseResponse<List<FriendInfo>>> friendinfo(@Header("token") String token, @Path("version") String version, @Path("userId") String userId, @Path("friendId") String friendId);
 
     //申请添加好友
     @PUT("imx/leaf/friend/{userId}/{friendId}/{comment}")
