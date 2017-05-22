@@ -2,6 +2,7 @@ package com.silver.chat.ui.contact;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +17,10 @@ import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +58,8 @@ public class CreatDiscussionActivity extends BaseActivity {
         super.initData();
         Intent intent = getIntent();
         String Name = intent.getStringExtra("Name");
+        List memeberlist = (List) intent.getSerializableExtra("memeberlist");
+        Log.e(TAG, memeberlist.toString());
         tvGroupName.setText(Name);
     }
 

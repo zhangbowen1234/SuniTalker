@@ -1,24 +1,35 @@
 package com.silver.chat.ui.contact.group;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Parcelable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.adapter.FriendInfoAdapter;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.network.responsebean.FriendInfo;
+import com.silver.chat.database.callback.EasyRun;
+import com.silver.chat.database.dao.BaseDao;
+import com.silver.chat.database.helper.DBHelper;
+import com.silver.chat.database.info.WhereInfo;
+import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.ui.contact.CreatDiscussionActivity;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,29 +52,55 @@ public class CreatGroupActivity extends BaseActivity {
     EditText edNewGroup;
     @BindView(R.id.rv_new_group_contacts)
     RecyclerView rvNewGroupContacts;
-    @BindView(R.id.bt_determine)
-    Button btDetermine;
-    private String Name;
+    @BindView(R.id.tv_determine)
+    public TextView tvDetermine;
     private int len;
     private FriendInfoAdapter mAdapter;
-    private List<FriendInfo> friendInfo = new ArrayList<>();
+    private List<ContactListBean> friendInfo;
+    private LinearLayoutManager linearLayoutManager;
+
+    private BaseDao<ContactListBean> mDao;
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_new_group;
     }
 
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    //联系人列表的adapter
+                    mAdapter = new FriendInfoAdapter((Activity) mContext, friendInfo);
+                    rvNewGroupContacts.setAdapter(mAdapter);
+                    mAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
+    };
+
+    @Override
+    protected void initView() {
+        super.initView();
+        friendInfo = new ArrayList<>();
+        linearLayoutManager = new LinearLayoutManager(mContext);
+        //设置布局管理器
+        rvNewGroupContacts.setLayoutManager(linearLayoutManager);
+        mDao = DBHelper.get().dao(ContactListBean.class);
+        //加载联系人列表
+        mHandler.sendEmptyMessage(0);
+    }
 
     @Override
     protected void initData() {
         super.initData();
-        mAdapter = new FriendInfoAdapter(mContext,friendInfo);
-        getFriendInfo();
         //输入框
         getEditlisten();
+        QueryDbParent();
     }
 
-    @OnClick({R.id.title_left_back, R.id.image_seach, R.id.bt_determine})
+    @OnClick({R.id.title_left_back, R.id.image_seach, R.id.tv_determine})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.title_left_back:
@@ -72,11 +109,12 @@ public class CreatGroupActivity extends BaseActivity {
             case R.id.image_seach:
 
                 break;
-            case R.id.bt_determine:
+            case R.id.tv_determine:
                 if (len != 0) {
-                    Name = edNewGroup.getText().toString();
+                    String name = edNewGroup.getText().toString();
                     Intent intent = new Intent(mContext, CreatDiscussionActivity.class);
-                    intent.putExtra("Name", Name);
+                    intent.putExtra("Name", name);
+                    intent.putExtra("memeberlist", (Serializable) mAdapter.getSelectedList());
                     startActivity(intent);
                 } else {
                     ToastUtils.showMessage(mContext, "请填写群组名称");
@@ -85,29 +123,28 @@ public class CreatGroupActivity extends BaseActivity {
         }
     }
 
-    private void getFriendInfo() {
-        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
-        if (token != null && !"".equals(token)) {
-//            SSIMUserManger.contactList(Common.version,token, PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""),
-//                    PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.FRIENDID,""), new ResponseCallBack<BaseResponse<List<FriendInfo>>>() {
-//
-//                        @Override
-//                        public void onSuccess(BaseResponse<List<FriendInfo>> listBaseResponse) {
-//                            ToastUtils.showMessage(mContext,listBaseResponse.getStatusMsg());
-//                            Log.e("ContactList,onSuccess",listBaseResponse.data+"");
-//                        }
-//
-//                        @Override
-//                        public void onFailed(BaseResponse<List<FriendInfo>> listBaseResponse) {
-//                            ToastUtils.showMessage(mContext,listBaseResponse.getStatusMsg());
-//                            Log.e("ContactList_onFailed",listBaseResponse.data+"");
-//                        }
-//                        @Override
-//                        public void onError() {
-//                            ToastUtils.showMessage(mContext, "获取失败");
-//                        }
-//                    });
-        }
+    /**
+     * 查询数据库所有联系人
+     */
+    private void QueryDbParent() {
+        mDao.asyncTask(new EasyRun<List<ContactListBean>>() {
+            @Override
+            public List<ContactListBean> run() throws Exception {
+                return getSortData();
+            }
+
+            @Override
+            public void onMainThread(List<ContactListBean> data) throws Exception {
+                friendInfo = data;
+                mHandler.sendEmptyMessage(0);
+            }
+        });
+
+    }
+
+    public List<ContactListBean> getSortData() {
+        Log.e(" mDao.queryForAll():", mDao.queryForAll() + "");
+        return mDao.query(WhereInfo.get().equal("userId", PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "")));
     }
 
     public void getEditlisten() {
