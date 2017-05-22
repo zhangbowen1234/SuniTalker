@@ -28,11 +28,14 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.ChatEntity;
+import com.silver.chat.network.SSIMFrendManger;
 import com.silver.chat.util.ConstUtils;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
 import com.silver.chat.view.UIUtils;
+import com.ssim.android.constant.SSMessageFormat;
+import com.ssim.android.engine.SSEngine;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -218,6 +221,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 mShowHead.setVisibility(View.INVISIBLE);
 
                 mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount()-1);
+                SSEngine.getInstance().sendMessageToTargetId("7", SSMessageFormat.TEXT,"你好你好你好");
                 break;
 
             case R.id.chat_btn_emote:

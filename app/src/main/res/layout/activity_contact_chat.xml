@@ -90,21 +90,24 @@
         </RelativeLayout>
 
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/txt_font_one_color"
+            android:visibility="gone"
+            android:id="@+id/textView" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@id/recyle_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@null"
             android:padding="@dimen/dp_10"
-            android:soundEffectsEnabled="true" />
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_alignParentBottom="true"
-            android:background="@color/txt_font_one_color"
-            android:visibility="gone" />
+            android:soundEffectsEnabled="true"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
 
     <LinearLayout

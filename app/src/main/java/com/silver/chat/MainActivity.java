@@ -23,6 +23,7 @@ import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.BadgedTabCustomView;
 import com.silver.chat.view.TabLayoutPlus;
+import com.ssim.android.engine.SSEngine;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -89,6 +90,7 @@ public class MainActivity extends BaseActivity {
         mButtonOutAnimation = AnimationUtils.loadAnimation(this, R.anim.button_out);
         setSupportActionBar(toolbar);
         toolbar.setTitle("chat");
+
     }
 
     @Override

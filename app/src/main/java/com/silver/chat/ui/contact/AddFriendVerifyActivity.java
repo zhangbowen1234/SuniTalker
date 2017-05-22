@@ -145,13 +145,13 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                     sendAddFriend();
 
                 } else {
-//                    verifyMsg = mMsgVerify.getText().toString();
-//                    if (verifyMsg.isEmpty()) {
-//                        ToastUtil.toastMessage(mContext, "验证信息不能为空");
-//                    } else {
-//                        sendAddGroup();
-//
-//                    }
+                    verifyMsg = mMsgVerify.getText().toString();
+                    if (verifyMsg.isEmpty()) {
+                        ToastUtil.toastMessage(mContext, "验证信息不能为空");
+                    } else {
+                        sendAddGroup();
+
+                    }
 
                 }
                 break;
@@ -178,7 +178,6 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
         instance.setGroupName(nickName);
         instance.setGroupAvatar(groupAvatar);
         instance.setAppName(INNERAPP);
-        Log.e("BaseCallBack", instance.toString());
         //
         SSIMGroupManger.askJoinGroup(mContext, token, instance, new ResponseCallBack<BaseResponse>() {
             @Override

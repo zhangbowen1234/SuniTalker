@@ -350,16 +350,14 @@ LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectLis
     @Override
     public void receiveMsg(SSMessage ssMessage) {
         if (ssMessage instanceof SSP2PMessage){
-            try {
-                JSONObject jsonObject = new JSONObject(ssMessage.toString());
+
+                Log.e(TAG, ((SSP2PMessage) ssMessage).getContent());
 
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Log.e("ssMessage_SSP2PMessage",ssMessage + "");
+
+            Log.e("LoginActivity",ssMessage + "");
         }else if (ssMessage instanceof SSGroupMessage){
-            Log.e("ssMessage_SSGroupMessage",ssMessage + "");
+            Log.e("LoginActivity",ssMessage + "");
         }else {
             Log.e("ssMessage",ssMessage + "");
         }
