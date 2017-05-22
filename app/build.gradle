@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'org.greenrobot.greendao' //apply plugin
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
@@ -9,6 +10,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -56,10 +58,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.j256.ormlite:ormlite-android:5.0'
     compile 'com.jakewharton:butterknife:8.4.0'
-    compile(name: 'ssim-release', ext: 'aar')
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
@@ -67,4 +65,16 @@ dependencies {
     compile 'com.lqr.emoji:library:1.0.2'
     //    compile 'com.alibaba:fastjson:1.2.31'
     compile 'com.github.baserecycleradapter:library:1.0.9'
+//    compile 'com.tamic.novate:novate:1.2.8'
+    compile project(':ssim-release')
+    compile 'io.netty:netty-all:4.1.9.Final'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    compile 'org.greenrobot:greendao:3.2.2' // add library for greenDAO
+    compile 'net.zetetic:android-database-sqlcipher:3.5.6'// This is only needed if you want to use encrypted databases
+    compile 'com.android.support:multidex:1.0.0'
+
 }

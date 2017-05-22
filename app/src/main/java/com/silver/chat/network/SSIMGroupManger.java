@@ -4,9 +4,14 @@ package com.silver.chat.network;
 import android.content.Context;
 
 import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.AddFriendDiscuBody;
 import com.silver.chat.network.requestbean.AskJoinGroup;
 import com.silver.chat.network.requestbean.CreatGroupBean;
+import com.silver.chat.network.requestbean.ExitDiscuGroupBody;
+import com.silver.chat.network.requestbean.ExpelDiscuMemberBody;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
+import com.silver.chat.network.requestbean.SetDiscuMsgRemindBody;
+import com.silver.chat.network.requestbean.SetGroupManagerBody;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.responsebean.GroupMemberBean;
@@ -73,7 +78,6 @@ public class SSIMGroupManger {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<SearchGroupBean>> baseResponseCall = imApi.searchGroup(token, condition, page, count);
         BaseCallBack.enqueue(context,baseResponseCall,callBack);
-
     }
 
     /**
@@ -86,7 +90,6 @@ public class SSIMGroupManger {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse> baseResponseCall = imApi.addGroup(token, askJoinGroup);
         BaseCallBack.enqueueBase(context,baseResponseCall,callBack);
-
     }
 
     /**
@@ -100,7 +103,84 @@ public class SSIMGroupManger {
         ApiService imApi = RetrofitHelper.create().imApi;
         Call<BaseResponse<ArrayList<GroupMemberBean>>> groupMember = imApi.getGroupMember(token, groupId);
         BaseCallBack.enqueue(context,groupMember,callBack);
+    }
 
+    /**
+     * 邀请好友加入讨论组
+     * @param context
+     * @param token
+     * @param addFriendDiscuBean
+     * @param callBack
+     */
+    public static void addFrDiscuGroup(Context context, String token, AddFriendDiscuBody addFriendDiscuBean, final ResponseCallBack<BaseResponse> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> groupMember = imApi.addFrDiscuGroup(token, addFriendDiscuBean);
+        BaseCallBack.enqueueBase(context,groupMember,callBack);
+    }
+
+    /**
+     * 退出讨论组
+     * @param context
+     * @param token
+     * @param exitDiscuGroupBody
+     * @param callBack
+     */
+    public static void exitDiscuGroup(Context context, String token, ExitDiscuGroupBody exitDiscuGroupBody, final ResponseCallBack<BaseResponse> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> groupMember = imApi.exitDiscuGroup(token, exitDiscuGroupBody);
+        BaseCallBack.enqueueBase(context,groupMember,callBack);
+    }
+
+    /**
+     * 踢出讨论组成员
+     * @param context
+     * @param token
+     * @param expelDiscuMemberBody
+     * @param callBack
+     */
+    public static void expelDiscuMember(Context context, String token, ExpelDiscuMemberBody expelDiscuMemberBody, final ResponseCallBack<BaseResponse> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> groupMember = imApi.expelDiscuMember(token, expelDiscuMemberBody);
+        BaseCallBack.enqueueBase(context,groupMember,callBack);
+    }
+
+    /**
+     * 设置讨论组消息提醒
+     * @param context
+     * @param token
+     * @param setDiscuMsgRemindBody
+     * @param callBack
+     */
+    public static void setDiscuMsgRemind(Context context, String token, SetDiscuMsgRemindBody setDiscuMsgRemindBody, final ResponseCallBack<BaseResponse> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> groupMember = imApi.setDiscuMsgRemind(token, setDiscuMsgRemindBody);
+        BaseCallBack.enqueueBase(context,groupMember,callBack);
+    }
+
+    /**
+     * 设置群管理员(群主权限)
+     * @param context
+     * @param token
+     * @param setGroupManagerBody
+     * @param callBack
+     */
+    public static void setGroupManager(Context context, String token, SetGroupManagerBody setGroupManagerBody, final ResponseCallBack<BaseResponse> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> groupMember = imApi.setGroupManager(token, setGroupManagerBody);
+        BaseCallBack.enqueueBase(context,groupMember,callBack);
+    }
+
+    /**
+     * 取消群管理员(群主权限)
+     * @param context
+     * @param token
+     * @param setGroupManagerBody
+     * @param callBack
+     */
+    public static void deleteGroupManager(Context context, String token, SetGroupManagerBody setGroupManagerBody, final ResponseCallBack<BaseResponse> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> groupMember = imApi.deleteGroupManager(token, setGroupManagerBody);
+        BaseCallBack.enqueueBase(context,groupMember,callBack);
     }
 
 

@@ -1,7 +1,8 @@
 package com.silver.chat;
 
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -10,17 +11,23 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.lqr.emoji.IImageLoader;
 import com.lqr.emoji.LQREmotionKit;
+import com.silver.chat.base.Common;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.Utils;
 import com.squareup.okhttp.OkHttpClient;
+import com.ssim.android.callback.HttpResultCallback;
+import com.ssim.android.engine.SSEngine;
+import com.ssim.android.http.bean.VerifyAppKeyAndSecretResponse;
 
 import java.io.InputStream;
+import java.util.UUID;
 
 /**
  * 作者：Fandy on 2016/11/22 14:21
  * 邮箱：fandy618@hotmail.com
  */
 
-public class AppContext extends Application {
+public class AppContext extends MultiDexApplication {
 
     public static AppContext appContext;
     public AppContext(){}
@@ -41,6 +48,31 @@ public class AppContext extends Application {
                 Glide.with(context).load(path).centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(imageView);
             }
         });
+        //获取设备 UUID 号码
+        UUID uuid = UUID.randomUUID();
+        String uniqueId = uuid.toString();
+        PreferenceUtil.getInstance(this).setString(PreferenceUtil.UUIQUEID, uniqueId);
+
+        SSEngine.registerApp(Common.APPKEY, Common.APPSECRET, uniqueId,
+                appContext, new HttpResultCallback<VerifyAppKeyAndSecretResponse>() {
+                    @Override
+                    public void onSuccess(VerifyAppKeyAndSecretResponse verifyAppKeyAndSecretResponse) {
+                        Log.e("SSEngine.registerApp_onSuccess", verifyAppKeyAndSecretResponse.getCode()+"");
+                        verifyAppKeyAndSecretResponse.getAppId();
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
+                        Log.e("SSEngine.registerApp_onFailure",i+ "/"+s);
+                    }
+
+                    @Override
+                    public void onError(String s) {
+                        Log.e("SSEngine.registerApp_onError",s);
+                    }
+
+                });
+
     }
 
     public static AppContext getInstance() {

@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity {
     TextView tvScanChat;
     @BindView(R.id.tv_search_chat)
     TextView tvSearchChat;
-    @BindView(R.id.tv_start_group_chat)
+    @BindView(R.id.start_group_chat)
     TextView tvStartGroupChat;
     @BindView(R.id.tv_add_friend)
     TextView tvAddFriend;
@@ -146,7 +146,7 @@ public class MainActivity extends BaseActivity {
     }
 
     //更多弹窗点击
-    @OnClick({R.id.iv_toolbar_search, R.id.iv_more, R.id.tv_scan, R.id.tv_search, R.id.tv_start_chat, R.id.tv_unread, R.id.tv_read, R.id.tv_clear, R.id.iv_back, R.id.lly_more, R.id.tv_scan_chat, R.id.tv_search_chat, R.id.tv_start_group_chat, R.id.tv_add_friend, R.id.tv_search_group, R.id.tv_more_chat, R.id.iv_back_chat, R.id.lly_chat_more})
+    @OnClick({R.id.iv_toolbar_search, R.id.iv_more, R.id.tv_scan, R.id.tv_search, R.id.tv_start_chat, R.id.tv_unread, R.id.tv_read, R.id.tv_clear, R.id.iv_back, R.id.lly_more, R.id.tv_scan_chat, R.id.tv_search_chat, R.id.start_group_chat, R.id.tv_add_friend, R.id.tv_search_group, R.id.tv_more_chat, R.id.iv_back_chat, R.id.lly_chat_more})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_toolbar_search:
@@ -204,7 +204,7 @@ public class MainActivity extends BaseActivity {
                 closePanelView();
                 startActivity(FindGroupActivity.class);
                 break;
-            case R.id.tv_start_group_chat:
+            case R.id.start_group_chat:
                 closePanelView();
                 startActivity(CreatGroupActivity.class);
                 break;

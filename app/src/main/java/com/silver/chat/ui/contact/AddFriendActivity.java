@@ -96,7 +96,7 @@ public class AddFriendActivity extends BaseActivity implements View.OnClickListe
             public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
                 SearchIdBean searchIdBean = (SearchIdBean) adapter.getItem(position);
                 Intent mIntent = new Intent(mContext, AddFriendVerifyActivity.class);
-                mIntent.setAction(TAG);
+                mIntent.setAction("AddFriendActivity");
                 mIntent.putExtra("nickName", searchIdBean.getNickName());
                 mIntent.putExtra("friendId",searchIdBean.getUserId());
                 startActivity(mIntent);

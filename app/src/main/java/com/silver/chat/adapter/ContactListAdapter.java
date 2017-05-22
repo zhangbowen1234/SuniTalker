@@ -49,7 +49,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.e("viewType", viewType + "");
+        Log.d("viewType", viewType + "");
         if (viewType == ITEM_TYPE.NEW_FRIEND.ordinal()) {//枚举方式
             return new NewFriendViewHolder(mLayoutInflater.inflate(R.layout.new_friend_layout, parent, false));
         } else if (viewType == ITEM_TYPE.GROUP_CHAT.ordinal()) {
@@ -101,7 +101,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-        Log.e("getItemViewType__position", position + "");
+        Log.d("getItemViewType__position", position + "");
         if (position == 0) {
             return ITEM_TYPE.NEW_FRIEND.ordinal();
         } else if (position == 1) {

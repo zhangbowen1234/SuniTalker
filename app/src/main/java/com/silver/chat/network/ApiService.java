@@ -1,17 +1,24 @@
 package com.silver.chat.network;
 
+import com.silver.chat.network.requestbean.AddFriendDiscuBody;
+import com.silver.chat.network.requestbean.AgreeFriendAddBody;
 import com.silver.chat.network.requestbean.AskJoinGroup;
 import com.silver.chat.network.requestbean.CreatGroupBean;
+import com.silver.chat.network.requestbean.ExitDiscuGroupBody;
+import com.silver.chat.network.requestbean.ExpelDiscuMemberBody;
 import com.silver.chat.network.requestbean.ForgetPasswordBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.requestbean.RegisterRequest;
+import com.silver.chat.network.requestbean.SetDiscuMsgRemindBody;
+import com.silver.chat.network.requestbean.SetGroupManagerBody;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.FriendInfo;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.network.responsebean.LoginRequestBean;
+import com.silver.chat.network.responsebean.QueryUserInfoBean;
 import com.silver.chat.network.responsebean.SearchGroupBean;
 import com.silver.chat.network.responsebean.SearchIdBean;
 import com.silver.chat.network.responsebean.UpdateUserInfoBean;
@@ -20,6 +27,7 @@ import com.silver.chat.network.responsebean.UserInfoBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -27,6 +35,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 /**
@@ -112,7 +121,56 @@ public interface ApiService {
     @POST("imx/leaf/user/group/application")
     Call<BaseResponse> addGroup(@Header("token")String token, @Body AskJoinGroup askJoinGroup);
 
+    //上传头像
+    @POST("imicom/uploadImIcom")
+    Call<BaseResponse>upLoadHead(@Header("token")String token, @Part MultipartBody.Part file);
+
     //获取群成员
     @GET("/imx/leaf/user/group/members/{groupId}")
     Call<BaseResponse<ArrayList<GroupMemberBean>>> getGroupMember(@Header("token")String token,@Path("groupId")String groupId);
+
+    //修改好友备注
+    @POST("imx/leaf/friendsnote/{userId}/{friendId}/{note}")
+    Call<BaseResponse>revampFriendName(@Header("token")String token,@Path("userId")String userId,@Path("friendId")String friendId,@Path("note")String note);
+
+    //屏蔽好友
+    @POST("imx/leaf/shielding/{userId}/{friendId}")
+    Call<BaseResponse>shieldFriend(@Header("token")String token,@Path("userId")String userId,@Path("friendId")String friendId);
+
+    //拒绝好友申请
+    @DELETE("imx/leaf/refusedto/{userId}/{friendId}")
+    Call<BaseResponse>repulseFriendAdd(@Header("token")String token,@Path("userId")String userId,@Path("friendId")String friendId);
+
+    //通过好友申请
+    @POST("imx/leaf/throughfriend/through")
+    Call<BaseResponse>agreeFriend(@Header("token")String token,@Body AgreeFriendAddBody agreeFriendAddBody);
+
+    //通过用户Id查询用户信息
+    @GET("imx/leaf/user/userinfo/{userId}")
+    Call<BaseResponse<QueryUserInfoBean>>idQueryUserInfo(@Header("token")String token, @Path("userId")String userId);
+
+    //邀请好友加入讨论组
+    @POST("imx/leaf/user/discugroup/adddiscu")
+    Call<BaseResponse>addFrDiscuGroup(@Header("token")String token, @Body AddFriendDiscuBody addFriendDiscuBean);
+
+    //退出讨论组
+    @GET("imx/leaf/discugroup/quite")
+    Call<BaseResponse>exitDiscuGroup(@Header("token")String token, @Body ExitDiscuGroupBody exitDiscuGroupBody);
+
+    //踢出讨论组成员
+    @GET("imx/leaf/discugroup/kickmember")
+    Call<BaseResponse>expelDiscuMember(@Header("token")String token, @Body ExpelDiscuMemberBody expelDiscuMember);
+
+    //设置讨论组消息提醒
+    @POST("imx/leaf/discugroup/reminderset")
+    Call<BaseResponse>setDiscuMsgRemind(@Header("token")String token, @Body SetDiscuMsgRemindBody setDiscuMsgRemindBody);
+
+    //设置群管理员(群主权限)
+    @POST("imx/leaf/user/group/creategroupmanager")
+    Call<BaseResponse>setGroupManager(@Header("token")String token, @Body SetGroupManagerBody setGroupManagerBody);
+
+    //取消群管理员(群主权限)
+    @POST("imx/leaf/user/group/deletegroupmanager")
+    Call<BaseResponse>deleteGroupManager(@Header("token")String token, @Body SetGroupManagerBody setGroupManagerBody);
+
 }
