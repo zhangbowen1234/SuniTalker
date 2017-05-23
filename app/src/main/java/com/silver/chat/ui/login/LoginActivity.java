@@ -32,7 +32,6 @@ import com.ssim.android.listener.SSConnectListener;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.listener.SSMessageSendListener;
 import com.ssim.android.listener.SSNotificationListener;
-import com.ssim.android.model.chat.SSGroupMessage;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
 import com.ssim.android.model.notification.SSNotification;
@@ -351,7 +350,7 @@ LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectLis
     @Override
     public void receiveMsg(SSMessage ssMessage) {
 
-                Log.e(TAG, ((SSP2PMessage) ssMessage).getContent());
+        Log.e(TAG, ((SSP2PMessage) ssMessage).getContent());
 
     }
 
