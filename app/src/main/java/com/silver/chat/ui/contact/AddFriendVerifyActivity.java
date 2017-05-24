@@ -31,20 +31,16 @@ import java.net.URLEncoder;
 
 public class AddFriendVerifyActivity extends BaseActivity implements View.OnClickListener {
 
-    private String nickName;
-    private String friendId;
+    private String nickName ,friendId ,action ,groupAvatar,personAvatar,userName ,token ,userId;
     private ImageView mBack;
     private TextView mSend, mNickName, mTextCount, mTitle;
     private CircleImageView mFriendHead;
     private EditText mMsgVerify, mRemarksName;
-    private String action;
     private int targetimid;
-    private String groupAvatar;
     //请求体常量
     private final String INNERAPP = "innerapp";
     //用户输入的验证信息
     private String verifyMsg;
-
 
     @Override
     protected int getLayoutId() {
@@ -82,8 +78,11 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
             groupAvatar = intent.getStringExtra("groupAvatar");
             mNickName.setText(nickName + "");
             mTitle.setText("添加群组验证");
-
         }
+         personAvatar = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
+         userName = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
+         token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+         userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
 
     }
 
@@ -100,7 +99,6 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
         private CharSequence temp;
         private int editStart;
         private int editEnd;
-
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -139,34 +137,57 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                 /**
                  * 根据上个跳转界面传递的数据不同来
                  * 发送不同的添加信息
-                 *
                  */
                 if (TextUtils.equals(action, "AddFriendActivity")) {
+                    /**
+                     * 申请添加好友
+                     */
                     sendAddFriend();
-
+                    String remarName = mRemarksName.getText().toString();
+                    if (remarName != null) {
+                        /**
+                         * 好友备注
+                         */
+                        remarksFdNm(remarName);
+                    }
                 } else {
                     verifyMsg = mMsgVerify.getText().toString();
                     if (verifyMsg.isEmpty()) {
                         ToastUtil.toastMessage(mContext, "验证信息不能为空");
                     } else {
                         sendAddGroup();
-
                     }
-
                 }
                 break;
 
         }
     }
 
+    private void remarksFdNm(String remarName) {
+
+        SSIMFrendManger.revampFriendName(mContext, token, userId, friendId, remarName, new ResponseCallBack<BaseResponse>() {
+            @Override
+            public void onSuccess(BaseResponse baseResponse) {
+                Log.e(TAG,"修改备注成功");
+            }
+
+            @Override
+            public void onFailed(BaseResponse baseResponse) {
+                Log.e(TAG,"修改备注失败");
+            }
+
+            @Override
+            public void onError() {
+                Log.e(TAG,"备注网络异常");
+            }
+        });
+
+    }
+
     /**
      * 请求添加群组
      */
     private void sendAddGroup() {
-        String personAvatar = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
-        String userName = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
-        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
-        String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
 
         AskJoinGroup instance = AskJoinGroup.getInstance();
         instance.setSourceId(userId);

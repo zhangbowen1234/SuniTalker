@@ -3,18 +3,14 @@ package com.silver.chat.base;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.util.AppManager;
-import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.SkinSettingManager;
 import com.silver.chat.util.ToastUtil;
 
@@ -36,7 +32,8 @@ public abstract class BaseActivity extends AppCompatActivity {
      **/
     protected final String TAG = this.getClass().getSimpleName();
     protected Context mContext;
-    private int[] layouts={R.id.ll_common_bg_view};
+    private int[] layouts = {R.id.ll_common_bg_view};
+
     @Optional
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,9 +48,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
     }
 
-    public static View getBackgroundView(){
+    public static View getBackgroundView() {
         return view;
     }
+
     protected void initView() {
 
     }
@@ -86,8 +84,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         LinearLayout[] layout = new LinearLayout[layouts.length];
-        for(int i=0; i<layouts.length; i++){
-            layout[i]=(LinearLayout) findViewById(layouts[i]);
+        for (int i = 0; i < layouts.length; i++) {
+            layout[i] = (LinearLayout) findViewById(layouts[i]);
             SkinSettingManager mSettingManager = new SkinSettingManager(BaseActivity.this, layout[i]);
             mSettingManager.initSkins();
         }
@@ -133,4 +131,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         startActivity(intent);
     }
+
+
 }

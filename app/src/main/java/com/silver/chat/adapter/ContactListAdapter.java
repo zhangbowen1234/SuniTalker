@@ -21,9 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/11/22.
-/**
- *  Test:三
+ * Created by hibon on 2016/11/22.
+ *
  */
 
 public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
