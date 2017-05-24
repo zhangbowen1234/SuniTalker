@@ -21,6 +21,7 @@ import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
+import com.silver.chat.util.AppManager;
 import com.silver.chat.util.NetUtils;
 import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.PreferenceUtil;
@@ -367,5 +368,10 @@ LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectLis
     @Override
     public void didSend(boolean b, long l) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        AppManager.getInstance().finishAllActivity();
     }
 }

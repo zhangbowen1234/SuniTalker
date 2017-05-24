@@ -2,6 +2,7 @@ package com.silver.chat.ui.contact;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,8 @@ import com.lqr.emoji.MoonUtils;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.databs.ImDB;
+import com.silver.chat.entity.ApplicationData;
 import com.silver.chat.entity.ChatEntity;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
@@ -75,8 +78,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mTitleBar = (TitleBarView) findViewById(R.id.title_bar);
         mChatMsgList = (RecyclerView) findViewById(R.id.recyle_content);
         mEmoteBtn = (ImageButton) findViewById(R.id.chat_btn_emote);
-//        mExpression = (LinearLayout) findViewById(R.id.expression);
-//        mFaceViewPager = (ViewPager) findViewById(R.id.face_viewpager);
         inputEdit = (EditText) findViewById(R.id.chat_edit_input);
         mShowHead = (RelativeLayout) findViewById(R.id.show_contact_head);
         mBack = (ImageView)findViewById(R.id.title_left_back);
@@ -87,7 +88,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mChatMsgList.setLayoutManager(linearLayoutManager);
         //将内容输入框交给EmotionLayout管理
-//        mElEmotion.attachEditText(inputEdit);
+        mElEmotion.attachEditText(inputEdit);
         //实现内容区与表情区仿微信切换效果
         initEmotionKeyboard();
 
@@ -108,27 +109,27 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mTitleBar.setTitleText(contactName + "");
 
 
-//        handler = new Handler() {
-//            public void handleMessage(Message msg) {
-//                switch (msg.what) {
-//                    case 1:
-//                        chatMessageAdapter.notifyDataSetChanged();
-//                        mChatMsgList.scrollToPosition(chatList.size());
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        };
-//
-//        ApplicationData.getInstance().setChatHandler(handler);
-//        chatList = ApplicationData.getInstance().getChatMessagesMap()
-//                .get(friendId);
-//        if(chatList == null){
-//
-//            chatList = ImDB.getInstance(ContactChatActivity.this).getChatMessage(friendId);
-//            ApplicationData.getInstance().getChatMessagesMap().put(friendId, chatList);
-//        }
+        handler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case 1:
+                        chatMessageAdapter.notifyDataSetChanged();
+                        mChatMsgList.scrollToPosition(chatList.size());
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+
+        ApplicationData.getInstance().setChatHandler(handler);
+        chatList = ApplicationData.getInstance().getChatMessagesMap()
+                .get(friendId);
+        if(chatList == null){
+
+            chatList = ImDB.getInstance(ContactChatActivity.this).getChatMessage(friendId);
+            ApplicationData.getInstance().getChatMessagesMap().put(friendId, chatList);
+        }
 
         chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, chatList);
         mChatMsgList.setAdapter(chatMessageAdapter);
@@ -219,7 +220,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
 //                instance.sendMessageToTargetId("5", SSMessageFormat.TEXT,"你好你好你好");
 
                 instance.sendMessageToGroupId("291",SSMessageFormat.TEXT,"王晓阳，缺心眼");
-                instance.sendMessageToRoomId("291",SSMessageFormat.TEXT,"王晓阳，缺心眼");
                 instance.setMsgSendListener(new SSMessageSendListener() {
                     @Override
                     public void didSend(boolean b, long l) {

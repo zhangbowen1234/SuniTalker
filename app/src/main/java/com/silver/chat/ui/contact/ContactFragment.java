@@ -199,7 +199,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         });
 
     }
-
+    ContactListBean sortModel;
     /**
      * 联网获取联系人
      */
@@ -215,7 +215,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                  * 填充其他数据
                  */
                 for (int i = 0; i < contactData.size(); i++) {
-                    ContactListBean sortModel = new ContactListBean();
+                    sortModel = new ContactListBean();
                     sortModel.setNickName(contactData.get(i).getNickName());
                     sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID,""));
                     sortModel.setAvatar(contactData.get(i).getAvatar());
@@ -231,6 +231,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     } else {
                         sortModel.setSortLetters("#");
                     }
+                    Log.e("sortModel===",""+sortModel);
                     sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""));
                     mConList.add(sortModel);
                 }
@@ -242,10 +243,16 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     public List<ContactListBean> run() throws Exception {
 
                         List<ContactListBean> query = mDao.queryForAll();
-                        //删除原始文件
+//                        //删除原始文件
 //                        mDao.delete(query);
-                        //保存新数据
-                        mDao.create(mConList);
+//                        if (query !=null){
+////                            mDao.update(sortModel);
+//                            mDao.create(sortModel);
+//                        }else {
+                            //保存新数据
+                            mDao.create(mConList);
+
+//                        }
                         Log.e("mDao.asTk_run", "===================");
                         return getSortData();
                     }
