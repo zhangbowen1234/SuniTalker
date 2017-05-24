@@ -38,4 +38,12 @@ public class Common {
     public static final int OPEN_CAMERA_CODE = 12;// 相机
     public static final int OPEN_GALLERY_CODE = 13;// 相册
     public static final int CROP_PHOTO_CODE = 14;// 裁剪
+
+    /**
+     * 用户性别
+     */
+    public final static String Girl = "1";
+    public final static String Boy = "2";
+    public final static String Secrecy = "3";
+
 }

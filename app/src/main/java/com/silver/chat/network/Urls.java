@@ -8,7 +8,7 @@ public class Urls {
 //    public static final String SERVER = "http://192.168.10.132:7102/";
 //    public static final String SERVER = "http://192.168.10.215:7102/";
     public static final String SERVER = "http://imx.users.docker.sspaas.net/";
-    public static final String CLOUD_SERVER = "http://cloud.docker.sspaas.net/sspaas-cloud/imicom/uploadImIcom/";
+//    public static final String CLOUD_SERVER = "http://cloud.docker.sspaas.net/sspaas-cloud/imicom/uploadImIcom/";
 
     //用户
     public static final String URL_SMS = SERVER + "imx/version/sms";// 发送验证码

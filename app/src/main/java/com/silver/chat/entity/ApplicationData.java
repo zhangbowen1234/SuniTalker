@@ -51,8 +51,7 @@ public class ApplicationData {
 	}
 
 	public void start() {
-		while (!(mIsReceived))
-			;
+		while (!(mIsReceived));
 	}
 
 	public void loginMessageArrived(Object tranObject) {

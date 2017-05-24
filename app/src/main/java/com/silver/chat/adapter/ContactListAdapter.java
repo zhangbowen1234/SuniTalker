@@ -21,9 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/11/22.
-/**
- *  Test:三
+ * Created by hibon on 2016/11/22.
+ *
  */
 
 public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -101,7 +100,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-        Log.d("getItemViewType__position", position + "");
         if (position == 0) {
             return ITEM_TYPE.NEW_FRIEND.ordinal();
         } else if (position == 1) {

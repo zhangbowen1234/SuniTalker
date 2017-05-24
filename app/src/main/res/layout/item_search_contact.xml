@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_10"
         android:singleLine="true"
-        android:text="王晓宇"
+        android:text="name"
         android:textColor="@color/white"
         android:textSize="@dimen/font_15"/>
 </LinearLayout>

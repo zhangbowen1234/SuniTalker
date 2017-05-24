@@ -86,7 +86,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     private LinearLayoutManager linearLayoutManager;
     private FloatingActionButton fab;
     private BaseDao<ContactListBean> mDao;
-
     public static ContactFragment newInstance(boolean isAllContact) {
         Bundle args = new Bundle();
         ContactFragment fragment = new ContactFragment();
@@ -106,6 +105,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         linearLayoutManager = new LinearLayoutManager(mActivity);
         //设置布局管理器
         mRecycleContent.setLayoutManager(linearLayoutManager);
+        String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
         mDao = DBHelper.get().dao(ContactListBean.class);
         // 实例化汉字转拼音类
         characterParser = CharacterParser.getInstance();
@@ -155,10 +155,8 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                 case 0:
                     // 根据a-z进行排序源数据
                     Collections.sort(mContactList, pinyinComparator);
-//                    if (contactListAdapter == null) {
                     //联系人列表的adapter
                     contactListAdapter = new ContactListAdapter(mActivity, mContactList);
-//                    }
                     mRecycleContent.setAdapter(contactListAdapter);
                     contactListAdapter.notifyDataSetChanged();
                     break;
@@ -176,7 +174,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         httpContactList();
         //优先从数据库中读取数据
 //        QueryDbParent();
-
     }
 
     /**
@@ -202,7 +199,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         });
 
     }
-
+    ContactListBean sortModel;
     /**
      * 联网获取联系人
      */
@@ -218,7 +215,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                  * 填充其他数据
                  */
                 for (int i = 0; i < contactData.size(); i++) {
-                    ContactListBean sortModel = new ContactListBean();
+                    sortModel = new ContactListBean();
                     sortModel.setNickName(contactData.get(i).getNickName());
                     sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID,""));
                     sortModel.setAvatar(contactData.get(i).getAvatar());
@@ -234,6 +231,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     } else {
                         sortModel.setSortLetters("#");
                     }
+                    Log.e("sortModel===",""+sortModel);
                     sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""));
                     mConList.add(sortModel);
                 }
@@ -245,10 +243,16 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     public List<ContactListBean> run() throws Exception {
 
                         List<ContactListBean> query = mDao.queryForAll();
-                        //删除原始文件
-                        mDao.delete(query);
-                        //保存新数据
-                        mDao.create(mConList);
+//                        //删除原始文件
+//                        mDao.delete(query);
+//                        if (query !=null){
+////                            mDao.update(sortModel);
+//                            mDao.create(sortModel);
+//                        }else {
+                            //保存新数据
+                            mDao.create(mConList);
+
+//                        }
                         Log.e("mDao.asTk_run", "===================");
                         return getSortData();
                     }

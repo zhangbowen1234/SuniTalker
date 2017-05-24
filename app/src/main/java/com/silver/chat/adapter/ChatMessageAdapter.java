@@ -1,5 +1,6 @@
 package com.silver.chat.adapter;
 
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -15,7 +16,7 @@ import com.silver.chat.view.recycleview.BaseViewHolder;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/11/28.
+ * Created by hibon on 2016/11/28.
  */
 //
 public class ChatMessageAdapter extends BaseQuickAdapter<ChatEntity, BaseViewHolder> {
@@ -58,8 +59,8 @@ public class ChatMessageAdapter extends BaseQuickAdapter<ChatEntity, BaseViewHol
         } else if (item.getMessageType() == ChatEntity.RECEIVE) {// 本身作为接收方
             leftLayout.setVisibility(View.VISIBLE);
             rightLayout.setVisibility(View.GONE);
-//            Bitmap photo = ApplicationData.getInstance().getFriendPhotoMap()
-//                    .get(item.getSenderId());
+            Bitmap photo = ApplicationData.getInstance().getFriendPhotoMap()
+                    .get(item.getSenderId());
 //            if (photo != null)
 //                leftPhotoView.setImageBitmap(photo);
             leftMessageView.setText(item.getContent());

@@ -18,6 +18,9 @@ import com.squareup.okhttp.OkHttpClient;
 import com.ssim.android.callback.HttpResultCallback;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.http.bean.VerifyAppKeyAndSecretResponse;
+import com.ssim.android.listener.SSMessageReceiveListener;
+import com.ssim.android.model.chat.SSMessage;
+import com.ssim.android.model.chat.SSP2PMessage;
 
 import java.io.InputStream;
 import java.util.UUID;
@@ -72,6 +75,18 @@ public class AppContext extends MultiDexApplication {
                     }
 
                 });
+
+
+        SSEngine instance = SSEngine.getInstance();
+        instance.setMsgRcvListener(new SSMessageReceiveListener() {
+            @Override
+            public void receiveMsg(SSMessage ssMessage) {
+                if (ssMessage instanceof SSP2PMessage){
+                   SSP2PMessage ssp2pmsg = (SSP2PMessage) ssMessage;
+                   Log.e("ssp2pmsg",ssp2pmsg.getContent());
+                }
+            }
+        });
 
     }
 

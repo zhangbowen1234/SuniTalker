@@ -21,6 +21,7 @@ import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.LoginRequestBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
+import com.silver.chat.util.AppManager;
 import com.silver.chat.util.NetUtils;
 import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.PreferenceUtil;
@@ -30,17 +31,16 @@ import com.silver.chat.view.CustomVideoView;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSConnectListener;
 import com.ssim.android.listener.SSMessageReceiveListener;
-import com.ssim.android.model.chat.SSGroupMessage;
+import com.ssim.android.listener.SSMessageSendListener;
+import com.ssim.android.listener.SSNotificationListener;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.ssim.android.model.notification.SSNotification;
 
 import java.util.UUID;
 
 public class
-LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectListener, SSMessageReceiveListener {
+LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectListener, SSMessageReceiveListener, SSNotificationListener, SSMessageSendListener {
 
     private static final long DELAY_TIME = 600L;
     private TextView mGoReg, mForgot;
@@ -182,11 +182,11 @@ LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectLis
     private void ssConnect() {
         //IMSDK 连接服务器
         SSEngine instance = SSEngine.getInstance();
-        instance.connect( PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""),
+        instance.connect(PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""),
                 PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.IMTOKEN, ""));
         instance.setConnectListener(this);//连接
-//        SSEngine.getInstance().setNotificationListener(this);//通知
-        instance.setMsgRcvListener(this);
+        instance.setNotificationListener(this);//通知
+        instance.setMsgSendListener(this);
     }
 
     /**
@@ -345,23 +345,33 @@ LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectLis
 
     /**
      * 消息接收
+     *
      * @param ssMessage
      */
     @Override
     public void receiveMsg(SSMessage ssMessage) {
-        if (ssMessage instanceof SSP2PMessage){
-            try {
-                JSONObject jsonObject = new JSONObject(ssMessage.toString());
 
+        Log.e(TAG, ((SSP2PMessage) ssMessage).getContent());
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Log.e("ssMessage_SSP2PMessage",ssMessage + "");
-        }else if (ssMessage instanceof SSGroupMessage){
-            Log.e("ssMessage_SSGroupMessage",ssMessage + "");
-        }else {
-            Log.e("ssMessage",ssMessage + "");
-        }
+    }
+
+    /**
+     * 收通知
+     *
+     * @param ssNotification
+     */
+    @Override
+    public void receiveNotification(SSNotification ssNotification) {
+
+    }
+
+    @Override
+    public void didSend(boolean b, long l) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        AppManager.getInstance().finishAllActivity();
     }
 }

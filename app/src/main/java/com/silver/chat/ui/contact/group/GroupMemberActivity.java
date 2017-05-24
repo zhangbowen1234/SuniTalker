@@ -49,7 +49,7 @@ public class GroupMemberActivity extends BaseActivity {
         groupid = intent.getIntExtra("groupid", -1);
         privilege = intent.getIntExtra("privilege", -1);
         lists = (ArrayList<GroupMemberBean>) intent.getSerializableExtra("lists");
-        //listview.setAdapter(new GroupMemAdapter(lists));
+        listview.setAdapter(new GroupMemAdapter(mContext,lists));
     }
 
     @Override
