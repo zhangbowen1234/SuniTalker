@@ -34,7 +34,7 @@ public class CreatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mLayoutInflater.inflate(R.layout.item_contact_list, parent, false);
+        View view = mLayoutInflater.inflate(R.layout.item_creat_group_list, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -48,8 +48,9 @@ public class CreatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemCount() {
-        return 0;
+        return data.size();
     }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView mTextView;
         CircleImageView mHeader;
