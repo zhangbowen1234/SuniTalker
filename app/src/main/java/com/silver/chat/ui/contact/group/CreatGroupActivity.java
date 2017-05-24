@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -148,6 +149,8 @@ public class CreatGroupActivity extends BaseActivity {
     }
 
     public void getEditlisten() {
+        //默认字体颜色
+        edNewGroup.setHintTextColor(ContextCompat.getColor(mContext,R.color.tab_text_color_mormal));
         edNewGroup.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

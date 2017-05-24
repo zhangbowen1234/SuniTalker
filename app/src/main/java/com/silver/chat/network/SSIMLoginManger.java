@@ -104,7 +104,7 @@ public class SSIMLoginManger {
     }
 
     /**
-     * 修改好友信息
+     * 修改用户信息
      *
      * @param version
      * @param userInfoBean 实体类
