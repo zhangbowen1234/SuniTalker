@@ -87,7 +87,7 @@ public class CreatGroupActivity extends BaseActivity {
         linearLayoutManager = new LinearLayoutManager(mContext);
         //设置布局管理器
         rvNewGroupContacts.setLayoutManager(linearLayoutManager);
-        mDao = DBHelper.get().dao(ContactListBean.class);
+        //mDao = DBHelper.get().dao(ContactListBean.class);
         //加载联系人列表
         mHandler.sendEmptyMessage(0);
     }

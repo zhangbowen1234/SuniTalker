@@ -101,7 +101,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-        Log.d("getItemViewType__position", position + "");
         if (position == 0) {
             return ITEM_TYPE.NEW_FRIEND.ordinal();
         } else if (position == 1) {
