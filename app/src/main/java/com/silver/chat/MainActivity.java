@@ -3,6 +3,7 @@ package com.silver.chat;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,7 +24,6 @@ import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.BadgedTabCustomView;
 import com.silver.chat.view.TabLayoutPlus;
-import com.ssim.android.engine.SSEngine;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -196,7 +196,7 @@ public class MainActivity extends BaseActivity {
                 ScreenManager.getScreenManager().StartPage(this, intent, true);
                 break;
             case R.id.tv_search_chat:
-                ToastUtils.showMessage(mContext, "正在修改中...");
+                startActivity(SearchContactActivity.class);
                 break;
             case R.id.tv_add_friend:
                 closePanelView();
@@ -253,5 +253,11 @@ public class MainActivity extends BaseActivity {
             tvSearchGroup.startAnimation(mButtonOutAnimation);
             tvMoreChat.startAnimation(mButtonOutAnimation);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e(TAG,"onPause");
     }
 }

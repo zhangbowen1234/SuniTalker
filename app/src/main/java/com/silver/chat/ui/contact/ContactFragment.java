@@ -243,7 +243,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
                         List<ContactListBean> query = mDao.queryForAll();
                         //删除原始文件
-                        mDao.delete(query);
+//                        mDao.delete(query);
                         //保存新数据
                         mDao.create(mConList);
                         Log.e("mDao.asTk_run", "===================");

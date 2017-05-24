@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
 import com.silver.chat.network.SSIMFrendManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
@@ -59,7 +60,13 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
         contactSignature = intent.getStringExtra("signature");
         friendId = intent.getStringExtra("friendId");
         tvName.setText(contactName);
-        tvSex.setText(contactSex);
+        if (contactSex.equals(Common.Girl)){
+            tvSex.setText("女");
+        }else if (contactSex.equals(Common.Boy)){
+            tvSex.setText("男");
+        }else {
+            tvSex.setText("保密");
+        }
         tvSign.setText(contactSignature);
         token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");

@@ -1,17 +1,14 @@
 package com.silver.chat.ui.contact;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,20 +25,17 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.ChatEntity;
-import com.silver.chat.network.SSIMFrendManger;
-import com.silver.chat.util.ConstUtils;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
-import com.silver.chat.view.UIUtils;
 import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.engine.SSEngine;
+import com.ssim.android.listener.SSMessageSendListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
 
 
 public class ContactChatActivity extends BaseActivity implements View.OnClickListener {
@@ -221,7 +215,17 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 mShowHead.setVisibility(View.INVISIBLE);
 
                 mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount()-1);
-                SSEngine.getInstance().sendMessageToTargetId("7", SSMessageFormat.TEXT,"你好你好你好");
+                SSEngine instance = SSEngine.getInstance();
+//                instance.sendMessageToTargetId("5", SSMessageFormat.TEXT,"你好你好你好");
+
+                instance.sendMessageToGroupId("291",SSMessageFormat.TEXT,"王晓阳，缺心眼");
+                instance.sendMessageToRoomId("291",SSMessageFormat.TEXT,"王晓阳，缺心眼");
+                instance.setMsgSendListener(new SSMessageSendListener() {
+                    @Override
+                    public void didSend(boolean b, long l) {
+                        Log.e(TAG,"didSend"+ "boolean:"+ b+";long:"+ l);
+                    }
+                });
                 break;
 
             case R.id.chat_btn_emote:
