@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.adapter.CreatGroupAdapter;
 import com.silver.chat.base.BaseActivity;
@@ -16,11 +17,17 @@ import com.silver.chat.base.Common;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.CreatGroupBean;
+import com.silver.chat.network.responsebean.AddGroupMemBean;
 import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,9 +53,10 @@ public class CreatDiscussionActivity extends BaseActivity {
     @BindView(R.id.selected_contact_person)
     TextView selectedContactPerson;
 
-    private List memeberlist;
+    private List<ContactListBean> memeberlist = new ArrayList<>();
     private CreatGroupAdapter mAdapter;
     private GridLayoutManager gridLayoutManager;
+    private String Name;
 
     @Override
     protected int getLayoutId() {
@@ -59,12 +67,12 @@ public class CreatDiscussionActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         Intent intent = getIntent();
-        String Name = intent.getStringExtra("Name");
+        Name = intent.getStringExtra("Name");
         memeberlist = (List) intent.getSerializableExtra("memeberlist");
         Log.e(TAG, memeberlist.toString());
+
         tvGroupName.setText(Name);
         selectedContactPerson.setText("已选联络人(" + memeberlist.size() + ")");
-
         gridLayoutManager = new GridLayoutManager(this, 4);
         mAdapter = new CreatGroupAdapter(mContext, memeberlist);
         rvCreatGroup.setLayoutManager(gridLayoutManager);
@@ -80,10 +88,14 @@ public class CreatDiscussionActivity extends BaseActivity {
                 break;
             case R.id.bt_creat_group:
                 getContactList(view);
+//                startActivity(MainActivity.class);
                 finish();
                 break;
             case R.id.bt_creat_discussion:
                 getContactList(view);
+//                Intent intent = new Intent(mContext,MainActivity.class);
+//                intent.putExtra("id",1);
+//                startActivity(intent);
                 finish();
                 break;
             case R.id.bt_cancel:
@@ -92,12 +104,18 @@ public class CreatDiscussionActivity extends BaseActivity {
         }
     }
 
+
     public void getContactList(View view) {
         CreatGroupBean instance = CreatGroupBean.getInstance();
+        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         instance.setUserId(PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""));
         instance.setGroupName(tvGroupName.getText().toString());
         instance.setAddMethod(1);
-        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+        List<String> ls = new ArrayList<>();
+        for (int i = 0; i < memeberlist.size(); i++) {
+            ls.add(memeberlist.get(i).getFriendId()+"");
+        }
+        instance.setFriendIds(ls);
         if (token != null && !"".equals(token)) {
             if (view.getId() == R.id.bt_creat_group) {
                 SSIMGroupManger.getcreatgroup(mContext, Common.version, token, instance, new ResponseCallBack<BaseResponse<CreatGroupBean>>() {

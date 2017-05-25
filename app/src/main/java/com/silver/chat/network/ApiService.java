@@ -12,6 +12,7 @@ import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.network.requestbean.SetDiscuMsgRemindBody;
 import com.silver.chat.network.requestbean.SetGroupManagerBody;
+import com.silver.chat.network.responsebean.AddGroupMemBean;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.GroupBean;
@@ -171,5 +172,10 @@ public interface ApiService {
     //取消群管理员(群主权限)
     @POST("imx/leaf/user/group/deletegroupmanager")
     Call<BaseResponse>deleteGroupManager(@Header("token")String token, @Body SetGroupManagerBody setGroupManagerBody);
+
+    //邀请好友入群(群主，管理员权限)
+    @POST("imx/{version}/user/group/addmember")
+    Call<BaseResponse> addGroupMember(@Path("version") String version,@Header("token")String token, @Body AddGroupMemBean addGroupMemBean);
+
 
 }

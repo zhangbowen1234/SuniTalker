@@ -244,7 +244,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
                         List<ContactListBean> query = mDao.queryForAll();
 //                        //删除原始文件
-//                        mDao.delete(query);
+                        mDao.delete(query);
 //                        if (query !=null){
 ////                            mDao.update(sortModel);
 //                            mDao.create(sortModel);

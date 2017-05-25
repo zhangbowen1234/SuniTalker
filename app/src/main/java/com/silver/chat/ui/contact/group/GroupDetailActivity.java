@@ -82,7 +82,7 @@ public class GroupDetailActivity extends BaseActivity {
     private ArrayList<Fragment> fragments;
     //修改群名片开启activity的请求码
     private static final int REQUEST_CODE3 = 3;
-    private String groupName;
+    private String groupName,groupAvatar;
     private int groupId;
     //群成员列表
     private ArrayList<GroupMemberBean> groupMemlists = new ArrayList<>();
@@ -152,6 +152,7 @@ public class GroupDetailActivity extends BaseActivity {
         groupName = groupbean.getGroupName();
         privilege = groupbean.getPrivilege();
         groupId = groupbean.getGroupId();
+        groupAvatar = groupbean.getAvatar();
     }
 
     @Override
@@ -202,6 +203,9 @@ public class GroupDetailActivity extends BaseActivity {
 
             case R.id.iv_header5:
                 Intent intent1 = new Intent(this, InviteFriendsActivity.class);
+                intent1.putExtra("groupId",groupId);
+                intent1.putExtra("groupName",groupName);
+                intent1.putExtra("groupAvatar",groupAvatar);
                 startActivity(intent1);
                 break;
             case R.id.iv_conversation:

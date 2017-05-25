@@ -23,11 +23,11 @@ import java.util.List;
 
 public class CreatGroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final LayoutInflater mLayoutInflater;
-    private final Context mContext;
+    private final Context mContexts;
     private List<ContactListBean> data = new ArrayList();
 
     public CreatGroupAdapter(Context context, List<ContactListBean> data) {
-        mContext = context;
+        mContexts = context;
         this.data = data;
         mLayoutInflater = LayoutInflater.from(context);
     }

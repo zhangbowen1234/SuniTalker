@@ -1,6 +1,5 @@
 package com.silver.chat.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
@@ -12,37 +11,36 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.silver.chat.R;
 import com.silver.chat.network.responsebean.ContactListBean;
-import com.silver.chat.ui.contact.group.CreatGroupActivity;
 import com.silver.chat.util.GlideUtil;
 import com.silver.chat.view.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
-import static android.R.id.list;
 import static com.silver.chat.util.Utils.context;
 
 /**
  * Created by bowen on 2017/5/9.
  */
 
-public class FriendInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private CreatGroupActivity mcontent;
+public class AddGroupMenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private Context mcontent;
     private List<ContactListBean> friendList;
     private LayoutInflater inflater;
     private boolean isChoose = false;
-    public HashMap<Integer,Boolean> ivMap = new HashMap<>();
+    private HashMap<Integer,Boolean> ivMap = new HashMap<>();
     private final Drawable unSelectCircle,selectCircle;
+    public String friendId;
+    private List<String> mList = new ArrayList<>();
+    public List<String> stringList;
 
-    public FriendInfoAdapter(Activity activity, List<ContactListBean> data) {
+    public AddGroupMenAdapter(Context activity, List<ContactListBean> data) {
         this.friendList = data;
-        this.mcontent = (CreatGroupActivity) activity;
+        this.mcontent = activity;
         inflater = LayoutInflater.from(context);
         for (int i = 0; i < friendList.size(); i++) {
             ivMap.put(i,isChoose);
@@ -67,8 +65,11 @@ public class FriendInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     ivMap.put(position,!ivMap.get(position));
                     ((MyViewHolder) holder).mImageView.setImageDrawable(ivMap.get(position)?selectCircle:unSelectCircle);
                     notifyDataSetChanged();
-                    List selectItems = getSelectItems();
-                    mcontent.tvDetermine.setText("确定(" + selectItems.size() + ")");
+
+                    friendId = friendList.get(position).getFriendId()+"";
+                    mList.add(friendId);
+                    stringList = new ArrayList<>(new HashSet<>(mList));
+                    Log.e("onClick00: ", stringList.toString()+"");
                 }
             });
         }
@@ -77,30 +78,6 @@ public class FriendInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public int getItemCount() {
         return friendList.size();
-    }
-
-    public List<ContactListBean> getSelectedList() {
-        List<ContactListBean> lists = new ArrayList<>();
-        List selectItems = getSelectItems();
-        for (int i = 0; i < selectItems.size(); i++) {
-            lists.add(friendList.get((Integer) selectItems.get(i)));
-
-        }
-        return lists;
-    };
-    /**
-     * 统计选中状态的数量
-     */
-
-    public List getSelectItems() {
-        ArrayList<Integer> list = new ArrayList<>();
-        for (Iterator<Map.Entry<Integer, Boolean>> it = ivMap.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry<Integer, Boolean> entry = it.next();
-            if (entry.getValue()) {
-                list.add(entry.getKey());
-            }
-        }
-        return list;
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
