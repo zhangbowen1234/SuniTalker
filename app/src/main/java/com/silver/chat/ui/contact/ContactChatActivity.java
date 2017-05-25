@@ -109,30 +109,30 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mTitleBar.setTitleText(contactName + "");
 
 
-        handler = new Handler() {
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case 1:
-                        chatMessageAdapter.notifyDataSetChanged();
-                        mChatMsgList.scrollToPosition(chatList.size());
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
-
-        ApplicationData.getInstance().setChatHandler(handler);
-        chatList = ApplicationData.getInstance().getChatMessagesMap()
-                .get(friendId);
-        if(chatList == null){
-
-            chatList = ImDB.getInstance(ContactChatActivity.this).getChatMessage(friendId);
-            ApplicationData.getInstance().getChatMessagesMap().put(friendId, chatList);
-        }
-
-        chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, chatList);
-        mChatMsgList.setAdapter(chatMessageAdapter);
+//        handler = new Handler() {
+//            public void handleMessage(Message msg) {
+//                switch (msg.what) {
+//                    case 1:
+//                        chatMessageAdapter.notifyDataSetChanged();
+//                        mChatMsgList.scrollToPosition(chatList.size());
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        };
+//
+//        ApplicationData.getInstance().setChatHandler(handler);
+//        chatList = ApplicationData.getInstance().getChatMessagesMap()
+//                .get(friendId);
+//        if(chatList == null){
+//
+//            chatList = ImDB.getInstance(ContactChatActivity.this).getChatMessage(friendId);
+//            ApplicationData.getInstance().getChatMessagesMap().put(friendId, chatList);
+//        }
+//
+//        chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, chatList);
+//        mChatMsgList.setAdapter(chatMessageAdapter);
 
     }
 

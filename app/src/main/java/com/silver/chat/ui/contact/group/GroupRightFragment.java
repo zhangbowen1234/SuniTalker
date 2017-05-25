@@ -1,6 +1,7 @@
 package com.silver.chat.ui.contact.group;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BasePagerFragment;
+import com.silver.chat.base.Common;
+import com.silver.chat.network.SSIMLoginManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.ui.login.LoginActivity;
+import com.silver.chat.util.AppManager;
+import com.silver.chat.util.NetUtils;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
+import com.silver.chat.util.ToastUtils;
+import com.silver.chat.view.dialog.TvLoginOutDialog;
 
 import java.util.List;
 import butterknife.BindView;
@@ -133,28 +145,22 @@ public class GroupRightFragment extends BasePagerFragment {
     }
     //消息免扰的Dialog
     private void showExcuxeDialog() {
-        builder = new AlertDialog.Builder(mActivity);
-        builder.setTitle("确定退消息免扰");
-        //builder.setMessage(R.string.dialog_message);
-
-        //监听下方button点击事件
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(mActivity,"确定",Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(mActivity, "取消", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        //设置对话框是可取消的
-        builder.setCancelable(true);
-        AlertDialog dialog= builder.create();
-        dialog.show();
+        new TvLoginOutDialog(getActivity()).builder()
+                .setCancelable(true)
+                .setCanceledOnTouchOutside(true)
+                .setTitle("消息免扰")
+                .setNegativeButton(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mActivity, "取消", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setPositiveButton(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mActivity,"确定",Toast.LENGTH_SHORT).show();
+                    }
+                }).show();
     }
     static class ViewHolder {
         public TextView textView;

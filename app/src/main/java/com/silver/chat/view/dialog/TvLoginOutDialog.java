@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.util.ConvertUtils;
@@ -25,6 +26,7 @@ public class TvLoginOutDialog {
     private Button btn_nag;
     private Button btn_pos;
     private Display display;
+    private TextView tv_biaoti;
 
     public TvLoginOutDialog(Context context) {
         this.context = context;
@@ -41,6 +43,7 @@ public class TvLoginOutDialog {
         // 获取自定义Dialog布局中的控件
         btn_nag = (Button) view.findViewById(R.id.btn_nag);
         btn_pos = (Button) view.findViewById(R.id.btn_pos);
+        tv_biaoti = (TextView) view.findViewById(R.id.tv_biaoti);
         // 定义Dialog布局和参数
         dialog = new Dialog(context, R.style.TopDeleteDialogStyle);
         dialog.setContentView(view);
@@ -54,6 +57,10 @@ public class TvLoginOutDialog {
         return this;
     }
 
+    public TvLoginOutDialog setTitle(String title){
+        tv_biaoti.setText(title);
+        return this;
+    }
 
     public TvLoginOutDialog setCancelable(boolean cancel) {
         dialog.setCancelable(cancel);

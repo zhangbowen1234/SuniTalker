@@ -51,6 +51,7 @@ public class GroupMangerActivity2 extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.title_left_back:
+                finish();
                 break;
             case R.id.bt_determine:
                 break;

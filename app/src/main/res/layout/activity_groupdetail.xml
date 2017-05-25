@@ -237,8 +237,6 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginTop="@dimen/dp_30"
-
             android:src="@drawable/ic_back_white" />
     </LinearLayout>
 </LinearLayout>

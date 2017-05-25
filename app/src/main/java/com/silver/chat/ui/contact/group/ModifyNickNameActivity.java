@@ -52,6 +52,7 @@ public class ModifyNickNameActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.title_left_back:
+                finish();
                 break;
             case R.id.activity_new_friend:
                 break;
