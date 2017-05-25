@@ -2,7 +2,6 @@
 //
 //import android.content.Intent;
 //import android.os.Handler;
-//import android.os.Message;
 //import android.support.v4.view.ViewPager;
 //import android.support.v7.widget.LinearLayoutManager;
 //import android.support.v7.widget.RecyclerView;
@@ -25,15 +24,16 @@
 //import com.silver.chat.R;
 //import com.silver.chat.adapter.ChatMessageAdapter;
 //import com.silver.chat.base.BaseActivity;
-//import com.silver.chat.databs.ImDB;
-//import com.silver.chat.entity.ApplicationData;
 //import com.silver.chat.entity.ChatEntity;
 //import com.silver.chat.util.ToastUtils;
 //import com.silver.chat.view.CircleImageView;
 //import com.silver.chat.view.TitleBarView;
 //import com.ssim.android.constant.SSMessageFormat;
 //import com.ssim.android.engine.SSEngine;
+//import com.ssim.android.listener.SSMessageReceiveListener;
 //import com.ssim.android.listener.SSMessageSendListener;
+//import com.ssim.android.model.chat.SSMessage;
+//import com.ssim.android.model.chat.SSP2PMessage;
 //
 //import java.text.SimpleDateFormat;
 //import java.util.ArrayList;
@@ -41,7 +41,7 @@
 //import java.util.List;
 //
 //
-//public class ContactChatActivity2 extends BaseActivity implements View.OnClickListener {
+//public class ContactChatActivity2 extends BaseActivity implements View.OnClickListener ,SSMessageReceiveListener {
 //
 //    private CircleImageView mContactChatImg;
 //    private ImageButton mSendMsg, mEmoteBtn;
@@ -55,13 +55,14 @@
 //    private ViewPager mFaceViewPager;
 //    private LinearLayout mExpression;
 //    private Handler handler;
-//    private int friendId = 894446774;
+//    private String friendId ;
 //    private ImageView mBack;
 //
 //    int lastItemPosition;
 //    private EmotionLayout mElEmotion;
 //    private EmotionKeyboard mEmotionKeyboard;
 //    private RelativeLayout mLlContent;
+//    ChatEntity chatMessage;
 //
 //    @Override
 //    protected int getLayoutId() {
@@ -78,19 +79,18 @@
 //        mTitleBar = (TitleBarView) findViewById(R.id.title_bar);
 //        mChatMsgList = (RecyclerView) findViewById(R.id.recyle_content);
 //        mEmoteBtn = (ImageButton) findViewById(R.id.chat_btn_emote);
-////        mExpression = (LinearLayout) findViewById(R.id.expression);
-////        mFaceViewPager = (ViewPager) findViewById(R.id.face_viewpager);
 //        inputEdit = (EditText) findViewById(R.id.chat_edit_input);
 //        mShowHead = (RelativeLayout) findViewById(R.id.show_contact_head);
 //        mBack = (ImageView)findViewById(R.id.title_left_back);
 //        mElEmotion = (EmotionLayout) findViewById(R.id.elEmotion);
 //        mLlContent = (RelativeLayout) findViewById(R.id.rl_recyle_content);
-//
+//        chatList = new ArrayList<>();
+//        chatMessage = new ChatEntity();
 //        //设置管理
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 //        mChatMsgList.setLayoutManager(linearLayoutManager);
 //        //将内容输入框交给EmotionLayout管理
-////        mElEmotion.attachEditText(inputEdit);
+//        mElEmotion.attachEditText(inputEdit);
 //        //实现内容区与表情区仿微信切换效果
 //        initEmotionKeyboard();
 //
@@ -102,36 +102,14 @@
 //
 //    }
 //
-//
 //    @Override
 //    protected void initData() {
 //        super.initData();
 //        Intent intent = getIntent();
 //        contactName = intent.getStringExtra("contactName");
+//        friendId = intent.getStringExtra("friendId");
 //        mTitleBar.setTitleText(contactName + "");
 //
-//
-//        handler = new Handler() {
-//            public void handleMessage(Message msg) {
-//                switch (msg.what) {
-//                    case 1:
-//                        chatMessageAdapter.notifyDataSetChanged();
-//                        mChatMsgList.scrollToPosition(chatList.size());
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        };
-//
-//        ApplicationData.getInstance().setChatHandler(handler);
-//        chatList = ApplicationData.getInstance().getChatMessagesMap()
-//                .get(friendId);
-//        if(chatList == null){
-//
-//            chatList = ImDB.getInstance(ContactChatActivity2.this).getChatMessage(friendId);
-//            ApplicationData.getInstance().getChatMessagesMap().put(friendId, chatList);
-//        }
 //
 //        chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, chatList);
 //        mChatMsgList.setAdapter(chatMessageAdapter);
@@ -197,13 +175,11 @@
 //        switch (view.getId()) {
 //            case R.id.chat_send_msg:
 //                String content = inputEdit.getText().toString();
-//                chatList = new ArrayList<>();
-//
+//                int frdId = Integer.parseInt(this.friendId);
 //                inputEdit.setText("");
-//                ChatEntity chatMessage = new ChatEntity();
 //                chatMessage.setContent(content);
 //                chatMessage.setSenderId(123);
-//                chatMessage.setReceiverId(friendId);
+//                chatMessage.setReceiverId(frdId);
 //                chatMessage.setMessageType(ChatEntity.SEND);
 //                Date date = new Date();
 //                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd hh:mm:ss");
@@ -219,9 +195,9 @@
 //
 //                mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount()-1);
 //                SSEngine instance = SSEngine.getInstance();
-////                instance.sendMessageToTargetId("5", SSMessageFormat.TEXT,"你好你好你好");
+//                instance.sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT,content);
 //
-//                instance.sendMessageToGroupId("291",SSMessageFormat.TEXT,"王晓阳，缺心眼");
+////                instance.sendMessageToGroupId("291",SSMessageFormat.TEXT,content);
 //                instance.setMsgSendListener(new SSMessageSendListener() {
 //                    @Override
 //                    public void didSend(boolean b, long l) {
@@ -263,5 +239,10 @@
 //        mEmotionKeyboard.bindToEmotionButton(mEmoteBtn);
 ////        mEmotionKeyboard.bindToEditText(inputEdit);
 //        mEmotionKeyboard.setEmotionLayout(mElEmotion);
+//    }
+//
+//    @Override
+//    public void receiveMsg(SSMessage ssMessage) {
+//        Log.e(TAG, ((SSP2PMessage) ssMessage).getContent());
 //    }
 //}

@@ -9,7 +9,7 @@ public class TranObject implements Serializable {
 	private TranObjectType tranType;
 	private Result result;
 	private String sendTime;
-	private int sendId;
+	private String sendId;
 	private int receiveId;
 	private String sendName;
 	public String getSendName() {
@@ -27,10 +27,10 @@ public class TranObject implements Serializable {
 	public void setSendTime(String sendTime) {
 		this.sendTime = sendTime;
 	}
-	public int getSendId() {
+	public String getSendId() {
 		return sendId;
 	}
-	public void setSendId(int sendId) {
+	public void setSendId(String sendId) {
 		this.sendId = sendId;
 	}
 	public int getReceiveId() {

@@ -33,7 +33,11 @@ import java.util.UUID;
 public class AppContext extends MultiDexApplication {
 
     public static AppContext appContext;
-    public AppContext(){}
+    public SSMessage mSSmessage;
+    public SSEngine instance;
+
+    public AppContext() {
+    }
 
     @Override
     public void onCreate() {
@@ -55,36 +59,50 @@ public class AppContext extends MultiDexApplication {
         UUID uuid = UUID.randomUUID();
         String uniqueId = uuid.toString();
         PreferenceUtil.getInstance(this).setString(PreferenceUtil.UUIQUEID, uniqueId);
-
+        /**
+         *  SDK调用第一步 初始化
+         *
+         */
         SSEngine.registerApp(Common.APPKEY, Common.APPSECRET, uniqueId,
                 appContext, new HttpResultCallback<VerifyAppKeyAndSecretResponse>() {
                     @Override
                     public void onSuccess(VerifyAppKeyAndSecretResponse verifyAppKeyAndSecretResponse) {
-                        Log.e("SSEngine.registerApp_onSuccess", verifyAppKeyAndSecretResponse.getCode()+"");
-                        verifyAppKeyAndSecretResponse.getAppId();
+                        /**
+                         * verifyAppKeyAndSecretResponse.getCode 为1表示初始化成功，否则失败
+                         */
+                        Log.e("SSEngine.registerApp_onSuccess", verifyAppKeyAndSecretResponse.getCode() + "");
                     }
 
                     @Override
                     public void onFailure(int i, String s) {
-                        Log.e("SSEngine.registerApp_onFailure",i+ "/"+s);
+                        Log.e("SSEngine.registerApp_onFailure", i + "/" + s);
                     }
 
                     @Override
                     public void onError(String s) {
-                        Log.e("SSEngine.registerApp_onError",s);
+                        Log.e("SSEngine.registerApp_onError", s);
                     }
-
                 });
 
-
-        SSEngine instance = SSEngine.getInstance();
+// getContent ggggg
+// ==getLocalPath
+// ==getSourceId 5
+// ==getTargetId 9
+// ==getClientMessageId 0
+// ==getContentType TEXT
+// ==getMessageTime 1495684355380
+// ==getMsgId 211022
+// ==getMsgStatus UNREAD
+// ==getMsgType MSG_P2PCHAT
+        /**
+         * 接收群和个人消息及通知监听
+         */
+        instance = SSEngine.getInstance();
         instance.setMsgRcvListener(new SSMessageReceiveListener() {
             @Override
             public void receiveMsg(SSMessage ssMessage) {
-                if (ssMessage instanceof SSP2PMessage){
-                   SSP2PMessage ssp2pmsg = (SSP2PMessage) ssMessage;
-                   Log.e("ssp2pmsg",ssp2pmsg.getContent());
-                }
+                Log.e("AppContext_receiveMsg:", ((SSP2PMessage) ssMessage).getContent());
+                long messageTime = ((SSP2PMessage) ssMessage).getMessageTime();
             }
         });
 

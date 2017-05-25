@@ -91,6 +91,7 @@ public class FriendInfoActivity extends BaseActivity implements View.OnClickList
             case R.id.tv_detail:
                 Intent mIntent = new Intent(mContext,ContactChatActivity.class);
                 mIntent.putExtra("contactName",contactName);
+                mIntent.putExtra("friendId",friendId);
                 startActivity(mIntent);
                 break;
             case R.id.tv_delete:
