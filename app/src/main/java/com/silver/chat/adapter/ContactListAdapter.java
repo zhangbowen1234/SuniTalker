@@ -26,7 +26,6 @@ import java.util.List;
  */
 
 public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    //枚举方式
     public enum ITEM_TYPE {
         NEW_FRIEND,
         GROUP_CHAT,

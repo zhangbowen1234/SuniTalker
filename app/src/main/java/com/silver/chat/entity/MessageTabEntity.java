@@ -9,7 +9,7 @@ public class MessageTabEntity {
 	public static final int MAKE_FRIEND_RESPONSE_REJECT = 2;//收到回复，对方拒绝
 	public static final int FRIEND_MESSAGE = 3;// 收到的是朋友的信息
 	private int unReadCount;
-	private int senderId;// 发送方的Id
+	private String senderId;// 发送方的Id
 	private String content;
 	private int messageType;
 	private String sendTime;
@@ -49,11 +49,11 @@ public class MessageTabEntity {
 		this.unReadCount = count;
 	}
 
-	public int getSenderId() {
+	public String getSenderId() {
 		return senderId;
 	}
 
-	public void setSenderId(int senderId) {
+	public void setSenderId(String senderId) {
 		this.senderId = senderId;
 	}
 

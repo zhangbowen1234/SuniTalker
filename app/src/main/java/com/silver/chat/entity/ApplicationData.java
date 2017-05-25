@@ -164,7 +164,7 @@ public class ApplicationData {
 
 	public void messageArrived(TranObject tran) {
 		ChatEntity chat = (ChatEntity) tran.getObject();
-		int senderId = chat.getSenderId();
+		String senderId = chat.getSourceId();
 		System.out.println("senderId" + senderId);
 		boolean hasMessageTab = false;
 		for (int i = 0; i < mMessageEntities.size(); i++) {
@@ -173,7 +173,7 @@ public class ApplicationData {
 					&& messageTab.getMessageType() == MessageTabEntity.FRIEND_MESSAGE) {
 				messageTab.setUnReadCount(messageTab.getUnReadCount() + 1);
 				messageTab.setContent(chat.getContent());
-				messageTab.setSendTime(chat.getSendTime());
+				messageTab.setSendTime(String.valueOf(chat.getMessageTime()));
 				ImDB.getInstance(mContext).updateMessages(messageTab);
 				hasMessageTab = true;
 			}
@@ -184,17 +184,16 @@ public class ApplicationData {
 			messageTab.setMessageType(MessageTabEntity.FRIEND_MESSAGE);
 			messageTab.setName(tran.getSendName());
 			messageTab.setSenderId(senderId);
-			messageTab.setSendTime(chat.getSendTime());
+			messageTab.setSendTime(String.valueOf(chat.getMessageTime()));
 			messageTab.setUnReadCount(1);
 			mMessageEntities.add(messageTab);
 			ImDB.getInstance(mContext).saveMessage(messageTab);
 		}
-		chat.setMessageType(ChatEntity.RECEIVE);
-		List<ChatEntity> chatList = mChatMessagesMap.get(chat.getSenderId());
+		chat.setMsgType(ChatEntity.RECEIVE);
+		List<ChatEntity> chatList = mChatMessagesMap.get(chat.getSourceId());
 		if (chatList == null) {
-			chatList = ImDB.getInstance(mContext).getChatMessage(
-					chat.getSenderId());
-			getChatMessagesMap().put(chat.getSenderId(), chatList);
+			chatList = ImDB.getInstance(mContext).getChatMessage(chat.getSourceId());
+			getChatMessagesMap().put(Integer.valueOf(chat.getSourceId()), chatList);
 		}
 		chatList.add(chat);
 		ImDB.getInstance(mContext).saveChatMessage(chat);

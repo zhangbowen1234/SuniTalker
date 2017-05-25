@@ -83,8 +83,7 @@ public class ImDB {
 		if (cursor != null) {
 			while (cursor.moveToNext()) {
 				MessageTabEntity message = new MessageTabEntity();
-				message.setSenderId(cursor.getInt(cursor
-						.getColumnIndex("senderid")));
+				message.setSenderId(String.valueOf(cursor.getInt(cursor.getColumnIndex("senderid"))));
 				message.setName(cursor.getString(cursor.getColumnIndex("name")));
 				String time = cursor.getString(cursor
 						.getColumnIndex("sendtime"));
@@ -123,19 +122,20 @@ public class ImDB {
 	public void saveChatMessage(ChatEntity message) {
 		ContentValues values = new ContentValues();
 		values.put("userid", user.getId());
-		if (user.getId() == message.getSenderId()) {
-			values.put("friendid", message.getReceiverId());
+        int userId = user.getId();
+		if (String.valueOf(userId) == (message.getSourceId())) {
+			values.put("friendid", message.getTargetId());
 			values.put("type", ChatEntity.SEND);
 		} else {
-			values.put("friendid", message.getSenderId());
+			values.put("friendid", message.getSourceId());
 			values.put("type", ChatEntity.RECEIVE);
 		}
 		values.put("content", message.getContent());
-		values.put("sendtime", message.getSendTime());
+		values.put("sendtime", message.getMessageTime());
 		db.insert("chat_message", null, values);
 	}
 
-	public List<ChatEntity> getChatMessage(int friendId) {
+	public List<ChatEntity> getChatMessage(String  friendId) {
 		Cursor cursor = db.rawQuery(
 				"select * from chat_message where userid = " + user.getId()
 						+ " and friendid = " + friendId, null);
@@ -145,9 +145,9 @@ public class ImDB {
 				ChatEntity chat = new ChatEntity();
 				chat.setContent(cursor.getString(cursor
 						.getColumnIndex("content")));
-				chat.setMessageType(cursor.getInt(cursor.getColumnIndex("type")));
-				chat.setSendTime(cursor.getString(cursor
-						.getColumnIndex("sendtime")));
+				int time = cursor.getInt(cursor.getColumnIndex("type"));
+				chat.setMessageTime(time+"");
+				chat.setMessageTime(cursor.getString(cursor.getColumnIndex("sendtime")));
 				allMessages.add(chat);
 			}
 		}

@@ -1,8 +1,6 @@
 package com.silver.chat.ui.contact;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,15 +23,18 @@ import com.lqr.emoji.MoonUtils;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.databs.ImDB;
-import com.silver.chat.entity.ApplicationData;
 import com.silver.chat.entity.ChatEntity;
+import com.silver.chat.util.DateUtils;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
 import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.engine.SSEngine;
+import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.listener.SSMessageSendListener;
+import com.ssim.android.model.chat.SSMessage;
+import com.ssim.android.model.chat.SSP2PMessage;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class ContactChatActivity extends BaseActivity implements View.OnClickListener {
+public class ContactChatActivity extends BaseActivity implements View.OnClickListener ,SSMessageReceiveListener {
 
     private CircleImageView mContactChatImg;
     private ImageButton mSendMsg, mEmoteBtn;
@@ -54,14 +55,14 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private ChatMessageAdapter chatMessageAdapter;
     private ViewPager mFaceViewPager;
     private LinearLayout mExpression;
-    private Handler handler;
-    private int friendId = 894446774;
+    private String friendId ,userId;
     private ImageView mBack;
 
     int lastItemPosition;
     private EmotionLayout mElEmotion;
     private EmotionKeyboard mEmotionKeyboard;
     private RelativeLayout mLlContent;
+    SSP2PMessage chatMessage;
 
     @Override
     protected int getLayoutId() {
@@ -83,7 +84,8 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mBack = (ImageView)findViewById(R.id.title_left_back);
         mElEmotion = (EmotionLayout) findViewById(R.id.elEmotion);
         mLlContent = (RelativeLayout) findViewById(R.id.rl_recyle_content);
-
+        chatList = new ArrayList<>();
+        chatMessage = new SSP2PMessage();
         //设置管理
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mChatMsgList.setLayoutManager(linearLayoutManager);
@@ -99,15 +101,18 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
 //        if (lastItemPosition!=-1)
 
     }
-
-
+    List<SSP2PMessage> p2PMessageList;
+    long time;
     @Override
     protected void initData() {
         super.initData();
         Intent intent = getIntent();
         contactName = intent.getStringExtra("contactName");
+        friendId = intent.getStringExtra("friendId");
         mTitleBar.setTitleText(contactName + "");
 
+        userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
+        time=System.currentTimeMillis();//获取系统时间的10位的时间戳
 
 //        handler = new Handler() {
 //            public void handleMessage(Message msg) {
@@ -134,6 +139,13 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
 //        chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, chatList);
 //        mChatMsgList.setAdapter(chatMessageAdapter);
 
+        p2PMessageList = SSEngine.getInstance().getP2PMessageList(userId, friendId, time, 10);
+        Log.e(TAG,"p2PMessageList:"+p2PMessageList);
+        chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList);
+        mChatMsgList.setAdapter(chatMessageAdapter);
+        if (p2PMessageList.size()!= 0){
+            mShowHead.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -195,31 +207,28 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         switch (view.getId()) {
             case R.id.chat_send_msg:
                 String content = inputEdit.getText().toString();
-                chatList = new ArrayList<>();
-
                 inputEdit.setText("");
-                ChatEntity chatMessage = new ChatEntity();
                 chatMessage.setContent(content);
-                chatMessage.setSenderId(123);
-                chatMessage.setReceiverId(friendId);
-                chatMessage.setMessageType(ChatEntity.SEND);
+                chatMessage.setSourceId(userId);
+                chatMessage.setTargetId(friendId);
+
                 Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd hh:mm:ss");
+//                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd hh:mm:ss");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmms");
                 String sendTime = sdf.format(date);
-                chatMessage.setSendTime(sendTime);
+                long stringToDate = DateUtils.getStringToDate(sendTime);
+
+                chatMessage.setMessageTime(time);
                 chatMessageAdapter.addData(chatMessage);
                 Log.e("1111", "size=" + chatList.size());
                 mChatMsgList.scrollToPosition(chatList.size());
-//                UserAction.sendMessage(chatMessage);
-//                ImDB.getInstance(ContactChatActivity.this)
-//                        .saveChatMessage(chatMessage);
                 mShowHead.setVisibility(View.INVISIBLE);
 
                 mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount()-1);
                 SSEngine instance = SSEngine.getInstance();
-//                instance.sendMessageToTargetId("5", SSMessageFormat.TEXT,"你好你好你好");
+                instance.sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT,content);
 
-                instance.sendMessageToGroupId("291",SSMessageFormat.TEXT,"王晓阳，缺心眼");
+//                instance.sendMessageToGroupId("291",SSMessageFormat.TEXT,content);
                 instance.setMsgSendListener(new SSMessageSendListener() {
                     @Override
                     public void didSend(boolean b, long l) {
@@ -261,5 +270,21 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mEmotionKeyboard.bindToEmotionButton(mEmoteBtn);
 //        mEmotionKeyboard.bindToEditText(inputEdit);
         mEmotionKeyboard.setEmotionLayout(mElEmotion);
+    }
+
+    @Override
+    public void receiveMsg(SSMessage ssMessage) {
+        Log.e(TAG, ((SSP2PMessage) ssMessage).getContent());
+        if (ssMessage instanceof SSP2PMessage){
+            SSP2PMessage ssp2PMessage = (SSP2PMessage)ssMessage;
+            Log.e(TAG,  ssp2PMessage.getContent());
+            p2PMessageList.add(ssp2PMessage);
+            if (p2PMessageList.size()!= 0){
+                mShowHead.setVisibility(View.INVISIBLE);
+            }
+            Log.e(TAG,"receiveMsg:"+p2PMessageList);
+            chatMessageAdapter.addData(p2PMessageList);
+            chatMessageAdapter.notifyDataSetChanged();
+        }
     }
 }

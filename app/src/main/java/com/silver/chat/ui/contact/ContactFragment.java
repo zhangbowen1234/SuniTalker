@@ -251,7 +251,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 //                        }else {
                             //保存新数据
                             mDao.create(mConList);
-
 //                        }
                         Log.e("mDao.asTk_run", "===================");
                         return getSortData();

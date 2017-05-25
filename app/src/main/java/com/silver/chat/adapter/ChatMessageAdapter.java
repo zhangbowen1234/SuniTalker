@@ -1,6 +1,5 @@
 package com.silver.chat.adapter;
 
-import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -8,30 +7,31 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.entity.ApplicationData;
-import com.silver.chat.entity.ChatEntity;
 import com.silver.chat.entity.User;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
+import com.ssim.android.model.chat.SSP2PMessage;
 
 import java.util.List;
 
 /**
  * Created by hibon on 2016/11/28.
  */
-//
-public class ChatMessageAdapter extends BaseQuickAdapter<ChatEntity, BaseViewHolder> {
+public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewHolder> {
 
 
-    public ChatMessageAdapter(int layoutResId, List<ChatEntity> data) {
+    public ChatMessageAdapter(int layoutResId, List<SSP2PMessage> data) {
         super(layoutResId, data);
     }
 
-    public ChatMessageAdapter(List<ChatEntity> data) {
+    public ChatMessageAdapter(List<SSP2PMessage> data) {
         super(data);
     }
 
+
     @Override
-    protected void convert(BaseViewHolder holper, ChatEntity item, int position) {
+    protected void convert(BaseViewHolder holper, SSP2PMessage item,int position) {
 
         RelativeLayout leftLayout;
         RelativeLayout rightLayout;
@@ -50,17 +50,16 @@ public class ChatMessageAdapter extends BaseQuickAdapter<ChatEntity, BaseViewHol
         rightMessageView = holper.getView(R.id.user_message);
 
         User user = ApplicationData.getInstance().getUserInfo();
-        timeView.setText(item.getSendTime());
-        if (item.getMessageType() == ChatEntity.SEND) {
+        timeView.setText(item.getMessageTime()+"");
+        if (item.getSourceId() == PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID,"")) {
             leftLayout.setVisibility(View.GONE);
             rightLayout.setVisibility(View.VISIBLE);
 
             rightMessageView.setText(item.getContent());
-        } else if (item.getMessageType() == ChatEntity.RECEIVE) {// 本身作为接收方
+        } else if (item.getSourceId() != PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID,"")) {// 本身作为接收方
             leftLayout.setVisibility(View.VISIBLE);
             rightLayout.setVisibility(View.GONE);
-            Bitmap photo = ApplicationData.getInstance().getFriendPhotoMap()
-                    .get(item.getSenderId());
+//            Bitmap photo = ApplicationData.getInstance().getFriendPhotoMap().get(item.getSourceId());
 //            if (photo != null)
 //                leftPhotoView.setImageBitmap(photo);
             leftMessageView.setText(item.getContent());
