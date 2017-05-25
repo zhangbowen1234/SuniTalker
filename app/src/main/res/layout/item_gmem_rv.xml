@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:id="@+id/contact_btn"
+    android:clickable="true"
+    android:paddingBottom="@dimen/dp_5"
+    android:paddingTop="@dimen/dp_10"
+    android:orientation="vertical">
+
+    <com.silver.chat.view.CircleImageView
+        android:id="@+id/im_groupmem_image"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_40"
+        android:src="@drawable/system_head_portrait"
+        android:scaleType="centerCrop"
+        />
+</LinearLayout>
+
