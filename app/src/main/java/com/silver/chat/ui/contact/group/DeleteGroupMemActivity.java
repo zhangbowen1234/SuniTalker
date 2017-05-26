@@ -3,6 +3,11 @@ package com.silver.chat.ui.contact.group;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -13,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.silver.chat.R;
+import com.silver.chat.adapter.GMemAdapter;
+import com.silver.chat.adapter.GMemDeleteAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
 import com.silver.chat.network.SSIMGroupManger;
@@ -20,6 +27,7 @@ import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.GroupBean;
+import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.CircleImageView;
 
@@ -43,14 +51,28 @@ public class DeleteGroupMemActivity extends BaseActivity {
     @BindView(R.id.rl_seach)
     RelativeLayout rlSeach;
     @BindView(R.id.listview)
-    ListView listview;
+    RecyclerView listview;
     @BindView(R.id.bt_determine)
     Button btDetermine;
     private MyAdapter myAdapter;
     private ArrayList<GroupBean> mCreatGroups;
     private ArrayList<GroupBean> mManagerGroups;
     private ArrayList<GroupBean> mJoinGroups;
-
+    private ArrayList<GroupMemberBean> groupMemlists = new ArrayList<>();
+    private GMemDeleteAdapter mAdapter;
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    //联系人列表的adapter
+                    mAdapter = new GMemDeleteAdapter(mContext,groupMemlists);
+                    listview.setAdapter(mAdapter);
+                    mAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
+    };
     @Override
     protected int getLayoutId() {
         return R.layout.activity_delete_groupmem;
@@ -59,7 +81,10 @@ public class DeleteGroupMemActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-
+//        getGroupMember();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        listview.setLayoutManager(linearLayoutManager);
     }
 
     @Override
@@ -74,35 +99,29 @@ public class DeleteGroupMemActivity extends BaseActivity {
     }
 
     /**
-     * 获取群成员信息
+     * 获取群成员
      */
-    private void getGroupMemInfo() {
-       /* String userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
-        String token = PreferenceUtil.getInstance(this).getString(PreferenceUtil.TOKEN, "");
-        int i = Integer.parseInt(userId);
-        JoinedGroupRequest request = JoinedGroupRequest.getInstance();
-        request.setUserId(i);
-        SSIMGroupManger.getJoinGroupList(Common.version, request, token, new ResponseCallBack<BaseResponse<ArrayList<GroupBean>>>() {
-
-
-            @Override
-            public void onSuccess(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
-                distinguishGroupMemInfo(arrayListBaseResponse);
-            }
-
-            @Override
-            public void onFailed(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
-
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });*/
-
+    private void getGroupMember() {
+        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+//        SSIMGroupManger.getGroupMem(mContext, token, groupId + "", new ResponseCallBack<BaseResponse<ArrayList<GroupMemberBean>>>() {
+//            @Override
+//            public void onSuccess(BaseResponse<ArrayList<GroupMemberBean>> arrayListBaseResponse) {
+//                groupMemlists = arrayListBaseResponse.data;
+//                mHandler.sendEmptyMessage(0);
+//                Log.e( "groupMemlists: ", groupMemlists.toString());
+//            }
+//
+//            @Override
+//            public void onFailed(BaseResponse<ArrayList<GroupMemberBean>> arrayListBaseResponse) {
+//
+//            }
+//
+//            @Override
+//            public void onError() {
+//
+//            }
+//        });
     }
-
     /**
      * 根据字段区分群组信息
      *

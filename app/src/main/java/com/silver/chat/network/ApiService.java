@@ -177,5 +177,9 @@ public interface ApiService {
     @POST("imx/{version}/user/group/addmember")
     Call<BaseResponse> addGroupMember(@Path("version") String version,@Header("token")String token, @Body AddGroupMemBean addGroupMemBean);
 
+    //解散(群主权限)
+    @POST("imx/leaf/user/group/groupdelete")
+    Call<BaseResponse> GroupDelete(@Body SetGroupManagerBody setGroupManagerBody);
+
 
 }
