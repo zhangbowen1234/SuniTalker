@@ -165,4 +165,5 @@ public class InviteFriendsActivity extends BaseActivity {
         Log.e(" mDao.queryForAll():", mDao.queryForAll() + "");
         return mDao.query(WhereInfo.get().equal("userId", PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "")));
     }
+
 }

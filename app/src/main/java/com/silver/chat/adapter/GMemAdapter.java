@@ -26,11 +26,12 @@ import java.util.List;
 
 public class GMemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final LayoutInflater mLayoutInflater;
-    private final Context mContexts;
-    private List<GroupMemberBean> data = new ArrayList();
+    private Context mContexts;
+    public List<GroupMemberBean> data = new ArrayList();
+    private static final int MAX_ITEM_COUNT = 4;
 
     public GMemAdapter(Context context, List<GroupMemberBean> data) {
-        mContexts = context;
+        this.mContexts = context;
         this.data = data;
         mLayoutInflater = LayoutInflater.from(context);
     }
@@ -45,13 +46,12 @@ public class GMemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof MyViewHolder){
             GlideUtil.loadAvatar(((MyViewHolder) holder).mHeader,data.get(position).getAvatar());
-            Log.e("onBindViewHolder: ", data.get(position).getAvatar());
         }
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return Math.min(MAX_ITEM_COUNT, data.size());
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {

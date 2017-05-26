@@ -1,6 +1,7 @@
 package com.silver.chat.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -57,6 +58,11 @@ public class AddGroupMenAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof MyViewHolder){
+            //已有群成员
+//            Intent intent = new Intent();
+//            List<String> lists = intent.getStringArrayListExtra("friendId"+"");
+//            Log.e("getAddMember: ", lists.toString());
+//            ((MyViewHolder) holder).mImageView.setImageResource(R.drawable.ic_check);
             ((MyViewHolder) holder).mTextView.setText(friendList.get(position).getNickName());
             GlideUtil.loadAvatar(((MyViewHolder) holder).mHeader,friendList.get(position).getAvatar());
             ((MyViewHolder) holder).mContact.setOnClickListener(new View.OnClickListener() {

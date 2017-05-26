@@ -1,7 +1,10 @@
 package com.silver.chat.ui.contact.group;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.silver.chat.R;
+import com.silver.chat.adapter.FriendInfoAdapter;
 import com.silver.chat.adapter.GMemAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.network.SSIMGroupManger;
@@ -36,6 +40,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.R.string.no;
 
 /**
  * Created by Joe on 2017/5/9.
@@ -72,7 +78,7 @@ public class GroupDetailActivity extends BaseActivity {
     @BindView(R.id.iv_qrcode)
     ImageView ivQrcode;
     @BindView(R.id.rl_group_member)
-    LinearLayout rlGroupMem;
+    RelativeLayout rlGroupMem;
     @BindView(R.id.rv_group_memeber)
     RecyclerView rvGroupMemeber;
 
@@ -82,13 +88,26 @@ public class GroupDetailActivity extends BaseActivity {
     private ArrayList<Fragment> fragments;
     //修改群名片开启activity的请求码
     private static final int REQUEST_CODE3 = 3;
-    private String groupName, groupAvatar;
-    private int groupId;
+    private String groupName;
+    private String groupAvatar;
+    private int groupId,groUserId;
     //群成员列表
     private ArrayList<GroupMemberBean> groupMemlists = new ArrayList<>();
     private GMemAdapter mAdapter;
 
-
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    //联系人列表的adapter
+                    mAdapter = new GMemAdapter(GroupDetailActivity.this,groupMemlists);
+                    rvGroupMemeber.setAdapter(mAdapter);
+                    mAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
+    };
     @Override
     protected int getLayoutId() {
         return R.layout.activity_groupdetail;
@@ -131,9 +150,8 @@ public class GroupDetailActivity extends BaseActivity {
         getGroupMember();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mAdapter = new GMemAdapter(GroupDetailActivity.this,groupMemlists);
         rvGroupMemeber.setLayoutManager(linearLayoutManager);
-        rvGroupMemeber.setAdapter(mAdapter);
+        mHandler.sendEmptyMessage(0);
     }
 
     @Override
@@ -179,6 +197,7 @@ public class GroupDetailActivity extends BaseActivity {
                 groupMemlists = arrayListBaseResponse.data;
                 int groupMemCount = arrayListBaseResponse.data.size();
                 tvGroupMemCount.setText("群成员(" + groupMemCount + ")");
+                mHandler.sendEmptyMessage(0);
             }
 
             @Override
@@ -209,9 +228,15 @@ public class GroupDetailActivity extends BaseActivity {
 
             case R.id.iv_header5:
                 Intent intent1 = new Intent(this, InviteFriendsActivity.class);
+                List userIds = new ArrayList();
+                for (int i = 0; i < mAdapter.data.size(); i++) {
+                    int userId = mAdapter.data.get(i).getUserId();
+                    userIds.add(userId);
+                }
                 intent1.putExtra("groupId", groupId);
                 intent1.putExtra("groupName", groupName);
                 intent1.putExtra("groupAvatar", groupAvatar);
+                intent1.putExtra("friendId", (Serializable) userIds);
                 startActivity(intent1);
                 break;
             case R.id.iv_conversation:
