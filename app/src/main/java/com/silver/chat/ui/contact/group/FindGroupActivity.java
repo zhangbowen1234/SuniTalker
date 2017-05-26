@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,14 +11,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.silver.chat.R;
-import com.silver.chat.adapter.AddFriendAdapter;
 import com.silver.chat.adapter.AddGroupAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.SearchGroupBean;
-import com.silver.chat.network.responsebean.SearchIdBean;
 import com.silver.chat.ui.contact.AddFriendVerifyActivity;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
@@ -28,7 +25,6 @@ import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

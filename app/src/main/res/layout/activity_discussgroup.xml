@@ -89,8 +89,8 @@
             android:layout_gravity="right|bottom"
             android:padding="@dimen/dp_25"
             android:src="@drawable/action_more" />
-        <ListView
-            android:id="@+id/listview"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@null" />

@@ -2,6 +2,7 @@ package com.silver.chat.ui.contact.group;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -13,6 +14,10 @@ import android.widget.TextView;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
+import com.silver.chat.database.callback.EasyRun;
+import com.silver.chat.database.dao.BaseDao;
+import com.silver.chat.database.helper.DBHelper;
+import com.silver.chat.database.info.WhereInfo;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
@@ -21,8 +26,10 @@ import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.ui.contact.SearchContactActivity;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.CircleImageView;
+import com.ssim.android.engine.SSEngine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.OnClick;
 
@@ -44,6 +51,9 @@ public class GroupChatActivity extends BaseActivity {
     private MyAdapter myAdapter;
     private TextView tvChatCount;
     private int selectPosition;
+    private BaseDao<GroupBean> mDao;
+    private List<GroupBean> data ;
+    private ArrayList<GroupBean> datas;
 
     @Override
     protected void initView() {
@@ -58,15 +68,36 @@ public class GroupChatActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
+        datas = new ArrayList<>();
         mCreatGroups = new ArrayList<>();
         mManagerGroups = new ArrayList<>();
         mJoinGroups = new ArrayList<>();
-        getGroupInfo();
+        myAdapter = new MyAdapter();
+
+        //获取群组数据信息数据库为空去网络获取
+        //getLocalGroupInfo();
+        getNetGroupInfo();
+
+       /* if(!(data.size()>0)) {
+            getNetGroupInfo();
+        }
+*/
         myAdapter = new MyAdapter();
         listView.setAdapter(myAdapter);
         listView.expandGroup(0);
         //设置parentGroup的展开与否的指示箭头
 //        listView.setGroupIndicator(this.getResources().getDrawable(R.drawable.indicator));
+    }
+
+
+    /**
+     * 查询本地数据库群组数据
+     */
+    private void getLocalGroupInfo() {
+        WhereInfo userId =  WhereInfo.get().equal("userId", PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""));
+        data = mDao.query(userId);
+        quFenData();
+
     }
 
     @Override
@@ -100,7 +131,7 @@ public class GroupChatActivity extends BaseActivity {
     /**
      * 请求网络获取群组信息
      */
-    private void getGroupInfo() {
+    private void getNetGroupInfo() {
         String userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
         String token = PreferenceUtil.getInstance(this).getString(PreferenceUtil.TOKEN, "");
         int i = Integer.parseInt(userId);
@@ -109,9 +140,15 @@ public class GroupChatActivity extends BaseActivity {
         SSIMGroupManger.getJoinGroupList(mContext,Common.version, request, token, new ResponseCallBack<BaseResponse<ArrayList<GroupBean>>>() {
 
 
+
             @Override
             public void onSuccess(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
-                distinguishGroupInfo(arrayListBaseResponse);
+                data = arrayListBaseResponse.data;
+                //将数据放入数据库中
+                mDao = DBHelper.get().dao(GroupBean.class);
+                Log.e("aaab", datas.toString()+"aaaa");
+                putLocal(data);
+                quFenData();
             }
 
             @Override
@@ -128,14 +165,29 @@ public class GroupChatActivity extends BaseActivity {
 
     }
 
+    private void putLocal(final List<GroupBean> datass) {
+
+        mDao.asyncTask(new EasyRun<List<GroupBean>>(){
+            @Override
+            public List<GroupBean> run() throws Exception {
+                Log.e("aaab", datass.toString()+"aaaa");
+                return mDao.queryForAll();
+            }
+
+            @Override
+            public void onMainThread(List<GroupBean> data) throws Exception {
+                super.onMainThread(data);
+
+            }
+        });
+    }
+
+
 
     /**
      * 根据字段区分群组信息
-     *
-     * @param groupBeanBaseResponse
      */
-    private void distinguishGroupInfo(BaseResponse<ArrayList<GroupBean>> groupBeanBaseResponse) {
-        ArrayList<GroupBean> data = groupBeanBaseResponse.data;
+    private void quFenData() {
         for (int i = 0; i < data.size(); i++) {
             int privilege = data.get(i).getPrivilege();
             if (privilege == 1) {

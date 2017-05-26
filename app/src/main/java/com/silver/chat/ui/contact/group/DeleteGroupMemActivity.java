@@ -139,6 +139,7 @@ public class DeleteGroupMemActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.title_left_back:
+                finish();
                 break;
             case R.id.image_seach:
                 break;

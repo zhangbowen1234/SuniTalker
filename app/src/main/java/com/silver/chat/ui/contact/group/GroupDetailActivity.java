@@ -1,17 +1,26 @@
 package com.silver.chat.ui.contact.group;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.silver.chat.R;
+import com.silver.chat.adapter.FriendInfoAdapter;
+import com.silver.chat.adapter.GMemAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
@@ -32,6 +41,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.R.string.no;
+
 /**
  * Created by Joe on 2017/5/9.
  * 我的群组的详情
@@ -49,14 +60,6 @@ public class GroupDetailActivity extends BaseActivity {
     RelativeLayout rlGroupNickname;
     @BindView(R.id.tv_group_mem_count)
     TextView tvGroupMemCount;
-    @BindView(R.id.iv_header1)
-    ImageView ivHeader1;
-    @BindView(R.id.iv_header2)
-    ImageView ivHeader2;
-    @BindView(R.id.iv_header3)
-    ImageView ivHeader3;
-    @BindView(R.id.iv_header4)
-    ImageView ivHeader4;
     @BindView(R.id.iv_header5)
     ImageView ivHeader5;
     @BindView(R.id.iv_arrow)
@@ -76,6 +79,9 @@ public class GroupDetailActivity extends BaseActivity {
     ImageView ivQrcode;
     @BindView(R.id.rl_group_member)
     RelativeLayout rlGroupMem;
+    @BindView(R.id.rv_group_memeber)
+    RecyclerView rvGroupMemeber;
+
     private List<String> lists;
     private GroupLeftFragment groupLeftFragment;
     private GroupRightFragment groupRightFragment;
@@ -83,11 +89,25 @@ public class GroupDetailActivity extends BaseActivity {
     //修改群名片开启activity的请求码
     private static final int REQUEST_CODE3 = 3;
     private String groupName;
-    private int groupId;
+    private String groupAvatar;
+    private int groupId,groUserId;
     //群成员列表
     private ArrayList<GroupMemberBean> groupMemlists = new ArrayList<>();
+    private GMemAdapter mAdapter;
 
-
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    //联系人列表的adapter
+                    mAdapter = new GMemAdapter(GroupDetailActivity.this,groupMemlists);
+                    rvGroupMemeber.setAdapter(mAdapter);
+                    mAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
+    };
     @Override
     protected int getLayoutId() {
         return R.layout.activity_groupdetail;
@@ -115,33 +135,7 @@ public class GroupDetailActivity extends BaseActivity {
         fragments.add(groupLeftFragment);
         fragments.add(groupRightFragment);
         viewpager.setAdapter(new GroupAdapter(getSupportFragmentManager()));
-        getGroupMember();
-    }
 
-    /**
-     * 获取群成员
-     */
-    private void getGroupMember() {
-        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
-
-        SSIMGroupManger.getGroupMem(mContext,token, groupId+"",new ResponseCallBack<BaseResponse<ArrayList<GroupMemberBean>>>() {
-            @Override
-            public void onSuccess(BaseResponse<ArrayList<GroupMemberBean>> arrayListBaseResponse) {
-                groupMemlists = arrayListBaseResponse.data;
-                int groupMemCount = arrayListBaseResponse.data.size();
-                tvGroupMemCount.setText("群成员("+groupMemCount+")");
-            }
-
-            @Override
-            public void onFailed(BaseResponse<ArrayList<GroupMemberBean>> arrayListBaseResponse) {
-
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
     }
 
     @Override
@@ -152,6 +146,12 @@ public class GroupDetailActivity extends BaseActivity {
         groupName = groupbean.getGroupName();
         privilege = groupbean.getPrivilege();
         groupId = groupbean.getGroupId();
+        groupAvatar = groupbean.getAvatar();
+        getGroupMember();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rvGroupMemeber.setLayoutManager(linearLayoutManager);
+        mHandler.sendEmptyMessage(0);
     }
 
     @Override
@@ -185,8 +185,34 @@ public class GroupDetailActivity extends BaseActivity {
 
     }
 
+    /**
+     * 获取群成员
+     */
+    private void getGroupMember() {
+        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
 
-    @OnClick({R.id.rl_group_member,R.id.wv, R.id.my_photo, R.id.tv_groupname, R.id.tv_nickname, R.id.iv_conversation, R.id.iv_qrcode, R.id.rl_group_nickname, R.id.tv_group_mem_count, R.id.iv_header1, R.id.iv_header2, R.id.iv_header3, R.id.iv_header4, R.id.iv_header5, R.id.iv_arrow, R.id.iv_arrow_right, R.id.iv_arrow_left, R.id.viewpager, R.id.iv_arrow_bottom})
+        SSIMGroupManger.getGroupMem(mContext, token, groupId + "", new ResponseCallBack<BaseResponse<ArrayList<GroupMemberBean>>>() {
+            @Override
+            public void onSuccess(BaseResponse<ArrayList<GroupMemberBean>> arrayListBaseResponse) {
+                groupMemlists = arrayListBaseResponse.data;
+                int groupMemCount = arrayListBaseResponse.data.size();
+                tvGroupMemCount.setText("群成员(" + groupMemCount + ")");
+                mHandler.sendEmptyMessage(0);
+            }
+
+            @Override
+            public void onFailed(BaseResponse<ArrayList<GroupMemberBean>> arrayListBaseResponse) {
+
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+
+    @OnClick({R.id.rl_group_member, R.id.wv, R.id.my_photo, R.id.tv_groupname, R.id.tv_nickname, R.id.iv_conversation, R.id.iv_qrcode, R.id.rl_group_nickname, R.id.tv_group_mem_count, R.id.iv_header5, R.id.iv_arrow, R.id.iv_arrow_right, R.id.iv_arrow_left, R.id.viewpager, R.id.iv_arrow_bottom})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.wv:
@@ -202,6 +228,15 @@ public class GroupDetailActivity extends BaseActivity {
 
             case R.id.iv_header5:
                 Intent intent1 = new Intent(this, InviteFriendsActivity.class);
+                List userIds = new ArrayList();
+                for (int i = 0; i < mAdapter.data.size(); i++) {
+                    int userId = mAdapter.data.get(i).getUserId();
+                    userIds.add(userId);
+                }
+                intent1.putExtra("groupId", groupId);
+                intent1.putExtra("groupName", groupName);
+                intent1.putExtra("groupAvatar", groupAvatar);
+                intent1.putExtra("friendId", (Serializable) userIds);
                 startActivity(intent1);
                 break;
             case R.id.iv_conversation:
@@ -212,17 +247,13 @@ public class GroupDetailActivity extends BaseActivity {
                 Intent intent2 = new Intent(this, GroupQRCodeActivity.class);
                 startActivity(intent2);
                 break;
-            case R.id.iv_header1:
-            case R.id.iv_header2:
-            case R.id.iv_header3:
-            case R.id.iv_header4:
             case R.id.rl_group_member:
             case R.id.iv_arrow:
                 Intent intent = new Intent(this, GroupMemberActivity.class);
-                intent.putExtra("privilege",privilege);
-                intent.putExtra("groupid",groupId);
+                intent.putExtra("privilege", privilege);
+                intent.putExtra("groupid", groupId);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("lists",(Serializable)groupMemlists);
+                bundle.putSerializable("lists", (Serializable) groupMemlists);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;

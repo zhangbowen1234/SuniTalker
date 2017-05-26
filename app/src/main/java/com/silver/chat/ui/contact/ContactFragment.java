@@ -86,7 +86,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     private LinearLayoutManager linearLayoutManager;
     private FloatingActionButton fab;
     private BaseDao<ContactListBean> mDao;
-
     public static ContactFragment newInstance(boolean isAllContact) {
         Bundle args = new Bundle();
         ContactFragment fragment = new ContactFragment();
@@ -106,6 +105,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         linearLayoutManager = new LinearLayoutManager(mActivity);
         //设置布局管理器
         mRecycleContent.setLayoutManager(linearLayoutManager);
+        String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
         mDao = DBHelper.get().dao(ContactListBean.class);
         // 实例化汉字转拼音类
         characterParser = CharacterParser.getInstance();

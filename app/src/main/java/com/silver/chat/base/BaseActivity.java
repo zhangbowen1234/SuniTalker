@@ -1,5 +1,6 @@
 package com.silver.chat.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,9 @@ import com.silver.chat.R;
 import com.silver.chat.util.AppManager;
 import com.silver.chat.util.SkinSettingManager;
 import com.silver.chat.util.ToastUtil;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.Optional;

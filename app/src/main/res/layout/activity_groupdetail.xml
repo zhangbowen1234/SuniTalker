@@ -124,61 +124,31 @@
         <RelativeLayout
             android:id="@+id/rl_group_member"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/iv_header1"
+            android:layout_height="50dp"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_group_memeber"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:src="@drawable/ic_head_little" />
-
-            <ImageView
-                android:id="@+id/iv_header2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/iv_header1"
-                android:layout_toRightOf="@+id/iv_header1"
-                android:paddingTop="5dp"
-                android:src="@drawable/ic_head_little" />
-
-            <ImageView
-                android:id="@+id/iv_header3"
-
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/iv_header2"
-                android:padding="5dp"
-                android:src="@drawable/ic_head_little" />
-
-            <ImageView
-                android:id="@+id/iv_header4"
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/iv_header3"
-                android:paddingTop="5dp"
-                android:src="@drawable/ic_head_little" />
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                />
 
             <ImageView
                 android:id="@+id/iv_header5"
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/iv_header4"
-                android:padding="5dp"
-                android:src="@drawable/ic_head_little" />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_toRightOf="@id/rv_group_memeber"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:src="@drawable/ic_head_little"
+                android:layout_centerVertical="true"/>
 
             <ImageView
                 android:id="@+id/iv_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/dp_10"
-                android:paddingRight="@dimen/dp_10"
                 android:src="@drawable/ic_arrow_into" />
 
 
@@ -237,8 +207,6 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginTop="@dimen/dp_30"
-
             android:src="@drawable/ic_back_white" />
     </LinearLayout>
 </LinearLayout>

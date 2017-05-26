@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.network.responsebean.GroupMemberBean;
+import com.silver.chat.util.GlideUtil;
 import com.silver.chat.view.CircleImageView;
 
 import java.util.ArrayList;
@@ -111,7 +112,8 @@ public class GroupMemAdapter extends BaseAdapter {
                 } else {
                     viewHolder= (ViewHolder) convertView.getTag();
                 }
-                    viewHolder.tvName.setText(getItem(position).getNickName());
+                viewHolder.tvName.setText(getItem(position).getNickName());
+                GlideUtil.loadAvatar(viewHolder.ivHead,getItem(position).getAvatar());
             }
         }
         return convertView;

@@ -12,6 +12,7 @@ import com.silver.chat.network.requestbean.ExpelDiscuMemberBody;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.requestbean.SetDiscuMsgRemindBody;
 import com.silver.chat.network.requestbean.SetGroupManagerBody;
+import com.silver.chat.network.responsebean.AddGroupMemBean;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.responsebean.GroupMemberBean;
@@ -183,6 +184,17 @@ public class SSIMGroupManger {
         BaseCallBack.enqueueBase(context,groupMember,callBack);
     }
 
-
+    /**
+     * 邀请好友入群(群主，管理员权限)
+     * @param context
+     * @param token
+     * @param addGroupMemBean
+     * @param callBack
+     */
+    public static void addGroupMemeber(Context context, String version,String token, AddGroupMemBean addGroupMemBean, final ResponseCallBack<BaseResponse> callBack){
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> addGroupMem = imApi.addGroupMember(version, token, addGroupMemBean);
+        BaseCallBack.enqueueBase(context, addGroupMem, callBack);
+    }
 
 }

@@ -1,6 +1,12 @@
 package com.silver.chat.ui.contact.group;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -8,10 +14,27 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
+import com.silver.chat.database.callback.EasyRun;
+import com.silver.chat.database.dao.BaseDao;
+import com.silver.chat.database.helper.DBHelper;
+import com.silver.chat.network.SSIMGroupManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.JoinedGroupRequest;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.DisscusBean;
+import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.ui.contact.SearchContactActivity;
 import com.silver.chat.ui.contact.group.GroupChatActivity;
+import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.view.CircleImageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.OnClick;
+
+import static android.R.attr.data;
 
 /**
  * Created by Joe on 2017/5/8.
@@ -19,7 +42,7 @@ import butterknife.OnClick;
 public class DiscussGroupActivity extends BaseActivity{
     ImageView titleLeftBack;
     ImageView imageSeach;
-    ListView listView;
+    RecyclerView recyler;
     RelativeLayout rlSeach;
     ImageView ivDiscussGroup;
     private TextView tvTaoLunZu;
@@ -33,7 +56,7 @@ public class DiscussGroupActivity extends BaseActivity{
     protected void initView() {
         titleLeftBack = (ImageView) findViewById(R.id.title_left_back);
         imageSeach = (ImageView) findViewById(R.id.image_seach);
-        listView = (ListView) findViewById(R.id.listview);
+        recyler = (RecyclerView) findViewById(R.id.recyler);
         rlSeach = (RelativeLayout) findViewById(R.id.rl_seach);
         ivDiscussGroup = (ImageView)findViewById(R.id.iv_discussgroup);
         tvTaoLunZu = (TextView) findViewById(R.id.tv_taolunzu);
@@ -43,7 +66,6 @@ public class DiscussGroupActivity extends BaseActivity{
     @Override
     protected void initData() {
         super.initData();
-
     }
 
     @Override
@@ -65,8 +87,10 @@ public class DiscussGroupActivity extends BaseActivity{
 
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
+
 }

@@ -3,6 +3,7 @@ package com.silver.chat.database.helper;
 
 import com.silver.chat.AppContext;
 import com.silver.chat.network.responsebean.ContactListBean;
+import com.silver.chat.network.responsebean.GroupBean;
 
 import java.sql.SQLException;
 
@@ -19,7 +20,7 @@ public class DBHelper extends BaseDBHelper {
 
     //数据表清单
     private static final Class<?>[] tables = {
-            ContactListBean.class
+            ContactListBean.class,GroupBean.class
     };
 
     private static DBHelper helper = null;
