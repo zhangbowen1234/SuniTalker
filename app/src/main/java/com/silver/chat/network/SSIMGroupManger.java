@@ -197,4 +197,15 @@ public class SSIMGroupManger {
         BaseCallBack.enqueueBase(context, addGroupMem, callBack);
     }
 
+    /**
+     * 解散群(群主权限)
+     * @param context
+     * @param setGroupManagerBody
+     * @param callBack
+     */
+    public static void GroupDelete(Context context, SetGroupManagerBody setGroupManagerBody, final ResponseCallBack<BaseResponse> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> groupMember = imApi.GroupDelete(setGroupManagerBody);
+        BaseCallBack.enqueueBase(context,groupMember,callBack);
+    }
 }

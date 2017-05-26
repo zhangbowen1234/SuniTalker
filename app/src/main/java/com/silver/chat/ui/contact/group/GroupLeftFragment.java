@@ -17,8 +17,10 @@ import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.base.Common;
+import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.SSIMLoginManger;
 import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.SetGroupManagerBody;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.ui.login.LoginActivity;
 import com.silver.chat.util.AppManager;
@@ -247,5 +249,4 @@ public class GroupLeftFragment extends BasePagerFragment {
         public TextView textView;
         public ImageView imageView;
     }
-
 }

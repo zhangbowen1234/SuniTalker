@@ -151,7 +151,6 @@ public class GroupDetailActivity extends BaseActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvGroupMemeber.setLayoutManager(linearLayoutManager);
-        mHandler.sendEmptyMessage(0);
     }
 
     @Override

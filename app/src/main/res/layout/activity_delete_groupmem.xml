@@ -80,7 +80,16 @@
                 android:layout_alignParentBottom="true"
                 android:background="@color/txt_font_one_color" />
         </RelativeLayout>
-        <ListView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="群成员"
+            android:textColor="#99ffffff"
+            android:textSize="@dimen/font_12"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"/>
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
