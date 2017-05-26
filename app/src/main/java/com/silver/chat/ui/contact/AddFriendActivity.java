@@ -60,8 +60,6 @@ public class AddFriendActivity extends BaseActivity implements View.OnClickListe
         mRecyclerView = (RecyclerView)findViewById(R.id.new_friend_list);
         mTextTitle = (LinearLayout)findViewById(R.id.contact_text);
 
-
-
     }
 
     @Override
@@ -100,7 +98,6 @@ public class AddFriendActivity extends BaseActivity implements View.OnClickListe
                 mIntent.putExtra("nickName", searchIdBean.getNickName());
                 mIntent.putExtra("friendId",searchIdBean.getUserId());
                 startActivity(mIntent);
-
             }
         });
 
@@ -143,7 +140,7 @@ public class AddFriendActivity extends BaseActivity implements View.OnClickListe
 
             @Override
             public void onError() {
-                ToastUtils.showMessage(mContext,"连接失败");
+                ToastUtils.showMessage(mContext, "连接服务器失败");
             }
         });
 

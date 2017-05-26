@@ -6,10 +6,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.adapter.NewFriendAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.ContactMemberBean;
+import com.ssim.android.listener.SSNotificationListener;
+import com.ssim.android.model.notification.SSFriendNotification;
+import com.ssim.android.model.notification.SSNotification;
+import com.ssim.android.model.notification.friend.SSAddFriendNotification;
 
 import java.util.ArrayList;
 
@@ -18,7 +23,7 @@ import java.util.ArrayList;
  * 新朋友
  */
 
-public class NewFriendActivity extends BaseActivity implements View.OnClickListener {
+public class NewFriendActivity extends BaseActivity implements View.OnClickListener, SSNotificationListener {
 
     private ImageView mBack;
     private RecyclerView mNFRecyclerList;
@@ -51,6 +56,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void initData() {
 
+        AppContext.getInstance().instance.setNotificationListener(this);
 
     }
 
@@ -69,6 +75,14 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
             case R.id.ll_add_friend:
                 startActivity(AddFriendActivity.class);
                 break;
+
+        }
+    }
+
+    @Override
+    public void receiveNotification(SSNotification ssNotification) {
+        if (ssNotification instanceof SSAddFriendNotification){
+            SSFriendNotification ssFriendNotification = (SSFriendNotification)ssNotification;
 
         }
     }

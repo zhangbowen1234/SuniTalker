@@ -31,7 +31,7 @@ import java.net.URLEncoder;
 
 public class AddFriendVerifyActivity extends BaseActivity implements View.OnClickListener {
 
-    private String nickName ,friendId ,action ,groupAvatar,personAvatar,userName ,token ,userId;
+    private String nickName, friendId, action, groupAvatar, personAvatar, userName, token, userId;
     private ImageView mBack;
     private TextView mSend, mNickName, mTextCount, mTitle;
     private CircleImageView mFriendHead;
@@ -68,7 +68,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
         action = intent.getAction();
         if (TextUtils.equals(action, "AddFriendActivity")) {
             nickName = intent.getStringExtra("nickName");
-            friendId = intent.getIntExtra("friendId", -1) + "";
+            friendId = intent.getStringExtra("friendId");
             mNickName.setText(nickName + "");
             mTitle.setText("添加好友验证");
         } else {
@@ -79,10 +79,10 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
             mNickName.setText(nickName + "");
             mTitle.setText("添加群组验证");
         }
-         personAvatar = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
-         userName = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
-         token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
-         userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
+        personAvatar = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
+        userName = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
+        token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+        userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
 
     }
 
@@ -135,21 +135,14 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                 break;
             case R.id.send_btn:
                 /**
-                 * 根据上个跳转界面传递的数据不同来
-                 * 发送不同的添加信息
+                 * 根据上个跳转界面传递的数据的不
+                 * 同来发送不同的添加信息
                  */
                 if (TextUtils.equals(action, "AddFriendActivity")) {
-                    /**
-                     * 申请添加好友
-                     */
+                    /*申请添加好友*/
                     sendAddFriend();
-                    String remarName = mRemarksName.getText().toString();
-                    if (remarName != null) {
-                        /**
-                         * 好友备注
-                         */
-                        remarksFdNm(remarName);
-                    }
+                    /*好友备注*/
+                    remarksFdNm();
                 } else {
                     verifyMsg = mMsgVerify.getText().toString();
                     if (verifyMsg.isEmpty()) {
@@ -159,29 +152,30 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                     }
                 }
                 break;
-
         }
     }
 
-    private void remarksFdNm(String remarName) {
+    private void remarksFdNm() {
 
-        SSIMFrendManger.revampFriendName(mContext, token, userId, friendId, remarName, new ResponseCallBack<BaseResponse>() {
-            @Override
-            public void onSuccess(BaseResponse baseResponse) {
-                Log.e(TAG,"修改备注成功");
-            }
+        if (mRemarksName.getText().toString() != null || !(mRemarksName.getText().toString()).equals("")) {
+            String remarName = mRemarksName.getText().toString();
+            SSIMFrendManger.revampFriendName(mContext, token, userId, friendId, remarName, new ResponseCallBack<BaseResponse>() {
+                @Override
+                public void onSuccess(BaseResponse baseResponse) {
+                    Log.e(TAG, "修改备注成功");
+                }
 
-            @Override
-            public void onFailed(BaseResponse baseResponse) {
-                Log.e(TAG,"修改备注失败");
-            }
+                @Override
+                public void onFailed(BaseResponse baseResponse) {
+                    Log.e(TAG, "修改备注失败");
+                }
 
-            @Override
-            public void onError() {
-                Log.e(TAG,"备注网络异常");
-            }
-        });
-
+                @Override
+                public void onError() {
+                    Log.e(TAG, "备注网络异常");
+                }
+            });
+        }
     }
 
     /**
@@ -214,38 +208,35 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
 
             @Override
             public void onError() {
-
+                ToastUtils.showMessage(mContext, "连接服务器失败");
             }
         });
 
     }
 
     private void sendAddFriend() {
-        String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
-        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
-        String mMsgText = mMsgVerify.getText().toString();
-        if (mMsgText != null || !mMsgText.equals("")) {
-            String comment = toURLEncoded(mMsgText);
-            SSIMFrendManger.goAddFriends(mContext, userId, friendId, comment, token, new ResponseCallBack<BaseResponse>() {
-                @Override
-                public void onSuccess(BaseResponse baseResponse) {
-                    ToastUtils.showMessage(mContext, "申请已发出");
-                    finish();
-                }
-
-                @Override
-                public void onFailed(BaseResponse baseResponse) {
-                    ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
-                }
-
-                @Override
-                public void onError() {
-                    ToastUtils.showMessage(mContext, "连接失败");
-                }
-            });
-        } else {
-            ToastUtils.showMessage(mContext, "请输入验证消息");
+        String verify = "我是"+PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME,"");
+        String msgVerify = mMsgVerify.getText().toString();
+        if(!"".equals(msgVerify) || msgVerify != null) {
+            verify = toURLEncoded(msgVerify);
         }
+        SSIMFrendManger.goAddFriends(mContext, userId, friendId, verify, token, new ResponseCallBack<BaseResponse>() {
+            @Override
+            public void onSuccess(BaseResponse baseResponse) {
+                ToastUtils.showMessage(mContext, "申请已发出");
+                finish();
+            }
+
+            @Override
+            public void onFailed(BaseResponse baseResponse) {
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onError() {
+                ToastUtils.showMessage(mContext, "连接服务器失败");
+            }
+        });
     }
 
     public static String toURLEncoded(String paramString) {

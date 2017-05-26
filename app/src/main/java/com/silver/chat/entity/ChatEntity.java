@@ -4,17 +4,6 @@ import java.io.Serializable;
 
 public class ChatEntity implements Serializable {
 
-// getContent ggggg
-// ==getLocalPath
-// ==getSourceId 5
-// ==getTargetId 9
-// ==getClientMessageId 0
-// ==getContentType TEXT
-// ==getMessageTime 1495684355380
-// ==getMsgId 211022
-// ==getMsgStatus UNREAD
-// ==getMsgType MSG_P2PCHAT
-
     public static final int RECEIVE = 0;
     public static final int SEND = 1;
 

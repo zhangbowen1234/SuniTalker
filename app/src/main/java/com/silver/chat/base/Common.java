@@ -6,9 +6,8 @@ package com.silver.chat.base;
 
 public class Common {
 
-    public final static String APPKEY = "651a25166f6e36e3" ;
-    public final static String APPSECRET = "MNyhZZdmrsL_E7v4Fv1Qgx-sziU=" ;
-
+    public final static String APPKEY = "651a25166f6e36e3";
+    public final static String APPSECRET = "MNyhZZdmrsL_E7v4Fv1Qgx-sziU=";
     /**
      * 版本号
      */
@@ -20,14 +19,12 @@ public class Common {
     public final static int LoginType = 2; //登录
     public final static int RevampPwdType = 3; //修改
     public final static int RecoverPwdType = 3; //找回
-
     /**
      * 搜索方式类型
      */
     public final static String Login = "1"; //注册
     public final static String Phone = "2"; //登录
     public final static String Email = "3"; //修改
-
     /**
      * 重新登录提示
      */
@@ -38,12 +35,18 @@ public class Common {
     public static final int OPEN_CAMERA_CODE = 12;// 相机
     public static final int OPEN_GALLERY_CODE = 13;// 相册
     public static final int CROP_PHOTO_CODE = 14;// 裁剪
-
     /**
      * 用户性别
      */
     public final static String Girl = "1";
     public final static String Boy = "2";
     public final static String Secrecy = "3";
+    /**
+     * 聊天类型
+     */
+    public final static String PRIVAT = "0";
+    public final static String GROUP = "1";
+    public final static String ROOM = "2";
+
 
 }

@@ -6,8 +6,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.silver.chat.R;
-import com.silver.chat.entity.ApplicationData;
-import com.silver.chat.entity.User;
+import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
@@ -49,14 +48,13 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
         leftMessageView = holper.getView(R.id.friend_message);
         rightMessageView = holper.getView(R.id.user_message);
 
-        User user = ApplicationData.getInstance().getUserInfo();
-        timeView.setText(item.getMessageTime()+"");
+        timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime())+"");
         if (item.getSourceId() == PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID,"")) {
             leftLayout.setVisibility(View.GONE);
             rightLayout.setVisibility(View.VISIBLE);
 
             rightMessageView.setText(item.getContent());
-        } else if (item.getSourceId() != PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID,"")) {// 本身作为接收方
+        } else {// 本身作为接收方
             leftLayout.setVisibility(View.VISIBLE);
             rightLayout.setVisibility(View.GONE);
 //            Bitmap photo = ApplicationData.getInstance().getFriendPhotoMap().get(item.getSourceId());

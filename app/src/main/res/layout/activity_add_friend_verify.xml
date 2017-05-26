@@ -92,7 +92,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/txt_font_one_color" />
+            android:background="@color/common_line_one_color" />
 
         <EditText
             android:id="@+id/edit_msg_verify"
@@ -130,7 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginTop="@dimen/dp_0"
-            android:background="@color/txt_font_one_color" />
+            android:background="@color/common_line_one_color" />
 
 
         <TextView
@@ -146,7 +146,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginTop="@dimen/dp_5"
-            android:background="@color/txt_font_one_color" />
+            android:background="@color/txt_font_one_color_other" />
 
         <EditText
             android:id="@+id/remarks_friend_name"
@@ -166,7 +166,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginTop="@dimen/dp_5"
-            android:background="@color/txt_font_one_color" />
+            android:background="@color/txt_font_one_color_other" />
 
     </LinearLayout>
 </RelativeLayout>

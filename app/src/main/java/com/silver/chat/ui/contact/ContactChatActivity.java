@@ -20,11 +20,11 @@ import com.lqr.emoji.IEmotionExtClickListener;
 import com.lqr.emoji.IEmotionSelectedListener;
 import com.lqr.emoji.LQREmotionKit;
 import com.lqr.emoji.MoonUtils;
+import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.ChatEntity;
-import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
@@ -36,13 +36,12 @@ import com.ssim.android.listener.SSMessageSendListener;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 
-public class ContactChatActivity extends BaseActivity implements View.OnClickListener ,SSMessageReceiveListener {
+public class ContactChatActivity extends BaseActivity implements View.OnClickListener, SSMessageReceiveListener {
 
     private CircleImageView mContactChatImg;
     private ImageButton mSendMsg, mEmoteBtn;
@@ -55,14 +54,15 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private ChatMessageAdapter chatMessageAdapter;
     private ViewPager mFaceViewPager;
     private LinearLayout mExpression;
-    private String friendId ,userId;
+    private String friendId, userId, chatType;
     private ImageView mBack;
 
     int lastItemPosition;
     private EmotionLayout mElEmotion;
     private EmotionKeyboard mEmotionKeyboard;
     private RelativeLayout mLlContent;
-    SSP2PMessage chatMessage;
+    private SSP2PMessage chatMessage;
+    private long timestamp;
 
     @Override
     protected int getLayoutId() {
@@ -81,7 +81,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mEmoteBtn = (ImageButton) findViewById(R.id.chat_btn_emote);
         inputEdit = (EditText) findViewById(R.id.chat_edit_input);
         mShowHead = (RelativeLayout) findViewById(R.id.show_contact_head);
-        mBack = (ImageView)findViewById(R.id.title_left_back);
+        mBack = (ImageView) findViewById(R.id.title_left_back);
         mElEmotion = (EmotionLayout) findViewById(R.id.elEmotion);
         mLlContent = (RelativeLayout) findViewById(R.id.rl_recyle_content);
         chatList = new ArrayList<>();
@@ -101,26 +101,34 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
 //        if (lastItemPosition!=-1)
 
     }
+
     List<SSP2PMessage> p2PMessageList;
-    long time;
+
     @Override
     protected void initData() {
         super.initData();
         Intent intent = getIntent();
         contactName = intent.getStringExtra("contactName");
         friendId = intent.getStringExtra("friendId");
+        chatType = intent.getStringExtra("chatType");
         mTitleBar.setTitleText(contactName + "");
 
         userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
-        time=System.currentTimeMillis();//获取系统时间的10位的时间戳
-
-        p2PMessageList = SSEngine.getInstance().getP2PMessageList(userId, friendId, time, 10);
-        Log.e(TAG,"p2PMessageList:"+p2PMessageList);
+        /*获取当前系统时间的13位的时间戳*/
+        timestamp = System.currentTimeMillis();
+        /**
+         * 私人聊天
+         */
+        p2PMessageList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, timestamp, 10);
+//          Log.e(TAG,"p2PMessageList:"+p2PMessageList);
+        Collections.reverse(p2PMessageList);
         chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList);
-        mChatMsgList.setAdapter(chatMessageAdapter);
-        if (p2PMessageList.size()!= 0){
+        if (p2PMessageList.size() != 0) {
             mShowHead.setVisibility(View.INVISIBLE);
         }
+        /**
+         /*给RecyclerView列表设置适配器*/
+        mChatMsgList.setAdapter(chatMessageAdapter);
     }
 
 
@@ -138,12 +146,12 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
             @Override
             public void onEmotionAddClick(View view) {
-                ToastUtils.showMessage(mContext,"add");
+                ToastUtils.showMessage(mContext, "add");
             }
 
             @Override
             public void onEmotionSettingClick(View view) {
-                ToastUtils.showMessage(mContext,"setting");
+                ToastUtils.showMessage(mContext, "setting");
             }
         });
         //文字表情混合输入
@@ -186,38 +194,29 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 chatMessage.setContent(content);
                 chatMessage.setSourceId(userId);
                 chatMessage.setTargetId(friendId);
-
-                Date date = new Date();
-//                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd hh:mm:ss");
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmms");
-                String sendTime = sdf.format(date);
-                long stringToDate = DateUtils.getStringToDate(sendTime);
-
-                chatMessage.setMessageTime(time);
+                chatMessage.setMessageTime(timestamp);
                 chatMessageAdapter.addData(chatMessage);
                 Log.e("1111", "size=" + chatList.size());
                 mChatMsgList.scrollToPosition(chatList.size());
                 mShowHead.setVisibility(View.INVISIBLE);
 
-                mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount()-1);
+                mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
                 SSEngine instance = SSEngine.getInstance();
-                instance.sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT,content);
-
-//                instance.sendMessageToGroupId("291",SSMessageFormat.TEXT,content);
+                instance.sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT, content);
                 instance.setMsgSendListener(new SSMessageSendListener() {
                     @Override
                     public void didSend(boolean b, long l) {
-                        Log.e(TAG,"didSend"+ "boolean:"+ b+";long:"+ l);
+                        Log.e(TAG, "didSend" + "boolean:" + b + ";long:" + l);
                     }
                 });
                 break;
 
             case R.id.chat_btn_emote:
                 inputEdit.clearFocus();
-                if (!mElEmotion.isShown()){
+                if (!mElEmotion.isShown()) {
                     showEmotionLayout();
-                    return ;
-                }else if (mElEmotion.isShown()){
+                    return;
+                } else if (mElEmotion.isShown()) {
                     hideEmotionLayout();
                     return;
                 }
@@ -239,6 +238,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
 //        mElEmotion.setVisibility(View.GONE);
         mEmoteBtn.setImageResource(R.drawable.ic_chat_emote_selected);
     }
+
     private void initEmotionKeyboard() {
         mEmotionKeyboard = EmotionKeyboard.with(this);
         mEmotionKeyboard.bindToContent(mLlContent);
@@ -250,14 +250,14 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void receiveMsg(SSMessage ssMessage) {
         Log.e(TAG, ((SSP2PMessage) ssMessage).getContent());
-        if (ssMessage instanceof SSP2PMessage){
-            SSP2PMessage ssp2PMessage = (SSP2PMessage)ssMessage;
-            Log.e(TAG,  ssp2PMessage.getContent());
+        if (ssMessage instanceof SSP2PMessage) {
+            SSP2PMessage ssp2PMessage = (SSP2PMessage) ssMessage;
+            Log.e(TAG, ssp2PMessage.getContent());
             p2PMessageList.add(ssp2PMessage);
-            if (p2PMessageList.size()!= 0){
+            if (p2PMessageList.size() != 0) {
                 mShowHead.setVisibility(View.INVISIBLE);
             }
-            Log.e(TAG,"receiveMsg:"+p2PMessageList);
+            Log.e(TAG, "receiveMsg:" + p2PMessageList);
             chatMessageAdapter.addData(p2PMessageList);
             chatMessageAdapter.notifyDataSetChanged();
         }
