@@ -258,6 +258,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e(TAG,"onPause");
+        Log.d(TAG,"onPause");
     }
 }

@@ -150,7 +150,6 @@
                 android:maxLength="4000"
                 android:focusableInTouchMode="true"
                 android:minHeight="@dimen/dp_46"
-                android:paddingTop="@dimen/dp_3"
                 android:textColor="@color/white"
                 android:textColorHint="@color/contact_textcolor"
                 android:textCursorDrawable="@null"

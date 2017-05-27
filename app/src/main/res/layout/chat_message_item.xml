@@ -33,7 +33,6 @@
                 android:textSize="@dimen/font_10" />
         </LinearLayout>
 
-
     </RelativeLayout>
 
 
@@ -51,9 +50,10 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_10"
+            android:layout_marginEnd="@dimen/dp_70"
+            android:layout_marginRight="@dimen/dp_70"
             android:gravity="center_vertical"
+            android:visibility="visible"
             android:orientation="horizontal">
 
             <com.silver.chat.view.CircleImageView
@@ -76,9 +76,13 @@
                 android:layout_marginStart="@dimen/dp_5"
                 android:layout_toEndOf="@+id/message_friend_userphoto"
                 android:layout_toRightOf="@+id/message_friend_userphoto"
-                android:background="@drawable/bg_msgbox_receive_press"
-                android:gravity="center|left"
-                android:text="你好"
+                android:background="@drawable/left_chat_text_bg"
+                android:gravity="center|right"
+                android:paddingLeft="@dimen/dp_20"
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:text="你好!"
                 android:textColor="@color/black"
                 android:textSize="@dimen/font_12" />
         </RelativeLayout>
@@ -89,9 +93,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginLeft="@dimen/dp_70"
+            android:layout_marginStart="@dimen/dp_70"
             android:gravity="center_vertical"
+            android:visibility="visible"
             android:orientation="horizontal">
 
 
@@ -104,8 +109,12 @@
                 android:layout_marginRight="@dimen/dp_5"
                 android:layout_toLeftOf="@+id/message_user_userphoto"
                 android:layout_toStartOf="@+id/message_user_userphoto"
-                android:background="@drawable/bg_msgbox_send_normals"
+                android:background="@drawable/right_chat_text_bg"
                 android:gravity="center|left"
+                android:paddingRight="@dimen/dp_20"
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_10"
                 android:text="你好！"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_12" />

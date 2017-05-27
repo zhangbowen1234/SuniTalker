@@ -1,6 +1,8 @@
 package com.silver.chat.ui.contact;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -61,7 +63,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private EmotionLayout mElEmotion;
     private EmotionKeyboard mEmotionKeyboard;
     private RelativeLayout mLlContent;
-    private SSP2PMessage chatMessage;
+    private SSP2PMessage mChatMessage;
     private long timestamp;
 
     @Override
@@ -85,9 +87,11 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mElEmotion = (EmotionLayout) findViewById(R.id.elEmotion);
         mLlContent = (RelativeLayout) findViewById(R.id.rl_recyle_content);
         chatList = new ArrayList<>();
-        chatMessage = new SSP2PMessage();
+        mChatMessage = new SSP2PMessage();
         //设置管理
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setReverseLayout(false);
         mChatMsgList.setLayoutManager(linearLayoutManager);
         //将内容输入框交给EmotionLayout管理
         mElEmotion.attachEditText(inputEdit);
@@ -112,29 +116,31 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         friendId = intent.getStringExtra("friendId");
         chatType = intent.getStringExtra("chatType");
         mTitleBar.setTitleText(contactName + "");
-
         userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
         /*获取当前系统时间的13位的时间戳*/
         timestamp = System.currentTimeMillis();
+        Log.d("lll", timestamp + "");
         /**
          * 私人聊天
          */
-        p2PMessageList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, timestamp, 10);
-//          Log.e(TAG,"p2PMessageList:"+p2PMessageList);
-        Collections.reverse(p2PMessageList);
+        p2PMessageList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, -1, 5);
+        Log.e(TAG, "p2PMessageList:" + p2PMessageList.size());
+        Collections.reverse(p2PMessageList);/*将聊天信息List倒置排序*/
         chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList);
         if (p2PMessageList.size() != 0) {
             mShowHead.setVisibility(View.INVISIBLE);
         }
-        /**
          /*给RecyclerView列表设置适配器*/
         mChatMsgList.setAdapter(chatMessageAdapter);
     }
 
-
     @Override
     protected void initListener() {
         super.initListener();
+        /**
+         * 收到消息监听
+         */
+        AppContext.getInstance().instance.setMsgRcvListener(this);
         //表情
         mEmoteBtn.setOnClickListener(this);
         mSendMsg.setOnClickListener(this);
@@ -191,13 +197,12 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
             case R.id.chat_send_msg:
                 String content = inputEdit.getText().toString();
                 inputEdit.setText("");
-                chatMessage.setContent(content);
-                chatMessage.setSourceId(userId);
-                chatMessage.setTargetId(friendId);
-                chatMessage.setMessageTime(timestamp);
-                chatMessageAdapter.addData(chatMessage);
-                Log.e("1111", "size=" + chatList.size());
-                mChatMsgList.scrollToPosition(chatList.size());
+                mChatMessage.setContent(content);
+                mChatMessage.setSourceId(userId);
+                mChatMessage.setTargetId(friendId);
+                mChatMessage.setMessageTime(timestamp);
+                chatMessageAdapter.addData(mChatMessage);
+                mChatMsgList.scrollToPosition(p2PMessageList.size());
                 mShowHead.setVisibility(View.INVISIBLE);
 
                 mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
@@ -210,11 +215,9 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
                 break;
-
             case R.id.chat_btn_emote:
                 inputEdit.clearFocus();
                 if (!mElEmotion.isShown()) {
-                    showEmotionLayout();
                     return;
                 } else if (mElEmotion.isShown()) {
                     hideEmotionLayout();
@@ -247,19 +250,36 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mEmotionKeyboard.setEmotionLayout(mElEmotion);
     }
 
+    SSP2PMessage receiveMsg = null;
+
     @Override
     public void receiveMsg(SSMessage ssMessage) {
-        Log.e(TAG, ((SSP2PMessage) ssMessage).getContent());
         if (ssMessage instanceof SSP2PMessage) {
-            SSP2PMessage ssp2PMessage = (SSP2PMessage) ssMessage;
-            Log.e(TAG, ssp2PMessage.getContent());
-            p2PMessageList.add(ssp2PMessage);
+            receiveMsg = (SSP2PMessage) ssMessage;
+            Log.e(TAG, receiveMsg.getContent());
             if (p2PMessageList.size() != 0) {
                 mShowHead.setVisibility(View.INVISIBLE);
             }
-            Log.e(TAG, "receiveMsg:" + p2PMessageList);
-            chatMessageAdapter.addData(p2PMessageList);
-            chatMessageAdapter.notifyDataSetChanged();
         }
+        mHandler.sendEmptyMessage(0);
     }
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    /*显示新收到的消息*/
+                    if (receiveMsg != null) {
+//                        chatMessageAdapter.addData(receiveMsg);
+                        p2PMessageList.add(receiveMsg);
+                        chatMessageAdapter.setNewData(p2PMessageList);
+                        chatMessageAdapter.notifyDataSetChanged();
+                    }
+                    break;
+            }
+        }
+    };
+
+
 }
