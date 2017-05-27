@@ -46,6 +46,15 @@
                 android:layout_height="1px"
                 android:background="@color/txt_font_one_color" />
 
+        <TextView
+            android:id="@+id/tv_group_manager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="管理员(0)"
+            android:textColor="#99ffffff"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginLeft="@dimen/dp_10"
+            />
         <ListView
             android:id="@+id/listview"
             android:layout_width="match_parent"

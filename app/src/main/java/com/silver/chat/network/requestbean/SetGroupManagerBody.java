@@ -11,7 +11,18 @@ public class SetGroupManagerBody implements Serializable {
     private int groupOwnerId;//群主id
     private int groupManager;//群成员id
     private int groupId;  //群id
+    private static SetGroupManagerBody mInstance;
 
+    public static SetGroupManagerBody getInstance() {
+        if (null == mInstance) {
+            synchronized (SetGroupManagerBody.class) {
+                if (null == mInstance) {
+                    mInstance = new SetGroupManagerBody();
+                }
+            }
+        }
+        return mInstance;
+    }
     public int getGroupOwnerId() {
         return groupOwnerId;
     }

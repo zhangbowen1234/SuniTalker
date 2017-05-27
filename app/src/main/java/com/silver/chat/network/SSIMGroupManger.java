@@ -8,12 +8,14 @@ import com.silver.chat.network.requestbean.AddFriendDiscuBody;
 import com.silver.chat.network.requestbean.AskJoinGroup;
 import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.requestbean.ExitDiscuGroupBody;
+import com.silver.chat.network.requestbean.ExitGroupBody;
 import com.silver.chat.network.requestbean.ExpelDiscuMemberBody;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.requestbean.SetDiscuMsgRemindBody;
 import com.silver.chat.network.requestbean.SetGroupManagerBody;
 import com.silver.chat.network.responsebean.AddGroupMemBean;
 import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.DisscusBean;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.network.responsebean.SearchGroupBean;
@@ -39,6 +41,19 @@ public class SSIMGroupManger {
         ApiService imApi = RetrofitHelper.create().imApi;
         final Call<BaseResponse<ArrayList<GroupBean>>> baseResponseCall = imApi.joinedGroupList(version, request, token);
         imApi.joinedGroupList(version, request, token);
+        BaseCallBack.enqueue(context,baseResponseCall,callBack);
+    }
+
+    /**
+     * 获取用户加入的讨论组的post请求
+     *
+     * @param userId
+     * @param callBack
+     */
+    public static void getJoinDisGroupList(Context context,String token, String userId, final ResponseCallBack<BaseResponse<DisscusBean>> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        final Call<BaseResponse<DisscusBean>> baseResponseCall = imApi.joinedDisscusGroupList( userId, token);
+        imApi.joinedDisscusGroupList( userId, token);
         BaseCallBack.enqueue(context,baseResponseCall,callBack);
     }
 
@@ -133,6 +148,19 @@ public class SSIMGroupManger {
     }
 
     /**
+     * 退出群组
+     * @param context
+     * @param token
+     * @param exitGroupBody
+     * @param callBack
+     */
+    public static void exitGroup(Context context,String version, String token, ExitGroupBody exitGroupBody, final ResponseCallBack<BaseResponse> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> groupMember = imApi.exitGroup(version, token, exitGroupBody);
+        BaseCallBack.enqueueBase(context,groupMember,callBack);
+    }
+
+    /**
      * 踢出讨论组成员
      * @param context
      * @param token
@@ -203,9 +231,9 @@ public class SSIMGroupManger {
      * @param setGroupManagerBody
      * @param callBack
      */
-    public static void GroupDelete(Context context, SetGroupManagerBody setGroupManagerBody, final ResponseCallBack<BaseResponse> callBack) {
+    public static void GroupDelete(Context context, String token,SetGroupManagerBody setGroupManagerBody, final ResponseCallBack<BaseResponse<SetGroupManagerBody>> callBack) {
         ApiService imApi = RetrofitHelper.create().imApi;
-        Call<BaseResponse> groupMember = imApi.GroupDelete(setGroupManagerBody);
-        BaseCallBack.enqueueBase(context,groupMember,callBack);
+        Call<BaseResponse<SetGroupManagerBody>> groupMember = imApi.GroupDelete(token,setGroupManagerBody);
+        BaseCallBack.enqueue(context,groupMember,callBack);
     }
 }

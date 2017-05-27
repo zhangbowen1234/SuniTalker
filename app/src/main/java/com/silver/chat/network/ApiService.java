@@ -5,6 +5,7 @@ import com.silver.chat.network.requestbean.AgreeFriendAddBody;
 import com.silver.chat.network.requestbean.AskJoinGroup;
 import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.requestbean.ExitDiscuGroupBody;
+import com.silver.chat.network.requestbean.ExitGroupBody;
 import com.silver.chat.network.requestbean.ExpelDiscuMemberBody;
 import com.silver.chat.network.requestbean.ForgetPasswordBean;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
@@ -15,6 +16,7 @@ import com.silver.chat.network.requestbean.SetGroupManagerBody;
 import com.silver.chat.network.responsebean.AddGroupMemBean;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
+import com.silver.chat.network.responsebean.DisscusBean;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.network.responsebean.LoginRequestBean;
@@ -92,6 +94,10 @@ public interface ApiService {
     //获取已经加入的群信息列表
     @POST("imx/{version}/user/group/addgrouplist")
     Call<BaseResponse<ArrayList<GroupBean>>> joinedGroupList(@Path("version")String version, @Body JoinedGroupRequest joinedGroupRequest, @Header("token")String token);
+
+    //获取已经加入的讨论组列表
+    @GET("imx/leaf/user/discugroup/all")
+    Call<BaseResponse<DisscusBean>> joinedDisscusGroupList(@Path("userId")String userId, @Header("token")String token);
 
     //创建讨论组
     @POST("imx/{version}/user/discugroup/creatediscugroup")
@@ -179,7 +185,10 @@ public interface ApiService {
 
     //解散(群主权限)
     @POST("imx/leaf/user/group/groupdelete")
-    Call<BaseResponse> GroupDelete(@Body SetGroupManagerBody setGroupManagerBody);
+    Call<BaseResponse<SetGroupManagerBody>> GroupDelete(@Header("token") String token,@Body SetGroupManagerBody setGroupManagerBody);
 
+    //退出群组
+    @POST("imx/{version}/user/group/quite")
+    Call<BaseResponse> exitGroup(@Path("version") String version,@Header("token")String token, @Body ExitGroupBody exitGroupBody);
 
 }

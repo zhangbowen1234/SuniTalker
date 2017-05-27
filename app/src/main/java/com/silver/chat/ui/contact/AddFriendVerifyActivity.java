@@ -138,19 +138,29 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                  * 根据上个跳转界面传递的数据的不
                  * 同来发送不同的添加信息
                  */
-                if (TextUtils.equals(action, "AddFriendActivity")) {
+                verifyMsg = mMsgVerify.getText().toString();
+                if (!verifyMsg.isEmpty()) {
+                    if (TextUtils.equals(action, "AddFriendActivity")) {
                     /*申请添加好友*/
-                    sendAddFriend();
+                        sendAddFriend();
                     /*好友备注*/
-                    remarksFdNm();
-                } else {
-                    verifyMsg = mMsgVerify.getText().toString();
-                    if (verifyMsg.isEmpty()) {
-                        ToastUtil.toastMessage(mContext, "验证信息不能为空");
-                    } else {
+//                        remarksFdNm();
+                    }else {
                         sendAddGroup();
                     }
+                } else {
+                    verifyMsg= "1243234";
+                    if (TextUtils.equals(action, "AddFriendActivity")) {
+                    /*申请添加好友*/
+                        sendAddFriend();
+                    /*好友备注*/
+//                        remarksFdNm();
+                    }else {
+                        sendAddGroup();
+                    }
+//                    ToastUtil.toastMessage(mContext, "验证信息不能为空");
                 }
+
                 break;
         }
     }
@@ -198,6 +208,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
             @Override
             public void onSuccess(BaseResponse baseResponse) {
                 ToastUtil.toastMessage(mContext, baseResponse.getStatusMsg());
+                finish();
             }
 
             @Override
@@ -215,11 +226,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
     }
 
     private void sendAddFriend() {
-        String verify = "我是"+PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME,"");
-        String msgVerify = mMsgVerify.getText().toString();
-        if(!"".equals(msgVerify) || msgVerify != null) {
-            verify = toURLEncoded(msgVerify);
-        }
+        String  verify = toURLEncoded(verifyMsg);
         SSIMFrendManger.goAddFriends(mContext, userId, friendId, verify, token, new ResponseCallBack<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse baseResponse) {
