@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,6 +21,8 @@ import com.silver.chat.base.Common;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.SSIMLoginManger;
 import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.CreatGroupBean;
+import com.silver.chat.network.requestbean.ExitGroupBody;
 import com.silver.chat.network.requestbean.SetGroupManagerBody;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.ui.login.LoginActivity;
@@ -44,6 +47,7 @@ public class GroupLeftFragment extends BasePagerFragment {
     public final int CHILD_NUM = 6;
     public List<String> mList;
     private GrideViewAdapter grideViewAdapter;
+    private String token;
 
     public GroupLeftFragment(List list) {
         this.mList = list;
@@ -53,7 +57,7 @@ public class GroupLeftFragment extends BasePagerFragment {
     protected void getData() {
         grideViewAdapter = new GrideViewAdapter();
         grideview.setAdapter(grideViewAdapter);
-
+        token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
 
     }
 
@@ -203,7 +207,32 @@ public class GroupLeftFragment extends BasePagerFragment {
                 .setPositiveButton(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(mActivity,"确定",Toast.LENGTH_SHORT).show();
+                        /**
+                         * 写死的
+                         */
+                        int groupOwner = 7;
+                        int groupId = 311;//啊吃了  群
+                        SetGroupManagerBody instance = SetGroupManagerBody.getInstance();
+                        instance.setGroupOwnerId(groupOwner);
+                        instance.setGroupId(groupId);
+                        SSIMGroupManger.GroupDelete(mActivity, token, instance, new ResponseCallBack<BaseResponse<SetGroupManagerBody>>() {
+                            @Override
+                            public void onSuccess(BaseResponse<SetGroupManagerBody> setGroupManagerBodyBaseResponse) {
+                                Intent intent = new Intent(mActivity,GroupChatActivity.class);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailed(BaseResponse<SetGroupManagerBody> setGroupManagerBodyBaseResponse) {
+
+                            }
+
+                            @Override
+                            public void onError() {
+
+                            }
+                        });
+
                     }
                 }).show();
     }
@@ -222,7 +251,32 @@ public class GroupLeftFragment extends BasePagerFragment {
                 .setPositiveButton(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(mActivity, "确定", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, "群主不能退出群", Toast.LENGTH_SHORT).show();
+                        /**
+                         * 写死的，接口未连成功
+                         */
+                        ExitGroupBody instance = ExitGroupBody.getInstance();
+                        int userId = 7;
+                        int groupId = 332;
+                        instance.setUserId(userId+"");
+                        instance.setGroupId(groupId+"");
+//                        SSIMGroupManger.exitGroup(mActivity, Common.version, token, instance, new ResponseCallBack<BaseResponse>() {
+//                            @Override
+//                            public void onSuccess(BaseResponse baseResponse) {
+//                                Intent intent = new Intent(mActivity,GroupChatActivity.class);
+//                                startActivity(intent);
+//                            }
+//
+//                            @Override
+//                            public void onFailed(BaseResponse baseResponse) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onError() {
+//
+//                            }
+//                        });
                     }
                 }).show();
     }

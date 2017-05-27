@@ -101,6 +101,7 @@ public class FindGroupActivity extends BaseActivity {
                 mIntent.putExtra("targetimid",searchGroupBean.getTargetImId());
                 mIntent.putExtra("groupAvatar",searchGroupBean.getAvatar());
                 startActivity(mIntent);
+                finish();
             }
         });
     }
