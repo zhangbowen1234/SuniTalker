@@ -65,17 +65,16 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private RelativeLayout mLlContent;
     private SSP2PMessage mChatMessage;
     private long timestamp;
+    private List<SSP2PMessage> p2PMessageList;
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_contact_chat;
     }
 
-
     @Override
     protected void initView() {
         super.initView();
-
         mContactChatImg = (CircleImageView) findViewById(R.id.contact_chat_img);
         mSendMsg = (ImageButton) findViewById(R.id.chat_send_msg);
         mTitleBar = (TitleBarView) findViewById(R.id.title_bar);
@@ -90,7 +89,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mChatMessage = new SSP2PMessage();
         //设置管理
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         linearLayoutManager.setReverseLayout(false);
         mChatMsgList.setLayoutManager(linearLayoutManager);
         //将内容输入框交给EmotionLayout管理
@@ -106,8 +104,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
 
     }
 
-    List<SSP2PMessage> p2PMessageList;
-
     @Override
     protected void initData() {
         super.initData();
@@ -119,16 +115,17 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
         /*获取当前系统时间的13位的时间戳*/
         timestamp = System.currentTimeMillis();
-        Log.d("lll", timestamp + "");
         /**
          * 私人聊天
          */
-        p2PMessageList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, -1, 5);
+        p2PMessageList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, -1, 10);
         Log.e(TAG, "p2PMessageList:" + p2PMessageList.size());
-        Collections.reverse(p2PMessageList);/*将聊天信息List倒置排序*/
+        /*将聊天信息List倒置排序*/
+        Collections.reverse(p2PMessageList);
         chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList);
         if (p2PMessageList.size() != 0) {
             mShowHead.setVisibility(View.INVISIBLE);
+            mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
         }
          /*给RecyclerView列表设置适配器*/
         mChatMsgList.setAdapter(chatMessageAdapter);
@@ -180,7 +177,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                     MoonUtils.replaceEmoticons(LQREmotionKit.getContext(), editable, 0, editable.toString().length());
                     inputEdit.setSelection(editEnd);
                 }
-
             }
 
             @Override
@@ -204,7 +200,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 chatMessageAdapter.addData(mChatMessage);
                 mChatMsgList.scrollToPosition(p2PMessageList.size());
                 mShowHead.setVisibility(View.INVISIBLE);
-
                 mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
                 SSEngine instance = SSEngine.getInstance();
                 instance.sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT, content);
