@@ -303,6 +303,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         }
     }
 
+    /**
+     * 连接SDK监听
+     * @param i
+     */
     @Override
     public void didConnect(int i) {
         Log.e("didConnect()", i + "");
@@ -338,7 +342,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 
     /**
-     * 收通知
+     * 收通知监听
      *
      * @param ssNotification
      */

@@ -1,5 +1,6 @@
 package com.silver.chat.adapter;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -47,19 +48,17 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
         rightPhotoView = holper.getView(R.id.message_user_userphoto);
         leftMessageView = holper.getView(R.id.friend_message);
         rightMessageView = holper.getView(R.id.user_message);
+        Log.e("item.getSourceId() :","item.getMessageTime:"+item.getMessageTime()+",getSourceId:"+item.getSourceId() +",说:"+item.getContent());
 
         timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime())+"");
-        if (item.getSourceId() == PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID,"")) {
-            leftLayout.setVisibility(View.GONE);
+        String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID,"");
+        if ( userId.equals(item.getSourceId())) { //发送
+            leftLayout.setVisibility(View.INVISIBLE);
             rightLayout.setVisibility(View.VISIBLE);
-
             rightMessageView.setText(item.getContent());
-        } else {// 本身作为接收方
+        } else { //接收
             leftLayout.setVisibility(View.VISIBLE);
-            rightLayout.setVisibility(View.GONE);
-//            Bitmap photo = ApplicationData.getInstance().getFriendPhotoMap().get(item.getSourceId());
-//            if (photo != null)
-//                leftPhotoView.setImageBitmap(photo);
+            rightLayout.setVisibility(View.INVISIBLE);
             leftMessageView.setText(item.getContent());
         }
     }

@@ -20,7 +20,6 @@ import com.ssim.android.engine.SSEngine;
 import com.ssim.android.http.bean.VerifyAppKeyAndSecretResponse;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.model.chat.SSMessage;
-import com.ssim.android.model.chat.SSP2PMessage;
 
 import java.io.InputStream;
 import java.util.UUID;
@@ -84,16 +83,6 @@ public class AppContext extends MultiDexApplication {
                     }
                 });
 
-// getContent ggggg
-// ==getLocalPath
-// ==getSourceId 5
-// ==getTargetId 9
-// ==getClientMessageId 0
-// ==getContentType TEXT
-// ==getMessageTime 1495684355380
-// ==getMsgId 211022
-// ==getMsgStatus UNREAD
-// ==getMsgType MSG_P2PCHAT
         /**
          * 接收群和个人消息及通知监听
          */
@@ -101,12 +90,19 @@ public class AppContext extends MultiDexApplication {
         instance.setMsgRcvListener(new SSMessageReceiveListener() {
             @Override
             public void receiveMsg(SSMessage ssMessage) {
-                Log.e("AppContext_receiveMsg:", ((SSP2PMessage) ssMessage).getContent());
-                long messageTime = ((SSP2PMessage) ssMessage).getMessageTime();
+//                if ()
+//                Log.e("AppContext_receiveMsg:", ((SSP2PMessage) ssMessage).getContent());
+//                long messageTime = ((SSP2PMessage) ssMessage).getMessageTime();
             }
         });
 
     }
+
+// SELECT T."MSG_ID",T."CLIENT_MESSAGE_ID",T."CONTENT_TYPE",T."CONTENT",T."LOCAL_PATH",T."MESSAGE_TIME",T."MSG_TYPE",T."TARGET_ID",T."SOURCE_ID",T."MSG_STATUS"
+//    FROM "SSIM_P2PMESSAGE" T
+//    WHERE ((T."TARGET_ID"=? AND T."SOURCE_ID"=?) OR (T."TARGET_ID"=? AND T."SOURCE_ID"=?))
+//    AND T."MESSAGE_TIME"<? ORDER BY T.'MESSAGE_TIME' DESC LIMIT ?
+
 
     public static AppContext getInstance() {
         return appContext;
