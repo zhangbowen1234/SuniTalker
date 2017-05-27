@@ -143,7 +143,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                     if (TextUtils.equals(action, "AddFriendActivity")) {
                     /*申请添加好友*/
                         sendAddFriend();
-                    /*好友备注*/
+                    /**好友备注   暂时注掉等后台该接口*/
 //                        remarksFdNm();
                     }else {
                         sendAddGroup();
