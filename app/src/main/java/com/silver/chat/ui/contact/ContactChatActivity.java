@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -31,6 +30,7 @@ import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
+import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageReceiveListener;
@@ -50,7 +50,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private EditText inputEdit;
     private String contactName;
     private TitleBarView mTitleBar;
-    private RecyclerView mChatMsgList;
+    private WSRecyclerView mChatMsgList;
     private RelativeLayout mShowHead;
     private List<ChatEntity> chatList;
     private ChatMessageAdapter chatMessageAdapter;
@@ -78,7 +78,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mContactChatImg = (CircleImageView) findViewById(R.id.contact_chat_img);
         mSendMsg = (ImageButton) findViewById(R.id.chat_send_msg);
         mTitleBar = (TitleBarView) findViewById(R.id.title_bar);
-        mChatMsgList = (RecyclerView) findViewById(R.id.recyle_content);
+        mChatMsgList = (WSRecyclerView) findViewById(R.id.recyle_content);
         mEmoteBtn = (ImageButton) findViewById(R.id.chat_btn_emote);
         inputEdit = (EditText) findViewById(R.id.chat_edit_input);
         mShowHead = (RelativeLayout) findViewById(R.id.show_contact_head);
@@ -96,12 +96,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         //实现内容区与表情区仿微信切换效果
         initEmotionKeyboard();
 
-        //判断是当前layoutManager是否为LinearLayoutManager
-        // 只有LinearLayoutManager才有查找第一个和最后一个可见view位置的方法
-        //获取最后一个可见view的位置
-//        lastItemPosition = linearLayoutManager.findLastVisibleItemPosition();
-//        if (lastItemPosition!=-1)
-
     }
 
     @Override
@@ -118,13 +112,13 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         /**
          * 私人聊天
          */
-        p2PMessageList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, -1, 10);
-        Log.e(TAG, "p2PMessageList:" + p2PMessageList.size());
+        p2PMessageList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, -1, 30);
         /*将聊天信息List倒置排序*/
         Collections.reverse(p2PMessageList);
         chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList);
         if (p2PMessageList.size() != 0) {
             mShowHead.setVisibility(View.INVISIBLE);
+            /*显示聊天显示最后一条的位置*/
             mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
         }
          /*给RecyclerView列表设置适配器*/
@@ -201,14 +195,16 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 mChatMsgList.scrollToPosition(p2PMessageList.size());
                 mShowHead.setVisibility(View.INVISIBLE);
                 mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
-                SSEngine instance = SSEngine.getInstance();
-                instance.sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT, content);
-                instance.setMsgSendListener(new SSMessageSendListener() {
-                    @Override
-                    public void didSend(boolean b, long l) {
-                        Log.e(TAG, "didSend" + "boolean:" + b + ";long:" + l);
-                    }
-                });
+                if (!"".equals(content)|| content != null) {
+                    SSEngine instance = SSEngine.getInstance();
+                    instance.sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT, content);
+                    instance.setMsgSendListener(new SSMessageSendListener() {
+                        @Override
+                        public void didSend(boolean b, long l) {
+                            Log.e(TAG, "didSend" + "boolean:" + b + ";long:" + l);
+                        }
+                    });
+                }
                 break;
             case R.id.chat_btn_emote:
                 inputEdit.clearFocus();
@@ -270,6 +266,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                         p2PMessageList.add(receiveMsg);
                         chatMessageAdapter.setNewData(p2PMessageList);
                         chatMessageAdapter.notifyDataSetChanged();
+                        mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
                     }
                     break;
             }

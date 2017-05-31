@@ -31,7 +31,7 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
 
 
     @Override
-    protected void convert(BaseViewHolder holper, SSP2PMessage item,int position) {
+    protected void convert(BaseViewHolder holper, SSP2PMessage item, int position) {
 
         RelativeLayout leftLayout;
         RelativeLayout rightLayout;
@@ -48,11 +48,75 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
         rightPhotoView = holper.getView(R.id.message_user_userphoto);
         leftMessageView = holper.getView(R.id.friend_message);
         rightMessageView = holper.getView(R.id.user_message);
-        Log.e("item.getSourceId() :","item.getMessageTime:"+item.getMessageTime()+",getSourceId:"+item.getSourceId() +",说:"+item.getContent());
+        Log.e("item.getSourceId() :", "item.getMessageTime:" + item.getMessageTime() + ",getSourceId:" + item.getSourceId() + ",说:" + item.getContent());
+           /*获取当前系统时间的13位的时间戳*/
+        long timestamp = System.currentTimeMillis();
+        /*当前年份*/
+        int year = DateUtils.formatYear(timestamp);
+        /*当前月份*/
+        String monthAndDay = DateUtils.formatMonthAndDay(timestamp);
+        /*当前小时*/
+        String hour = DateUtils.formatTimeHour(timestamp);
+        /*当前分钟*/
+        String minute = DateUtils.formatTimeMinute(timestamp);
+        /*消息年份*/
+        int msgYear = DateUtils.formatYear(item.getMessageTime());
+        /*消息月份*/
+        String msgMonthAndDay = DateUtils.formatMonthAndDay(item.getMessageTime());
+        /*消息小时*/
+        String msgHour = DateUtils.formatTimeHour(item.getMessageTime());
+        /*消息分钟*/
+        String msgMinute = DateUtils.formatTimeMinute(item.getMessageTime());
 
-        timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime())+"");
-        String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID,"");
-        if ( userId.equals(item.getSourceId())) { //发送
+        if (year == msgYear) {
+            if (monthAndDay.equals(msgMonthAndDay) || monthAndDay == msgMonthAndDay) {
+//                if (hour.equals(msgHour) || hour == msgHour){
+//                    if ( !minute.equals(msgMinute) || minute != msgMinute){
+//                        /*小时:分*/
+//                        timeView.setText(DateUtils.formatTimeSimple(item.getMessageTime()) + "");
+//                    }
+//                }else {
+                     /*小时:分*/
+                    timeView.setText(DateUtils.formatTimeSimple(item.getMessageTime()) + "");
+//                }
+            } else {
+                /*月:日:小时:分*/
+                timeView.setText(DateUtils.formatMonthDateMdHm(item.getMessageTime()) + "");
+            }
+        } else {
+            /*年:月:日:小时:分*/
+            timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime()) + "");
+        }
+//        Log.e("year+小时", year + "/"+msgYear);
+//        Log.e("monthAndDay+月日", monthAndDay + "/"+msgMonthAndDay);
+//        Log.e("hour + minute", hour + "/"+msgHour+"==="+minute +"/"+msgMinute);
+
+
+//        String msgTime = DateUtils.formatDateAndTime_(item.getMessageTime());
+//        String yerarMonthDayHm = DateUtils.formatDateAndTime_(timestamp);
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//        try {
+//            Date msgParse = dateFormat.parse(msgTime);
+//            Date currentParse = dateFormat.parse(msgTime);
+//            long diff = currentParse.getTime() - msgParse.getTime();
+//            Log.e("diff",diff+"");
+//
+//            long days = diff / (1000 * 60 * 60 * 24);
+//            long hours = (diff - days * (1000 * 60 * 60 * 24))
+//                    / (1000 * 60 * 60);
+//            long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours
+//                    * (1000 * 60 * 60))
+//                    / (1000 * 60);
+//
+//            Log.e("111",days + "天" + hours + "小时" + minutes + "分");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+
+
+//        timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime()) + "");
+        String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
+        if (userId.equals(item.getSourceId())) { //发送
             leftLayout.setVisibility(View.INVISIBLE);
             rightLayout.setVisibility(View.VISIBLE);
             rightMessageView.setText(item.getContent());

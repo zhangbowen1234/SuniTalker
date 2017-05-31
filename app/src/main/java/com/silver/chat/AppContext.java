@@ -90,19 +90,10 @@ public class AppContext extends MultiDexApplication {
         instance.setMsgRcvListener(new SSMessageReceiveListener() {
             @Override
             public void receiveMsg(SSMessage ssMessage) {
-//                if ()
-//                Log.e("AppContext_receiveMsg:", ((SSP2PMessage) ssMessage).getContent());
-//                long messageTime = ((SSP2PMessage) ssMessage).getMessageTime();
             }
         });
 
     }
-
-// SELECT T."MSG_ID",T."CLIENT_MESSAGE_ID",T."CONTENT_TYPE",T."CONTENT",T."LOCAL_PATH",T."MESSAGE_TIME",T."MSG_TYPE",T."TARGET_ID",T."SOURCE_ID",T."MSG_STATUS"
-//    FROM "SSIM_P2PMESSAGE" T
-//    WHERE ((T."TARGET_ID"=? AND T."SOURCE_ID"=?) OR (T."TARGET_ID"=? AND T."SOURCE_ID"=?))
-//    AND T."MESSAGE_TIME"<? ORDER BY T.'MESSAGE_TIME' DESC LIMIT ?
-
 
     public static AppContext getInstance() {
         return appContext;
