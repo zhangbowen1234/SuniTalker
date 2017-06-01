@@ -1,15 +1,31 @@
 package com.silver.chat.adapter;
 
+import android.content.Context;
+import android.content.pm.PackageInstaller;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 
+import com.silver.chat.AppContext;
 import com.silver.chat.R;
+import com.silver.chat.base.Common;
+import com.silver.chat.database.dao.BaseDao;
+import com.silver.chat.database.helper.DBHelper;
+import com.silver.chat.database.info.WhereInfo;
 import com.silver.chat.entity.ChatBean;
 import com.silver.chat.entity.DataServer;
+import com.silver.chat.network.responsebean.ContactListBean;
+import com.silver.chat.network.responsebean.GroupBean;
+import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.ImageUtil;
+import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ToastUtil;
+import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
+import com.ssim.android.constant.SSSessionType;
+import com.ssim.android.model.session.SSSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +41,7 @@ import static java.util.Collections.addAll;
 public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHolder> {
 
     private List<ChatBean> chatBeen;
+    private static String SINGLR_avatar,SINGLR_nickname;
     public ChatApater(List<ChatBean> data) {
         super(data);
         chatBeen = data;
@@ -41,13 +58,13 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
         //item多布局
         switch (holder.getItemViewType()) {
             case ChatBean.CHAT_SINGLR:
-                ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
-                holder.setText(R.id.tv_name, "单人聊天=" + holder.getPosition());
+                GlideUtil.loadAvatar((ImageView) holder.getView(R.id.iv_avatar), item.getAvatar());
+                holder.setText(R.id.tv_name, item.getUserName());
+                Log.e("avatar:", item.getAvatar() + item.getUserName());
                 break;
             case ChatBean.CHAT_GROUP:
-                ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
-                holder.setText(R.id.tv_name ,"群消息=" + holder.getPosition());
-
+                GlideUtil.loadAvatar((ImageView) holder.getView(R.id.iv_avatar), item.getAvatar());
+                holder.setText(R.id.tv_name ,item.getUserName());
                 break;
             case ChatBean.CHAT_SYSTEM:
 //                ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
@@ -84,5 +101,70 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
     public void updateData(List<ChatBean> sessionList) {
         clear();
         addAll(sessionList);
+    }
+    public static List<ChatBean> getChatData(Context context) {
+        String userId = PreferenceUtil.getInstance(context).getString(PreferenceUtil.USERID, "");
+        List<SSSession> sessionList = AppContext.getInstance().instance.getsessionList(userId);
+        List<ChatBean> list = new ArrayList<>();
+        Log.e("sessionList:", sessionList.size() + "" + sessionList.get(0).getSessionType());
+        for (int i = 0; i < sessionList.size(); i++) {
+            SSSessionType sessionType = sessionList.get(i).getSessionType();
+            ChatBean chatbean = new ChatBean("user_id=", SINGLR_nickname, SINGLR_avatar, ChatBean.CHAT_SINGLR);
+            //获取好友聊天列表
+            if (sessionType == SSSessionType.P2PCHAT) {
+                String sourceId = sessionList.get(i).getSourceId();
+
+                BaseDao<ContactListBean> mDao = DBHelper.get().dao(ContactListBean.class);
+                List<ContactListBean> friendId = mDao.query(WhereInfo.get().equal("friendId", sourceId));
+
+                for (int j = 0; j < friendId.size(); j++) {
+                    SINGLR_avatar = friendId.get(j).getAvatar();
+                    SINGLR_nickname = friendId.get(j).getNickName();
+                    list.add(chatbean);
+                }
+                //获取群组聊天列表
+            }else if (sessionType == SSSessionType.GROUPCHAT){
+                String groupId = sessionList.get(i).getGroupId();
+                Log.e("groupId:", groupId);
+                BaseDao<GroupBean> mDao = DBHelper.get().dao(GroupBean.class);
+                List<GroupBean> groupBeen = mDao.query(WhereInfo.get().equal("userId", userId));
+                Log.e("groupBeen:", groupBeen.toString());
+                for (int j = 0; j < groupBeen.size(); j++) {
+                    SINGLR_avatar = groupBeen.get(j).getAvatar();
+                    SINGLR_nickname = groupBeen.get(j).getGroupName();
+                    list.add(chatbean);
+                }
+            }/*else if (sessionType == SSSessionType.GROUPNOTI){
+                String groupId = sessionList.get(i).getGroupId();
+                BaseDao<GroupBean> mDao = DBHelper.get().dao(GroupBean.class);
+                List<GroupBean> groupBeen = mDao.query(WhereInfo.get().equal("userId", userId));
+                for (int j = 0; j < groupBeen.size(); j++) {
+                    SINGLR_avatar = groupBeen.get(j).getAvatar();
+                    SINGLR_nickname = groupBeen.get(j).getGroupName();
+                    list.add(chatbean);
+                }
+            }else if (sessionType == SSSessionType.SYSTEMNOTI){
+                String groupId = sessionList.get(i).getGroupId();
+                BaseDao<GroupBean> mDao = DBHelper.get().dao(GroupBean.class);
+                List<GroupBean> groupBeen = mDao.query(WhereInfo.get().equal("userId", userId));
+                for (int j = 0; j < groupBeen.size(); j++) {
+                    SINGLR_avatar = groupBeen.get(j).getAvatar();
+                    SINGLR_nickname = groupBeen.get(j).getGroupName();
+                    list.add(chatbean);
+                }
+            }else if (sessionType == SSSessionType.ROOMCHAT){
+                String groupId = sessionList.get(i).getGroupId();
+                BaseDao<GroupBean> mDao = DBHelper.get().dao(GroupBean.class);
+                List<GroupBean> groupBeen = mDao.query(WhereInfo.get().equal("userId", userId));
+                for (int j = 0; j < groupBeen.size(); j++) {
+                    SINGLR_avatar = groupBeen.get(j).getAvatar();
+                    SINGLR_nickname = groupBeen.get(j).getGroupName();
+                    list.add(chatbean);
+                }
+            }else if (sessionType == SSSessionType.ERROR){
+                Log.e("ERROR: ", SSSessionType.ERROR+"");
+            }*/
+        }
+        return list;
     }
 }
