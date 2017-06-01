@@ -1,11 +1,15 @@
 package com.silver.chat.network.responsebean;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.io.Serializable;
 
 /**
  * Created by Joe on 2017/5/16.
  */
-public class GroupMemberBean implements Serializable{
+@DatabaseTable(tableName = "group_member")
+public class GroupMemberBean implements Serializable {
 
     /**
      * userId : 26
@@ -15,13 +19,32 @@ public class GroupMemberBean implements Serializable{
      * avatar : http://swift.sspaas.net:8080/v1/AU34cdb7/imicon/27656wuchun20173817103805.png
      * privilege : 1
      */
-
+    @DatabaseField(columnName = "userId")
     private int userId;
+    @DatabaseField(columnName = "imUserId")
     private int imUserId;
+    @DatabaseField(columnName = "groupNickName")
     private String groupNickname;
+    @DatabaseField(columnName = "nickName")
     private String nickName;
+
+
+    @DatabaseField(columnName = "avatar")
+
     private String avatar;
+    @DatabaseField(columnName = "privilege")
     private int privilege;
+    @DatabaseField(columnName = "groupId")
+    private int groupId;
+
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
 
     public int getUserId() {
         return userId;

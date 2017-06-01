@@ -107,7 +107,7 @@
             android:name=".ui.mine.setting.ChangeBackgroundActivity"
             android:label="主色调" />
         <activity
-            android:name=".ui.contact.group.GroupChatActivity"
+            android:name=".ui.contact.group.MyGroupActivity"
             android:label="我的群"
             android:launchMode="singleTask" />
 
@@ -157,6 +157,8 @@
             android:label="修改群名称" />
         <activity android:name=".ui.contact.group.FindGroupActivity"
             android:label="添加群组" />
+        <activity android:name=".ui.contact.group.GroupChatActivity"
+            android:label="群聊界面" />
     </application>
 
 </manifest>

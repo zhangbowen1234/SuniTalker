@@ -22,11 +22,16 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.FriendInfoAdapter;
 import com.silver.chat.adapter.GMemAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.database.callback.EasyRun;
+import com.silver.chat.database.dao.BaseDao;
+import com.silver.chat.database.helper.DBHelper;
+import com.silver.chat.database.info.WhereInfo;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.responsebean.GroupMemberBean;
+import com.silver.chat.network.responsebean.SearchGroupBean;
 import com.silver.chat.ui.contact.ContactChatActivity;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.RoundImageView;
@@ -90,9 +95,9 @@ public class GroupDetailActivity extends BaseActivity {
     private static final int REQUEST_CODE3 = 3;
     private String groupName;
     private String groupAvatar;
-    private int groupId,groUserId;
+    private int groupId, groUserId;
     //群成员列表
-    private ArrayList<GroupMemberBean> groupMemlists = new ArrayList<>();
+    private List<GroupMemberBean> groupMemlists = new ArrayList<>();
     private GMemAdapter mAdapter;
 
     Handler mHandler = new Handler() {
@@ -101,13 +106,17 @@ public class GroupDetailActivity extends BaseActivity {
             switch (msg.what) {
                 case 0:
                     //联系人列表的adapter
-                    mAdapter = new GMemAdapter(GroupDetailActivity.this,groupMemlists);
+                    mAdapter = new GMemAdapter(GroupDetailActivity.this, groupMemlists);
                     rvGroupMemeber.setAdapter(mAdapter);
                     mAdapter.notifyDataSetChanged();
                     break;
             }
         }
     };
+    private BaseDao<GroupMemberBean> dao;
+    private ArrayList<GroupMemberBean> lists1;
+    private GroupMemberBean groupMemberBean;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_groupdetail;
@@ -116,7 +125,8 @@ public class GroupDetailActivity extends BaseActivity {
     @Override
     protected void initData() {
         tvGroupname.setText(groupName);
-        lists = new ArrayList() {};
+        lists = new ArrayList() {
+        };
         String[] stringArray1 = getResources().getStringArray(R.array.group_qunzhu);
         String[] stringArray2 = getResources().getStringArray(R.array.group_commonmember);
         String[] stringArray3 = getResources().getStringArray(R.array.group_guanliyuan);
@@ -147,10 +157,20 @@ public class GroupDetailActivity extends BaseActivity {
         privilege = groupbean.getPrivilege();
         groupId = groupbean.getGroupId();
         groupAvatar = groupbean.getAvatar();
-        getGroupMember();
+        dao = DBHelper.get().dao(GroupMemberBean.class);
+        getGroupMemberLocal();
+        if(!(groupMemlists.size()>0)) {
+            getGroupMemberNet();
+        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvGroupMemeber.setLayoutManager(linearLayoutManager);
+    }
+
+    private void getGroupMemberLocal() {
+        WhereInfo groupId = WhereInfo.get().equal("groupId", this.groupId);
+        groupMemlists = dao.query(groupId);
+        mHandler.sendEmptyMessage(0);
     }
 
     @Override
@@ -187,13 +207,14 @@ public class GroupDetailActivity extends BaseActivity {
     /**
      * 获取群成员
      */
-    private void getGroupMember() {
+    private void getGroupMemberNet() {
         String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
 
         SSIMGroupManger.getGroupMem(mContext, token, groupId + "", new ResponseCallBack<BaseResponse<ArrayList<GroupMemberBean>>>() {
             @Override
             public void onSuccess(BaseResponse<ArrayList<GroupMemberBean>> arrayListBaseResponse) {
                 groupMemlists = arrayListBaseResponse.data;
+                putLocal(groupMemlists);
                 int groupMemCount = arrayListBaseResponse.data.size();
                 tvGroupMemCount.setText("群成员(" + groupMemCount + ")");
                 mHandler.sendEmptyMessage(0);
@@ -209,6 +230,40 @@ public class GroupDetailActivity extends BaseActivity {
 
             }
         });
+    }
+
+    /**
+     * 将群成员信息存放发哦本地数据库
+     *
+     * @param memLists
+     */
+    private void putLocal(List<GroupMemberBean> memLists) {
+        lists1 = new ArrayList<>();
+        for (int i = 0; i < memLists.size(); i++) {
+            groupMemberBean = new GroupMemberBean();
+            groupMemberBean.setPrivilege(memLists.get(i).getPrivilege());
+            groupMemberBean.setAvatar(memLists.get(i).getAvatar());
+            groupMemberBean.setGroupNickname(memLists.get(i).getGroupNickname());
+            groupMemberBean.setNickName(memLists.get(i).getNickName());
+            groupMemberBean.setImUserId(memLists.get(i).getImUserId());
+            groupMemberBean.setUserId(memLists.get(i).getUserId());
+            groupMemberBean.setGroupId(groupId);
+            lists1.add(groupMemberBean);
+        }
+        dao.asyncTask(new EasyRun<List<GroupMemberBean>>() {
+
+                          @Override
+                          public List<GroupMemberBean> run() throws Exception {
+                              dao.create(lists1);
+                              return dao.queryForAll();
+                          }
+
+                          @Override
+                          public void onMainThread(List<GroupMemberBean> data) throws Exception {
+                              super.onMainThread(data);
+                          }
+                      }
+        );
     }
 
     @OnClick({R.id.rl_group_member, R.id.wv, R.id.my_photo, R.id.tv_groupname, R.id.tv_nickname, R.id.iv_conversation, R.id.iv_qrcode, R.id.rl_group_nickname, R.id.tv_group_mem_count, R.id.iv_header5, R.id.iv_arrow, R.id.iv_arrow_right, R.id.iv_arrow_left, R.id.viewpager, R.id.iv_arrow_bottom})
@@ -239,7 +294,9 @@ public class GroupDetailActivity extends BaseActivity {
                 startActivity(intent1);
                 break;
             case R.id.iv_conversation:
-                Intent intent4 = new Intent(this, ContactChatActivity.class);
+                Intent intent4 = new Intent(this, GroupChatActivity.class);
+                intent4.putExtra("groupName",groupName);
+                intent4.putExtra("groupId",groupId);
                 startActivity(intent4);
                 break;
             case R.id.iv_qrcode:

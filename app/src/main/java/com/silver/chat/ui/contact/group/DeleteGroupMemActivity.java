@@ -7,24 +7,17 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.silver.chat.R;
-import com.silver.chat.adapter.GMemAdapter;
 import com.silver.chat.adapter.GMemDeleteAdapter;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.base.Common;
-import com.silver.chat.network.SSIMGroupManger;
-import com.silver.chat.network.callback.ResponseCallBack;
-import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.responsebean.GroupMemberBean;
@@ -234,16 +227,16 @@ public class DeleteGroupMemActivity extends BaseActivity {
                     }
                     break;
                 case 1:
-                    GroupChatActivity.ViewHolder holder;
+                    MyGroupActivity.ViewHolder holder;
                     if (convertView == null || convertView instanceof TextView) {
                         convertView = View.inflate(getApplicationContext(), R.layout.item_mygroup, null);
-                        holder = new GroupChatActivity.ViewHolder();
+                        holder = new MyGroupActivity.ViewHolder();
                         holder.ivIcon = (CircleImageView) convertView.findViewById(R.id.im_group_image);
                         holder.tvName = (TextView) convertView.findViewById(R.id.tv_group_name);
 
                         convertView.setTag(holder);
                     } else {
-                        holder = (GroupChatActivity.ViewHolder) convertView.getTag();
+                        holder = (MyGroupActivity.ViewHolder) convertView.getTag();
                     }
                     final GroupBean item = getItem(position);
 
