@@ -12,8 +12,10 @@ import com.silver.chat.adapter.NewFriendAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.ContactMemberBean;
 import com.ssim.android.listener.SSNotificationListener;
-import com.ssim.android.model.notification.SSFriendNotification;
+import com.ssim.android.model.notification.SSGroupNotification;
+import com.ssim.android.model.notification.SSNormalNotification;
 import com.ssim.android.model.notification.SSNotification;
+import com.ssim.android.model.notification.friend.SSAddFriendNotification;
 
 import java.util.ArrayList;
 
@@ -80,8 +82,18 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void receiveNotification(SSNotification ssNotification) {
-        if (ssNotification instanceof SSFriendNotification){
-            SSFriendNotification ssFriendNotification = (SSFriendNotification)ssNotification;
+        if (ssNotification instanceof SSAddFriendNotification){
+            SSAddFriendNotification ssFriendNotification = (SSAddFriendNotification)ssNotification;
+            String sourceId = ssFriendNotification.getSourceId();
+
+
+        }else if (ssNotification instanceof SSGroupNotification){
+            SSGroupNotification ssGroupNotification = (SSGroupNotification)ssNotification;
+
+
+        }else if (ssNotification instanceof SSNormalNotification){
+
+
 
         }
     }

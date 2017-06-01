@@ -86,6 +86,8 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     private LinearLayoutManager linearLayoutManager;
     private FloatingActionButton fab;
     private BaseDao<ContactListBean> mDao;
+    ContactListBean sortModel;
+
     public static ContactFragment newInstance(boolean isAllContact) {
         Bundle args = new Bundle();
         ContactFragment fragment = new ContactFragment();
@@ -199,7 +201,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         });
 
     }
-    ContactListBean sortModel;
     /**
      * 联网获取联系人
      */

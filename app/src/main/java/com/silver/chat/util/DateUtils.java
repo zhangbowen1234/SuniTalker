@@ -1,5 +1,6 @@
 package com.silver.chat.util;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,32 +12,28 @@ import java.util.Locale;
  */
 public class DateUtils {
 
-    /*获取系统时间 格式为："yyyy/MM/dd "*/
-    public static String getCurrentDate() {
-        Date d = new Date();
-        SimpleDateFormat sf = new SimpleDateFormat("yyyy年MM月dd日");
-        return sf.format(d);
+    /**
+     * 将long得到-- 小时
+     *
+     * @param lefttime
+     * @return 小时:分
+     */
+    public static String formatTimeHour(long lefttime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH", Locale.CHINA);
+        String sDateTime = sdf.format(lefttime);
+        return sDateTime;
     }
-
-    /*时间戳转换成字符窜*/
-    public static String getDateToString(long time) {
-        Date d = new Date(time);
-        SimpleDateFormat  sf = new SimpleDateFormat("yyyy年MM月dd日");
-        return sf.format(d);
-        }
-
-   /*将字符串转为时间戳*/
-    public static long getStringToDate(String time) {
-        SimpleDateFormat sf = new SimpleDateFormat("yyyy年MM月dd日");
-        Date date = new Date();
-        try {
-            date = sf.parse(time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date.getTime();
-        }
-
+    /**
+     * 将long得到-- 分钟
+     *
+     * @param lefttime
+     * @return 小时:分
+     */
+    public static String formatTimeMinute(long lefttime) {
+        DateFormat sdf = new SimpleDateFormat("mm", Locale.CHINA);
+        String sDateTime = sdf.format(lefttime);
+        return sDateTime;
+    }
 
     /**
      * 将long得到-- 小时:分
@@ -50,6 +47,12 @@ public class DateUtils {
         return sDateTime;
     }
 
+    /**
+     * 将long得到-- 小时:分:秒
+     *
+     * @param lefttime
+     * @return 小时:分
+     */
     public static String formatTime(long lefttime) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
         String sDateTime = sdf.format(lefttime);
@@ -127,6 +130,13 @@ public class DateUtils {
         String sDateTime = sdf.format(lefttime);
         return sDateTime;
     }
+
+    public static String formatMonthDateMdHm(long lefttime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM.dd.H.m", Locale.CHINA);
+        String sDateTime = sdf.format(lefttime);
+        return sDateTime;
+    }
+
 
     /**
      * 得到: 年-月-日 时

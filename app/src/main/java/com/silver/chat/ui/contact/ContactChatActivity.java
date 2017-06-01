@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -31,6 +30,7 @@ import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
+import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageReceiveListener;
@@ -38,8 +38,8 @@ import com.ssim.android.listener.SSMessageSendListener;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -50,7 +50,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private EditText inputEdit;
     private String contactName;
     private TitleBarView mTitleBar;
-    private RecyclerView mChatMsgList;
+    private WSRecyclerView mChatMsgList;
     private RelativeLayout mShowHead;
     private List<ChatEntity> chatList;
     private ChatMessageAdapter chatMessageAdapter;
@@ -59,13 +59,14 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private String friendId, userId, chatType;
     private ImageView mBack;
 
-    int lastItemPosition;
     private EmotionLayout mElEmotion;
     private EmotionKeyboard mEmotionKeyboard;
     private RelativeLayout mLlContent;
     private SSP2PMessage mChatMessage;
     private long timestamp;
     private List<SSP2PMessage> p2PMessageList;
+    private MyHandler mMyHandler;
+    private String editcontent;
 
     @Override
     protected int getLayoutId() {
@@ -78,7 +79,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mContactChatImg = (CircleImageView) findViewById(R.id.contact_chat_img);
         mSendMsg = (ImageButton) findViewById(R.id.chat_send_msg);
         mTitleBar = (TitleBarView) findViewById(R.id.title_bar);
-        mChatMsgList = (RecyclerView) findViewById(R.id.recyle_content);
+        mChatMsgList = (WSRecyclerView) findViewById(R.id.recyle_content);
         mEmoteBtn = (ImageButton) findViewById(R.id.chat_btn_emote);
         inputEdit = (EditText) findViewById(R.id.chat_edit_input);
         mShowHead = (RelativeLayout) findViewById(R.id.show_contact_head);
@@ -95,12 +96,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mElEmotion.attachEditText(inputEdit);
         //实现内容区与表情区仿微信切换效果
         initEmotionKeyboard();
-
-        //判断是当前layoutManager是否为LinearLayoutManager
-        // 只有LinearLayoutManager才有查找第一个和最后一个可见view位置的方法
-        //获取最后一个可见view的位置
-//        lastItemPosition = linearLayoutManager.findLastVisibleItemPosition();
-//        if (lastItemPosition!=-1)
+        mMyHandler = new MyHandler(this);
 
     }
 
@@ -119,16 +115,16 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
          * 私人聊天
          */
         p2PMessageList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, -1, 10);
-        Log.e(TAG, "p2PMessageList:" + p2PMessageList.size());
-        /*将聊天信息List倒置排序*/
-        Collections.reverse(p2PMessageList);
         chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList);
         if (p2PMessageList.size() != 0) {
             mShowHead.setVisibility(View.INVISIBLE);
-            mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
+            /*显示聊天显示最后一条的位置*/
+            mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount());
+            chatMessageAdapter.notifyDataSetChanged();
         }
          /*给RecyclerView列表设置适配器*/
         mChatMsgList.setAdapter(chatMessageAdapter);
+        chatMessageAdapter.addHeaderView(mChatMsgList.getRefreshView());
     }
 
     @Override
@@ -185,30 +181,56 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
 //                String stickerPath = LQREmotionKit.getStickerPath();
             }
         });
+        /*刷新聊天记录*/
+        if (p2PMessageList == null || p2PMessageList.size() == 0) {
+            mChatMsgList.refreshComplete();
+        } else {
+            mChatMsgList.setOnRefreshCompleteListener(new WSRecyclerView.OnRefreshCompleteListener() {
+                @Override
+                public void onRefreshComplete() {
+                    mMyHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            SSP2PMessage ssp2PMessage = p2PMessageList.get((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1));
+                            long messageTime = ssp2PMessage.getMessageTime();
+                            Log.e("aa", ssp2PMessage.getSourceId() + "/" + ssp2PMessage.getContent());
+                            List<SSP2PMessage> p2PMsgList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, messageTime, 10);
+                            p2PMessageList.addAll((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1), p2PMsgList);
+                            mChatMsgList.refreshComplete();
+                            chatMessageAdapter.notifyDataSetChanged();
+                        }
+                    }, 3000);
+                }
+            });
+        }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.chat_send_msg:
-                String content = inputEdit.getText().toString();
-                inputEdit.setText("");
-                mChatMessage.setContent(content);
-                mChatMessage.setSourceId(userId);
-                mChatMessage.setTargetId(friendId);
-                mChatMessage.setMessageTime(timestamp);
-                chatMessageAdapter.addData(mChatMessage);
-                mChatMsgList.scrollToPosition(p2PMessageList.size());
-                mShowHead.setVisibility(View.INVISIBLE);
-                mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
-                SSEngine instance = SSEngine.getInstance();
-                instance.sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT, content);
-                instance.setMsgSendListener(new SSMessageSendListener() {
-                    @Override
-                    public void didSend(boolean b, long l) {
-                        Log.e(TAG, "didSend" + "boolean:" + b + ";long:" + l);
-                    }
-                });
+                editcontent = inputEdit.getText().toString();
+                if ("".equals(editcontent) || editcontent == null) {
+                    ToastUtils.showMessage(mContext, "没有发送的内容");
+                } else {
+                    inputEdit.setText("");
+                    mChatMessage.setContent(editcontent);
+                    mChatMessage.setSourceId(userId);
+                    mChatMessage.setTargetId(friendId);
+                    mChatMessage.setMessageTime(timestamp);
+                    p2PMessageList.add(mChatMessage);
+                    mChatMsgList.scrollToPosition(p2PMessageList.size());
+                    mShowHead.setVisibility(View.INVISIBLE);
+                    mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
+                    SSEngine instance = SSEngine.getInstance();
+                    instance.sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT, editcontent);
+                    instance.setMsgSendListener(new SSMessageSendListener() {
+                        @Override
+                        public void didSend(boolean b, long l) {
+                            Log.e(TAG, "didSend" + "boolean:" + b + ";long:" + l);
+                        }
+                    });
+                }
                 break;
             case R.id.chat_btn_emote:
                 inputEdit.clearFocus();
@@ -251,12 +273,15 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     public void receiveMsg(SSMessage ssMessage) {
         if (ssMessage instanceof SSP2PMessage) {
             receiveMsg = (SSP2PMessage) ssMessage;
-            Log.e(TAG, receiveMsg.getContent());
-            if (p2PMessageList.size() != 0) {
-                mShowHead.setVisibility(View.INVISIBLE);
+            String sourceId = receiveMsg.getSourceId();
+            if (sourceId.equals(friendId) || sourceId == friendId) {
+                Log.e(TAG, receiveMsg.getContent());
+                if (p2PMessageList.size() != 0) {
+                    mShowHead.setVisibility(View.INVISIBLE);
+                }
+                mHandler.sendEmptyMessage(0);
             }
         }
-        mHandler.sendEmptyMessage(0);
     }
 
     Handler mHandler = new Handler() {
@@ -270,11 +295,28 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                         p2PMessageList.add(receiveMsg);
                         chatMessageAdapter.setNewData(p2PMessageList);
                         chatMessageAdapter.notifyDataSetChanged();
+                        mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
                     }
                     break;
             }
         }
     };
+
+    private static class MyHandler extends Handler {
+        private WeakReference<ContactChatActivity> activityWeakReference;
+
+        public MyHandler(ContactChatActivity fragment) {
+            activityWeakReference = new WeakReference<ContactChatActivity>(fragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            ContactChatActivity fragment = activityWeakReference.get();
+            if (fragment == null) {
+                return;
+            }
+        }
+    }
 
 
 }

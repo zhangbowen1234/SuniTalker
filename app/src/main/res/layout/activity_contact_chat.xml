@@ -98,7 +98,7 @@
             android:background="@color/txt_font_one_color"
             android:visibility="gone" />
 
-        <android.support.v7.widget.RecyclerView
+        <com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView
             android:id="@id/recyle_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
