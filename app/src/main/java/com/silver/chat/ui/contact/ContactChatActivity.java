@@ -25,7 +25,6 @@ import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.entity.ChatEntity;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
@@ -39,7 +38,6 @@ import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -52,7 +50,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private TitleBarView mTitleBar;
     private WSRecyclerView mChatMsgList;
     private RelativeLayout mShowHead;
-    private List<ChatEntity> chatList;
     private ChatMessageAdapter chatMessageAdapter;
     private ViewPager mFaceViewPager;
     private LinearLayout mExpression;
@@ -86,15 +83,14 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mBack = (ImageView) findViewById(R.id.title_left_back);
         mElEmotion = (EmotionLayout) findViewById(R.id.elEmotion);
         mLlContent = (RelativeLayout) findViewById(R.id.rl_recyle_content);
-        chatList = new ArrayList<>();
         mChatMessage = new SSP2PMessage();
-        //设置管理
+        /*设置管理*/
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(false);
         mChatMsgList.setLayoutManager(linearLayoutManager);
-        //将内容输入框交给EmotionLayout管理
+        /*将内容输入框交给EmotionLayout管理*/
         mElEmotion.attachEditText(inputEdit);
-        //实现内容区与表情区仿微信切换效果
+        /*实现内容区与表情区仿微信切换效果*/
         initEmotionKeyboard();
         mMyHandler = new MyHandler(this);
 
@@ -111,9 +107,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
         /*获取当前系统时间的13位的时间戳*/
         timestamp = System.currentTimeMillis();
-        /**
-         * 私人聊天
-         */
+        /*私人聊天列表*/
         p2PMessageList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, -1, 10);
         chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList);
         if (p2PMessageList.size() != 0) {
@@ -130,15 +124,13 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void initListener() {
         super.initListener();
-        /**
-         * 收到消息监听
-         */
+        /*收到消息监听*/
         AppContext.getInstance().instance.setMsgRcvListener(this);
-        //表情
+        /*表情*/
         mEmoteBtn.setOnClickListener(this);
         mSendMsg.setOnClickListener(this);
         mBack.setOnClickListener(this);
-        //实现IEmotionSelectedListener接口，手动实现图文混排
+        /*实现IEmotionSelectedListener接口，手动实现图文混排*/
 //        mElEmotion.setEmotionSelectedListener(this);
         mElEmotion.setEmotionAddVisiable(true);
         mElEmotion.setEmotionSettingVisiable(true);
@@ -153,7 +145,8 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 ToastUtils.showMessage(mContext, "setting");
             }
         });
-        //文字表情混合输入
+
+        /*文字表情混合输入*/
         mElEmotion.setEmotionSelectedListener(new IEmotionSelectedListener() {
             @Override
             public void onEmojiSelected(String key) {
@@ -177,10 +170,11 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
 
             @Override
             public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
-                //得到贴图的存放位置
+                /*得到贴图的存放位置*/
 //                String stickerPath = LQREmotionKit.getStickerPath();
             }
         });
+
         /*刷新聊天记录*/
         if (p2PMessageList == null || p2PMessageList.size() == 0) {
             mChatMsgList.refreshComplete();
@@ -284,6 +278,9 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    /**
+     * 处理新收到的消息
+     */
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -291,7 +288,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 case 0:
                     /*显示新收到的消息*/
                     if (receiveMsg != null) {
-//                        chatMessageAdapter.addData(receiveMsg);
                         p2PMessageList.add(receiveMsg);
                         chatMessageAdapter.setNewData(p2PMessageList);
                         chatMessageAdapter.notifyDataSetChanged();
