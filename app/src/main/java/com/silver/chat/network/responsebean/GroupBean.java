@@ -19,7 +19,7 @@ public class GroupBean implements Serializable{
      * createTime : 123456789
      * privilege : 1
      */
-    @DatabaseField(id = true)
+    @DatabaseField(columnName = "userId")
     public String userId;
     @DatabaseField(columnName = "avatar")
     private String avatar;
@@ -30,7 +30,7 @@ public class GroupBean implements Serializable{
     @DatabaseField(columnName = "groupRemark")
     private String groupRemark;
     @DatabaseField(columnName = "createTime")
-    private int createTime;
+    private long createTime;
     @DatabaseField(columnName = "privilege")
     private int privilege;
 
@@ -78,7 +78,7 @@ public class GroupBean implements Serializable{
         return createTime;
     }
 
-    public void setCreateTime(int createTime) {
+    public void setCreateTime(long createTime) {
         this.createTime = createTime;
     }
 

@@ -1,5 +1,17 @@
 package com.silver.chat.entity;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.silver.chat.AppContext;
+import com.silver.chat.database.dao.BaseDao;
+import com.silver.chat.database.helper.DBHelper;
+import com.silver.chat.database.info.WhereInfo;
+import com.silver.chat.network.responsebean.ContactListBean;
+import com.silver.chat.util.PreferenceUtil;
+import com.ssim.android.constant.SSSessionType;
+import com.ssim.android.model.session.SSSession;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,15 +27,36 @@ public class DataServer {
     public static final String IMAGE_URL4 = "http://scimg.jb51.net/allimg/151218/14-15121Q0513N38.jpg";
     public static final String IMAGE_URL5 = "http://atth.eduu.com/album/201203/12/1475134_1331559643qMzc.jpg";
 
-    public static List<ChatBean> getChatData() {
-        List<ChatBean> list = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL1, ChatBean.CHAT_SINGLR));
-            list.add(new ChatBean("user_id=" + i, "userName=" + i, null, ChatBean.CHAT_SYSTEM));
-            list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL3, ChatBean.CHAT_GROUP));
-            list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL4, ChatBean.CHAT_DISCUSSION_GROUP));
-            list.add(new ChatBean("user_id=" + i, "userName=" + i, null, ChatBean.CHAT_GROUP_NOTICE));
+    public static List<ChatBean> getChatData(Context context) {
+        String userId = PreferenceUtil.getInstance(context).getString(PreferenceUtil.USERID, "");
+        List<SSSession> sessionList = AppContext.getInstance().instance.getsessionList(userId);
+
+        Log.e("sessionList:", sessionList.size() + "" + sessionList.get(0).getSessionType());
+        String avatar = null;
+        for (int i = 0; i < sessionList.size(); i++) {
+            SSSessionType sessionType = sessionList.get(i).getSessionType();
+            if (sessionType == SSSessionType.P2PCHAT) {
+                String sourceId = sessionList.get(i).getSourceId();
+                Log.e("sourceId:", sourceId);
+                BaseDao<ContactListBean> mDao = DBHelper.get().dao(ContactListBean.class);
+                List<ContactListBean> friendId = mDao.query(WhereInfo.get().equal("friendId", sourceId));
+                Log.e("friendId:", friendId.toString());
+                for (int j = 0; j < friendId.size(); j++) {
+                    avatar = friendId.get(j).getAvatar();
+                    final String nickname = friendId.get(j).getNickName();
+                    Log.e("avatar:", avatar + nickname);
+                }
+            }
         }
+        List<ChatBean> list = new ArrayList<>();
+//        list.add(new ChatBean("user_id=", "userName=", avatar, ChatBean.CHAT_SINGLR));
+//        for (int i = 0; i < 4; i++) {
+//            list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL1, ChatBean.CHAT_SINGLR));
+//            list.add(new ChatBean("user_id=" + i, "userName=" + i, null, ChatBean.CHAT_SYSTEM));
+//            list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL3, ChatBean.CHAT_GROUP));
+//            list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL4, ChatBean.CHAT_DISCUSSION_GROUP));
+//            list.add(new ChatBean("user_id=" + i, "userName=" + i, null, ChatBean.CHAT_GROUP_NOTICE));
+//        }
         return list;
     }
 

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.silver.chat.R;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.ui.contact.NewFriendActivity;
-import com.silver.chat.ui.contact.group.GroupChatActivity;
+import com.silver.chat.ui.contact.group.MyGroupActivity;
 import com.silver.chat.ui.mine.FriendInfoActivity;
 import com.silver.chat.view.CircleImageView;
 
@@ -75,7 +75,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             ((GroupViewHolder) holder).mGroupChat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent mGroupIntent = new Intent(mContext, GroupChatActivity.class);
+                    Intent mGroupIntent = new Intent(mContext, MyGroupActivity.class);
                     mContext.startActivity(mGroupIntent);
                 }
             });

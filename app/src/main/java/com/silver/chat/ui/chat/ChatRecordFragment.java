@@ -7,29 +7,41 @@ import android.os.Message;
 import android.os.Trace;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.github.library.listener.OnRecyclerItemClickListener;
 import com.github.library.listener.OnRecyclerItemLongClickListener;
+import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatApater;
 import com.silver.chat.base.BasePagerFragment;
+import com.silver.chat.database.dao.BaseDao;
+import com.silver.chat.database.helper.DBHelper;
+import com.silver.chat.database.info.WhereInfo;
 import com.silver.chat.entity.ChatBean;
 import com.silver.chat.entity.DataServer;
+import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.ui.chat.notification.AddGroupNotifiActivity;
 import com.silver.chat.ui.chat.notification.GroupNotificationActivity;
 import com.silver.chat.ui.contact.ContactChatActivity;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.dialog.TopDeleteDialog;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
 import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
+import com.ssim.android.constant.SSSessionType;
+import com.ssim.android.model.session.SSSession;
 
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static android.R.attr.type;
+import static android.R.id.list;
 
 /**
  * 作者：Fandy on 2016/11/14 14:14
@@ -63,7 +75,7 @@ public class ChatRecordFragment extends BasePagerFragment {
     protected void initData() {
         super.initData();
         mList = new ArrayList<>();
-        mList.addAll(DataServer.getChatData());
+        mList.addAll(ChatApater.getChatData(mActivity));
         mChatApater = new ChatApater(mList);
         mRecycleContent.setAdapter(mChatApater);
         mChatApater.addHeaderView(mRecycleContent.getRefreshView());
@@ -71,11 +83,8 @@ public class ChatRecordFragment extends BasePagerFragment {
         mChatApater.setOnRecyclerItemClickListener(new OnRecyclerItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (mChatApater.getItemViewType(position) == ChatBean.CHAT_GROUP_NOTICE){
-                    startActivity(GroupNotificationActivity.class);
-                }else {
-                    Intent mIntent = new Intent(mActivity, ContactChatActivity.class);
-                    startActivity(mIntent);
+                if (mChatApater.getItemViewType(position - 1) == ChatBean.CHAT_SINGLR){
+                    startActivity(ContactChatActivity.class);
                 }
             }
         });

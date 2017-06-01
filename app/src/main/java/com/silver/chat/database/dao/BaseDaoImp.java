@@ -15,6 +15,7 @@ import com.silver.chat.database.handler.HandlerHelper;
 import com.silver.chat.database.handler.MessageInfo;
 import com.silver.chat.database.helper.BaseDBHelper;
 import com.silver.chat.database.info.WhereInfo;
+import com.ssim.android.engine.SSEngine;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

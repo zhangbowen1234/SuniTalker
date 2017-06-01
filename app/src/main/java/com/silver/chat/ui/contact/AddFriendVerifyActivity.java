@@ -123,6 +123,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                 mMsgVerify.setText(s);
                 mMsgVerify.setSelection(tempSelection);
             }
+            verifyMsg = mMsgVerify.getText().toString();
         }
     };
 
@@ -138,18 +139,17 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                  * 根据上个跳转界面传递的数据的不
                  * 同来发送不同的添加信息
                  */
-                verifyMsg = mMsgVerify.getText().toString();
-                if (!verifyMsg.isEmpty()) {
+                if (verifyMsg != null) {
                     if (TextUtils.equals(action, "AddFriendActivity")) {
                     /*申请添加好友*/
                         sendAddFriend();
-                    /*好友备注*/
+                    /**好友备注   暂时注掉等后台该接口*/
 //                        remarksFdNm();
                     }else {
                         sendAddGroup();
                     }
                 } else {
-                    verifyMsg= "1243234";
+                    verifyMsg= "123";
                     if (TextUtils.equals(action, "AddFriendActivity")) {
                     /*申请添加好友*/
                         sendAddFriend();

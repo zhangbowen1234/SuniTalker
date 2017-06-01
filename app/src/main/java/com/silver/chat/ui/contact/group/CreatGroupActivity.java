@@ -117,6 +117,7 @@ public class CreatGroupActivity extends BaseActivity {
                     intent.putExtra("Name", name);
                     intent.putExtra("memeberlist", (Serializable) mAdapter.getSelectedList());
                     startActivity(intent);
+                    finish();
                 } else {
                     ToastUtils.showMessage(mContext, "请填写群组名称");
                 }
