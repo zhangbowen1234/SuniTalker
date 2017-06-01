@@ -19,6 +19,7 @@ import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
 import com.ssim.android.constant.SSMessageFormat;
@@ -68,6 +69,8 @@ public class GroupChatActivity extends BaseActivity {
     LinearLayout chatLayoutMsg;
     @BindView(R.id.rl_recyle_content)
     RelativeLayout rlRecyleContent;
+    @BindView(R.id.title_left_back)
+    ImageView ivLeft;
     private SSGroupMessage ssGroupMessage;
     private EmotionKeyboard mEmotionKeyboard;
     private String userId;
@@ -101,8 +104,13 @@ public class GroupChatActivity extends BaseActivity {
         String groupName = intent.getStringExtra("groupName");
         groupId = intent.getStringExtra("groupId");
         titleBar.setTitleText(groupName+"");
-        List<SSGroupMessage> groupMessageList = AppContext.getInstance().instance.getGroupMessageList(userId, groupId, -1, 10);
-
+        //List<SSGroupMessage> groupMessageList = AppContext.getInstance().instance.getGroupMessageList(userId, groupId, -1, 10);
+        ivLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 
@@ -142,6 +150,7 @@ public class GroupChatActivity extends BaseActivity {
                 break;
             case R.id.rl_recyle_content:
                 break;
+
         }
     }
     private void initEmotionKeyboard() {
