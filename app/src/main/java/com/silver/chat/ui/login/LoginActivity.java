@@ -30,12 +30,10 @@ import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
 import com.ssim.android.listener.SSConnectListener;
-import com.ssim.android.listener.SSNotificationListener;
-import com.ssim.android.model.notification.SSNotification;
 
 import java.util.UUID;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectListener, SSNotificationListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectListener {
 
     private static final long DELAY_TIME = 600L;
     private TextView mGoReg, mForgot;
@@ -179,7 +177,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         AppContext.getInstance().instance.connect(PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""),
                 PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.IMTOKEN, ""));
         AppContext.getInstance().instance.setConnectListener(this);//连接
-        AppContext.getInstance().instance.setNotificationListener(this);//通知
     }
 
     /**
@@ -336,24 +333,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     @Override
-    public void turnOn() {
-        Log.e("turnOn()", "turnOn");
+    public void WifiState(int i) {
+
     }
 
-
-    /**
-     * 收通知监听
-     *
-     * @param ssNotification
-     */
     @Override
-    public void receiveNotification(SSNotification ssNotification) {
-
+    public void turnOn() {
+        Log.e("turnOn()", "turnOn");
     }
 
     @Override
     public void onBackPressed() {
         AppManager.getInstance().finishAllActivity();
     }
+
 
 }

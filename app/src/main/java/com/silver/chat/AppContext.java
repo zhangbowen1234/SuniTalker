@@ -20,6 +20,7 @@ import com.ssim.android.engine.SSEngine;
 import com.ssim.android.http.bean.VerifyAppKeyAndSecretResponse;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.model.chat.SSMessage;
+import com.ssim.android.model.chat.SSP2PMessage;
 
 import java.io.InputStream;
 import java.util.UUID;
@@ -29,7 +30,7 @@ import java.util.UUID;
  * 邮箱：fandy618@hotmail.com
  */
 
-public class AppContext extends MultiDexApplication {
+public class AppContext extends MultiDexApplication implements SSMessageReceiveListener {
 
     public static AppContext appContext;
     public SSMessage mSSmessage;
@@ -87,24 +88,20 @@ public class AppContext extends MultiDexApplication {
          * 接收群和个人消息及通知监听
          */
         instance = SSEngine.getInstance();
-        instance.setMsgRcvListener(new SSMessageReceiveListener() {
-            @Override
-            public void receiveMsg(SSMessage ssMessage) {
-//                if ()
-//                Log.e("AppContext_receiveMsg:", ((SSP2PMessage) ssMessage).getContent());
-//                long messageTime = ((SSP2PMessage) ssMessage).getMessageTime();
-            }
-        });
+        instance.setMsgRcvListener(this);
 
     }
 
-// SELECT T."MSG_ID",T."CLIENT_MESSAGE_ID",T."CONTENT_TYPE",T."CONTENT",T."LOCAL_PATH",T."MESSAGE_TIME",T."MSG_TYPE",T."TARGET_ID",T."SOURCE_ID",T."MSG_STATUS"
-//    FROM "SSIM_P2PMESSAGE" T
-//    WHERE ((T."TARGET_ID"=? AND T."SOURCE_ID"=?) OR (T."TARGET_ID"=? AND T."SOURCE_ID"=?))
-//    AND T."MESSAGE_TIME"<? ORDER BY T.'MESSAGE_TIME' DESC LIMIT ?
-
-
     public static AppContext getInstance() {
         return appContext;
+    }
+
+    @Override
+    public void receiveMsg(SSMessage ssMessage) {
+        if (ssMessage instanceof SSP2PMessage) {
+            SSP2PMessage receiveMsg = (SSP2PMessage) ssMessage;
+            String sourceId = receiveMsg.getSourceId();
+            Log.e("appContext", sourceId + ":" + receiveMsg.getContent());
+        }
     }
 }

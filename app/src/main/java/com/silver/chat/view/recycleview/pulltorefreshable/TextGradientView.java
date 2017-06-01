@@ -3,7 +3,6 @@ package com.silver.chat.view.recycleview.pulltorefreshable;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
@@ -50,8 +49,8 @@ public class TextGradientView extends View {
         mTextStr = DEFAULT_TEXT;
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.BLACK);
-        mPaint.setTextSize(dip2px(16));
+//        mPaint.setColor(Color.WHITE);
+        mPaint.setTextSize(dip2px(12));
         mColors = new int[]{0xff000000, 0xffff0000, 0xff00ff00, 0xff0000ff, 0xffffff00, 0xff000000};
         mPositions = new float[]{0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f};
     }

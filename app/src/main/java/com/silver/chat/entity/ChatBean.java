@@ -44,18 +44,27 @@ public class ChatBean extends BaseBean implements MultiItemEntity,Serializable, 
     /**
      * 头像
      */
-    public int avatar;
+    public String avatar;
 
     private String userId;
     private String userName;
     private String content;
     private int type;
+    private String sendTime;
 
-    public ChatBean(String userId, String userName, String content, int type) {
+    public ChatBean(String userId, String userName, String avatar, int type,String sendTime) {
         this.userId = userId;
         this.userName = userName;
-        this.content = content;
+        this.avatar = avatar;
         this.type = type;
+    }
+
+    public String getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(String sendTime) {
+        this.sendTime = sendTime;
     }
 
     public int getType() {
@@ -110,11 +119,11 @@ public class ChatBean extends BaseBean implements MultiItemEntity,Serializable, 
         this.top = top;
     }
 
-    public int getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(int avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 

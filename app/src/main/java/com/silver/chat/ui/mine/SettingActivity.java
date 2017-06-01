@@ -18,13 +18,10 @@ import com.silver.chat.ui.mine.setting.AboutActivity;
 import com.silver.chat.ui.mine.setting.AccountActivity;
 import com.silver.chat.ui.mine.setting.ChangeBackgroundActivity;
 import com.silver.chat.util.AppManager;
-import com.silver.chat.util.ChooseBackgroudUtils;
 import com.silver.chat.util.NetUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.dialog.TvLoginOutDialog;
-
-import static com.silver.chat.util.Utils.context;
 
 /**
  * 作者：Fandy on 2016/12/9 10:38
@@ -100,8 +97,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                                                 Bundle loginBundle = new Bundle();
                                                 loginBundle.putInt("type",Common.LoginType);
                                                 startActivity(LoginActivity.class,loginBundle);
-                                                finish();
                                                 AppManager.getInstance().finishActivity(MainActivity.class);
+                                                finish();
                                                 Toast.makeText(mContext,"退出成功",Toast.LENGTH_SHORT).show();
                                             }
 
@@ -114,8 +111,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                                                     Bundle loginBundle = new Bundle();
                                                     loginBundle.putInt("type",Common.LoginType);
                                                     startActivity(LoginActivity.class,loginBundle);
-                                                    finish();
                                                     AppManager.getInstance().finishActivity(MainActivity.class);
+                                                    finish();
                                                     Toast.makeText(mContext,"退出成功",Toast.LENGTH_SHORT).show();
                                                 }
                                             }
@@ -123,6 +120,12 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                                             @Override
                                             public void onError() {
                                                 Toast.makeText(mContext,"连接异常",Toast.LENGTH_SHORT).show();
+                                                PreferenceUtil.getInstance(mContext).setFirst(false);
+                                                PreferenceUtil.getInstance(mContext).setLog(false);
+                                                Bundle loginBundle = new Bundle();
+                                                loginBundle.putInt("type",Common.LoginType);
+                                                startActivity(LoginActivity.class,loginBundle);
+                                                finish();
                                             }
                                         });
                                     }}else {
