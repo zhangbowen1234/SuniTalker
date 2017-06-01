@@ -52,8 +52,10 @@ public class GroupChatActivity extends BaseActivity {
     private TextView tvChatCount;
     private int selectPosition;
     private BaseDao<GroupBean> mDao;
-    private List<GroupBean> data ;
+    private List<GroupBean> data;
     private ArrayList<GroupBean> datas;
+    private ArrayList<GroupBean> lists;
+    private GroupBean groupBean;
 
     @Override
     protected void initView() {
@@ -73,15 +75,13 @@ public class GroupChatActivity extends BaseActivity {
         mManagerGroups = new ArrayList<>();
         mJoinGroups = new ArrayList<>();
         myAdapter = new MyAdapter();
+        mDao = DBHelper.get().dao(GroupBean.class);
 
         //获取群组数据信息数据库为空去网络获取
-        //getLocalGroupInfo();
-        getNetGroupInfo();
-
-       /* if(!(data.size()>0)) {
+        getLocalGroupInfo();
+        if (!(data.size() > 0) && data == null) {
             getNetGroupInfo();
         }
-*/
         myAdapter = new MyAdapter();
         listView.setAdapter(myAdapter);
         listView.expandGroup(0);
@@ -94,7 +94,7 @@ public class GroupChatActivity extends BaseActivity {
      * 查询本地数据库群组数据
      */
     private void getLocalGroupInfo() {
-        WhereInfo userId =  WhereInfo.get().equal("userId", PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""));
+        WhereInfo userId = WhereInfo.get().equal("userId", PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""));
         data = mDao.query(userId);
         quFenData();
 
@@ -137,16 +137,13 @@ public class GroupChatActivity extends BaseActivity {
         int i = Integer.parseInt(userId);
         JoinedGroupRequest request = JoinedGroupRequest.getInstance();
         request.setUserId(i);
-        SSIMGroupManger.getJoinGroupList(mContext,Common.version, request, token, new ResponseCallBack<BaseResponse<ArrayList<GroupBean>>>() {
-
+        SSIMGroupManger.getJoinGroupList(mContext, Common.version, request, token, new ResponseCallBack<BaseResponse<ArrayList<GroupBean>>>() {
 
 
             @Override
             public void onSuccess(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
                 data = arrayListBaseResponse.data;
                 //将数据放入数据库中
-                mDao = DBHelper.get().dao(GroupBean.class);
-                Log.e("aaab", datas.toString()+"aaaa");
                 putLocal(data);
                 quFenData();
             }
@@ -166,11 +163,23 @@ public class GroupChatActivity extends BaseActivity {
     }
 
     private void putLocal(final List<GroupBean> datass) {
+        lists = new ArrayList<>();
+        for (int i = 0; i < datass.size(); i++) {
+            groupBean = new GroupBean();
+            groupBean.setGroupName(datass.get(i).getGroupName());
+            groupBean.setAvatar(datass.get(i).getAvatar());
+            groupBean.setCreateTime(datass.get(i).getCreateTime());
+            groupBean.setGroupId(datass.get(i).getGroupId());
+            groupBean.setGroupRemark(datass.get(i).getGroupRemark());
+            groupBean.setPrivilege(datass.get(i).getPrivilege());
+            groupBean.setUserId(datass.get(i).getUserId());
+            lists.add(groupBean);
+        }
 
-        mDao.asyncTask(new EasyRun<List<GroupBean>>(){
+        mDao.asyncTask(new EasyRun<List<GroupBean>>() {
             @Override
             public List<GroupBean> run() throws Exception {
-                Log.e("aaab", datass.toString()+"aaaa");
+                mDao.create(lists);
                 return mDao.queryForAll();
             }
 
@@ -181,7 +190,6 @@ public class GroupChatActivity extends BaseActivity {
             }
         });
     }
-
 
 
     /**
