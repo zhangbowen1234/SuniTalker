@@ -50,12 +50,21 @@ public class ChatBean extends BaseBean implements MultiItemEntity,Serializable, 
     private String userName;
     private String content;
     private int type;
+    private String sendTime;
 
-    public ChatBean(String userId, String userName, String avatar, int type) {
+    public ChatBean(String userId, String userName, String avatar, int type,String sendTime) {
         this.userId = userId;
         this.userName = userName;
         this.avatar = avatar;
         this.type = type;
+    }
+
+    public String getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(String sendTime) {
+        this.sendTime = sendTime;
     }
 
     public int getType() {

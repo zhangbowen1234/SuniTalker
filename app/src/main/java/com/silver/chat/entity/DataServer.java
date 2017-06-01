@@ -49,7 +49,7 @@ public class DataServer {
             }
         }
         List<ChatBean> list = new ArrayList<>();
-        list.add(new ChatBean("user_id=", "userName=", avatar, ChatBean.CHAT_SINGLR));
+//        list.add(new ChatBean("user_id=", "userName=", avatar, ChatBean.CHAT_SINGLR));
 //        for (int i = 0; i < 4; i++) {
 //            list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL1, ChatBean.CHAT_SINGLR));
 //            list.add(new ChatBean("user_id=" + i, "userName=" + i, null, ChatBean.CHAT_SYSTEM));
