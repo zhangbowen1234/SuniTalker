@@ -1,6 +1,5 @@
 package com.silver.chat.adapter;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,6 +22,8 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
 
     public ChatMessageAdapter(int layoutResId, List<SSP2PMessage> data) {
         super(layoutResId, data);
+        /*将聊天信息List倒置排序*/
+//        Collections.reverse(data);
     }
 
     public ChatMessageAdapter(List<SSP2PMessage> data) {
@@ -48,7 +49,7 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
         rightPhotoView = holper.getView(R.id.message_user_userphoto);
         leftMessageView = holper.getView(R.id.friend_message);
         rightMessageView = holper.getView(R.id.user_message);
-        Log.e("item.getSourceId() :", "item.getMessageTime:" + item.getMessageTime() + ",getSourceId:" + item.getSourceId() + ",说:" + item.getContent());
+//        Log.e("item.getSourceId() :", "item.getMessageTime:" + item.getMessageTime() + ",getSourceId:" + item.getSourceId() + ",说:" + item.getContent());
            /*获取当前系统时间的13位的时间戳*/
         long timestamp = System.currentTimeMillis();
         /*当前年份*/
@@ -77,7 +78,7 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
 //                    }
 //                }else {
                      /*小时:分*/
-                    timeView.setText(DateUtils.formatTimeSimple(item.getMessageTime()) + "");
+                timeView.setText(DateUtils.formatTimeSimple(item.getMessageTime()) + "");
 //                }
             } else {
                 /*月:日:小时:分*/

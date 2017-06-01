@@ -38,8 +38,8 @@ import com.ssim.android.listener.SSMessageSendListener;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -59,13 +59,14 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private String friendId, userId, chatType;
     private ImageView mBack;
 
-    int lastItemPosition;
     private EmotionLayout mElEmotion;
     private EmotionKeyboard mEmotionKeyboard;
     private RelativeLayout mLlContent;
     private SSP2PMessage mChatMessage;
     private long timestamp;
     private List<SSP2PMessage> p2PMessageList;
+    private MyHandler mMyHandler;
+    private String editcontent;
 
     @Override
     protected int getLayoutId() {
@@ -95,6 +96,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mElEmotion.attachEditText(inputEdit);
         //实现内容区与表情区仿微信切换效果
         initEmotionKeyboard();
+        mMyHandler = new MyHandler(this);
 
     }
 
@@ -112,17 +114,17 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         /**
          * 私人聊天
          */
-        p2PMessageList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, -1, 30);
-        /*将聊天信息List倒置排序*/
-        Collections.reverse(p2PMessageList);
+        p2PMessageList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, -1, 10);
         chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList);
         if (p2PMessageList.size() != 0) {
             mShowHead.setVisibility(View.INVISIBLE);
             /*显示聊天显示最后一条的位置*/
-            mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
+            mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount());
+            chatMessageAdapter.notifyDataSetChanged();
         }
          /*给RecyclerView列表设置适配器*/
         mChatMsgList.setAdapter(chatMessageAdapter);
+        chatMessageAdapter.addHeaderView(mChatMsgList.getRefreshView());
     }
 
     @Override
@@ -179,25 +181,49 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
 //                String stickerPath = LQREmotionKit.getStickerPath();
             }
         });
+        /*刷新聊天记录*/
+        if (p2PMessageList == null || p2PMessageList.size() == 0) {
+            mChatMsgList.refreshComplete();
+        } else {
+            mChatMsgList.setOnRefreshCompleteListener(new WSRecyclerView.OnRefreshCompleteListener() {
+                @Override
+                public void onRefreshComplete() {
+                    mMyHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            SSP2PMessage ssp2PMessage = p2PMessageList.get((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1));
+                            long messageTime = ssp2PMessage.getMessageTime();
+                            Log.e("aa", ssp2PMessage.getSourceId() + "/" + ssp2PMessage.getContent());
+                            List<SSP2PMessage> p2PMsgList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, messageTime, 10);
+                            p2PMessageList.addAll((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1), p2PMsgList);
+                            mChatMsgList.refreshComplete();
+                            chatMessageAdapter.notifyDataSetChanged();
+                        }
+                    }, 3000);
+                }
+            });
+        }
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.chat_send_msg:
-                String content = inputEdit.getText().toString();
-                inputEdit.setText("");
-                mChatMessage.setContent(content);
-                mChatMessage.setSourceId(userId);
-                mChatMessage.setTargetId(friendId);
-                mChatMessage.setMessageTime(timestamp);
-                chatMessageAdapter.addData(mChatMessage);
-                mChatMsgList.scrollToPosition(p2PMessageList.size());
-                mShowHead.setVisibility(View.INVISIBLE);
-                mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
-                if (!"".equals(content)|| content != null) {
+                editcontent = inputEdit.getText().toString();
+                if ("".equals(editcontent) || editcontent == null) {
+                    ToastUtils.showMessage(mContext, "没有发送的内容");
+                } else {
+                    inputEdit.setText("");
+                    mChatMessage.setContent(editcontent);
+                    mChatMessage.setSourceId(userId);
+                    mChatMessage.setTargetId(friendId);
+                    mChatMessage.setMessageTime(timestamp);
+                    p2PMessageList.add(mChatMessage);
+                    mChatMsgList.scrollToPosition(p2PMessageList.size());
+                    mShowHead.setVisibility(View.INVISIBLE);
+                    mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
                     SSEngine instance = SSEngine.getInstance();
-                    instance.sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT, content);
+                    instance.sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT, editcontent);
                     instance.setMsgSendListener(new SSMessageSendListener() {
                         @Override
                         public void didSend(boolean b, long l) {
@@ -247,12 +273,15 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     public void receiveMsg(SSMessage ssMessage) {
         if (ssMessage instanceof SSP2PMessage) {
             receiveMsg = (SSP2PMessage) ssMessage;
-            Log.e(TAG, receiveMsg.getContent());
-            if (p2PMessageList.size() != 0) {
-                mShowHead.setVisibility(View.INVISIBLE);
+            String sourceId = receiveMsg.getSourceId();
+            if (sourceId.equals(friendId) || sourceId == friendId) {
+                Log.e(TAG, receiveMsg.getContent());
+                if (p2PMessageList.size() != 0) {
+                    mShowHead.setVisibility(View.INVISIBLE);
+                }
+                mHandler.sendEmptyMessage(0);
             }
         }
-        mHandler.sendEmptyMessage(0);
     }
 
     Handler mHandler = new Handler() {
@@ -272,6 +301,22 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
             }
         }
     };
+
+    private static class MyHandler extends Handler {
+        private WeakReference<ContactChatActivity> activityWeakReference;
+
+        public MyHandler(ContactChatActivity fragment) {
+            activityWeakReference = new WeakReference<ContactChatActivity>(fragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            ContactChatActivity fragment = activityWeakReference.get();
+            if (fragment == null) {
+                return;
+            }
+        }
+    }
 
 
 }
