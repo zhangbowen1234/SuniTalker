@@ -19,7 +19,6 @@ import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.SimpleClickListener;
-import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSNotificationListener;
 import com.ssim.android.model.notification.SSFriendNotification;
 import com.ssim.android.model.notification.SSGroupNotification;
@@ -45,7 +44,6 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     private AgreeFriendAddBody agreeFriendAddBody;
     private List<SSFriendNotification> friendNotificationList;
     private NewFriendAdapter addFriendAdatpter;
-    private SSEngine instance;
 
     @Override
     protected int getLayoutId() {
@@ -71,8 +69,6 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void initData() {
         super.initData();
-        /*SDK入口对象*/
-        instance = SSEngine.getInstance();
         token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         /*SDK中取得好友添加申请通知列表*/
         friendNotificationList = AppContext.getInstance().instance.getFriendNotificationList();
@@ -84,7 +80,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     @Override
     protected void initListener() {
         /* 通知的监听*/
-        instance.setNotificationListener(this);
+        AppContext.getInstance().instance.setNotificationListener(this);
         mBack.setOnClickListener(this);
         mAddFriend.setOnClickListener(this);
         mNFRecyclerList.addOnItemTouchListener(new SimpleClickListener() {

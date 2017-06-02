@@ -23,6 +23,9 @@ public class NewFriendAdapter extends BaseQuickAdapter<SSFriendNotification,Base
 
     @Override
     protected void convert(BaseViewHolder helper, SSFriendNotification item, int position) {
-        helper.setText(R.id.add_user_name,item.getSourceName());
+        helper.setText(R.id.add_user_name,item.getSourceName())
+                .setText(R.id.friend_additional,item.getContent());
+
+
     }
 }
