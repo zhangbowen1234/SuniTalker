@@ -75,7 +75,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         agreeFriendAddBody = new AgreeFriendAddBody();
         mContactList = new ArrayList<GroupMemberBean>();
         friendNotificationList = new ArrayList<SSFriendNotification>();
-        mDao = DBHelper.get().dao(GroupMemberBean.class);
+         mDao = DBHelper.get().dao(GroupMemberBean.class);
 
     }
 
@@ -92,7 +92,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         friendNotificationList = AppContext.getInstance().instance.getFriendNotificationList();
         for (int i = 0; i < friendNotificationList.size(); i++) {
             sourceId = friendNotificationList.get(i).getSourceId();
-            QueryDbParent();
+//            QueryDbParent();
 //            if (mContactList != null){
 //
 //            }
@@ -139,7 +139,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Bundle mBundle = new Bundle();
                 mBundle.putString("sourceId",sourceId);
-                startActivity(FriendApplyforActivity.class);
+                startActivity(FriendApplyforActivity.class,mBundle);
             }
 
             @Override

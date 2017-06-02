@@ -55,7 +55,7 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
     @Override
     protected void initData() {
         super.initData();
-        sourceId = getIntent().getExtras().getString("sourceId");
+        sourceId =  getIntent().getExtras().getString("sourceId");
         token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
         mNickName = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
