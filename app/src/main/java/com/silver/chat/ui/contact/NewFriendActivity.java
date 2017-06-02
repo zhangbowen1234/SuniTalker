@@ -1,5 +1,6 @@
 package com.silver.chat.ui.contact;
 
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,11 +13,17 @@ import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.adapter.NewFriendAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.database.callback.EasyRun;
+import com.silver.chat.database.dao.BaseDao;
+import com.silver.chat.database.helper.DBHelper;
+import com.silver.chat.database.info.WhereInfo;
 import com.silver.chat.network.SSIMFrendManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.AgreeFriendAddBody;
 import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.SimpleClickListener;
 import com.ssim.android.listener.SSNotificationListener;
@@ -26,6 +33,7 @@ import com.ssim.android.model.notification.SSNormalNotification;
 import com.ssim.android.model.notification.SSNotification;
 import com.ssim.android.model.notification.friend.SSAddFriendNotification;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,10 +48,13 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     private LinearLayoutManager linearLayoutManager;
     private LinearLayout mAddFriend;
     private TextView agreeAdd;
-    private String token;
+    private String token,userId ,mNickName ,mAvatar;
     private AgreeFriendAddBody agreeFriendAddBody;
     private List<SSFriendNotification> friendNotificationList;
     private NewFriendAdapter addFriendAdatpter;
+    private List<GroupMemberBean> mContactList;
+    private BaseDao<GroupMemberBean> mDao;
+    private String sourceId;
 
     @Override
     protected int getLayoutId() {
@@ -59,10 +70,12 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         agreeAdd = (TextView) findViewById(R.id.agree_add_friend);
         linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        friendNotificationList = new ArrayList<SSFriendNotification>();
         /*设置布局管理器*/
         mNFRecyclerList.setLayoutManager(linearLayoutManager);
         agreeFriendAddBody = new AgreeFriendAddBody();
+        mContactList = new ArrayList<GroupMemberBean>();
+        friendNotificationList = new ArrayList<SSFriendNotification>();
+        mDao = DBHelper.get().dao(GroupMemberBean.class);
 
     }
 
@@ -70,12 +83,50 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     protected void initData() {
         super.initData();
         token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+        userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
+        mNickName = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
+        mAvatar = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
+
+
         /*SDK中取得好友添加申请通知列表*/
         friendNotificationList = AppContext.getInstance().instance.getFriendNotificationList();
+        for (int i = 0; i < friendNotificationList.size(); i++) {
+            sourceId = friendNotificationList.get(i).getSourceId();
+            QueryDbParent();
+//            if (mContactList != null){
+//
+//            }
+        }
         addFriendAdatpter = new NewFriendAdapter(R.layout.item_new_friend, friendNotificationList);
         mNFRecyclerList.setAdapter(addFriendAdatpter);
 
     }
+
+    /**
+     * 查询群表中联系人
+     */
+    private void QueryDbParent() {
+        mDao.asyncTask(new EasyRun<List<GroupMemberBean>>() {
+            @Override
+            public List<GroupMemberBean> run() throws Exception {
+                return getSortData();
+            }
+
+            @Override
+            public void onMainThread(List<GroupMemberBean> data) throws Exception {
+                if (data.isEmpty()) {
+                    //其次从网络获取数据
+//                    httpContactList();
+                } else {
+                    mContactList = data;
+                    String nickName = mContactList.get(0).getNickName();
+
+                }
+            }
+        });
+
+    }
+
 
     @Override
     protected void initListener() {
@@ -86,7 +137,8 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         mNFRecyclerList.addOnItemTouchListener(new SimpleClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                Bundle mBundle = new Bundle();
+                mBundle.putString("sourceId",sourceId);
                 startActivity(FriendApplyforActivity.class);
             }
 
@@ -97,11 +149,20 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
 
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                Log.e("aaaaa","66666666");
+                switch (view.getId()){
 
+                }
+                agreeFriendAddBody.setAppName("innerapp");
+                agreeFriendAddBody.setSourceId(userId);
+                agreeFriendAddBody.setSourceName(mNickName);
+                agreeFriendAddBody.setSourceAvatar(mAvatar);
+                agreeFriendAddBody.setTargetId(sourceId);
                 SSIMFrendManger.agreeFriend(mContext, token, agreeFriendAddBody, new ResponseCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         Log.e("onSuccess", baseResponse.toString());
+                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
                     }
 
                     @Override
@@ -159,4 +220,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    public List<GroupMemberBean> getSortData() {
+        return mDao.query(WhereInfo.get().equal("userId", sourceId));
+    }
 }

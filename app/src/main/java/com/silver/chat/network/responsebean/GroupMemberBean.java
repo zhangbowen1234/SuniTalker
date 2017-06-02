@@ -27,10 +27,7 @@ public class GroupMemberBean implements Serializable {
     private String groupNickname;
     @DatabaseField(columnName = "nickName")
     private String nickName;
-
-
     @DatabaseField(columnName = "avatar")
-
     private String avatar;
     @DatabaseField(columnName = "privilege")
     private int privilege;
