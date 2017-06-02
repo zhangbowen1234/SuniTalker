@@ -27,6 +27,7 @@ import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
 import com.ssim.android.constant.SSMessageStatus;
 import com.ssim.android.constant.SSSessionType;
+import com.ssim.android.model.notification.SSNotification;
 import com.ssim.android.model.session.SSSession;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ import static java.util.Collections.addAll;
 public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHolder> {
 
     private List<ChatBean> chatBeen;
+    public static String sourceId;
 
     public ChatApater(List<ChatBean> data) {
         super(data);
@@ -63,7 +65,8 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 GlideUtil.loadAvatar((ImageView) holder.getView(R.id.iv_avatar), item.getAvatar());
                 holder.setText(R.id.tv_name, item.getUserName());
                 holder.setText(R.id.tv_time, item.getSendTime());
-                Log.e("avatar:", item.getAvatar() + item.getUserName()+item.getSendTime());
+                holder.setText(R.id.tv_content,item.getContent());
+                Log.e("avatar:", item.getContent() + item.getUserName()+item.getSendTime());
                 break;
             case ChatBean.CHAT_GROUP:
                 GlideUtil.loadAvatar((ImageView) holder.getView(R.id.iv_avatar), item.getAvatar());
@@ -110,14 +113,14 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
         String userId = PreferenceUtil.getInstance(context).getString(PreferenceUtil.USERID, "");
         List<SSSession> sessionList = AppContext.getInstance().instance.getsessionList(userId);
         List<ChatBean> list = new ArrayList<>();
+
         for (int i = 0; i < sessionList.size(); i++) {
             SSSessionType sessionType = sessionList.get(i).getSessionType();
             //获取好友聊天列表
             String SINGLR_avatar;
             String SINGLR_nickname;
-
             if (sessionType == SSSessionType.P2PCHAT) {
-                String sourceId = sessionList.get(i).getSourceId();
+                sourceId = sessionList.get(i).getSourceId();
 
                 Log.e("sourceId:", sourceId);
                 BaseDao<ContactListBean> mDao = DBHelper.get().dao(ContactListBean.class);
@@ -126,10 +129,12 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 for (int j = 0; j < friendId.size(); j++) {
                     SINGLR_avatar = friendId.get(j).getAvatar();
                     SINGLR_nickname = friendId.get(j).getNickName();
+                    String contents= sessionList.get(j).getContent();
                     long sendTimes = sessionList.get(j).getSendTime();
-                    String s = DateUtils.formatTimeSimple(sendTimes);
-                    Log.e("sendTimes:", sendTimes+"");
-                    list.add(new ChatBean("user_id=", SINGLR_nickname, SINGLR_avatar, ChatBean.CHAT_SINGLR,s));
+                    String Times = DateUtils.formatTimeSimple(sendTimes);
+                    Log.e("sendTimes:", sendTimes+"++"+Times+contents);
+                    list.add(new ChatBean(sourceId, SINGLR_nickname, SINGLR_avatar, ChatBean.CHAT_SINGLR,Times,contents));
+
                 }
                 //获取群组聊天列表
             }else if (sessionType == SSSessionType.GROUPCHAT){
@@ -145,7 +150,7 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
 //                    list.add(new ChatBean("user_id=", SINGLR_nickname, SINGLR_avatar, ChatBean.CHAT_GROUP));
                 }
             }
-        }
+        } Log.e("list:", list.toString());
         return list;
     }
 }
