@@ -10,7 +10,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <android.support.v4.widget.CircleImageView
+        <com.silver.chat.view.CircleImageView
             android:id="@+id/add_friend_head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

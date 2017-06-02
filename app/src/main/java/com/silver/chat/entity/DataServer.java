@@ -29,7 +29,7 @@ public class DataServer {
 
     public static List<ChatBean> getChatData(Context context) {
         String userId = PreferenceUtil.getInstance(context).getString(PreferenceUtil.USERID, "");
-        List<SSSession> sessionList = AppContext.getInstance().instance.getsessionList(userId);
+        List<SSSession> sessionList = AppContext.getInstance().instance.getSessionList(userId);
 
         Log.e("sessionList:", sessionList.size() + "" + sessionList.get(0).getSessionType());
         String avatar = null;
