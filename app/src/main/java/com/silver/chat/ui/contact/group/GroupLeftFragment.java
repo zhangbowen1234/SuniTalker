@@ -39,7 +39,7 @@ public class GroupLeftFragment extends BasePagerFragment {
     public GroupLeftFragment(List list) {
         this.mList = list;
     }
-
+    public GroupLeftFragment(){};
     @Override
     protected void getData() {
         grideViewAdapter = new GrideViewAdapter();

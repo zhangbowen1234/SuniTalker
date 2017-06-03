@@ -10,25 +10,21 @@ import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
-import com.ssim.android.model.chat.SSP2PMessage;
+import com.ssim.android.model.chat.SSGroupMessage;
 
 import java.util.List;
 
 /**
- * Created by hibon on 2016/11/28.
+ * Created by Joe on 2017/6/2.
  */
-public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewHolder> {
 
-
-    public ChatMessageAdapter(int layoutResId, List<SSP2PMessage> data) {
+public class GroupChatMessageAdapter extends BaseQuickAdapter<SSGroupMessage,BaseViewHolder> {
+    public GroupChatMessageAdapter(int layoutResId, List<SSGroupMessage> data) {
         super(layoutResId, data);
-        /*将聊天信息List倒置排序*/
-//        Collections.reverse(data);
     }
 
-
     @Override
-    protected void convert(BaseViewHolder holper, SSP2PMessage item, int position) {
+    protected void convert(BaseViewHolder holper, SSGroupMessage item, int position) {
 
         RelativeLayout leftLayout;
         RelativeLayout rightLayout;
@@ -38,6 +34,7 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
         ImageView leftPhotoView;
         ImageView rightPhotoView;
 
+
         leftLayout = holper.getView(R.id.chat_friend_left_layout);
         rightLayout = holper.getView(R.id.chat_user_right_layout);
         timeView = holper.getView(R.id.message_time);
@@ -45,8 +42,7 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
         rightPhotoView = holper.getView(R.id.message_user_userphoto);
         leftMessageView = holper.getView(R.id.friend_message);
         rightMessageView = holper.getView(R.id.user_message);
-//        Log.e("item.getSourceId() :", "item.getMessageTime:" + item.getMessageTime() + ",getSourceId:" + item.getSourceId() + ",说:" + item.getContent());
-           /*获取当前系统时间的13位的时间戳*/
+
         long timestamp = System.currentTimeMillis();
         /*当前年份*/
         int year = DateUtils.formatYear(timestamp);
@@ -122,6 +118,6 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
             rightLayout.setVisibility(View.INVISIBLE);
             leftMessageView.setText(item.getContent());
         }
-    }
 
+    }
 }
