@@ -296,7 +296,7 @@ public class GroupDetailActivity extends BaseActivity {
             case R.id.iv_conversation:
                 Intent intent4 = new Intent(this, GroupChatActivity.class);
                 intent4.putExtra("groupName",groupName);
-                intent4.putExtra("groupId",groupId);
+                intent4.putExtra("groupId",groupId+"");
                 startActivity(intent4);
                 break;
             case R.id.iv_qrcode:

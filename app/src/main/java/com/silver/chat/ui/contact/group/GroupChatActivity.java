@@ -17,16 +17,21 @@ import com.lqr.emoji.EmotionKeyboard;
 import com.lqr.emoji.EmotionLayout;
 import com.silver.chat.AppContext;
 import com.silver.chat.R;
+import com.silver.chat.adapter.ChatMessageAdapter;
+import com.silver.chat.adapter.GroupChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
+import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
+import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageSendListener;
 import com.ssim.android.model.chat.SSGroupMessage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -54,7 +59,7 @@ public class GroupChatActivity extends BaseActivity {
     @BindView(R.id.textView)
     TextView textView;
     @BindView(R.id.recyle_content)
-    RecyclerView recyleContent;
+    WSRecyclerView recyleContent;
     @BindView(R.id.chat_btn_emote)
     ImageButton chatBtnEmote;
     @BindView(R.id.chat_edit_input)
@@ -75,6 +80,9 @@ public class GroupChatActivity extends BaseActivity {
     private EmotionKeyboard mEmotionKeyboard;
     private String userId;
     private String groupId;
+    private long timeStamp;
+    private GroupChatMessageAdapter chatMessageAdapter;
+    private List<SSGroupMessage> groupMessageList = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -85,11 +93,12 @@ public class GroupChatActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         //List<SSGroupMessage> groupMessageList = AppContext.getInstance().instance.getGroupMessageList("8", "233", 0, 3);
-        ssGroupMessage = new SSGroupMessage();
+
         userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(false);
         recyleContent.setLayoutManager(linearLayoutManager);
+
         //将内容输入框交给EmotionLayout来处理
         elEmotion.attachEditText(chatEditInput);
         //实现内容区与表情区仿微信切换效果
@@ -103,8 +112,19 @@ public class GroupChatActivity extends BaseActivity {
         Intent intent = getIntent();
         String groupName = intent.getStringExtra("groupName");
         groupId = intent.getStringExtra("groupId");
-        titleBar.setTitleText(groupName+"");
-        //List<SSGroupMessage> groupMessageList = AppContext.getInstance().instance.getGroupMessageList(userId, groupId, -1, 10);
+        titleBar.setTitleText(groupName + "");
+
+        //groupMessageList = AppContext.getInstance().instance.getGroupMessageList(userId, groupId, -1, 10);
+        chatMessageAdapter = new GroupChatMessageAdapter(R.layout.chat_message_item, groupMessageList);
+        if (groupMessageList.size() != 0) {
+            showContactHead.setVisibility(View.INVISIBLE);
+            //显示最后一条的聊天位置
+            recyleContent.smoothScrollToPosition(chatMessageAdapter.getItemCount());
+            chatMessageAdapter.notifyDataSetChanged();
+        }
+        //给recycleview设置适配器
+        recyleContent.setAdapter(chatMessageAdapter);
+        chatMessageAdapter.addHeaderView(recyleContent.getRefreshView());
         ivLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,33 +134,44 @@ public class GroupChatActivity extends BaseActivity {
     }
 
 
-
     @OnClick({R.id.chat_btn_emote, R.id.chat_edit_input, R.id.chat_send_msg, R.id.chatInputHalving, R.id.elEmotion, R.id.chatLayoutMsg, R.id.rl_recyle_content})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.chat_btn_emote:
                 break;
             case R.id.chat_edit_input:
+
                 break;
             case R.id.chat_send_msg:
                 String content = chatEditInput.getText().toString();
-                chatEditInput.setText("");
-                ssGroupMessage.setContent(content);
-                ssGroupMessage.setSourceId(userId);
-               /* ssGroupMessage.setTargetId(friendId);
-                ssGroupMessage.setMessageTime(timestamp);
-                chatMessageAdapter.addData(mChatMessage);
-                mChatMsgList.scrollToPosition(p2PMessageList.size());
-                mShowHead.setVisibility(View.INVISIBLE);
-                mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);*/
-                SSEngine instance = SSEngine.getInstance();
-                instance.sendMessageToGroupId(groupId,SSMessageFormat.TEXT,content);
-                instance.setMsgSendListener(new SSMessageSendListener() {
-                    @Override
-                    public void didSend(boolean b, long l) {
-                        Log.e(TAG, "didSend" + "boolean:" + b + ";long:" + l);
-                    }
-                });
+                if ("".equals(content) || content == null) {
+                    ToastUtils.showMessage(mContext, "没有发送的内容");
+                } else {
+                    //获取当前时间的时间戳
+                    ssGroupMessage = new SSGroupMessage();
+                    timeStamp = System.currentTimeMillis();
+                    showContactHead.setVisibility(View.INVISIBLE);
+                    chatEditInput.setText("");
+                    ssGroupMessage.setContent(content);
+                    ssGroupMessage.setSourceId(userId);
+                    ssGroupMessage.setGroupId(groupId);
+                    ssGroupMessage.setMessageTime(timeStamp);
+                    groupMessageList.add(ssGroupMessage);
+                    chatMessageAdapter.notifyDataSetChanged();
+                    recyleContent.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
+
+                    SSEngine instance = SSEngine.getInstance();
+                    instance.sendMessageToGroupId(groupId, SSMessageFormat.TEXT, content);
+
+                    instance.setMsgSendListener(new SSMessageSendListener() {
+                        @Override
+                        public void didSend(boolean b, long l) {
+
+                        }
+                    });
+                }
+
+
                 break;
             case R.id.chatInputHalving:
                 break;
@@ -153,6 +184,12 @@ public class GroupChatActivity extends BaseActivity {
 
         }
     }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+    }
+
     private void initEmotionKeyboard() {
         mEmotionKeyboard = EmotionKeyboard.with(this);
         mEmotionKeyboard.bindToContent(rlRecyleContent);

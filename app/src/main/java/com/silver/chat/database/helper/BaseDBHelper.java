@@ -30,8 +30,6 @@ public abstract class BaseDBHelper extends OrmLiteSqliteOpenHelper {
 
 	protected abstract BaseDBHelper initHelper();
 
-	public static final String DATABASE_PATH = "" ;//= Environment.getExternalStorageDirectory() + "/test.db";
-
 	/**
 	 * 自定义数据库升级：true自定义，false默认升级（删除所有表并重新创建）
      */
@@ -104,15 +102,6 @@ public abstract class BaseDBHelper extends OrmLiteSqliteOpenHelper {
 		helperMap.clear();
 	}
 
-
-	@Override
-	public synchronized SQLiteDatabase getWritableDatabase() {
-		return SQLiteDatabase.openDatabase(DATABASE_PATH, null,SQLiteDatabase.OPEN_READWRITE);
-	}
-
-	public synchronized SQLiteDatabase getReadableDatabase() {
-		return SQLiteDatabase.openDatabase(DATABASE_PATH, null,SQLiteDatabase.OPEN_READONLY);
-	}
 
 
 }

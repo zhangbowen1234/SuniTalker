@@ -54,7 +54,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private LinearLayout mExpression;
     private String friendId, userId, chatType;
     private ImageView mBack;
-
     private EmotionLayout mElEmotion;
     private EmotionKeyboard mEmotionKeyboard;
     private RelativeLayout mLlContent;

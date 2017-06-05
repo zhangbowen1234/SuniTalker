@@ -44,6 +44,9 @@ public class GroupRightFragment extends BasePagerFragment {
     public GroupRightFragment(List list) {
         this.mList = list;
     }
+    public GroupRightFragment() {
+
+    }
 
     @Override
     protected void getData() {
