@@ -212,7 +212,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
     }
     private void getChatDat() {
         String userId = PreferenceUtil.getInstance(context).getString(PreferenceUtil.USERID, "");
-        List<SSSession> sessionList = AppContext.getInstance().instance.getsessionList(userId);
+        List<SSSession> sessionList = AppContext.getInstance().instance.getSessionList(userId);
         for (int i = 0; i < sessionList.size(); i++) {
             SSSessionType sessionType = sessionList.get(i).getSessionType();
             //获取好友聊天列表
