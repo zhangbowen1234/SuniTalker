@@ -28,6 +28,7 @@ import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.ui.chat.notification.AddGroupNotifiActivity;
 import com.silver.chat.ui.chat.notification.GroupNotificationActivity;
 import com.silver.chat.ui.contact.ContactChatActivity;
+import com.silver.chat.ui.contact.group.GroupChatActivity;
 import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
@@ -69,7 +70,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
     private List<ChatBean> mList;
     public static String TOP_STATES = "TOP";
     private MyHandler mMyHandler;
-    public String friendid;
+//    public String friendid;
 
     public static ChatRecordFragment newInstance() {
         Bundle args = new Bundle();
@@ -84,7 +85,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
         mMyHandler = new MyHandler(this);
         mRecycleContent = (WSRecyclerView) view.findViewById(R.id.recyle_content);
         mRecycleContent.setLayoutManager(new LinearLayoutManager(mActivity));
-        friendid = ChatApater.sourceId;
+//        friendid = ChatApater.sourceId;
     }
 
     @Override
@@ -98,11 +99,17 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
         mChatApater.setOnRecyclerItemClickListener(new OnRecyclerItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (mChatApater.getItemViewType(position +1 ) == ChatBean.CHAT_SINGLR){
+                if (mChatApater.getItemViewType(position + 1 ) == ChatBean.CHAT_SINGLR){
                     Intent mIntent = new Intent(mActivity,ContactChatActivity.class);
                     mIntent.putExtra("contactName",mList.get(position).getUserName());
                     mIntent.putExtra("friendId",mList.get(position).getUserId());
                     mIntent.putExtra("chatType", Common.PRIVAT);
+                    startActivity(mIntent);
+                }else if (mChatApater.getItemViewType(position +1 ) == ChatBean.CHAT_GROUP){
+                    Intent mIntent = new Intent(mActivity,GroupChatActivity.class);
+                    mIntent.putExtra("groupName",mList.get(position).getGroupName());
+                    mIntent.putExtra("groupId",mList.get(position).getGroupId());
+//                    mIntent.putExtra("chatType", Common.PRIVAT);
                     startActivity(mIntent);
                 }
             }
@@ -183,12 +190,12 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
             SSFriendNotification ssFriendNotification = (SSFriendNotification) ssNotification;
             String sourceId = ssFriendNotification.getSourceId();
             String content = ssFriendNotification.getContent();
-            if (Objects.equals(friendid, sourceId)){
-                ChatBean chatBean = new ChatBean();
-                chatBean.setContent(content);
-                mList.add(chatBean);
-                mChatApater.notifyDataSetChanged();
-            }
+//            if (Objects.equals(friendid, sourceId)){
+//                ChatBean chatBean = new ChatBean();
+//                chatBean.setContent(content);
+//                mList.add(chatBean);
+//                mChatApater.notifyDataSetChanged();
+//            }
         }
     }
 

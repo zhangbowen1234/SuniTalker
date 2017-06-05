@@ -51,6 +51,9 @@ public class ChatBean extends BaseBean implements MultiItemEntity,Serializable, 
     private String content;
     private int type;
     private String sendTime;
+    private String groupId;
+    private String groupName;
+    private String groupAvatar;
 
     public ChatBean() {
     }
@@ -62,6 +65,39 @@ public class ChatBean extends BaseBean implements MultiItemEntity,Serializable, 
         this.type = type;
         this.sendTime = sendTime;
         this.content = content;
+    }
+
+    public ChatBean(String content, int type, String sendTime, String groupId, String groupName, String groupAvatar) {
+        this.content = content;
+        this.type = type;
+        this.sendTime = sendTime;
+        this.groupId = groupId;
+        this.groupName = groupName;
+        this.groupAvatar = groupAvatar;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getGroupAvatar() {
+        return groupAvatar;
+    }
+
+    public void setGroupAvatar(String groupAvatar) {
+        this.groupAvatar = groupAvatar;
     }
 
     public String getSendTime() {
