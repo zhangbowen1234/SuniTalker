@@ -1,360 +1,163 @@
 package com.silver.chat.ui.contact.group;
 
 import android.content.Intent;
-import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lqr.emoji.EmotionKeyboard;
+import com.lqr.emoji.EmotionLayout;
+import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.base.Common;
-import com.silver.chat.database.callback.EasyRun;
-import com.silver.chat.database.dao.BaseDao;
-import com.silver.chat.database.helper.DBHelper;
-import com.silver.chat.database.info.WhereInfo;
-import com.silver.chat.network.SSIMGroupManger;
-import com.silver.chat.network.callback.ResponseCallBack;
-import com.silver.chat.network.requestbean.JoinedGroupRequest;
-import com.silver.chat.network.responsebean.BaseResponse;
-import com.silver.chat.network.responsebean.GroupBean;
-import com.silver.chat.ui.contact.SearchContactActivity;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.view.CircleImageView;
+import com.silver.chat.view.TitleBarView;
+import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.engine.SSEngine;
+import com.ssim.android.listener.SSMessageSendListener;
+import com.ssim.android.model.chat.SSGroupMessage;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by joe on 2017/4/25.
- * 我的群的activity
+ * Created by Joe on 2017/6/1.
  */
-
 public class GroupChatActivity extends BaseActivity {
+    @BindView(R.id.title_bar)
+    TitleBarView titleBar;
+    @BindView(R.id.round_three)
+    ImageView roundThree;
+    @BindView(R.id.round_two)
+    ImageView roundTwo;
+    @BindView(R.id.round_one)
+    ImageView roundOne;
+    @BindView(R.id.my_round_head_border)
+    ImageView myRoundHeadBorder;
+    @BindView(R.id.my_round_head)
+    CircleImageView myRoundHead;
+    @BindView(R.id.show_contact_head)
+    RelativeLayout showContactHead;
+    @BindView(R.id.textView)
+    TextView textView;
+    @BindView(R.id.recyle_content)
+    RecyclerView recyleContent;
+    @BindView(R.id.chat_btn_emote)
+    ImageButton chatBtnEmote;
+    @BindView(R.id.chat_edit_input)
+    EditText chatEditInput;
+    @BindView(R.id.chat_send_msg)
+    ImageButton chatSendMsg;
+    @BindView(R.id.chatInputHalving)
+    TextView chatInputHalving;
+    @BindView(R.id.elEmotion)
+    EmotionLayout elEmotion;
+    @BindView(R.id.chatLayoutMsg)
+    LinearLayout chatLayoutMsg;
+    @BindView(R.id.rl_recyle_content)
+    RelativeLayout rlRecyleContent;
+    @BindView(R.id.title_left_back)
+    ImageView ivLeft;
+    private SSGroupMessage ssGroupMessage;
+    private EmotionKeyboard mEmotionKeyboard;
+    private String userId;
+    private String groupId;
 
-    private ImageView titleLeftBack;
-    private ImageView imageSeach;
-    private ExpandableListView listView;
-    private RelativeLayout rlSeach;
-    private ArrayList<GroupBean> mCreatGroups;
-    private ArrayList<GroupBean> mManagerGroups;
-    private ArrayList<GroupBean> mJoinGroups;
-    private ImageView ivMyGroup;
-    private MyAdapter myAdapter;
-    private TextView tvChatCount;
-    private int selectPosition;
-    private BaseDao<GroupBean> mDao;
-    private List<GroupBean> data ;
-    private ArrayList<GroupBean> datas;
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_contact_chat;
+    }
 
     @Override
     protected void initView() {
-        titleLeftBack = (ImageView) findViewById(R.id.title_left_back);
-        imageSeach = (ImageView) findViewById(R.id.image_seach);
-        listView = (ExpandableListView) findViewById(R.id.listview);
-        rlSeach = (RelativeLayout) findViewById(R.id.rl_seach);
-        ivMyGroup = (ImageView) findViewById(R.id.iv_mygroup);
-        tvChatCount = (TextView) findViewById(R.id.tv_chatcount);
+        super.initView();
+        //List<SSGroupMessage> groupMessageList = AppContext.getInstance().instance.getGroupMessageList("8", "233", 0, 3);
+        ssGroupMessage = new SSGroupMessage();
+        userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(false);
+        recyleContent.setLayoutManager(linearLayoutManager);
+        //将内容输入框交给EmotionLayout来处理
+        elEmotion.attachEditText(chatEditInput);
+        //实现内容区与表情区仿微信切换效果
+        initEmotionKeyboard();
     }
+
 
     @Override
     protected void initData() {
         super.initData();
-        datas = new ArrayList<>();
-        mCreatGroups = new ArrayList<>();
-        mManagerGroups = new ArrayList<>();
-        mJoinGroups = new ArrayList<>();
-        myAdapter = new MyAdapter();
-
-        //获取群组数据信息数据库为空去网络获取
-        //getLocalGroupInfo();
-        getNetGroupInfo();
-
-       /* if(!(data.size()>0)) {
-            getNetGroupInfo();
-        }
-*/
-        myAdapter = new MyAdapter();
-        listView.setAdapter(myAdapter);
-        listView.expandGroup(0);
-        //设置parentGroup的展开与否的指示箭头
-//        listView.setGroupIndicator(this.getResources().getDrawable(R.drawable.indicator));
-    }
-
-
-    /**
-     * 查询本地数据库群组数据
-     */
-    private void getLocalGroupInfo() {
-        WhereInfo userId =  WhereInfo.get().equal("userId", PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""));
-        data = mDao.query(userId);
-        quFenData();
-
-    }
-
-    @Override
-    protected void initListener() {
-        listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-
+        Intent intent = getIntent();
+        String groupName = intent.getStringExtra("groupName");
+        groupId = intent.getStringExtra("groupId");
+        titleBar.setTitleText(groupName+"");
+        //List<SSGroupMessage> groupMessageList = AppContext.getInstance().instance.getGroupMessageList(userId, groupId, -1, 10);
+        ivLeft.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v,
-                                        int groupPosition, long id) {
-                // 判断是否展开
-                if (listView.isGroupExpanded(groupPosition)) {
-                    // 已经展开 去关闭
-                    listView.collapseGroup(groupPosition);
-                } else {
-                    // 已经关闭 去展开
-                    // 展开前 关闭上一次展开的条目
-                    listView.collapseGroup(selectPosition);
-                    // 展开
-                    listView.expandGroup(groupPosition);
-                    // 展开之后 记录一下 当前展开的索引值 方便下一次关闭
-                    selectPosition = groupPosition;
-                    // 置顶 当前这条数据
-                    listView.setSelection(groupPosition);
-                }
-
-                return true;// 自己处理 就返回true 这时系统的展开事件就没有了
-            }
-        });
-    }
-
-    /**
-     * 请求网络获取群组信息
-     */
-    private void getNetGroupInfo() {
-        String userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
-        String token = PreferenceUtil.getInstance(this).getString(PreferenceUtil.TOKEN, "");
-        int i = Integer.parseInt(userId);
-        JoinedGroupRequest request = JoinedGroupRequest.getInstance();
-        request.setUserId(i);
-        SSIMGroupManger.getJoinGroupList(mContext,Common.version, request, token, new ResponseCallBack<BaseResponse<ArrayList<GroupBean>>>() {
-
-
-
-            @Override
-            public void onSuccess(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
-                data = arrayListBaseResponse.data;
-                //将数据放入数据库中
-                mDao = DBHelper.get().dao(GroupBean.class);
-                Log.e("aaab", datas.toString()+"aaaa");
-                putLocal(data);
-                quFenData();
-            }
-
-            @Override
-            public void onFailed(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
-            }
-
-            @Override
-            public void onError() {
-
-
-            }
-        });
-
-
-    }
-
-    private void putLocal(final List<GroupBean> datass) {
-
-        mDao.asyncTask(new EasyRun<List<GroupBean>>(){
-            @Override
-            public List<GroupBean> run() throws Exception {
-                Log.e("aaab", datass.toString()+"aaaa");
-                return mDao.queryForAll();
-            }
-
-            @Override
-            public void onMainThread(List<GroupBean> data) throws Exception {
-                super.onMainThread(data);
-
-            }
-        });
-    }
-
-
-
-    /**
-     * 根据字段区分群组信息
-     */
-    private void quFenData() {
-        for (int i = 0; i < data.size(); i++) {
-            int privilege = data.get(i).getPrivilege();
-            if (privilege == 1) {
-                mCreatGroups.add(data.get(i));
-            } else if (privilege == 2) {
-                mJoinGroups.add(data.get(i));
-            } else if (privilege == 3) {
-                mManagerGroups.add(data.get(i));
-            }
-
-        }
-        tvChatCount.setText("(" + (mCreatGroups.size() + mManagerGroups.size() + mJoinGroups.size()) + ")个群聊");
-        myAdapter.notifyDataSetChanged();
-    }
-
-
-    @OnClick({R.id.title_left_back, R.id.rl_seach, R.id.iv_mygroup})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.title_left_back:
+            public void onClick(View v) {
                 finish();
+            }
+        });
+    }
+
+
+
+    @OnClick({R.id.chat_btn_emote, R.id.chat_edit_input, R.id.chat_send_msg, R.id.chatInputHalving, R.id.elEmotion, R.id.chatLayoutMsg, R.id.rl_recyle_content})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.chat_btn_emote:
                 break;
-            case R.id.rl_seach:
-                startActivity(SearchContactActivity.class);
+            case R.id.chat_edit_input:
                 break;
-            case R.id.iv_mygroup:
-                startActivity(DiscussGroupActivity.class);
+            case R.id.chat_send_msg:
+                String content = chatEditInput.getText().toString();
+                chatEditInput.setText("");
+                ssGroupMessage.setContent(content);
+                ssGroupMessage.setSourceId(userId);
+               /* ssGroupMessage.setTargetId(friendId);
+                ssGroupMessage.setMessageTime(timestamp);
+                chatMessageAdapter.addData(mChatMessage);
+                mChatMsgList.scrollToPosition(p2PMessageList.size());
+                mShowHead.setVisibility(View.INVISIBLE);
+                mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);*/
+                SSEngine instance = SSEngine.getInstance();
+                instance.sendMessageToGroupId(groupId,SSMessageFormat.TEXT,content);
+                instance.setMsgSendListener(new SSMessageSendListener() {
+                    @Override
+                    public void didSend(boolean b, long l) {
+                        Log.e(TAG, "didSend" + "boolean:" + b + ";long:" + l);
+                    }
+                });
+                break;
+            case R.id.chatInputHalving:
+                break;
+            case R.id.elEmotion:
+                break;
+            case R.id.chatLayoutMsg:
+                break;
+            case R.id.rl_recyle_content:
                 break;
 
         }
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    private void initEmotionKeyboard() {
+        mEmotionKeyboard = EmotionKeyboard.with(this);
+        mEmotionKeyboard.bindToContent(rlRecyleContent);
+        mEmotionKeyboard.bindToEmotionButton();
+//        mEmotionKeyboard.bindToEditText(inputEdit);
+        mEmotionKeyboard.setEmotionLayout(chatBtnEmote);
     }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_groupchat;
-    }
-
-
-    class MyAdapter extends BaseExpandableListAdapter {
-        @Override
-        public int getGroupCount() {
-            return 3;
-        }
-
-        @Override
-        public int getChildrenCount(int groupPosition) {
-
-            if (groupPosition == 0) {
-                return mCreatGroups.size();
-            } else if (groupPosition == 1) {
-                mManagerGroups.size();
-            } else if (groupPosition == 2) {
-                return mJoinGroups.size();
-            }
-            return 0;
-        }
-
-        TextView tv;
-
-        @Override
-        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-            convertView = new TextView(mContext);
-            tv = (TextView) convertView;
-            tv.setTextColor(Color.parseColor("#8affffff"));
-            tv.setTextSize(12);
-            tv.setPadding(20, 20, 20, 20);
-            if (groupPosition == 0) {
-                tv.setText("我创建的群( " + mCreatGroups.size() + " 个)");
-            } else if (groupPosition == 1) {
-                tv.setText("我管理的群( " + mManagerGroups.size() + " 个)");
-
-            } else if (groupPosition == 2) {
-                tv.setText("我加入的群( " + mJoinGroups.size() + " 个)");
-            }
-            return convertView;
-        }
-
-        @Override
-        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                convertView = View.inflate(getApplicationContext(), R.layout.item_mygroup, null);
-                holder = new ViewHolder();
-                holder.ivIcon = (CircleImageView) convertView.findViewById(R.id.im_group_image);
-                holder.tvName = (TextView) convertView.findViewById(R.id.tv_group_name);
-
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            final GroupBean item = (GroupBean) getChild(groupPosition, childPosition);
-            //点击跳转群详情的界面
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(GroupChatActivity.this, GroupDetailActivity.class);
-                    intent.putExtra("groupbean", item);
-                    startActivity(intent);
-                }
-            });
-            holder.tvName.setText(item.getGroupName());
-
-
-            return convertView;
-
-        }
-
-        @Override
-        public Object getGroup(int groupPosition) {
-            return null;
-        }
-
-        @Override
-        public Object getChild(int groupPosition, int childPosition) {
-            if (groupPosition == 0) {
-                return mCreatGroups.get(childPosition);
-            } else if (groupPosition == 1) {
-                mManagerGroups.get(childPosition);
-            } else if (groupPosition == 2) {
-                return mJoinGroups.get(childPosition);
-            }
-            return null;
-        }
-
-        @Override
-        public long getGroupId(int groupPosition) {
-            return 0;
-        }
-
-        @Override
-        public long getChildId(int groupPosition, int childPosition) {
-            return 0;
-        }
-
-        /**
-         * 是否有一个稳定的id   一般用不到
-         *
-         * @return
-         */
-        @Override
-        public boolean hasStableIds() {
-            return false;
-        }
-
-        /**
-         * 孩子是否可以点击 返回true代表可以点击
-         *
-         * @param groupPosition
-         * @param childPosition
-         * @return
-         */
-        @Override
-        public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return true;
-        }
-
-    }
-
-    static class ViewHolder {
-        CircleImageView ivIcon;
-        TextView tvName;
-
-    }
-
 }

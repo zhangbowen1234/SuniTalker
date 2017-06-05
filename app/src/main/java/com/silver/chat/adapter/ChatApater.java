@@ -1,15 +1,11 @@
 package com.silver.chat.adapter;
 
 import android.content.Context;
-import android.content.pm.PackageInstaller;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.silver.chat.AppContext;
 import com.silver.chat.R;
-import com.silver.chat.base.Common;
 import com.silver.chat.database.dao.BaseDao;
 import com.silver.chat.database.helper.DBHelper;
 import com.silver.chat.database.info.WhereInfo;
@@ -21,11 +17,8 @@ import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.ImageUtil;
 import com.silver.chat.util.PreferenceUtil;
-import com.silver.chat.util.ToastUtil;
-import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
-import com.ssim.android.constant.SSMessageStatus;
 import com.ssim.android.constant.SSSessionType;
 import com.ssim.android.model.notification.SSNotification;
 import com.ssim.android.model.session.SSSession;
@@ -111,7 +104,7 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
     }
     public static List<ChatBean> getChatData(Context context) {
         String userId = PreferenceUtil.getInstance(context).getString(PreferenceUtil.USERID, "");
-        List<SSSession> sessionList = AppContext.getInstance().instance.getsessionList(userId);
+        List<SSSession> sessionList = AppContext.getInstance().instance.getSessionList(userId);
         List<ChatBean> list = new ArrayList<>();
 
         for (int i = 0; i < sessionList.size(); i++) {

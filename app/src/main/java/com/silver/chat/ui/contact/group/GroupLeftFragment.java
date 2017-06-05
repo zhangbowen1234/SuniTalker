@@ -1,36 +1,23 @@
 package com.silver.chat.ui.contact.group;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.silver.chat.MainActivity;
 import com.silver.chat.R;
 import com.silver.chat.base.BasePagerFragment;
-import com.silver.chat.base.Common;
 import com.silver.chat.network.SSIMGroupManger;
-import com.silver.chat.network.SSIMLoginManger;
 import com.silver.chat.network.callback.ResponseCallBack;
-import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.requestbean.ExitGroupBody;
 import com.silver.chat.network.requestbean.SetGroupManagerBody;
 import com.silver.chat.network.responsebean.BaseResponse;
-import com.silver.chat.ui.login.LoginActivity;
-import com.silver.chat.util.AppManager;
-import com.silver.chat.util.NetUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
-import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.dialog.TvLoginOutDialog;
 
 import java.util.List;
@@ -218,7 +205,7 @@ public class GroupLeftFragment extends BasePagerFragment {
                         SSIMGroupManger.GroupDelete(mActivity, token, instance, new ResponseCallBack<BaseResponse<SetGroupManagerBody>>() {
                             @Override
                             public void onSuccess(BaseResponse<SetGroupManagerBody> setGroupManagerBodyBaseResponse) {
-                                Intent intent = new Intent(mActivity,GroupChatActivity.class);
+                                Intent intent = new Intent(mActivity,MyGroupActivity.class);
                                 startActivity(intent);
                             }
 
@@ -263,7 +250,7 @@ public class GroupLeftFragment extends BasePagerFragment {
 //                        SSIMGroupManger.exitGroup(mActivity, Common.version, token, instance, new ResponseCallBack<BaseResponse>() {
 //                            @Override
 //                            public void onSuccess(BaseResponse baseResponse) {
-//                                Intent intent = new Intent(mActivity,GroupChatActivity.class);
+//                                Intent intent = new Intent(mActivity,MyGroupActivity.class);
 //                                startActivity(intent);
 //                            }
 //

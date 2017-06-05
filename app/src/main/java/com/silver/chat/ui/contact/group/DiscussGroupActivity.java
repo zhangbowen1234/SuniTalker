@@ -8,17 +8,13 @@ import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.base.Common;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
-import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.DisscusBean;
 import com.silver.chat.ui.contact.SearchContactActivity;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
-
-import java.util.ArrayList;
 
 import butterknife.OnClick;
 
@@ -69,7 +65,7 @@ public class DiscussGroupActivity extends BaseActivity{
                 startActivity(SearchContactActivity.class);
                 break;
             case R.id.iv_discussgroup:
-                startActivity(GroupChatActivity.class);
+                startActivity(MyGroupActivity.class);
                 break;
 
         }
