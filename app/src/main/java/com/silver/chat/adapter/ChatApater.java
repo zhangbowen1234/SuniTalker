@@ -110,8 +110,8 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
         for (int i = 0; i < sessionList.size(); i++) {
             SSSessionType sessionType = sessionList.get(i).getSessionType();
             //获取好友聊天列表
-            String SINGLR_avatar;
-            String SINGLR_nickname;
+            String avatar;
+            String nickname;
             if (sessionType == SSSessionType.P2PCHAT) {
                 sourceId = sessionList.get(i).getSourceId();
 
@@ -120,13 +120,13 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 List<ContactListBean> friendId = mDao.query(WhereInfo.get().equal("friendId", sourceId));
                 Log.e("friendId:", friendId.toString());
                 for (int j = 0; j < friendId.size(); j++) {
-                    SINGLR_avatar = friendId.get(j).getAvatar();
-                    SINGLR_nickname = friendId.get(j).getNickName();
-                    String contents= sessionList.get(j).getContent();
-                    long sendTimes = sessionList.get(j).getSendTime();
+                    avatar = friendId.get(j).getAvatar();
+                    nickname = friendId.get(j).getNickName();
+                    String contents= sessionList.get(i).getContent();
+                    long sendTimes = sessionList.get(i).getSendTime();
                     String Times = DateUtils.formatTimeSimple(sendTimes);
                     Log.e("sendTimes:", sendTimes+"++"+Times+contents);
-                    list.add(new ChatBean(sourceId, SINGLR_nickname, SINGLR_avatar, ChatBean.CHAT_SINGLR,Times,contents));
+                    list.add(new ChatBean(sourceId, nickname, avatar, ChatBean.CHAT_SINGLR,Times,contents));
 
                 }
                 //获取群组聊天列表
@@ -137,10 +137,10 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 List<GroupBean> groupBeen = mDao.query(WhereInfo.get().equal("userId", userId));
                 Log.e("groupBeen:", groupBeen.toString());
                 for (int j = 0; j < groupBeen.size(); j++) {
-                    SINGLR_avatar = groupBeen.get(j).getAvatar();
-                    SINGLR_nickname = groupBeen.get(j).getGroupName();
+                    avatar = groupBeen.get(j).getAvatar();
+                    nickname = groupBeen.get(j).getGroupName();
 
-//                    list.add(new ChatBean("user_id=", SINGLR_nickname, SINGLR_avatar, ChatBean.CHAT_GROUP));
+//                    list.add(new ChatBean("user_id=", nickname, avatar, ChatBean.CHAT_GROUP));
                 }
             }
         } Log.e("list:", list.toString());
