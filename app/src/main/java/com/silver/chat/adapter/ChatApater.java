@@ -13,12 +13,14 @@ import com.silver.chat.entity.ChatBean;
 import com.silver.chat.entity.DataServer;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.GroupBean;
+import com.silver.chat.ui.chat.ChatRecordFragment;
 import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.ImageUtil;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
+import com.ssim.android.constant.SSSessionTopLevel;
 import com.ssim.android.constant.SSSessionType;
 import com.ssim.android.model.notification.SSNotification;
 import com.ssim.android.model.session.SSSession;
@@ -38,6 +40,7 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
 
     private List<ChatBean> chatBeen;
     public static String sourceId;
+    public static List<SSSession> sessionList;
 
     public ChatApater(List<ChatBean> data) {
         super(data);
@@ -88,33 +91,35 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 holder.setText(R.id.tv_name, "讨论组消息=" + holder.getPosition());
                 break;
             case ChatBean.CHAT_GROUP_NOTICE:
-//                ImageUtil.loadImg((ImageView) holder.getView(R.id.iv_avatar), item.getContent());
                 holder.setText(R.id.tv_name, "群通知=" + holder.getPosition());
                 break;
         }
         //置顶颜色
-        ChatBean chatBean = chatBeen.get(position - 1);
-        if (chatBean.getTop() == 1) {
-            holder.itemView.setBackgroundResource(R.color.topdialog);
-        } else {
-            holder.itemView.setBackgroundResource(R.color.translate);
-        }
+//        ChatBean chatBean = chatBeen.get(position - 1);
+//        if (chatBean.getTop() == 1) {
+//            holder.itemView.setBackgroundResource(R.color.topdialog);
+//        } else{
+//            holder.itemView.setBackgroundResource(R.color.translate);
+//        }
     }
     public void updateData(List<ChatBean> sessionList) {
         clear();
         addAll(sessionList);
     }
+    /**
+     * 获取聊天列表
+     */
     public static List<ChatBean> getChatData(Context context) {
         String userId = PreferenceUtil.getInstance(context).getString(PreferenceUtil.USERID, "");
-        List<SSSession> sessionList = AppContext.getInstance().instance.getSessionList(userId);
+        sessionList = AppContext.getInstance().instance.getSessionList(userId);
         List<ChatBean> list = new ArrayList<>();
 
         for (int i = 0; i < sessionList.size(); i++) {
             SSSessionType sessionType = sessionList.get(i).getSessionType();
-            //获取好友聊天列表
             String friendAvatar, friendNickname, groupName, groupAvatar, groupId, contents, times;
-
+            Log.e("sessionType:", sessionType.toString());
             if (sessionType == SSSessionType.P2PCHAT) {
+                //好友聊天列表
                 sourceId = sessionList.get(i).getSourceId();
                 Log.e("sourceId:", sourceId);
                 BaseDao<ContactListBean> mDao = DBHelper.get().dao(ContactListBean.class);
@@ -140,9 +145,13 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                     groupName = groupBeen.get(j).getGroupName();
                     contents = sessionList.get(i).getContent();
                     times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
+//                    ssSessionTopLevel = sessionList.get(i).getTopLevel();
                     Log.e("groupAvatar:", groupBeen.get(j).getAvatar()+groupBeen.get(j).getGroupName()+sessionList.get(i).getContent());
                     list.add(new ChatBean(contents, ChatBean.CHAT_GROUP, times, groupId, groupName, groupAvatar));
                 }
+            }else if (sessionType == SSSessionType.GROUPNOTI){
+                //群通知
+                contents = sessionList.get(i).getContent();
             }
         } Log.e("list:", list.size()+"");
         return list;

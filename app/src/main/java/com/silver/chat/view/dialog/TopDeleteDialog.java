@@ -47,16 +47,17 @@ public class TopDeleteDialog extends DialogFragment{
         tv_delete_dialog = (TextView) view.findViewById(R.id.tv_delete_dialog);
         tv_top_dialog = (TextView) view.findViewById(R.id.tv_top_dialog);
         tv_no_top_dialog = (TextView) view.findViewById(R.id.tv_no_top_dialog);
-        Bundle bundle = getArguments();
-        int isTop = bundle.getInt(ChatRecordFragment.TOP_STATES);
-        //判断是否已经置顶
-        if (isTop == 1){
-            tv_top_dialog.setVisibility(View.GONE);
-            tv_no_top_dialog.setVisibility(View.VISIBLE);
-        }else if (isTop == 0){
-            tv_top_dialog.setVisibility(View.VISIBLE);
-            tv_no_top_dialog.setVisibility(View.GONE);
-        }
+//        Bundle bundle = getArguments();
+//        int isTop = bundle.getInt(ChatRecordFragment.TOP_STATES);
+//        //判断是否已经置顶
+//        if (isTop == 1){
+//            tv_top_dialog.setVisibility(View.GONE);
+//            tv_no_top_dialog.setVisibility(View.VISIBLE);
+//        }else if (isTop == 0){
+//            tv_top_dialog.setVisibility(View.VISIBLE);
+//            tv_no_top_dialog.setVisibility(View.GONE);
+//        }
+        tv_no_top_dialog.setVisibility(View.GONE);
         // 定义Dialog布局和参数
         dialog = new Dialog(context, R.style.TopDeleteDialogStyle);
         dialog.setContentView(view);

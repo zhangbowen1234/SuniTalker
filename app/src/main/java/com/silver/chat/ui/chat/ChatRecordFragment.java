@@ -36,6 +36,7 @@ import com.silver.chat.view.dialog.TopDeleteDialog;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
 import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
+import com.ssim.android.constant.SSSessionTopLevel;
 import com.ssim.android.constant.SSSessionType;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.listener.SSNotificationListener;
@@ -55,6 +56,7 @@ import java.util.Objects;
 import static android.R.attr.type;
 import static android.R.id.list;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+import static com.silver.chat.adapter.ChatApater.sessionList;
 import static com.silver.chat.adapter.ChatApater.sourceId;
 import static com.silver.chat.util.Utils.context;
 
@@ -63,7 +65,7 @@ import static com.silver.chat.util.Utils.context;
  * 邮箱：fandy618@hotmail.com
  */
 
-public class ChatRecordFragment extends BasePagerFragment implements SSNotificationListener{
+public class ChatRecordFragment extends BasePagerFragment implements SSNotificationListener {
 
     private WSRecyclerView mRecycleContent;
     private ChatApater mChatApater;
@@ -93,24 +95,33 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
         super.initData();
         mList = new ArrayList<>();
         mList.addAll(ChatApater.getChatData(mActivity));
+        if (mList.size() != 0){
+            int position = PreferenceUtil.getInstance(mActivity).getInt("position", 0);
+            mList.add(0, mList.get(position));
+            mList.remove(position + 1);
+        }
         mChatApater = new ChatApater(mList);
+
         mRecycleContent.setAdapter(mChatApater);
         mChatApater.addHeaderView(mRecycleContent.getRefreshView());
         mChatApater.setOnRecyclerItemClickListener(new OnRecyclerItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if (mChatApater.getItemViewType(position + 1 ) == ChatBean.CHAT_SINGLR){
-                    Intent mIntent = new Intent(mActivity,ContactChatActivity.class);
-                    mIntent.putExtra("contactName",mList.get(position).getUserName());
-                    mIntent.putExtra("friendId",mList.get(position).getUserId());
+                if (mChatApater.getItemViewType(position + 1) == ChatBean.CHAT_SINGLR) {
+                    Intent mIntent = new Intent(mActivity, ContactChatActivity.class);
+                    mIntent.putExtra("contactName", mList.get(position).getUserName());
+                    mIntent.putExtra("friendId", mList.get(position).getUserId());
                     mIntent.putExtra("chatType", Common.PRIVAT);
                     startActivity(mIntent);
-                }else if (mChatApater.getItemViewType(position +1 ) == ChatBean.CHAT_GROUP){
-                    Intent mIntent = new Intent(mActivity,GroupChatActivity.class);
-                    mIntent.putExtra("groupName",mList.get(position).getGroupName());
-                    mIntent.putExtra("groupId",mList.get(position).getGroupId());
+//                    startActivity(GroupNotificationActivity.class);
+                } else if (mChatApater.getItemViewType(position + 1) == ChatBean.CHAT_GROUP) {
+                    Intent mIntent = new Intent(mActivity, GroupChatActivity.class);
+                    mIntent.putExtra("groupName", mList.get(position).getGroupName());
+                    mIntent.putExtra("groupId", mList.get(position).getGroupId());
 //                    mIntent.putExtra("chatType", Common.PRIVAT);
                     startActivity(mIntent);
+                } else if (mChatApater.getItemViewType(position + 1) == ChatBean.CHAT_GROUP_NOTICE) {
+                    startActivity(GroupNotificationActivity.class);
                 }
             }
         });
@@ -118,25 +129,33 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
             @Override
             public boolean onItemLongClick(View view, final int position) {
                 final ChatBean chatBean = mChatApater.getItem(position);
-                Bundle bundle = new Bundle();
-                bundle.putInt(TOP_STATES, chatBean.getTop());
+//                Bundle bundle = new Bundle();
+//                bundle.putInt(TOP_STATES, chatBean.getTop());
                 TopDeleteDialog topDeleteDialog = new TopDeleteDialog(mActivity);
-                topDeleteDialog.setArguments(bundle);//传参
+//                topDeleteDialog.setArguments(bundle);//传参
                 topDeleteDialog.builder()
                         .setCanceledOnTouchOutside(true)
                         .setTopTextview(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 //置顶
-                                chatBean.setTop(1);
-                                chatBean.setTime(System.currentTimeMillis());
+                                PreferenceUtil.getInstance(mActivity).setInt("position", position);
+//                                chatBean.setTop(1);
+//                                chatBean.setTime(System.currentTimeMillis());
+                                mList.add(0, chatBean);
+                                mList.remove(position + 1);
                                 refreshView();
+                                SSSessionTopLevel ssSessionTopLevel = SSSessionTopLevel.LEVEL_HIGH;
+                                sessionList.get(position).setTopLevel(ssSessionTopLevel);
+                                Log.e("onClick: ", (position + 1) +"");
                             }
                         })
                         .setDeleteTextview(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 mList.remove(mChatApater.getItem(position));
+                                AppContext.getInstance().instance.delSessionById(sourceId);
+                                Log.e( "setDelete: ", sourceId);
                                 ToastUtils.showMessage(getActivity(), "删除成功");
                                 mChatApater.notifyDataSetChanged();
                             }
@@ -145,8 +164,10 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
                             @Override
                             public void onClick(View v) {
                                 //取消置顶
-                                chatBean.setTop(0);
-                                chatBean.setTime(System.currentTimeMillis());
+//                                chatBean.setTop(0);
+//                                chatBean.setTime(System.currentTimeMillis());
+                                SSSessionTopLevel ssSessionTopLevel = SSSessionTopLevel.DEFAULT;
+                                sessionList.get(position).setTopLevel(ssSessionTopLevel);
                                 refreshView();
                             }
                         }).show();
@@ -173,7 +194,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
         return R.layout.fragment_chat_record;
     }
 
-    private void refreshView() {
+    public void refreshView() {
         //如果不调用sort方法，是不会进行排序的，也就不会调用compareTo
         Collections.sort(mList);
         mChatApater.notifyDataSetChanged();
@@ -186,7 +207,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
 
     @Override
     public void receiveNotification(SSNotification ssNotification) {
-        if (ssNotification instanceof SSFriendNotification){
+        if (ssNotification instanceof SSFriendNotification) {
             SSFriendNotification ssFriendNotification = (SSFriendNotification) ssNotification;
             String sourceId = ssFriendNotification.getSourceId();
             String content = ssFriendNotification.getContent();

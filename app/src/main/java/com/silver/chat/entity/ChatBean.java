@@ -1,6 +1,7 @@
 package com.silver.chat.entity;
 
 import com.silver.chat.view.recycleview.entity.MultiItemEntity;
+import com.ssim.android.constant.SSSessionTopLevel;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -75,6 +76,7 @@ public class ChatBean extends BaseBean implements MultiItemEntity,Serializable, 
         this.groupName = groupName;
         this.groupAvatar = groupAvatar;
     }
+
 
     public String getGroupId() {
         return groupId;
