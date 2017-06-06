@@ -14,7 +14,8 @@ import com.silver.chat.R;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.ui.contact.NewFriendActivity;
 import com.silver.chat.ui.contact.group.MyGroupActivity;
-import com.silver.chat.ui.mine.FriendInfoActivity;
+import com.silver.chat.ui.mine.UserInfoActivity;
+import com.silver.chat.util.GlideUtil;
 import com.silver.chat.view.CircleImageView;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public ContactListAdapter(Context context, List<ContactListBean> data) {
         contactList = data;
-        Log.e("data", data + "");
+        Log.e("ContactListAdapter_data", data + "");
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
     }
@@ -47,8 +48,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("viewType", viewType + "");
-        if (viewType == ITEM_TYPE.NEW_FRIEND.ordinal()) {//枚举方式
+        if (viewType == ITEM_TYPE.NEW_FRIEND.ordinal()) {
             return new NewFriendViewHolder(mLayoutInflater.inflate(R.layout.new_friend_layout, parent, false));
         } else if (viewType == ITEM_TYPE.GROUP_CHAT.ordinal()) {
             return new GroupViewHolder(mLayoutInflater.inflate(R.layout.group_chat_layout, parent, false));
@@ -82,10 +82,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }else if (holder instanceof OftenContactViewHolder) {//常用联系人
         } else if (holder instanceof ContactViewHolder) {//联系人
             ((ContactViewHolder) holder).mTextView.setText(contactList.get(position-3).getNickName());
+            GlideUtil.loadAvatar(((ContactViewHolder)holder).mHeader,contactList.get(position-3).getAvatar());
             ((ContactViewHolder) holder).mContact.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent mCantactIntent = new Intent(mContext, FriendInfoActivity.class);
+                    Intent mCantactIntent = new Intent(mContext, UserInfoActivity.class);
                     mCantactIntent.putExtra("contactName", contactList.get(position-3).getNickName());
                     mCantactIntent.putExtra("sex", contactList.get(position-3).getSex()+"");
                     mCantactIntent.putExtra("signature", contactList.get(position-3).getSignature());

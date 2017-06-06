@@ -20,7 +20,6 @@ import com.lqr.emoji.IEmotionExtClickListener;
 import com.lqr.emoji.IEmotionSelectedListener;
 import com.lqr.emoji.LQREmotionKit;
 import com.lqr.emoji.MoonUtils;
-import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
@@ -31,6 +30,7 @@ import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
 import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 import com.ssim.android.constant.SSMessageFormat;
+import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.listener.SSMessageSendListener;
 import com.ssim.android.model.chat.SSMessage;
@@ -64,6 +64,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private MyHandler mMyHandler;
     private String editcontent;
     private ImageView ivLocation;
+    private SSP2PMessage receiveMsg = null;
 
     @Override
     protected int getLayoutId() {
@@ -109,8 +110,11 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
         /*获取当前系统时间的13位的时间戳*/
         timestamp = System.currentTimeMillis();
-        /*私人聊天列表*/
-        p2PMessageList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, -1, 10);
+        /*
+         * 私人聊天列表
+         */
+        p2PMessageList = SSEngine.getInstance().getP2PMessageList(userId, friendId, -1, 10);
+
         chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList);
         if (p2PMessageList.size() != 0) {
             mShowHead.setVisibility(View.INVISIBLE);
@@ -127,7 +131,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     protected void initListener() {
         super.initListener();
         /*收到消息监听*/
-        AppContext.getInstance().instance.setMsgRcvListener(this);
+        SSEngine.getInstance().setMsgRcvListener(this);
         /*表情*/
         mEmoteBtn.setOnClickListener(this);
         mSendMsg.setOnClickListener(this);
@@ -198,7 +202,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                             SSP2PMessage ssp2PMessage = p2PMessageList.get((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1));
                             long messageTime = ssp2PMessage.getMessageTime();
                             Log.e("aa", ssp2PMessage.getSourceId() + "/" + ssp2PMessage.getContent());
-                            List<SSP2PMessage> p2PMsgList = AppContext.getInstance().instance.getP2PMessageList(userId, friendId, messageTime, 10);
+                            List<SSP2PMessage> p2PMsgList = SSEngine.getInstance().getP2PMessageList(userId, friendId, messageTime, 10);
                             p2PMessageList.addAll((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1), p2PMsgList);
                             mChatMsgList.refreshComplete();
                             chatMessageAdapter.notifyDataSetChanged();
@@ -236,8 +240,8 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                     mShowHead.setVisibility(View.INVISIBLE);
                     mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
 
-                    AppContext.getInstance().instance.sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT, editcontent);
-                    AppContext.getInstance().instance.setMsgSendListener(new SSMessageSendListener() {
+                    SSEngine.getInstance().sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT, editcontent);
+                    SSEngine.getInstance().setMsgSendListener(new SSMessageSendListener() {
                         @Override
                         public void didSend(boolean b, long l) {
                             Log.e(TAG, "didSend" + "boolean:" + b + ";long:" + l);
@@ -279,8 +283,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
 //        mEmotionKeyboard.bindToEditText(inputEdit);
         mEmotionKeyboard.setEmotionLayout(mElEmotion);
     }
-
-    SSP2PMessage receiveMsg = null;
 
     @Override
     public void receiveMsg(SSMessage ssMessage) {

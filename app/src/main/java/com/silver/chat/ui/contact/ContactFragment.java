@@ -173,9 +173,9 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
          * 联网获取联系人
          */
         //请求所有文件目录数据
-        httpContactList();
+//        httpContactList();
         //优先从数据库中读取数据
-//        QueryDbParent();
+        QueryDbParent();
     }
 
     /**
@@ -201,13 +201,14 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         });
 
     }
+
     /**
      * 联网获取联系人
      */
     public void httpContactList() {
         String token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
         String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
-        SSIMFrendManger.contactList(getContext(),Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
+        SSIMFrendManger.contactList(getContext(), Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
             @Override
             public void onSuccess(final BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
 //                ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
@@ -218,7 +219,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                 for (int i = 0; i < contactData.size(); i++) {
                     sortModel = new ContactListBean();
                     sortModel.setNickName(contactData.get(i).getNickName());
-                    sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID,""));
                     sortModel.setAvatar(contactData.get(i).getAvatar());
                     sortModel.setFriendId(contactData.get(i).getFriendId());
                     sortModel.setRemarkName(contactData.get(i).getRemarkName());
@@ -232,7 +232,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     } else {
                         sortModel.setSortLetters("#");
                     }
-                    Log.e("sortModel===",""+sortModel);
+                    Log.e("sortModel===", "" + sortModel);
                     sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""));
                     mConList.add(sortModel);
                 }
@@ -246,13 +246,8 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                         List<ContactListBean> query = mDao.queryForAll();
 //                        //删除原始文件
                         mDao.delete(query);
-//                        if (query !=null){
-////                            mDao.update(sortModel);
-//                            mDao.create(sortModel);
-//                        }else {
-                            //保存新数据
-                            mDao.create(mConList);
-//                        }
+                        //保存新数据
+                        mDao.create(mConList);
                         Log.e("mDao.asTk_run", "===================");
                         return getSortData();
                     }
@@ -289,7 +284,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
     public List<ContactListBean> getSortData() {
         Log.e(" mDao.queryForAll():", mDao.queryForAll() + "");
-        return mDao.query(WhereInfo.get().equal("userId",PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID,"")));
+        return mDao.query(WhereInfo.get().equal("userId", PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "")));
     }
 
 
@@ -330,7 +325,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     public void onPause() {
         super.onPause();
         Log.d("ContactFragment_onPause", "=============");
-        contactListAdapter.notifyDataSetChanged();
+//        contactListAdapter.notifyDataSetChanged();
     }
 
     @Override

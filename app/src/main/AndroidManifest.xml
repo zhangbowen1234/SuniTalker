@@ -77,7 +77,7 @@
             android:name=".ui.contact.SearchContactActivity"
             android:label="搜索联系人" />
         <activity
-            android:name=".ui.mine.FriendInfoActivity"
+            android:name=".ui.mine.UserInfoActivity"
             android:label="好友详情" />
         <activity
             android:name=".ui.mine.MyPRCodeActivity"

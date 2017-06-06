@@ -101,7 +101,7 @@ public class AppContext extends MultiDexApplication implements SSMessageReceiveL
         if (ssMessage instanceof SSP2PMessage) {
             SSP2PMessage receiveMsg = (SSP2PMessage) ssMessage;
             String sourceId = receiveMsg.getSourceId();
-            Log.e("appContext", sourceId + ":" + receiveMsg.getContent());
+            Log.e("appContext_receiveMsg", sourceId + ":" + receiveMsg.getContent());
         }
     }
 }

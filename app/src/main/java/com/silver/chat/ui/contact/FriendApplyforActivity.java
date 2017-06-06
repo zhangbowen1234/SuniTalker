@@ -9,10 +9,14 @@ import android.widget.TextView;
 import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.database.dao.BaseDao;
+import com.silver.chat.database.helper.DBHelper;
 import com.silver.chat.network.SSIMFrendManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.AgreeFriendAddBody;
 import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.ContactListBean;
+import com.silver.chat.util.CharacterParser;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
@@ -20,14 +24,27 @@ import com.ssim.android.listener.SSNotificationListener;
 import com.ssim.android.model.notification.SSNotification;
 import com.ssim.android.model.notification.friend.SSAddFriendNotification;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FriendApplyforActivity extends BaseActivity implements SSNotificationListener, View.OnClickListener {
 
     private ImageView mBack;
     private CircleImageView mFriendHead;
-    private LinearLayout mLlFriendInfo ,mYseAdd ,mNoAdd;
-    private TextView mFriendName ,mFriendPhone ,mAddTime ,mAdditionalMsg ;
-    private String token,userId ,mNickName ,mAvatar ,sourceId;
+    private LinearLayout mLlFriendInfo, mYseAdd, mNoAdd;
+    private TextView mFriendName, mFriendPhone, mAddTime, mAdditionalMsg;
+    private String token, userId, mNickName, mAvatar, sourceId;
     private AgreeFriendAddBody agreeFriendAddBody;
+    private BaseDao<ContactListBean> mDao;
+    /**
+     * 汉字转换成拼音的类
+     */
+    private CharacterParser characterParser;
+    /**
+     * 排序后的联系人集合
+     */
+    private List<ContactListBean> mConList;
+
 
     @Override
     protected int getLayoutId() {
@@ -47,6 +64,11 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
         mYseAdd = (LinearLayout) findViewById(R.id.yes_add_friend);
         mNoAdd = (LinearLayout) findViewById(R.id.no_add_friend);
         agreeFriendAddBody = new AgreeFriendAddBody();
+        // 实例化汉字转拼音类
+        characterParser = CharacterParser.getInstance();
+        if (mConList == null) {
+            mConList = new ArrayList<ContactListBean>();
+        }
 
 
     }
@@ -55,12 +77,12 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
     @Override
     protected void initData() {
         super.initData();
-        sourceId =  getIntent().getExtras().getString("sourceId");
+        sourceId = getIntent().getExtras().getString("sourceId");
         token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
         mNickName = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
         mAvatar = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
-
+        mDao = DBHelper.get().dao(ContactListBean.class);
     }
 
     @Override
@@ -72,11 +94,10 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
     }
 
 
-
     @Override
     public void receiveNotification(SSNotification ssNotification) {
-        if (ssNotification instanceof SSAddFriendNotification){
-            SSAddFriendNotification ssAddFriendNotification = (SSAddFriendNotification)ssNotification;
+        if (ssNotification instanceof SSAddFriendNotification) {
+            SSAddFriendNotification ssAddFriendNotification = (SSAddFriendNotification) ssNotification;
 
             String sourceId = ssAddFriendNotification.getSourceId();
             String content = ssAddFriendNotification.getContent();
@@ -85,7 +106,7 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.yes_add_friend:
                 agreeFriendAddBody.setAppName("innerapp");
                 agreeFriendAddBody.setSourceId(userId);
@@ -96,19 +117,55 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         Log.e("onSuccess", baseResponse.toString());
-                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+//                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                        ToastUtils.showMessage(mContext, "已同意");
+//                        ContactListBean sortModel = new ContactListBean();
+//                        sortModel.setNickName(mNickName);
+//                        sortModel.setAvatar(mAvatar);
+//                        sortModel.setFriendId();
+//                        sortModel.setRemarkName();
+//                        sortModel.setSex();
+//                        sortModel.setSignature();
+//                        String pinyin = characterParser.getSelling(mNickName);
+//                        String sortString = pinyin.substring(0, 1).toUpperCase();
+//                        // 正则表达式，判断首字母是否是英文字母
+//                        if (sortString.matches("[A-Z]")) {
+//                            sortModel.setSortLetters(sortString.toUpperCase());
+//                        } else {
+//                            sortModel.setSortLetters("#");
+//                        }
+//                        Log.e("sortModel===", "" + sortModel);
+//                        sortModel.setUserId(PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""));
+//                        mConList.add(sortModel);
+//                        mDao.asyncTask(new EasyRun<List<ContactListBean>>() {
+//                            @Override
+//                            public List<ContactListBean> run() throws Exception {
+//
+//                                List<ContactListBean> query = mDao.queryForAll();
+//////                              //删除原始文件
+////                                mDao.delete(query);
+//                                //保存新数据
+//                                mDao.create(mConList);
+//                                Log.e("mDao.asTk_run", "===================");
+//                                return null;
+//                            }
+//
+//                            @Override
+//                            public void onMainThread(List<ContactListBean> data) throws Exception {
+//                            }
+//                        });
                     }
 
                     @Override
                     public void onFailed(BaseResponse baseResponse) {
                         Log.e("onSuccess", baseResponse.toString());
-                        ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());
+                        ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
                     }
 
                     @Override
                     public void onError() {
                         Log.e("onError", "onError");
-                        ToastUtils.showMessage(mContext,"连接服务器失败");
+                        ToastUtils.showMessage(mContext, "连接服务器失败");
                     }
                 });
                 break;
