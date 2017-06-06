@@ -14,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import com.lqr.emoji.EmotionKeyboard;
 import com.lqr.emoji.EmotionLayout;
 import com.lqr.emoji.IEmotionExtClickListener;
@@ -25,6 +24,7 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
@@ -42,6 +42,7 @@ import java.util.List;
 
 public class ContactChatActivity extends BaseActivity implements View.OnClickListener, SSMessageReceiveListener {
 
+    private static final int REQUEST_CODE = 200;
     private CircleImageView mContactChatImg;
     private ImageButton mSendMsg, mEmoteBtn;
     private EditText inputEdit;
@@ -62,6 +63,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private List<SSP2PMessage> p2PMessageList;
     private MyHandler mMyHandler;
     private String editcontent;
+    private ImageView ivLocation;
     private SSP2PMessage receiveMsg = null;
 
     @Override
@@ -72,6 +74,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void initView() {
         super.initView();
+
         mContactChatImg = (CircleImageView) findViewById(R.id.contact_chat_img);
         mSendMsg = (ImageButton) findViewById(R.id.chat_send_msg);
         mTitleBar = (TitleBarView) findViewById(R.id.title_bar);
@@ -82,6 +85,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mBack = (ImageView) findViewById(R.id.title_left_back);
         mElEmotion = (EmotionLayout) findViewById(R.id.elEmotion);
         mLlContent = (RelativeLayout) findViewById(R.id.rl_recyle_content);
+        ivLocation = (ImageView) findViewById(R.id.iv_location);
         mChatMessage = new SSP2PMessage();
         /*设置管理*/
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -136,6 +140,14 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
 //        mElEmotion.setEmotionSelectedListener(this);
         mElEmotion.setEmotionAddVisiable(true);
         mElEmotion.setEmotionSettingVisiable(true);
+        //开启定位信息界面
+        ivLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ContactChatActivity.this, MyLocationActivity.class);
+                startActivityForResult(intent,REQUEST_CODE);
+            }
+        });
         mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
             @Override
             public void onEmotionAddClick(View view) {
@@ -198,6 +210,15 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                     }, 3000);
                 }
             });
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            String address = data.getStringExtra("address");
+            ToastUtil.toastMessage(mContext,address);
         }
     }
 
