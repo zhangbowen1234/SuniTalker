@@ -6,12 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.adapter.GroupNotifiAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.ContactMemberBean;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
+import com.ssim.android.constant.SSPublishType;
+import com.ssim.android.model.notification.SSGroupNotification;
 
 import java.util.List;
 
@@ -31,7 +34,7 @@ public class GroupNotificationActivity extends BaseActivity {
     RecyclerView rvGroupNotification;
     private LinearLayoutManager linearLayoutManager;
     private GroupNotifiAdapter mAdapter;
-    private List<ContactMemberBean> mList;
+    private List<SSGroupNotification> mList;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_group_notification;
@@ -44,6 +47,7 @@ public class GroupNotificationActivity extends BaseActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         //设置布局管理器
         rvGroupNotification.setLayoutManager(linearLayoutManager);
+        mList = AppContext.getInstance().instance.getGroupNotificationList();
         mAdapter = new GroupNotifiAdapter(R.layout.item_group_notification,mList);
 //        rvGroupNotification.setAdapter(mAdapter);
     }
