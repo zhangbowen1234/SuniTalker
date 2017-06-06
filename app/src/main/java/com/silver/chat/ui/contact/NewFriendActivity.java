@@ -120,26 +120,20 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
                     List<GroupMemberBean> userInfoList = mDao.query(WhereInfo.get().equal("userId", sourceId));
                     Log.e("onMainThread", "data+" + userInfoList);
 
-                    if (userInfoList.isEmpty()){
+                    if (userInfoList.isEmpty()) {
                         /*其次从网络获取数据*/
 //                         httpContactList();
-                        Log.e("isEmpty", "data+" + userInfoList);
-                    }else {
+                        Log.e("userInfoList=====", "isEmpty");
+                    } else {
                         for (int j = 0; j < userInfoList.size(); j++) {
                             String mDaoUserId = String.valueOf(userInfoList.get(j).getUserId());
                             Log.e("mDao_nickName", userInfoList.get(j).getNickName());
-                            if (mDaoUserId.equals(sourceId)) {
-                                mSSFriendNotification = new SSFriendNotification();
-                                mSSFriendNotification.setContent(content);
-                                mSSFriendNotification.setSourceAvatar(userInfoList.get(j).getAvatar());
-                                mSSFriendNotification.setSourceName(userInfoList.get(j).getNickName());
-                                mUserList.add(mSSFriendNotification);
-                                Log.e("a", sourceId + "/" + mDaoUserId + "/" + content);
-                            } else {
-                                Log.e("!= userId", "data+" + userInfoList);
-                            /*其次从网络获取数据*/
-//                         httpContactList();
-                            }
+                            mSSFriendNotification = new SSFriendNotification();
+                            mSSFriendNotification.setContent(content);
+                            mSSFriendNotification.setSourceAvatar(userInfoList.get(j).getAvatar());
+                            mSSFriendNotification.setSourceName(userInfoList.get(j).getNickName());
+                            mUserList.add(mSSFriendNotification);
+                            Log.e("a", sourceId + "/" + mDaoUserId + "/" + content);
                             addFriendAdatpter.setNewData(mUserList);
                             addFriendAdatpter.notifyDataSetChanged();
                         }
@@ -253,7 +247,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
             Log.e("申请加好友通知:", sourceId + "/" + content);
             friendNotificationList.add(ssFriendNotiFication);
             /*查询数据库*/
-            QueryDbParent();
+//            QueryDbParent();
         }
     }
 
