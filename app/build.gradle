@@ -17,6 +17,7 @@ android {
 
     sourceSets {
         main {
+            jniLibs.srcDirs = ['libs']
             manifest.srcFile 'src/main/AndroidManifest.xml'
             java.srcDirs = ['src/main/java', 'src/main/aidl']
             resources.srcDirs = ['src/main/java', 'src/main/aidl']
@@ -42,7 +43,7 @@ repositories{
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(include: ['*.jar'], exclude: 'android-support-v4.jar', dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -65,7 +66,7 @@ dependencies {
     compile 'com.lqr.emoji:library:1.0.2'
     //    compile 'com.alibaba:fastjson:1.2.31'
     compile 'com.github.baserecycleradapter:library:1.0.9'
-//    compile 'com.tamic.novate:novate:1.2.8'
+    //    compile 'com.tamic.novate:novate:1.2.8'
     compile project(':ssim-release')
     compile 'io.netty:netty-all:4.1.9.Final'
     compile 'io.reactivex.rxjava2:rxjava:2.0.8'
@@ -73,8 +74,9 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
-    compile 'org.greenrobot:greendao:3.2.2' // add library for greenDAO
-    compile 'net.zetetic:android-database-sqlcipher:3.5.6'// This is only needed if you want to use encrypted databases
+    compile 'org.greenrobot:greendao:3.2.2'
+    // add library for greenDAO
+    compile 'net.zetetic:android-database-sqlcipher:3.5.6'
+    // This is only needed if you want to use encrypted databases
     compile 'com.android.support:multidex:1.0.0'
-
 }

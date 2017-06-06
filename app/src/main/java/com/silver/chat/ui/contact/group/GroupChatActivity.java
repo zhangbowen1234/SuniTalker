@@ -20,6 +20,8 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.adapter.GroupChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.ui.contact.ContactChatActivity;
+import com.silver.chat.ui.contact.MyLocationActivity;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
@@ -83,6 +85,7 @@ public class GroupChatActivity extends BaseActivity {
     private long timeStamp;
     private GroupChatMessageAdapter chatMessageAdapter;
     private List<SSGroupMessage> groupMessageList = new ArrayList<>();
+    private String groupName;
 
     @Override
     protected int getLayoutId() {
@@ -92,9 +95,12 @@ public class GroupChatActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-        //List<SSGroupMessage> groupMessageList = AppContext.getInstance().instance.getGroupMessageList("8", "233", 0, 3);
-
+        Intent intent = getIntent();
+        groupName = intent.getStringExtra("groupName");
+        groupId = intent.getStringExtra("groupId");
         userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
+
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(false);
         recyleContent.setLayoutManager(linearLayoutManager);
@@ -109,12 +115,11 @@ public class GroupChatActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
-        Intent intent = getIntent();
-        String groupName = intent.getStringExtra("groupName");
-        groupId = intent.getStringExtra("groupId");
+
         titleBar.setTitleText(groupName + "");
 
-        //groupMessageList = AppContext.getInstance().instance.getGroupMessageList(userId, groupId, -1, 10);
+        groupMessageList = AppContext.getInstance().instance.getGroupMessageList(userId, groupId, -1, 10);
+
         chatMessageAdapter = new GroupChatMessageAdapter(R.layout.chat_message_item, groupMessageList);
         if (groupMessageList.size() != 0) {
             showContactHead.setVisibility(View.INVISIBLE);
@@ -134,7 +139,7 @@ public class GroupChatActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.chat_btn_emote, R.id.chat_edit_input, R.id.chat_send_msg, R.id.chatInputHalving, R.id.elEmotion, R.id.chatLayoutMsg, R.id.rl_recyle_content})
+    @OnClick({R.id.chat_btn_emote, R.id.chat_edit_input, R.id.chat_send_msg, R.id.chatInputHalving, R.id.elEmotion, R.id.chatLayoutMsg, R.id.rl_recyle_content,R.id.iv_location})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.chat_btn_emote:
@@ -145,10 +150,11 @@ public class GroupChatActivity extends BaseActivity {
             case R.id.chat_send_msg:
                 String content = chatEditInput.getText().toString();
                 if ("".equals(content) || content == null) {
-                    ToastUtils.showMessage(mContext, "没有发送的内容");
+                    ToastUtils.showMessage(mContext, "发送内容不能为空");
                 } else {
-                    //获取当前时间的时间戳
+
                     ssGroupMessage = new SSGroupMessage();
+                    //获取当前时间的时间戳
                     timeStamp = System.currentTimeMillis();
                     showContactHead.setVisibility(View.INVISIBLE);
                     chatEditInput.setText("");
@@ -178,6 +184,10 @@ public class GroupChatActivity extends BaseActivity {
             case R.id.elEmotion:
                 break;
             case R.id.chatLayoutMsg:
+                break;
+            case R.id.iv_location:
+                Intent intent = new Intent(GroupChatActivity.this, MyLocationActivity.class);
+                startActivity(intent);
                 break;
             case R.id.rl_recyle_content:
                 break;
