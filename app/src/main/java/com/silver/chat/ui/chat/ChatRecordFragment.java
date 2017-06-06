@@ -1,13 +1,10 @@
 package com.silver.chat.ui.chat;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Trace;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
@@ -18,27 +15,18 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.ChatApater;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.base.Common;
-import com.silver.chat.database.dao.BaseDao;
-import com.silver.chat.database.helper.DBHelper;
-import com.silver.chat.database.info.WhereInfo;
 import com.silver.chat.entity.ChatBean;
-import com.silver.chat.entity.DataServer;
-import com.silver.chat.network.responsebean.ContactListBean;
-import com.silver.chat.network.responsebean.GroupBean;
-import com.silver.chat.ui.chat.notification.AddGroupNotifiActivity;
 import com.silver.chat.ui.chat.notification.GroupNotificationActivity;
 import com.silver.chat.ui.contact.ContactChatActivity;
 import com.silver.chat.ui.contact.group.GroupChatActivity;
-import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.dialog.TopDeleteDialog;
-import com.silver.chat.view.recycleview.BaseQuickAdapter;
-import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
 import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 import com.ssim.android.constant.SSSessionTopLevel;
-import com.ssim.android.constant.SSSessionType;
+import com.ssim.android.listener.SSConnectListener;
 import com.ssim.android.listener.SSMessageReceiveListener;
+import com.ssim.android.listener.SSMessageSendListener;
 import com.ssim.android.listener.SSNotificationListener;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
@@ -51,21 +39,16 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-import static android.R.attr.type;
-import static android.R.id.list;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.silver.chat.adapter.ChatApater.sessionList;
 import static com.silver.chat.adapter.ChatApater.sourceId;
-import static com.silver.chat.util.Utils.context;
 
 /**
  * 作者：Fandy on 2016/11/14 14:14
  * 邮箱：fandy618@hotmail.com
  */
 
-public class ChatRecordFragment extends BasePagerFragment implements SSNotificationListener {
+public class ChatRecordFragment extends BasePagerFragment implements SSNotificationListener {//,SSMessageReceiveListener,SSConnectListener,SSMessageSendListener
 
     private WSRecyclerView mRecycleContent;
     private ChatApater mChatApater;
@@ -201,24 +184,40 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
     }
 
     @Override
+    protected void initListener() {
+        super.initListener();
+         /*收到消息监听*/
+//        AppContext.getInstance().instance.setMsgRcvListener((SSMessageReceiveListener) mActivity);
+    }
+
+    @Override
     protected void getData() {
 
     }
 
     @Override
     public void receiveNotification(SSNotification ssNotification) {
-        if (ssNotification instanceof SSFriendNotification) {
-            SSFriendNotification ssFriendNotification = (SSFriendNotification) ssNotification;
-            String sourceId = ssFriendNotification.getSourceId();
-            String content = ssFriendNotification.getContent();
-//            if (Objects.equals(friendid, sourceId)){
-//                ChatBean chatBean = new ChatBean();
-//                chatBean.setContent(content);
-//                mList.add(chatBean);
-//                mChatApater.notifyDataSetChanged();
-//            }
-        }
+
     }
+
+    /**
+     * 处理新收到的消息
+     */
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    /*显示新收到的消息*/
+//                    if (receiveMsg != null) {
+                        mList.addAll(ChatApater.getChatData(mActivity));
+                        mChatApater.setNewData(mList);
+                        mChatApater.notifyDataSetChanged();
+//                    }
+                    break;
+            }
+        }
+    };
 
     private static class MyHandler extends Handler {
         private WeakReference<ChatRecordFragment> activityWeakReference;

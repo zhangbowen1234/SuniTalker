@@ -117,11 +117,9 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
         for (int i = 0; i < sessionList.size(); i++) {
             SSSessionType sessionType = sessionList.get(i).getSessionType();
             String friendAvatar, friendNickname, groupName, groupAvatar, groupId, contents, times;
-            Log.e("sessionType:", sessionType.toString());
             if (sessionType == SSSessionType.P2PCHAT) {
                 //好友聊天列表
                 sourceId = sessionList.get(i).getSourceId();
-                Log.e("sourceId:", sourceId);
                 BaseDao<ContactListBean> mDao = DBHelper.get().dao(ContactListBean.class);
                 List<ContactListBean> friendId = mDao.query(WhereInfo.get().equal("friendId", sourceId));
                 Log.e("friendId:", friendId.toString());
@@ -136,7 +134,6 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 //获取群组聊天列表
             }else if (sessionType == SSSessionType.GROUPCHAT){
                 groupId = sessionList.get(i).getGroupId();
-                Log.e("groupId:", groupId);
                 BaseDao<GroupBean> mDao = DBHelper.get().dao(GroupBean.class);
                 List<GroupBean> groupBeen = mDao.query(WhereInfo.get().equal("groupId", groupId));
                 Log.e("groupBeen:", groupBeen.toString());
@@ -153,7 +150,8 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 //群通知
                 contents = sessionList.get(i).getContent();
             }
-        } Log.e("list:", list.size()+"");
+        }
+        Log.e("list:", list.size()+"");
         return list;
     }
 }
