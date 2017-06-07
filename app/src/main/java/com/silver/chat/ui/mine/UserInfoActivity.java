@@ -2,7 +2,6 @@ package com.silver.chat.ui.mine;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,8 +24,7 @@ import com.silver.chat.view.WhewView;
 import java.util.List;
 
 /**
- * 作者：Fandy on 2016/12/1 09:51
- * 邮箱：fandy618@hotmail.com
+ * 作者：hibon on 2016/12/1 09:51
  */
 
 public class UserInfoActivity extends BaseActivity implements View.OnClickListener {
@@ -109,7 +107,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 DeleteItemDialog(0);
                 break;
             case R.id.ok_btn:
-                SSIMFrendManger.deleteFriend(mContext,token, userId, friendId, "innerapp", new ResponseCallBack<BaseResponse>() {
+                SSIMFrendManger.deleteFriend(mContext,token, userId, friendId, new ResponseCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());

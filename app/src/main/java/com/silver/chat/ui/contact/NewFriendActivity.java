@@ -23,6 +23,7 @@ import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.AgreeFriendAddBody;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.GroupMemberBean;
+import com.silver.chat.network.responsebean.QueryUserInfoBean;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
@@ -53,8 +54,9 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     private List<SSFriendNotification> mUserList;
     private NewFriendAdapter addFriendAdatpter;
     private BaseDao<GroupMemberBean> mDao;
-    private String sourceId, content;
+    private String sourceId ,content;
     private SSFriendNotification mSSFriendNotification;
+    private QueryUserInfoBean queryUserInfoBean;
 
     @Override
     protected int getLayoutId() {
@@ -72,11 +74,9 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         /*设置布局管理器*/
         mNFRecyclerList.setLayoutManager(linearLayoutManager);
-        if (mUserList == null) {
-            mUserList = new ArrayList<SSFriendNotification>();
-        }
+        mUserList = new ArrayList<SSFriendNotification>();
         mDao = DBHelper.get().dao(GroupMemberBean.class);
-
+        queryUserInfoBean = new QueryUserInfoBean();
     }
 
     @Override
@@ -87,60 +87,83 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         mNickName = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
         mAvatar = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
 
-
-        /*SDK中取得好友添加申请通知列表*/
+        /**
+         * SDK中取得好友添加申请通知列表
+         */
         friendNotificationList = SSEngine.getInstance().getFriendNotificationList();
-//            for (int i = 0; i < friendNotificationList.size(); i++) {
-//                sourceId = friendNotificationList.get(i).getSourceId();
-//                String targetId = friendNotificationList.get(i).getTargetId();
-//                /*查询数据库*/
+        /*查询数据库*/
         QueryDbParent();
-//                Log.e("friendNotificationList ===", sourceId + "/" + targetId );
-//            }
         if (addFriendAdatpter == null) {
             addFriendAdatpter = new NewFriendAdapter(R.layout.item_new_friend, mUserList);
         }
         mNFRecyclerList.setAdapter(addFriendAdatpter);
     }
 
-
     /**
      * 查询群表中联系人
      */
     private void QueryDbParent() {
-
+        mUserList.clear();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < friendNotificationList.size(); i++) {
                     sourceId = friendNotificationList.get(i).getSourceId();
-                    content = friendNotificationList.get(i).getContent();
-                    Log.e("sourceId=content", sourceId + "/" + content);
+                     content = friendNotificationList.get(i).getContent();
 
                     List<GroupMemberBean> userInfoList = mDao.query(WhereInfo.get().equal("userId", sourceId));
-                    Log.e("onMainThread", "data+" + userInfoList);
-
+//                    Log.e("onMainThread", "data+" + userInfoList);
+                    mSSFriendNotification = new SSFriendNotification();
                     if (userInfoList.isEmpty()) {
                         /*其次从网络获取数据*/
-//                         httpContactList();
-                        Log.e("userInfoList=====", "isEmpty");
+                        httpIdQueryList();
                     } else {
-                        for (int j = 0; j < userInfoList.size(); j++) {
-                            String mDaoUserId = String.valueOf(userInfoList.get(j).getUserId());
-                            Log.e("mDao_nickName", userInfoList.get(j).getNickName());
-                            mSSFriendNotification = new SSFriendNotification();
-                            mSSFriendNotification.setContent(content);
-                            mSSFriendNotification.setSourceAvatar(userInfoList.get(j).getAvatar());
-                            mSSFriendNotification.setSourceName(userInfoList.get(j).getNickName());
-                            mUserList.add(mSSFriendNotification);
-                            Log.e("a", sourceId + "/" + mDaoUserId + "/" + content);
-                            addFriendAdatpter.setNewData(mUserList);
-                            addFriendAdatpter.notifyDataSetChanged();
-                        }
+                        String mDaoUserId = String.valueOf(userInfoList.get(0).getUserId());
+                        Log.e("mDao_nickName", userInfoList.get(0).getNickName());
+                        mSSFriendNotification.setContent(content);
+                        mSSFriendNotification.setSourceAvatar(userInfoList.get(0).getAvatar());
+                        mSSFriendNotification.setSourceName(userInfoList.get(0).getNickName());
+                        mUserList.add(mSSFriendNotification);
+                        Log.e("a", sourceId + "/" + mDaoUserId + "/" + content);
+                        handler.sendEmptyMessage(0);
                     }
                 }
             }
         }).start();
+
+    }
+
+    /**
+     * 通过好友Id获取好友信息
+     */
+    private void httpIdQueryList() {
+        Log.e("httpIdQueryList", "*******"+content);
+        SSIMFrendManger.idQueryUserInfo(mContext, token, sourceId, new ResponseCallBack<BaseResponse<QueryUserInfoBean>>() {
+            @Override
+            public void onSuccess(BaseResponse<QueryUserInfoBean> queryUserInfoBeanBaseResponse) {
+                queryUserInfoBean = queryUserInfoBeanBaseResponse.data;
+            }
+
+            @Override
+            public void onFailed(BaseResponse<QueryUserInfoBean> queryUserInfoBeanBaseResponse) {
+                ToastUtils.showMessage(mContext, queryUserInfoBeanBaseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onError() {
+                ToastUtils.showMessage(mContext, "未获取到好友信息");
+            }
+        });
+
+        if (queryUserInfoBean != null){
+//            Log.e("queryUserInfoBean",queryUserInfoBean.getNickName());
+            mSSFriendNotification.setContent(content);
+            mSSFriendNotification.setSourceAvatar(queryUserInfoBean.getAvatar());
+            mSSFriendNotification.setSourceName(queryUserInfoBean.getNickName());
+            mUserList.add(mSSFriendNotification);
+
+        }
+
 
     }
 
@@ -150,7 +173,8 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-
+                    addFriendAdatpter.setNewData(mUserList);
+                    addFriendAdatpter.notifyDataSetChanged();
                     break;
             }
 
@@ -232,6 +256,8 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    String NotificationContent, NotificationSourceId;
+
     /**
      * 监听好友申请
      *
@@ -242,9 +268,9 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         if (ssNotification instanceof SSFriendNotification) {
          /*好友申请添加好友的通知监听*/
             SSFriendNotification ssFriendNotiFication = (SSFriendNotification) ssNotification;
-            String content = ssFriendNotiFication.getContent();
-            String sourceId = ssFriendNotiFication.getSourceId();
-            Log.e("申请加好友通知:", sourceId + "/" + content);
+            NotificationSourceId = ssFriendNotiFication.getContent();
+            NotificationSourceId = ssFriendNotiFication.getSourceId();
+            Log.e("申请加好友通知:", NotificationSourceId + "/" + NotificationSourceId);
             friendNotificationList.add(ssFriendNotiFication);
             /*查询数据库*/
 //            QueryDbParent();
@@ -254,6 +280,6 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     public List<GroupMemberBean> getSortData() {
         List<GroupMemberBean> userInfoList = mDao.query(WhereInfo.get().equal("userId", sourceId));
         Log.e("getSortData", userInfoList + "/" + sourceId);
-        return mDao.queryForAll();
+        return userInfoList;
     }
 }

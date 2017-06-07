@@ -85,12 +85,11 @@ public class SSIMFrendManger {
      * @param token
      * @param userId
      * @param friendId
-     * @param appName
      * @param callBack
      */
-    public static void deleteFriend(Context context,String token,String userId,String friendId,String appName,final ResponseCallBack<BaseResponse> callBack){
+    public static void deleteFriend(Context context,String token,String userId,String friendId,final ResponseCallBack<BaseResponse> callBack){
         ApiService imApi = RetrofitHelper.create().imApi;
-        Call<BaseResponse> baseResponseCall = imApi.deleteFriend(token ,userId,friendId,appName);
+        Call<BaseResponse> baseResponseCall = imApi.deleteFriend(token ,userId,friendId);
         BaseCallBack.enqueueBase(context,baseResponseCall,callBack);
     }
 
