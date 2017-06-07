@@ -44,6 +44,7 @@ import butterknife.OnClick;
  * Created by Joe on 2017/6/1.
  */
 public class GroupChatActivity extends BaseActivity {
+    private static final int REQUEST_CODE = 201;
     @BindView(R.id.title_bar)
     TitleBarView titleBar;
     @BindView(R.id.round_three)
@@ -187,11 +188,23 @@ public class GroupChatActivity extends BaseActivity {
                 break;
             case R.id.iv_location:
                 Intent intent = new Intent(GroupChatActivity.this, MyLocationActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,REQUEST_CODE);
                 break;
             case R.id.rl_recyle_content:
                 break;
 
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            String address = data.getStringExtra("address");
+            double longitude = data.getDoubleExtra("longitude", 0.0);
+            double latitude = data.getDoubleExtra("latitude", 0.0);
+
+            ToastUtil.toastMessage(mContext,address+longitude+"   "+latitude);
         }
     }
 

@@ -218,7 +218,10 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             String address = data.getStringExtra("address");
-            ToastUtil.toastMessage(mContext,address);
+            double longitude = data.getDoubleExtra("longitude", 0.0);
+            double latitude = data.getDoubleExtra("latitude", 0.0);
+
+            ToastUtil.toastMessage(mContext,address+longitude+"   "+latitude);
         }
     }
 

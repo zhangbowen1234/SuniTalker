@@ -13,6 +13,8 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
@@ -39,6 +41,10 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
     private AMapLocationClient mlocationClient;
     private AMapLocationClientOption mLocationOption;
     private String address;
+    private double latitude;
+    private double longitude;
+
+
 
     @Override
     protected int getLayoutId() {
@@ -67,10 +73,11 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mylocatioin);
         ButterKnife.bind(this);
-
+        Log.e(TAG, "我走了" );
         mapView = (MapView) findViewById(R.id.map);
-        mapView.onCreate(savedInstanceState);// 此方法必须重写
         init();
+
+        mapView.onCreate(savedInstanceState);// 此方法必须重写
 
     }
 
@@ -81,7 +88,9 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
         if (aMap == null) {
             aMap = mapView.getMap();
             setUpMap();
+
         }
+
     }
 
     /**
@@ -98,8 +107,8 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
         aMap.setLocationSource(this);
         aMap.getUiSettings().setMyLocationButtonEnabled(true);
         aMap.setMyLocationEnabled(true);
-        //最小缩放级别[3-20]
-        aMap.setMinZoomLevel(18.0f);
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(16.0f));
+
     }
 
     /**
@@ -108,7 +117,10 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
     @Override
     protected void onResume() {
         super.onResume();
+
         mapView.onResume();
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(16.0f));
+
     }
 
     /**
@@ -117,6 +129,7 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
     @Override
     protected void onPause() {
         super.onPause();
+
         mapView.onPause();
     }
 
@@ -187,10 +200,19 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
 
                 Intent intent = new Intent();
                 intent.putExtra("address", address);
+                intent.putExtra("longitude",longitude);
+                intent.putExtra("latitude",latitude);
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(16.0f));
+
     }
 
     /**
@@ -205,8 +227,11 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
                 //停止搜索
                 deactivate();
                 address = amapLocation.getCity() + " " + amapLocation.getAddress();
+                latitude = amapLocation.getLatitude();
+                longitude = amapLocation.getLongitude();
                 Log.e("aaaa", "获取信息 = " + amapLocation.getCity() + "," + amapLocation.getAddress());
                 Log.e("aaa", "获取信息 = " + amapLocation.getLatitude() + "," + amapLocation.getLongitude());
+
                 //doSearchQuery(amapLocation);
             } else {
                 String errText = "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();
