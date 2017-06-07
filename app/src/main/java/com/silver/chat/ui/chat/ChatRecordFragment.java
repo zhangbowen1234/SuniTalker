@@ -24,15 +24,8 @@ import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.dialog.TopDeleteDialog;
 import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 import com.ssim.android.constant.SSSessionTopLevel;
-import com.ssim.android.listener.SSConnectListener;
-import com.ssim.android.listener.SSMessageReceiveListener;
-import com.ssim.android.listener.SSMessageSendListener;
 import com.ssim.android.listener.SSNotificationListener;
-import com.ssim.android.model.chat.SSMessage;
-import com.ssim.android.model.chat.SSP2PMessage;
-import com.ssim.android.model.notification.SSFriendNotification;
 import com.ssim.android.model.notification.SSNotification;
-import com.ssim.android.model.session.SSSession;
 
 
 import java.lang.ref.WeakReference;

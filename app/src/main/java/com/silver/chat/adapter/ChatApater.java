@@ -113,42 +113,48 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
         String userId = PreferenceUtil.getInstance(context).getString(PreferenceUtil.USERID, "");
         sessionList = AppContext.getInstance().instance.getSessionList(userId);
         List<ChatBean> list = new ArrayList<>();
-
-        for (int i = 0; i < sessionList.size(); i++) {
-            SSSessionType sessionType = sessionList.get(i).getSessionType();
-            String friendAvatar, friendNickname, groupName, groupAvatar, groupId, contents, times;
-            if (sessionType == SSSessionType.P2PCHAT) {
-                //好友聊天列表
-                sourceId = sessionList.get(i).getSourceId();
-                BaseDao<ContactListBean> mDao = DBHelper.get().dao(ContactListBean.class);
-                List<ContactListBean> friendId = mDao.query(WhereInfo.get().equal("friendId", sourceId));
-                Log.e("friendId:", friendId.toString());
-                for (int j = 0; j < friendId.size(); j++) {
-                    friendAvatar = friendId.get(j).getAvatar();
-                    friendNickname = friendId.get(j).getNickName();
-                    contents= sessionList.get(i).getContent();
-                    times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
-                    Log.e("sendTimes:", times+contents);
-                    list.add(new ChatBean(sourceId, friendNickname, friendAvatar, ChatBean.CHAT_SINGLR,times,contents));
-                }
-                //获取群组聊天列表
-            }else if (sessionType == SSSessionType.GROUPCHAT){
-                groupId = sessionList.get(i).getGroupId();
-                BaseDao<GroupBean> mDao = DBHelper.get().dao(GroupBean.class);
-                List<GroupBean> groupBeen = mDao.query(WhereInfo.get().equal("groupId", groupId));
-                Log.e("groupBeen:", groupBeen.toString());
-                for (int j = 0; j < groupBeen.size(); j++) {
-                    groupAvatar = groupBeen.get(j).getAvatar();
-                    groupName = groupBeen.get(j).getGroupName();
-                    contents = sessionList.get(i).getContent();
-                    times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
+        if (sessionList.size() != 0){
+            for (int i = 0; i < sessionList.size(); i++) {
+                SSSessionType sessionType = sessionList.get(i).getSessionType();
+                String friendAvatar, friendNickname, groupName, groupAvatar, groupId, contents, times;
+                if (sessionType == SSSessionType.P2PCHAT) {
+                    //好友聊天列表
+                    sourceId = sessionList.get(i).getSourceId();
+                    BaseDao<ContactListBean> mDao = DBHelper.get().dao(ContactListBean.class);
+                    List<ContactListBean> friendId = mDao.query(WhereInfo.get().equal("friendId", sourceId));
+                    Log.e("friendId:", friendId.toString());
+                    for (int j = 0; j < friendId.size(); j++) {
+                        friendAvatar = friendId.get(j).getAvatar();
+                        friendNickname = friendId.get(j).getNickName();
+                        contents= sessionList.get(i).getContent();
+                        times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
+                        Log.e("sendTimes:", times+contents);
+                        list.add(new ChatBean(sourceId, friendNickname, friendAvatar, ChatBean.CHAT_SINGLR,times,contents));
+                    }
+                    //获取群组聊天列表
+                }else if (sessionType == SSSessionType.GROUPCHAT){
+                    groupId = sessionList.get(i).getGroupId();
+                    BaseDao<GroupBean> mDao = DBHelper.get().dao(GroupBean.class);
+                    List<GroupBean> groupBeen = mDao.query(WhereInfo.get().equal("groupId", groupId));
+                    Log.e("groupBeen:", groupBeen.toString());
+                    for (int j = 0; j < groupBeen.size(); j++) {
+                        groupAvatar = groupBeen.get(j).getAvatar();
+                        groupName = groupBeen.get(j).getGroupName();
+                        contents = sessionList.get(i).getContent();
+                        times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
 //                    ssSessionTopLevel = sessionList.get(i).getTopLevel();
-                    Log.e("groupAvatar:", groupBeen.get(j).getAvatar()+groupBeen.get(j).getGroupName()+sessionList.get(i).getContent());
-                    list.add(new ChatBean(contents, ChatBean.CHAT_GROUP, times, groupId, groupName, groupAvatar));
+                        Log.e("groupAvatar:", groupBeen.get(j).getAvatar()+groupBeen.get(j).getGroupName()+sessionList.get(i).getContent());
+                        list.add(new ChatBean(contents, ChatBean.CHAT_GROUP, times, groupId, groupName, groupAvatar));
+                    }
+                }else if (sessionType == SSSessionType.GROUPNOTI){
+                    //群通知
+                    contents = sessionList.get(i).getContent();
+                    groupId = sessionList.get(i).getGroupId();
+                    groupName = sessionList.get(i).getGroupName();
+                    groupAvatar = sessionList.get(i).getGroupAvatar();
+                    times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
+                    list.add(new ChatBean(contents,ChatBean.CHAT_GROUP_NOTICE, times, groupId, groupName,groupAvatar));
                 }
-            }else if (sessionType == SSSessionType.GROUPNOTI){
-                //群通知
-                contents = sessionList.get(i).getContent();
             }
         }
         Log.e("list:", list.size()+"");
