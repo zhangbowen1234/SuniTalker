@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/reg_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_20">
+
+            <ImageView
+
+                android:layout_centerVertical="true"
+                android:layout_marginRight="200dp"
+                android:id="@+id/iv_conversation"
+                android:src="@drawable/ic_back"
+                android:padding="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+            <com.silver.chat.view.WhewView
+                android:id="@+id/wv"
+                android:layout_centerInParent="true"
+                android:layout_width="90dp"
+                android:layout_height="90dp" />
+
+            <com.silver.chat.view.RoundImageView
+                android:id="@+id/my_photo"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/system_head" />
+            <ImageView
+                android:padding="15dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="200dp"
+                android:id="@+id/iv_qrcode"
+                android:src="@drawable/ic_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_groupname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="马果果创建的群"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp_15" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#554D5577"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_group_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:text="我的群名片"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="45dp"
+                android:layout_marginTop="20dp"
+                android:text="马果果"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <ImageView
+
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:padding="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+
+                android:src="@drawable/ic_arrow_into" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_group_mem_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="21dp"
+            android:text="群成员(0)"
+            android:textColor="#8affffff"
+            android:textSize="12dp" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="7dp"
+            android:layout_marginTop="7dp"
+            android:background="#706A8F" />
+
+        <RelativeLayout
+            android:id="@+id/rl_group_member"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_group_memeber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                />
+
+            <ImageView
+                android:id="@+id/iv_header5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_toRightOf="@id/rv_group_memeber"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:src="@drawable/ic_head_little"
+                android:layout_centerVertical="true"/>
+
+            <ImageView
+                android:id="@+id/iv_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_into" />
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="7dp"
+            android:background="#706A8F" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp">
+
+            <ImageView
+                android:padding="10dp"
+                android:id="@+id/iv_arrow_right"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:paddingRight="@dimen/dp_10"
+                android:src="@drawable/ic_arrow_into"
+                />
+
+            <ImageView
+                android:padding="10dp"
+                android:visibility="gone"
+                android:id="@+id/iv_arrow_left"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:paddingLeft="@dimen/dp_10"
+                android:src="@drawable/ic_back_white" />
+
+
+            <android.support.v4.view.ViewPager
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="80dp"
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_centerInParent="true"
+                 />
+
+        </RelativeLayout>
+
+
+        <ImageView
+            android:padding="10dp"
+            android:id="@+id/iv_arrow_bottom"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:src="@drawable/ic_back_white" />
+    </LinearLayout>
+</LinearLayout>

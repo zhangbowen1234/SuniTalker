@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.silver.chat">
+
+    <!-- 联网权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 访问sd卡权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- 震动权限 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 使用照相机权限 -->
+    <uses-permission android:name="android.hardware.camera" />
+    <uses-permission android:name="android.hardware.camera.autofocus" />
+    <!--以下是集成高德地图需要的权限-->
+    <!--用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!--用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <!--用于获取运营商信息，用于支持提供运营商信息相关的接口-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!--用于访问wifi网络信息，wifi信息会用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!--用于访问网络，网络定位需要上网-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!--用于读取手机当前的状态-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!--用于写入缓存数据到扩展存储卡-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--用于申请调用A-GPS模块-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <!--用于申请获取蓝牙信息进行室内定位-->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <application
+        android:name=".AppContext"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+<!--    <meta-data
+        android:name="com.amap.api.v2.apikey"
+        android:value="4049aaf8a09e798e323bec3aa8e8f382"/>-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="c48de938cd99379f5a5cf8ba42ff28de"/>
+        <activity android:name=".ui.login.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".ui.login.RegisterPWDActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.login.RegisterPhoneActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.login.UserForgotPWDActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.login.ForgotVerificationActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.chat.SearchChatRecordActivity"
+            android:label="搜索聊天记录" />
+        <activity
+            android:name=".ui.contact.SearchContactActivity"
+            android:label="搜索联系人" />
+        <activity
+            android:name=".ui.mine.UserInfoActivity"
+            android:label="好友详情" />
+        <activity
+            android:name=".ui.mine.MyPRCodeActivity"
+            android:label="我的二维码" />
+        <activity
+            android:name=".ui.contact.ContactChatActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" /> <!-- 进入界面隐藏软键盘 -->
+
+        <activity
+            android:name=".ui.mine.SettingActivity"
+            android:label="设置" />
+        <activity
+            android:name=".ui.mine.setting.AccountActivity"
+            android:label="账户" />
+        <activity
+            android:name=".ui.mine.setting.AboutActivity"
+            android:label="账户" />
+        <activity
+            android:name=".ui.mine.ScanActivity"
+            android:label="扫一扫界面" />
+        <activity
+            android:name=".ui.mine.MyPRScanCodeActivity"
+            android:label="扫描二维码" />
+        <activity
+            android:name=".ui.contact.NewFriendActivity"
+            android:label="新朋友" />
+        <activity
+            android:name=".ui.mine.setting.ChangeBackgroundActivity"
+            android:label="主色调" />
+        <activity
+            android:name=".ui.contact.group.MyGroupActivity"
+            android:label="我的群"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.contact.group.CreatGroupActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name=".ui.contact.group.DiscussGroupActivity"
+            android:label="讨论组"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.contact.CreatDiscussionActivity"
+            android:label="创建讨论组" />
+        <activity
+            android:name=".ui.contact.group.GroupDetailActivity"
+            android:label="群组详情的" />
+        <activity
+            android:name=".ui.chat.notification.AddGroupNotifiActivity"
+            android:label="加群邀请" />
+        <activity
+            android:name=".ui.chat.notification.GroupNotificationActivity"
+            android:label="群通知" />
+        <activity android:name=".ui.contact.AddFriendActivity" />
+        <activity android:name=".ui.contact.AddFriendVerifyActivity" />
+        <activity
+            android:name=".ui.contact.group.DeleteGroupMemActivity"
+            android:label="删除群成员" />
+        <activity
+            android:name=".ui.contact.group.GroupMemberActivity"
+            android:label="群成员" />
+        <activity
+            android:name=".ui.contact.group.InviteFriendsActivity"
+            android:label="邀请新朋友" />
+        <activity
+            android:name=".ui.contact.group.GroupQRCodeActivity"
+            android:label="群二维码" />
+        <activity
+            android:name=".ui.contact.group.ModifyNickNameActivity"
+            android:label="修改群昵称" />
+        <activity
+            android:name=".ui.contact.group.GroupManagerActivity"
+            android:label="添加管理员" />
+        <activity
+            android:name=".ui.contact.group.GroupMangerActivity2"
+            android:label="添加管理员2" />
+        <activity
+            android:name=".ui.contact.group.GroupDataActivity"
+            android:label="编辑群资料" />
+        <activity
+            android:name=".ui.contact.group.AlertGroupNameActivity"
+            android:label="修改群名称" />
+        <activity
+            android:name=".ui.contact.group.FindGroupActivity"
+            android:label="添加群组" />
+        <activity
+            android:name=".ui.contact.group.GroupChatActivity"
+            android:label="群聊界面" />
+        <activity android:name=".ui.contact.FriendApplyforActivity"></activity>
+        <activity android:name=".ui.contact.MyLocationActivity"
+            android:label="地理位置的界面"/>
+        <service android:name="com.amap.api.location.APSService"></service>
+    </application>
+
+</manifest>

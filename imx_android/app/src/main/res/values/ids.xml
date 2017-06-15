@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="toolbar" type="id"/>
+    <item name="tabLayout" type="id"/>
+    <item name="tly_content" type="id"/>
+    <item name="viewpager" type="id"/>
+    <item name="action_search" type="id"/>
+    <item name="action_notifications" type="id"/>
+    <item name="action_more" type="id"/>
+    <item name="recyle_content" type="id"/>
+    <item name="iv_avatar" type="id"/>
+    <item name="tv_time" type="id"/>
+    <item name="tv_name" type="id"/>
+    <item name="tv_content" type="id"/>
+    <!--用户手机-->
+    <item name="user_phone" type="id"/>
+    <!--用户密码-->
+    <item name="user_pwd" type="id"/>
+    <!--忘记密码-->
+    <item name="forgot_pwd" type="id"/>
+    <!--登录-->
+    <item name="btn_login" type="id"/>
+    <!--去注册-->
+    <item name="go_reg" type="id"/>
+    <!--获取验证码-->
+    <item name="btn_auth_code" type="id"/>
+    <!--输入验证码-->
+    <item name="edit_auth_code" type="id"/>
+    <!--注册-->
+    <item name="btn_register_id" type="id"/>
+    <!--返回登录-->
+    <item name="return_last" type="id"/>
+    <!--第三方登录-->
+    <item name="qq" type="id"/>
+    <item name="weixin" type="id"/>
+    <item name="xinlang" type="id"/>
+    <!--设置密码-->
+    <item name="set_pwd" type="id"/>
+    <!--重复输入密码-->
+    <item name="again_set_pwd" type="id"/>
+    <!--重复输入注册手机-->
+    <item name="anew_reg_phone" type="id"/>
+    <!--修改密码-->
+    <item name="verification_bt_register" type="id"/>
+    <item name="iv_notification" type="id"/>
+    <item name="tv_title" type="id"/>
+    <item name="iv_more" type="id"/>
+    <item name="iv_toolbar_more" type="id"/>
+    <item name="iv_search" type="id"/>
+    <item name="lly_name" type="id"/>
+    <item name="im_contact_image" type="id"/>
+    <item name="tv_contact_name" type="id"/>
+    <item name="horizontal_recyle_content" type="id"/>
+    <item name="content_title" type="id"/>
+    <item name="iv_back" type="id"/>
+    <item name="et_search" type="id"/>
+    <item name="iv_clear" type="id"/>
+    <item name="search_layout" type="id"/>
+    <item name="title_right_video" type="id"/>
+    <item name="title_right_voice" type="id"/>
+    <item name="title_name" type="id"/>
+    <item name="title_left_back" type="id"/>
+    <item name="contact_chat_img" type="id"/>
+    <item name="tv_contact" type="id"/>
+    <item name="llyout" type="id"/>
+    <item name="chat_send_msg" type="id"/>
+    <item name="title_bar" type="id"/>
+    <item name="rl_recyle_content" type="id"/>
+    <item name="ll_title_name" type="id"/>
+    <item name="show_contact_head" type="id"/>
+    <item name="my_round_head" type="id"/>
+    <item name="lly_more" type="id"/>
+    <item name="tv_scan" type="id"/>
+    <item name="tv_search" type="id"/>
+    <item name="tv_start_chat" type="id"/>
+    <item name="tv_unread" type="id"/>
+    <item name="tv_read" type="id"/>
+    <item name="tv_clear" type="id"/>
+    <item name="iv_toolbar_search" type="id"/>
+    <item name="llay_one" type="id"/>
+    <item name="chat_btn_emote" type="id"/>
+    <item name="chat_edit_input" type="id"/>
+    <item name="tv_sex" type="id"/>
+    <item name="tv_sign" type="id"/>
+    <item name="tv_stick" type="id"/>
+    <item name="tv_silence" type="id"/>
+    <item name="tv_detail" type="id"/>
+    <item name="tv_report" type="id"/>
+    <item name="tv_delete" type="id"/>
+    <item type="id" name="id_autolayout" />
+    <item name="iv_emoticon" type="id"/>
+    <item name="iv_send" type="id"/>
+    <item name="iv_camera" type="id"/>
+    <item name="tv_qr_code" type="id"/>
+    <item name="tv_file" type="id"/>
+    <item name="tv_dynamic" type="id"/>
+    <item name="iv_header" type="id"/>
+    <item name="iv_code" type="id"/>
+    <item name="iv_scan" type="id"/>
+    <item name="tv_account" type="id"/>
+    <item name="tv_about" type="id"/>
+    <item name="tv_login_out" type="id"/>
+    <item name="tv_theme" type="id"/>
+    <item name="iv_save" type="id"/>
+    <item name="tv_avatar" type="id"/>
+    <item name="rly_avatar" type="id"/>
+    <item name="lly_phone" type="id"/>
+    <item name="tv_phone" type="id"/>
+    <item name="tv_clause" type="id"/>
+    <item name="tv_version" type="id"/>
+
+    <!-- Messages IDs Zxing-->
+    <item type="id" name="auto_focus"/>
+    <item type="id" name="decode"/>
+    <item type="id" name="decode_failed"/>
+    <item type="id" name="decode_succeeded"/>
+    <item type="id" name="encode_failed"/>
+    <item type="id" name="encode_succeeded"/>
+    <item type="id" name="launch_product_query"/>
+    <item type="id" name="quit"/>
+    <item type="id" name="restart_preview"/>
+    <item type="id" name="return_scan_result"/>
+    <item type="id" name="search_book_contents_failed"/>
+    <item type="id" name="search_book_contents_succeeded"/>
+
+</resources>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_friend_verify"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.silver.chat.ui.contact.AddFriendVerifyActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl_title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50">
+
+        <ImageView
+            android:id="@id/title_left_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/dp_16"
+            android:background="@null"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_20"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="添加好友验证"
+            android:textColor="@color/white"
+            android:textSize="@dimen/dp_18" />
+
+        <TextView
+            android:id="@+id/send_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dp_10"
+            android:text="发送"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_15" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_title_layout"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_60"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.silver.chat.view.CircleImageView
+                android:id="@+id/friend_head"
+                android:layout_width="@dimen/dp_45"
+                android:layout_height="@dimen/dp_45"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:src="@drawable/system_head_portrait" />
+
+            <TextView
+                android:id="@+id/add_nick_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:text="姓名"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_15" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/txt_font_one_color" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="验证消息"
+            android:textColor="@color/txt_font_one_color"
+            android:textSize="@dimen/font_12" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/common_line_one_color" />
+
+        <EditText
+            android:id="@+id/edit_msg_verify"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:maxLength="20"
+            android:paddingLeft="@dimen/dp_20"
+            android:text=""
+            android:textCursorDrawable="@color/white"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_15" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_count_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="20"
+                android:textColor="@color/txt_font_one_color"
+                android:textSize="@dimen/dp_12" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="@dimen/dp_0"
+            android:background="@color/common_line_one_color" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:text="修改备注"
+            android:textColor="@color/txt_font_one_color"
+            android:textSize="@dimen/font_12" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="@dimen/dp_5"
+            android:background="@color/txt_font_one_color_other" />
+
+        <EditText
+            android:id="@+id/remarks_friend_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:maxLength="20"
+            android:textCursorDrawable="@color/white"
+            android:paddingLeft="@dimen/dp_20"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_15" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="@dimen/dp_5"
+            android:background="@color/txt_font_one_color_other" />
+
+    </LinearLayout>
+</RelativeLayout>

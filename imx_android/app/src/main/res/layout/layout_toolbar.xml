@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_48"
+    android:theme="@style/AppTheme.AppBarOverlay"
+    app:contentInsetLeft="0dp"
+    app:contentInsetStart="0dp"
+
+    app:popupTheme="@style/AppTheme.PopupOverlay">
+    <!--app:layout_scrollFlags="enterAlways|scroll" 向上隐藏-->
+
+    <RelativeLayout
+        android:id="@+id/top_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dp_10"
+            android:text="IM"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_18"/>
+
+        <ImageView
+            android:id="@id/iv_toolbar_search"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dp_10"
+            android:src="@drawable/ic_menu_search"/>
+
+        <!--<ImageView-->
+            <!--android:id="@id/iv_toolbar_more"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="@dimen/dp_14"-->
+            <!--android:layout_toRightOf="@id/iv_toolbar_search"-->
+            <!--android:padding="@dimen/dp_10"-->
+            <!--android:src="@drawable/ic_menu_more"/>-->
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.Toolbar>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_new_friend"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.silver.chat.ui.contact.NewFriendActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
+
+            <ImageView
+                android:id="@+id/title_left_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/dp_16"
+                android:background="@null"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_20"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="编辑群资料"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dp_15" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_group_head"
+
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/txt_font_one_color" />
+
+
+            <TextView
+                android:gravity="center_vertical"
+                android:text="群头像"
+                android:id="@+id/tv_grouphead"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dp_8"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/txt_font_one_color" />
+
+            <ImageView
+                android:id="@+id/iv_grouphead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_head_little" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_group_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50">
+            <TextView
+                android:text="群名称"
+                android:layout_centerVertical="true"
+                android:id="@+id/tv_groupname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:textColor="@color/white" />
+            <TextView
+                android:gravity="center_vertical"
+                android:text="群名称"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/tv_groupname1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_8"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:textColor="@color/gray_81" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/txt_font_one_color" />
+
+        </RelativeLayout>
+        <TextView
+        android:text="群介绍"
+        android:id="@+id/tv_groupintroduce"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_8"
+        android:layout_marginRight="10dp"
+        android:background="@null"
+        android:textColor="@color/white" />
+        <TextView
+            android:textSize="13sp"
+            android:text="本群创建于2018年08月08日"
+            android:id="@+id/tv_creattime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_8"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:textColor="@color/gray_81" />
+    </LinearLayout>
+
+</RelativeLayout>

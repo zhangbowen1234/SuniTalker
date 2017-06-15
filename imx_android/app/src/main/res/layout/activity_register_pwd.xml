@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@mipmap/reg_bg"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="60dp"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/LinearLayout_reg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/user_pwd" />
+
+                <EditText
+                    android:id="@id/set_pwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="请输入密码"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:padding="10.0dip"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/txt_font_one_color"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14.0sp"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/halving_one_line" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/user_pwd" />
+                <EditText
+                    android:id="@id/again_set_pwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="重复输入密码"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:padding="10.0dip"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/txt_font_one_color"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14.0sp"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/user_pwd" />
+
+            </LinearLayout>
+
+            <include layout="@layout/halving_one_line" />
+        </LinearLayout>
+        <com.silver.chat.view.MyLineEditText
+            android:id="@+id/edit_auth_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:background="@null"
+            android:textCursorDrawable="@null"
+            android:gravity="center_horizontal"
+            android:hint="请输入手机验证码"
+            android:textColorHint="@color/txt_font_one_color"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_below="@id/LinearLayout_reg"
+            />
+
+
+        <TextView
+            android:id="@+id/tv_send_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="短信已发送至"
+            android:gravity="center_horizontal"
+            android:textColor="#deffffff"
+            android:layout_marginTop="@dimen/dp_4"
+            />
+
+
+        <Button
+            android:id="@id/btn_register_id"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/reg_verification_code_shape"
+            android:padding="8.0dip"
+            android:gravity="center"
+            android:text="注  册"
+            android:textColor="@color/white"
+            android:textSize="15.0sp" />
+    </LinearLayout>
+
+
+
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/ll_authcode"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="20dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:layout_below="@id/linearLayout"-->
+        <!--android:layout_marginStart="20dp"-->
+        <!--android:gravity="bottom"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<Button-->
+            <!--android:id="@id/btn_auth_code"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginTop="80dp"-->
+            <!--android:background="@drawable/lg_button_shape"-->
+            <!--android:text="再次发送验证码至13621153700"-->
+            <!--android:textColor="@color/txt_font_one_color"-->
+            <!--android:textSize="12.0sp" />-->
+
+        <!--<Button-->
+            <!--android:id="@id/anew_reg_phone"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/edt_verification"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="@drawable/lg_button_shape"-->
+            <!--android:text="重新输入注册手机号码"-->
+            <!--android:textColor="@color/txt_font_one_color"-->
+            <!--android:textSize="12.0sp" />-->
+        <!---->
+        <!---->
+    <!--</LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:layout_below="@id/linearLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:id="@id/btn_auth_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/lg_button_shape"
+            android:alpha="0.26"
+            android:text="重新发送短信验证码到手机号13621153700"
+            android:textColor="@color/txt_font_one_color"
+            android:textSize="12.0sp" />
+        <Button
+            android:id="@+id/btn_auth_code_other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/lg_button_shape"
+            android:text="发送短信验证码到其他手机号"
+            android:textColor="@color/txt_font_one_color_other"
+            android:textSize="12.0sp" />
+
+        <TextView
+            android:id="@id/return_last"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:text="⇤返回登录"
+            android:textColor="@color/common_line_one_color"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

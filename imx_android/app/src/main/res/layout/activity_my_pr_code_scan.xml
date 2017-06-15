@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/global_qr_code"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_15"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_25"
+        android:layout_above="@id/iv_back"
+        android:layout_below="@+id/tv_title">
+
+        <RelativeLayout
+            android:layout_width="265dp"
+            android:layout_height="240dp"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:layout_marginTop="115dp">
+            <!-- 扫描取景框 -->
+            <!--<com.silver.chat.qrcode.core.ScanBoxView-->
+                <!--android:id="@+id/scanBoxView"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--/>-->
+        </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="请将二维码放入框内，进行扫描"
+            android:gravity="center"
+            android:textColor="#8a010101"
+            android:layout_above="@+id/iv_album"
+            android:layout_marginBottom="8dp"
+            android:textSize="@dimen/font_18"
+            />
+        <ImageView
+            android:id="@+id/iv_album"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_album"
+            android:layout_marginLeft="@dimen/dp_85"
+            android:layout_marginBottom="@dimen/dp_13"
+            android:layout_alignParentBottom="true"/>
+        <ImageView
+            android:id="@+id/iv_flashlight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_flashlight"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_85"
+            android:layout_marginBottom="@dimen/dp_13"
+            android:layout_alignParentBottom="true"
+            />
+
+        <ImageView
+            android:id="@+id/iv_scan_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/sweep_background2"
+            android:gravity="center"
+            android:scaleType="fitXY"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:background="@drawable/ic_back_white"/>
+</RelativeLayout>
