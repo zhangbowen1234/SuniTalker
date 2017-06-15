@@ -9,26 +9,33 @@ import com.silver.chat.R;
 import com.silver.chat.entity.GroupMessageBean;
 import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.PreferenceUtil;
-import com.silver.chat.view.recycleview.BaseQuickAdapter;
+import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
-import com.ssim.android.model.chat.SSGroupMessage;
 
 import java.util.List;
 
 /**
- * Created by Joe on 2017/6/2.
+ * Created by Joe on 2017/6/13.
  */
 
-public class GroupChatMessageAdapter extends BaseQuickAdapter<GroupMessageBean,BaseViewHolder> {
+public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean,BaseViewHolder> {
 
 
-    public GroupChatMessageAdapter(int layoutResId, List<GroupMessageBean> data) {
-        super(layoutResId, data);
+    /**
+     * Same as QuickAdapter#QuickAdapter(Context,int) but with
+     * some initialization data.
+     *
+     * @param data A new list is created out of this one to avoid mutable list
+     */
+    public GroupChatAdapter(List<GroupMessageBean> data) {
+        super(data);
+        //此处多条目暂时只包含文本消息和地理位置消息
+        addItemType(1, R.layout.chat_message_item);
+        addItemType(8,R.layout.chat_message_item_location);
     }
 
     @Override
     protected void convert(BaseViewHolder holper, GroupMessageBean item, int position) {
-
         RelativeLayout leftLayout;
         RelativeLayout rightLayout;
         TextView leftMessageView;
@@ -36,8 +43,6 @@ public class GroupChatMessageAdapter extends BaseQuickAdapter<GroupMessageBean,B
         TextView timeView;
         ImageView leftPhotoView;
         ImageView rightPhotoView;
-
-
         leftLayout = holper.getView(R.id.chat_friend_left_layout);
         rightLayout = holper.getView(R.id.chat_user_right_layout);
         timeView = holper.getView(R.id.message_time);
@@ -112,15 +117,30 @@ public class GroupChatMessageAdapter extends BaseQuickAdapter<GroupMessageBean,B
 
 //        timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime()) + "");
         String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
-        if (userId.equals(item.getSourceId())) { //发送
-            leftLayout.setVisibility(View.INVISIBLE);
-            rightLayout.setVisibility(View.VISIBLE);
-            rightMessageView.setText(item.getContent());
-        } else { //接收
-            leftLayout.setVisibility(View.VISIBLE);
-            rightLayout.setVisibility(View.INVISIBLE);
-            leftMessageView.setText(item.getContent());
+        switch (holper.getItemViewType()){
+            case 1:
+                if (userId.equals(item.getSourceId())) { //发送
+                    leftLayout.setVisibility(View.INVISIBLE);
+                    rightLayout.setVisibility(View.VISIBLE);
+                    rightMessageView.setText(item.getContent());
+                } else { //接收
+                    leftLayout.setVisibility(View.VISIBLE);
+                    rightLayout.setVisibility(View.INVISIBLE);
+                    leftMessageView.setText(item.getContent());
+                }
+                break;
+            case 8:
+                if (userId.equals(item.getSourceId())) { //发送
+                    leftLayout.setVisibility(View.INVISIBLE);
+                    rightLayout.setVisibility(View.VISIBLE);
+                    rightMessageView.setText(item.getContent());
+                } else { //接收
+                    leftLayout.setVisibility(View.VISIBLE);
+                    rightLayout.setVisibility(View.INVISIBLE);
+                    leftMessageView.setText(item.getContent());
+                }
+                break;
         }
-
     }
+
 }

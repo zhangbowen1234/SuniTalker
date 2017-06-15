@@ -13,9 +13,13 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
+import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
@@ -39,6 +43,9 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
     private AMapLocationClient mlocationClient;
     private AMapLocationClientOption mLocationOption;
     private String address;
+    private float latitude;
+    private float longitude;
+
 
     @Override
     protected int getLayoutId() {
@@ -67,10 +74,10 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mylocatioin);
         ButterKnife.bind(this);
-
         mapView = (MapView) findViewById(R.id.map);
-        mapView.onCreate(savedInstanceState);// 此方法必须重写
         init();
+
+        mapView.onCreate(savedInstanceState);// 此方法必须重写
 
     }
 
@@ -80,8 +87,8 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
     private void init() {
         if (aMap == null) {
             aMap = mapView.getMap();
-            setUpMap();
         }
+        setUpMap();
     }
 
     /**
@@ -98,8 +105,8 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
         aMap.setLocationSource(this);
         aMap.getUiSettings().setMyLocationButtonEnabled(true);
         aMap.setMyLocationEnabled(true);
-        //最小缩放级别[3-20]
-        aMap.setMinZoomLevel(18.0f);
+        aMap.getUiSettings().setZoomControlsEnabled(true);
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(16.0f));
     }
 
     /**
@@ -160,6 +167,7 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
             // 在定位结束后，在合适的生命周期调用onDestroy()方法
             // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
             mlocationClient.startLocation();
+            aMap.moveCamera(CameraUpdateFactory.zoomTo(16.0f));
         }
     }
 
@@ -174,6 +182,7 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
             mlocationClient.onDestroy();
         }
         mlocationClient = null;
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(16.0f));
 
     }
 
@@ -187,10 +196,19 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
 
                 Intent intent = new Intent();
                 intent.putExtra("address", address);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("latitude", latitude);
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(16.0f));
+
     }
 
     /**
@@ -205,8 +223,15 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
                 //停止搜索
                 deactivate();
                 address = amapLocation.getCity() + " " + amapLocation.getAddress();
-                Log.e("aaaa", "获取信息 = " + amapLocation.getCity() + "," + amapLocation.getAddress());
+                latitude = (float) amapLocation.getLatitude();
+                longitude = (float) amapLocation.getLongitude();
+                LatLng latLng = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
+
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(new CameraPosition(latLng, 16, 0, 0));
+                aMap.moveCamera(cameraUpdate);
+                Log.e("aaa", "获取信息 = " + amapLocation.getCity() + "," + amapLocation.getAddress());
                 Log.e("aaa", "获取信息 = " + amapLocation.getLatitude() + "," + amapLocation.getLongitude());
+
                 //doSearchQuery(amapLocation);
             } else {
                 String errText = "定位失败," + amapLocation.getErrorCode() + ": " + amapLocation.getErrorInfo();

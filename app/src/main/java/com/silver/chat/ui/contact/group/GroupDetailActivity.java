@@ -133,10 +133,15 @@ public class GroupDetailActivity extends BaseActivity {
 
         if (privilege == 1) {
             lists = Arrays.asList(stringArray1);
+            //Log.e("lists1", lists.toString());
         } else if (privilege == 2) {
             lists = Arrays.asList(stringArray2);
+           // Log.e("lists2", lists.toString());
+
         } else {
             lists = Arrays.asList(stringArray3);
+            //Log.e("lists3", lists.toString());
+
         }
 
         groupLeftFragment = new GroupLeftFragment(lists);
@@ -159,9 +164,11 @@ public class GroupDetailActivity extends BaseActivity {
         groupAvatar = groupbean.getAvatar();
         dao = DBHelper.get().dao(GroupMemberBean.class);
         getGroupMemberLocal();
+        tvGroupMemCount.setText("群成员(" + groupMemlists.size() + ")");
         if(!(groupMemlists.size()>0)) {
             getGroupMemberNet();
         }
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvGroupMemeber.setLayoutManager(linearLayoutManager);

@@ -33,6 +33,7 @@ import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.listener.SSMessageSendListener;
+import com.ssim.android.model.chat.SSLocation;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
 
@@ -218,7 +219,9 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             String address = data.getStringExtra("address");
-            ToastUtil.toastMessage(mContext,address);
+            double longitude = data.getDoubleExtra("longitude", 0.0);
+            double latitude = data.getDoubleExtra("latitude", 0.0);
+            //ToastUtil.toastMessage(mContext,address+longitude+"   "+latitude);
         }
     }
 
