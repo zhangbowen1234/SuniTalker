@@ -174,7 +174,6 @@ public class GroupChatActivity extends BaseActivity {
                     ToastUtils.showMessage(mContext, "发送内容不能为空");
                 } else {
 
-                    //ssGroupMessage = new SSGroupMessage();
                     groupMessageBean = new GroupMessageBean(SSMessageFormat.TEXT);
                     //获取当前时间的时间戳
                     timeStamp = System.currentTimeMillis();
@@ -189,16 +188,20 @@ public class GroupChatActivity extends BaseActivity {
                     recyleContent.smoothScrollToPosition(groupChatAdapter.getItemCount() - 1);
 
                     SSEngine instance = SSEngine.getInstance();
-                    instance.sendMessageToGroupId(groupId, SSMessageFormat.TEXT, content);
-
-                    instance.setMsgSendListener(new SSMessageSendListener() {
-                        @Override
-                        public void didSend(boolean b, long l) {
-                            if (!b){
-                                ToastUtil.toastMessage(mContext,"发送失败");
+                    boolean isSend = instance.sendMessageToGroupId(groupId, SSMessageFormat.TEXT, content);
+                    if(isSend) {
+                        instance.setMsgSendListener(new SSMessageSendListener() {
+                            @Override
+                            public void didSend(boolean b, long l) {
+                                if (!b){
+                                    ToastUtil.toastMessage(mContext,"服务器忙");
+                                }
                             }
-                        }
-                    });
+                        });
+                    }else {
+                        ToastUtil.toastMessage(mContext,"消息发送失败");
+                    }
+
                 }
 
 
@@ -226,16 +229,19 @@ public class GroupChatActivity extends BaseActivity {
             String address = data.getStringExtra("address");
             float longitude = data.getFloatExtra("longitude", 0);
             float latitude = data.getFloatExtra("latitude", 0);
+            Log.e(TAG, address+longitude+"......"+latitude );
+
             //ToastUtil.toastMessage(mContext, address + longitude + "   " + latitude);
             //获取当前时间的时间戳
             timeStamp = System.currentTimeMillis();
             showContactHead.setVisibility(View.INVISIBLE);
-            groupMessageBean.setContent(address);
-            groupMessageBean.setSourceId(userId);
-            groupMessageBean.setGroupId(groupId);
-            groupMessageBean.setContentType(SSMessageFormat.LOCATION);
-            groupMessageBean.setMessageTime(timeStamp);
-            groupMesList.add(groupMessageBean);
+            GroupMessageBean groupMessage = new GroupMessageBean(SSMessageFormat.LOCATION);
+            groupMessage.setContent(address);
+            groupMessage.setSourceId(userId);
+            groupMessage.setGroupId(groupId);
+            groupMessage.setContentType(SSMessageFormat.LOCATION);
+            groupMessage.setMessageTime(timeStamp);
+            groupMesList.add(groupMessage);
             groupChatAdapter.notifyDataSetChanged();
             recyleContent.smoothScrollToPosition(groupChatAdapter.getItemCount() - 1);
             SSLocation ssLocation = new SSLocation();

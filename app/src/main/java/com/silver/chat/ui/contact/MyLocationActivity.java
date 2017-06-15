@@ -222,7 +222,7 @@ public class MyLocationActivity extends BaseActivity implements LocationSource, 
                 mListener.onLocationChanged(amapLocation);// 显示系统小蓝点
                 //停止搜索
                 deactivate();
-                address = amapLocation.getCity() + " " + amapLocation.getAddress();
+                address = amapLocation.getAddress();
                 latitude = (float) amapLocation.getLatitude();
                 longitude = (float) amapLocation.getLongitude();
                 LatLng latLng = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
