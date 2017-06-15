@@ -20,6 +20,7 @@ import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
 import com.silver.chat.view.dialog.TvLoginOutDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 /**
@@ -32,14 +33,16 @@ public class GroupLeftFragment extends BasePagerFragment {
     GridView grideview;
     //单页最多条目个数
     public final int CHILD_NUM = 6;
-    public List<String> mList;
+    public List<String> mList = new ArrayList<>();
     private GrideViewAdapter grideViewAdapter;
     private String token;
+
+    public GroupLeftFragment() {
+    }
 
     public GroupLeftFragment(List list) {
         this.mList = list;
     }
-    public GroupLeftFragment(){};
     @Override
     protected void getData() {
         grideViewAdapter = new GrideViewAdapter();

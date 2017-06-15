@@ -72,6 +72,7 @@ public class SSIMLoginManger {
         Call<BaseResponse<LoginRequestBean>> baseResponseCall = imApi.goLogin(version, loginRequest);
         BaseCallBack.enqueue(context,baseResponseCall,callBack);
 
+
     }
 
 

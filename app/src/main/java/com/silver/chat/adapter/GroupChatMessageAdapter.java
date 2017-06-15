@@ -6,6 +6,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.silver.chat.R;
+import com.silver.chat.entity.GroupMessageBean;
 import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
@@ -18,13 +19,15 @@ import java.util.List;
  * Created by Joe on 2017/6/2.
  */
 
-public class GroupChatMessageAdapter extends BaseQuickAdapter<SSGroupMessage,BaseViewHolder> {
-    public GroupChatMessageAdapter(int layoutResId, List<SSGroupMessage> data) {
+public class GroupChatMessageAdapter extends BaseQuickAdapter<GroupMessageBean,BaseViewHolder> {
+
+
+    public GroupChatMessageAdapter(int layoutResId, List<GroupMessageBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder holper, SSGroupMessage item, int position) {
+    protected void convert(BaseViewHolder holper, GroupMessageBean item, int position) {
 
         RelativeLayout leftLayout;
         RelativeLayout rightLayout;

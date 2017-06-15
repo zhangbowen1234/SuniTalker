@@ -5,9 +5,9 @@ package com.silver.chat.network;
  */
 
 public class Urls {
-//    public static final String SERVER = "http://192.168.10.132:7102/";
+    public static final String SERVER = "http://192.254.1.6:7102/";
 //    public static final String SERVER = "http://192.168.10.215:7102/";
-    public static final String SERVER = "http://imx.users.docker.sspaas.net/";
+//    public static final String SERVER = "http://imx.users.docker.sspaas.net/";
 //    public static final String CLOUD_SERVER = "http://cloud.docker.sspaas.net/sspaas-cloud/imicom/uploadImIcom/";
 
     //用户

@@ -21,7 +21,8 @@ public class GlideUtil {
         Glide.with(v.getContext())
                 .load(url)
                 .asBitmap()
-                .animate(R.anim.basepopup_fade_in)//淡入动画效果
+                .dontAnimate()
+                //.animate(R.anim.basepopup_fade_in)//淡入动画效果
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.system_head)
                 .placeholder(R.drawable.system_head)
