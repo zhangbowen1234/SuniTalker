@@ -70,17 +70,17 @@ public class AppContext extends MultiDexApplication implements SSMessageReceiveL
                         /**
                          * verifyAppKeyAndSecretResponse.getCode 为1表示初始化成功，否则失败
                          */
-                        Log.e("SSEngine.registerApp_onSuccess", verifyAppKeyAndSecretResponse.getCode() + "");
+                        Log.e("AppContext_onSuccess", verifyAppKeyAndSecretResponse.getCode() + "");
                     }
 
                     @Override
                     public void onFailure(int i, String s) {
-                        Log.e("SSEngine.registerApp_onFailure", i + "/" + s);
+                        Log.e("AppContextFailure", i + "/" + s);
                     }
 
                     @Override
                     public void onError(String s) {
-                        Log.e("SSEngine.registerApp_onError", s);
+                        Log.e("AppContext_onError", s);
                     }
                 });
 
