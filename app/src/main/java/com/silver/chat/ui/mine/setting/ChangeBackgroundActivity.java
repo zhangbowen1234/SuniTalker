@@ -1,28 +1,17 @@
 package com.silver.chat.ui.mine.setting;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.util.ChooseBackgroudUtils;
-import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.ui.mine.SettingActivity;
 import com.silver.chat.util.SkinSettingManager;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.silver.chat.util.Utils.context;
 
 /**
  * Created by bowen on 2017/4/28.
@@ -54,6 +43,12 @@ public class ChangeBackgroundActivity extends BaseActivity {
     @BindView(R.id.ll_common_bg_view)
     LinearLayout iv_common_bg;
     private SkinSettingManager mSettingManager;
+    private int isChoose = 0;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected int getLayoutId() {
@@ -65,73 +60,99 @@ public class ChangeBackgroundActivity extends BaseActivity {
         super.initView();
         mSettingManager = new SkinSettingManager(this);
         mSettingManager.initSkins();
+        final int skinType = mSettingManager.getSkinType();
+        isChoose = skinType;
+        if (skinType == 0){
+            isChoosePurple();
+        }else if (skinType == 1){
+            isChooseBlack();
+        }else if (skinType == 2){
+            isChooseBlue();
+        }else if (skinType == 3){
+            isChooseGreen();
+        }else if (skinType == 4){
+            isChooseRed();
+        }
     }
 
     @OnClick({R.id.black_theme, R.id.blue_theme, R.id.green_theme, R.id.red_theme, R.id.purple_theme,R.id.preservation_theme})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.purple_theme:
+                isChoosePurple();
+                isChoose = 0;
+                break;
             case R.id.black_theme:
-                iv_common_bg.setBackgroundResource(R.drawable.black_theme);
-                blackChoose.setVisibility(View.VISIBLE);
-                blueChoose.setVisibility(View.INVISIBLE);
-                greenChoose.setVisibility(View.INVISIBLE);
-                redChoose.setVisibility(View.INVISIBLE);
-                purpleChoose.setVisibility(View.INVISIBLE);
-
+                isChooseBlack();
+                isChoose = 1;
                 break;
             case R.id.blue_theme:
-                iv_common_bg.setBackgroundResource(R.drawable.blue_theme);
-                blackChoose.setVisibility(View.INVISIBLE);
-                blueChoose.setVisibility(View.VISIBLE);
-                greenChoose.setVisibility(View.INVISIBLE);
-                redChoose.setVisibility(View.INVISIBLE);
-                purpleChoose.setVisibility(View.INVISIBLE);
-
+                isChooseBlue();
+                isChoose = 2;
                 break;
-
             case R.id.green_theme:
-                iv_common_bg.setBackgroundResource(R.drawable.green_theme);
-                greenChoose.setVisibility(View.VISIBLE);
-                blackChoose.setVisibility(View.INVISIBLE);
-                blueChoose.setVisibility(View.INVISIBLE);
-                redChoose.setVisibility(View.INVISIBLE);
-                purpleChoose.setVisibility(View.INVISIBLE);
-
+                isChooseGreen();
+                isChoose = 3;
                 break;
-
             case R.id.red_theme:
-                iv_common_bg.setBackgroundResource(R.drawable.red_theme);
-                redChoose.setVisibility(View.VISIBLE);
-                blackChoose.setVisibility(View.INVISIBLE);
-                blueChoose.setVisibility(View.INVISIBLE);
-                greenChoose.setVisibility(View.INVISIBLE);
-                purpleChoose.setVisibility(View.INVISIBLE);
-
-                break;
-
-            case R.id.purple_theme:
-                iv_common_bg.setBackgroundResource(R.drawable.purple_theme);
-                purpleChoose.setVisibility(View.VISIBLE);
-                blackChoose.setVisibility(View.INVISIBLE);
-                blueChoose.setVisibility(View.INVISIBLE);
-                greenChoose.setVisibility(View.INVISIBLE);
-                redChoose.setVisibility(View.INVISIBLE);
-
+                isChooseRed();
+                isChoose = 4;
                 break;
             case R.id.preservation_theme:
-                if (view.getId() == R.id.purple_theme){
+                if (isChoose == 0){
                     mSettingManager.toggleSkins(0);
-                }else if (view.getId() == R.id.black_theme){
+                }else if (isChoose == 1){
                     mSettingManager.toggleSkins(1);
-                }else if (view.getId() == R.id.blue_theme){
+                }else if (isChoose == 2){
                     mSettingManager.toggleSkins(2);
-                }else if (view.getId() == R.id.green_theme){
+                }else if (isChoose == 3){
                     mSettingManager.toggleSkins(3);
-                }else if (view.getId() == R.id.red_theme){
+                }else if (isChoose == 4){
                     mSettingManager.toggleSkins(4);
                 }
-                finish();
+                startActivity(SettingActivity.class);
                 break;
         }
+    }
+    //选择背景
+    private void isChoosePurple(){
+        iv_common_bg.setBackgroundResource(R.drawable.purple_theme);
+        purpleChoose.setVisibility(View.VISIBLE);
+        blackChoose.setVisibility(View.INVISIBLE);
+        blueChoose.setVisibility(View.INVISIBLE);
+        greenChoose.setVisibility(View.INVISIBLE);
+        redChoose.setVisibility(View.INVISIBLE);
+    }
+    private void isChooseBlack(){
+        iv_common_bg.setBackgroundResource(R.drawable.black_theme);
+        blackChoose.setVisibility(View.VISIBLE);
+        blueChoose.setVisibility(View.INVISIBLE);
+        greenChoose.setVisibility(View.INVISIBLE);
+        redChoose.setVisibility(View.INVISIBLE);
+        purpleChoose.setVisibility(View.INVISIBLE);
+    }
+    private void isChooseBlue(){
+        iv_common_bg.setBackgroundResource(R.drawable.blue_theme);
+        blackChoose.setVisibility(View.INVISIBLE);
+        blueChoose.setVisibility(View.VISIBLE);
+        greenChoose.setVisibility(View.INVISIBLE);
+        redChoose.setVisibility(View.INVISIBLE);
+        purpleChoose.setVisibility(View.INVISIBLE);
+    }
+    private void isChooseGreen(){
+        iv_common_bg.setBackgroundResource(R.drawable.green_theme);
+        greenChoose.setVisibility(View.VISIBLE);
+        blackChoose.setVisibility(View.INVISIBLE);
+        blueChoose.setVisibility(View.INVISIBLE);
+        redChoose.setVisibility(View.INVISIBLE);
+        purpleChoose.setVisibility(View.INVISIBLE);
+    }
+    private void isChooseRed(){
+        iv_common_bg.setBackgroundResource(R.drawable.red_theme);
+        redChoose.setVisibility(View.VISIBLE);
+        blackChoose.setVisibility(View.INVISIBLE);
+        blueChoose.setVisibility(View.INVISIBLE);
+        greenChoose.setVisibility(View.INVISIBLE);
+        purpleChoose.setVisibility(View.INVISIBLE);
     }
 }

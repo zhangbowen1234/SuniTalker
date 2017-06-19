@@ -235,7 +235,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
             }
             @Override
             public void onFailed(BaseResponse baseResponse) {
-                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg()+"申请出错");
             }
 
             @Override

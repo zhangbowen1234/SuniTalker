@@ -1,21 +1,16 @@
 package com.silver.chat.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import com.silver.chat.R;
 import com.silver.chat.util.AppManager;
 import com.silver.chat.util.SkinSettingManager;
 import com.silver.chat.util.ToastUtil;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.Optional;
@@ -26,13 +21,11 @@ import butterknife.Optional;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
-    static View view = null;
     /**
      * 日志输出标志
      **/
     protected final String TAG = this.getClass().getSimpleName();
     protected Context mContext;
-    private int[] layouts = {R.id.ll_common_bg_view};
 
     @Optional
     @Override
@@ -48,9 +41,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
     }
 
-    public static View getBackgroundView() {
-        return view;
-    }
 
     protected void initView() {
 
@@ -83,12 +73,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        LinearLayout[] layout = new LinearLayout[layouts.length];
-        for (int i = 0; i < layouts.length; i++) {
-            layout[i] = (LinearLayout) findViewById(layouts[i]);
-            SkinSettingManager mSettingManager = new SkinSettingManager(BaseActivity.this, layout[i]);
-            mSettingManager.initSkins();
-        }
+        int layouts = R.id.ll_common_bg_view;
+        LinearLayout layout = (LinearLayout) findViewById(layouts);
+        SkinSettingManager mSettingManager = new SkinSettingManager(this, layout);
+        mSettingManager.initSkins();
         super.onResume();
     }
 
