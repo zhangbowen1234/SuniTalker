@@ -10,9 +10,17 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.silver.chat.R;
+import com.silver.chat.base.Common;
+import com.silver.chat.database.helper.DBHelper;
 import com.silver.chat.entity.GroupMessageBean;
+import com.silver.chat.network.SSIMLoginManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.UserInfoBean;
 import com.silver.chat.util.DateUtils;
+import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
 import com.ssim.android.constant.SSMessageFormat;
@@ -133,7 +141,8 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
         if (userId.equals(item.getSourceId())) { //发送
             leftLayout.setVisibility(View.INVISIBLE);
             rightLayout.setVisibility(View.VISIBLE);
-            //rightMessageView.setText(item.getContent());
+            setUserAvatar(rightPhotoView);
+
             switch (item.getContentType()) {
                 case LOCATION:
                     try {
@@ -170,6 +179,34 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
         }
 
 
+    }
+
+    private void setGroupMemAvatar() {
+    }
+
+    /**
+     *设置用户头像
+     * @param rightPhotoView
+     */
+    private void setUserAvatar(final ImageView rightPhotoView) {
+        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+        SSIMLoginManger.getUserInfo(mContext, Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
+
+            @Override
+            public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
+                String avatar = userInfoBeanBaseResponse.data.getAvatar();
+                GlideUtil.loadAvatar(rightPhotoView,avatar);
+            }
+
+            @Override
+            public void onFailed(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
+                ToastUtil.toastMessage(mContext,userInfoBeanBaseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onError() {
+            }
+        });
     }
 
 }
