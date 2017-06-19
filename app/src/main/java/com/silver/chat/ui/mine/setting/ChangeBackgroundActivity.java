@@ -111,6 +111,7 @@ public class ChangeBackgroundActivity extends BaseActivity {
                     mSettingManager.toggleSkins(4);
                 }
                 startActivity(SettingActivity.class);
+                finish();
                 break;
         }
     }
