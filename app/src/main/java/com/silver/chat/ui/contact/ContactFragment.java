@@ -30,7 +30,7 @@ import com.silver.chat.util.CharacterParser;
 import com.silver.chat.util.PinyinComparator;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
-import com.silver.chat.view.UIUtils;
+import com.silver.chat.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

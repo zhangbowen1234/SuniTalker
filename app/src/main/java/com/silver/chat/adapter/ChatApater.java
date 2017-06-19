@@ -13,16 +13,16 @@ import com.silver.chat.entity.ChatBean;
 import com.silver.chat.entity.DataServer;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.GroupBean;
-import com.silver.chat.ui.chat.ChatRecordFragment;
 import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.ImageUtil;
+import com.silver.chat.util.MediaFileUtils;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.UIUtils;
 import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
-import com.ssim.android.constant.SSSessionTopLevel;
+import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.constant.SSSessionType;
-import com.ssim.android.model.notification.SSNotification;
 import com.ssim.android.model.session.SSSession;
 
 import java.util.ArrayList;
@@ -61,14 +61,14 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 GlideUtil.loadAvatar((ImageView) holder.getView(R.id.iv_avatar), item.getAvatar());
                 holder.setText(R.id.tv_name, item.getUserName());
                 holder.setText(R.id.tv_time, item.getSendTime());
-                holder.setText(R.id.tv_content,item.getContent());
+                getSsInformation(holder, item);
                 Log.e("avatar:", item.getContent() + item.getUserName()+item.getSendTime());
                 break;
             case ChatBean.CHAT_GROUP:
                 GlideUtil.loadAvatar((ImageView) holder.getView(R.id.iv_group_avatar), item.getGroupAvatar());
                 holder.setText(R.id.tv_group_name ,item.getGroupName());
                 holder.setText(R.id.tv_group_time, item.getSendTime());
-                holder.setText(R.id.tv_group_content,item.getContent());
+                getSsInformation(holder, item);
                 Log.e("CHAT_GROUP:", item.getGroupAvatar() + item.getGroupName()+item.getContent());
                 break;
             case ChatBean.CHAT_SYSTEM:
@@ -117,6 +117,7 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
             for (int i = 0; i < sessionList.size(); i++) {
                 SSSessionType sessionType = sessionList.get(i).getSessionType();
                 String friendAvatar, friendNickname, groupName, groupAvatar, groupId, contents, times;
+                SSMessageFormat contentType;
                 if (sessionType == SSSessionType.P2PCHAT) {
                     //好友聊天列表
                     sourceId = sessionList.get(i).getSourceId();
@@ -142,22 +143,46 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                         groupName = groupBeen.get(j).getGroupName();
                         contents = sessionList.get(i).getContent();
                         times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
+                        contentType = sessionList.get(i).getContentType();
 //                    ssSessionTopLevel = sessionList.get(i).getTopLevel();
                         Log.e("groupAvatar:", groupBeen.get(j).getAvatar()+groupBeen.get(j).getGroupName()+sessionList.get(i).getContent());
-                        list.add(new ChatBean(contents, ChatBean.CHAT_GROUP, times, groupId, groupName, groupAvatar));
+                        list.add(new ChatBean(contents, ChatBean.CHAT_GROUP, times, groupId, groupName, groupAvatar,contentType));
                     }
                 }else if (sessionType == SSSessionType.GROUPNOTI){
                     //群通知
-                    contents = sessionList.get(i).getContent();
-                    groupId = sessionList.get(i).getGroupId();
-                    groupName = sessionList.get(i).getGroupName();
-                    groupAvatar = sessionList.get(i).getGroupAvatar();
-                    times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
-                    list.add(new ChatBean(contents,ChatBean.CHAT_GROUP_NOTICE, times, groupId, groupName,groupAvatar));
+//                    contents = sessionList.get(i).getContent();
+//                    groupId = sessionList.get(i).getGroupId();
+//                    groupName = sessionList.get(i).getGroupName();
+//                    groupAvatar = sessionList.get(i).getGroupAvatar();
+//                    times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
+//                    list.add(new ChatBean(contents,ChatBean.CHAT_GROUP_NOTICE, times, groupId, groupName,groupAvatar,contentType));
                 }
             }
         }
         Log.e("list:", list.size()+"");
         return list;
+    }
+
+    /**
+     * 显示会话最后一条信息
+     * @param holder
+     * @param item
+     */
+    private void getSsInformation(BaseViewHolder holder, ChatBean item){
+        if (item.getContentType() == SSMessageFormat.TEXT){
+            holder.setText(R.id.tv_group_content,item.getContent());
+        }else if (item.getContentType() == SSMessageFormat.LOCATION){
+            holder.setText(R.id.tv_group_content,"[" + mContext.getResources().getString(R.string.location) + "]");
+        }else if (item.getContentType() == SSMessageFormat.IMAGE){
+            holder.setText(R.id.tv_group_content,"[" + UIUtils.getString(R.string.picture) + "]");
+        }else if (item.getContentType() == SSMessageFormat.AUDIO){
+            holder.setText(R.id.tv_group_content,"[" + UIUtils.getString(R.string.voice) + "]");
+        }else if (item.getContentType() == SSMessageFormat.FILES){
+            String fileMessage = item.getContent();
+            if (MediaFileUtils.isImageFileType(fileMessage)){
+                holder.setText(R.id.tv_group_content,"[" + UIUtils.getString(R.string.sticker) + "]");
+            }else if (MediaFileUtils.isVideoFileType(fileMessage)){
+                holder.setText(R.id.tv_group_content,"[" + UIUtils.getString(R.string.video) + "]");                    }
+        }
     }
 }

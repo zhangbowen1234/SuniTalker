@@ -1,6 +1,7 @@
 package com.silver.chat.entity;
 
 import com.silver.chat.view.recycleview.entity.MultiItemEntity;
+import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.constant.SSSessionTopLevel;
 
 import java.io.Serializable;
@@ -55,6 +56,7 @@ public class ChatBean extends BaseBean implements MultiItemEntity,Serializable, 
     private String groupId;
     private String groupName;
     private String groupAvatar;
+    private SSMessageFormat contentType;
 
     public ChatBean() {
     }
@@ -68,15 +70,23 @@ public class ChatBean extends BaseBean implements MultiItemEntity,Serializable, 
         this.content = content;
     }
 
-    public ChatBean(String content, int type, String sendTime, String groupId, String groupName, String groupAvatar) {
+    public ChatBean(String content, int type, String sendTime, String groupId, String groupName, String groupAvatar, SSMessageFormat contentType) {
         this.content = content;
         this.type = type;
         this.sendTime = sendTime;
         this.groupId = groupId;
         this.groupName = groupName;
         this.groupAvatar = groupAvatar;
+        this.contentType = contentType;
     }
 
+    public SSMessageFormat getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(SSMessageFormat contentType) {
+        this.contentType = contentType;
+    }
 
     public String getGroupId() {
         return groupId;
