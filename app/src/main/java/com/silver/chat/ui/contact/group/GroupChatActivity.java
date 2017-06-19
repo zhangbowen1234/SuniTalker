@@ -229,7 +229,6 @@ public class GroupChatActivity extends BaseActivity {
             String address = data.getStringExtra("address");
             float longitude = data.getFloatExtra("longitude", 0);
             float latitude = data.getFloatExtra("latitude", 0);
-            Log.e(TAG, address+longitude+"......"+latitude );
 
             //ToastUtil.toastMessage(mContext, address + longitude + "   " + latitude);
             //获取当前时间的时间戳

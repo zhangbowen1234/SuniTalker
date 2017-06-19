@@ -1,24 +1,36 @@
 package com.silver.chat.adapter;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.silver.chat.R;
 import com.silver.chat.entity.GroupMessageBean;
 import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
+import com.ssim.android.constant.SSMessageFormat;
+import com.ssim.android.model.chat.SSLocation;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
+
+import static com.ssim.android.constant.SSMessageFormat.*;
+import static com.ssim.android.constant.SSMessageFormat.LOCATION;
 
 /**
  * Created by Joe on 2017/6/13.
  */
 
-public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean,BaseViewHolder> {
+public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean, BaseViewHolder> {
 
 
     /**
@@ -31,7 +43,7 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
         super(data);
         //此处多条目暂时只包含文本消息和地理位置消息
         addItemType(1, R.layout.chat_message_item);
-        addItemType(8,R.layout.chat_message_item_location);
+        addItemType(8, R.layout.chat_message_item_location);
     }
 
     @Override
@@ -117,30 +129,47 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
 
 //        timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime()) + "");
         String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
-        switch (holper.getItemViewType()){
-            case 1:
-                if (userId.equals(item.getSourceId())) { //发送
-                    leftLayout.setVisibility(View.INVISIBLE);
-                    rightLayout.setVisibility(View.VISIBLE);
+
+        if (userId.equals(item.getSourceId())) { //发送
+            leftLayout.setVisibility(View.INVISIBLE);
+            rightLayout.setVisibility(View.VISIBLE);
+            //rightMessageView.setText(item.getContent());
+            switch (item.getContentType()) {
+                case LOCATION:
+                    try {
+                        JSONObject jsonObject = new JSONObject(item.getContent());
+                        String address = (String) jsonObject.get("address");
+                        rightMessageView.setText(address);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                case TEXT:
                     rightMessageView.setText(item.getContent());
-                } else { //接收
-                    leftLayout.setVisibility(View.VISIBLE);
-                    rightLayout.setVisibility(View.INVISIBLE);
+                    break;
+            }
+        } else { //接收
+            leftLayout.setVisibility(View.VISIBLE);
+            rightLayout.setVisibility(View.INVISIBLE);
+            switch (item.getContentType()) {
+                case LOCATION:
+                    try {
+                        JSONObject jsonObject = new JSONObject(item.getContent());
+                        String address = (String) jsonObject.get("address");
+                        leftMessageView.setText(address);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                case TEXT:
                     leftMessageView.setText(item.getContent());
-                }
-                break;
-            case 8:
-                if (userId.equals(item.getSourceId())) { //发送
-                    leftLayout.setVisibility(View.INVISIBLE);
-                    rightLayout.setVisibility(View.VISIBLE);
-                    rightMessageView.setText(item.getContent());
-                } else { //接收
-                    leftLayout.setVisibility(View.VISIBLE);
-                    rightLayout.setVisibility(View.INVISIBLE);
-                    leftMessageView.setText(item.getContent());
-                }
-                break;
+                    break;
+            }
         }
+
+
     }
 
 }
