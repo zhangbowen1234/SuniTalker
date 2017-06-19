@@ -164,7 +164,7 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
     }
 
     /**
-     * 显示会话最后一条信息
+     * 显示会话最后一条消息
      * @param holder
      * @param item
      */
@@ -174,15 +174,15 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
         }else if (item.getContentType() == SSMessageFormat.LOCATION){
             holder.setText(R.id.tv_group_content,"[" + mContext.getResources().getString(R.string.location) + "]");
         }else if (item.getContentType() == SSMessageFormat.IMAGE){
-            holder.setText(R.id.tv_group_content,"[" + UIUtils.getString(R.string.picture) + "]");
+            holder.setText(R.id.tv_group_content,"[" + mContext.getResources().getString(R.string.picture) + "]");
         }else if (item.getContentType() == SSMessageFormat.AUDIO){
-            holder.setText(R.id.tv_group_content,"[" + UIUtils.getString(R.string.voice) + "]");
+            holder.setText(R.id.tv_group_content,"[" + mContext.getResources().getString(R.string.voice) + "]");
         }else if (item.getContentType() == SSMessageFormat.FILES){
             String fileMessage = item.getContent();
             if (MediaFileUtils.isImageFileType(fileMessage)){
-                holder.setText(R.id.tv_group_content,"[" + UIUtils.getString(R.string.sticker) + "]");
+                holder.setText(R.id.tv_group_content,"[" + mContext.getResources().getString(R.string.sticker) + "]");
             }else if (MediaFileUtils.isVideoFileType(fileMessage)){
-                holder.setText(R.id.tv_group_content,"[" + UIUtils.getString(R.string.video) + "]");                    }
+                holder.setText(R.id.tv_group_content,"[" + mContext.getResources().getString(R.string.video) + "]");                    }
         }
     }
 }
