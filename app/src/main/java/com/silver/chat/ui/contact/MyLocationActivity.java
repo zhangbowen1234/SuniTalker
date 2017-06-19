@@ -23,13 +23,16 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.ssim.android.engine.SSEngine;
+import com.ssim.android.listener.SSMessageReceiveListener;
+import com.ssim.android.model.chat.SSMessage;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Joe on 2017/6/5.
+ * Created by Joe on 2017/6/5
  */
 public class MyLocationActivity extends BaseActivity implements LocationSource, AMapLocationListener {
     @BindView(R.id.title_left_back)

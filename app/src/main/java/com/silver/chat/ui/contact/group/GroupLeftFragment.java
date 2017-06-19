@@ -1,6 +1,7 @@
 package com.silver.chat.ui.contact.group;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -36,13 +37,17 @@ public class GroupLeftFragment extends BasePagerFragment {
     public List<String> mList = new ArrayList<>();
     private GrideViewAdapter grideViewAdapter;
     private String token;
-
-    public GroupLeftFragment() {
-    }
+    private int groupId;
 
     public GroupLeftFragment(List list) {
-        this.mList = list;
     }
+    public GroupLeftFragment(List<String> lists, int groupId) {
+        this.mList = lists;
+        this.groupId = groupId;
+
+    }
+
+
     @Override
     protected void getData() {
         grideViewAdapter = new GrideViewAdapter();
@@ -93,7 +98,9 @@ public class GroupLeftFragment extends BasePagerFragment {
                     convertView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(DeleteGroupMemActivity.class);
+                            Intent intent = new Intent(getActivity(),DeleteGroupMemActivity.class);
+                            intent.putExtra("groupId",groupId);
+                            startActivity(intent);
                         }
                     });
                     break;
