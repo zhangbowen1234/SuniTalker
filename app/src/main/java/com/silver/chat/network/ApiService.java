@@ -116,8 +116,8 @@ public interface ApiService {
     Call<BaseResponse<ArrayList<SearchIdBean>>>searchUser(@Path("type")String type,@Path("condition")String condition,@Path("page")String page,@Path("count")String count,@Header("token")String token);
 
     //删除好友
-    @DELETE("imx/leaf/removebuddy/{userId}/{friendId}/{appName}")
-    Call<BaseResponse> deleteFriend(@Header("token")String token,@Path("userId")String userId,@Path("friendId")String friendId,@Path("appName")String appName);
+    @DELETE("imx/leaf/removebuddy/{userId}/{friendId}")
+    Call<BaseResponse> deleteFriend(@Header("token")String token,@Path("userId")String userId,@Path("friendId")String friendId);
 
     //搜索群组
     @GET("imx/leaf/user/group/search/{condition}/{page}/{count}")

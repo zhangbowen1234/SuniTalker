@@ -104,6 +104,12 @@ public class MineFragment extends BasePagerFragment implements View.OnClickListe
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        tvName.setText(PreferenceUtil.getInstance(mActivity).getString("nickName", ""));
+    }
+
+    @Override
     protected void getData() {
 
     }
