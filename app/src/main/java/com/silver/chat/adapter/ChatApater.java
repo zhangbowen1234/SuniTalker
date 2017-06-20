@@ -61,14 +61,14 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 GlideUtil.loadAvatar((ImageView) holder.getView(R.id.iv_avatar), item.getAvatar());
                 holder.setText(R.id.tv_name, item.getUserName());
                 holder.setText(R.id.tv_time, item.getSendTime());
-                getSsInformation(holder, item);
+                getSsInformation(holder, R.id.tv_content, item);
                 Log.e("avatar:", item.getContent() + item.getUserName()+item.getSendTime());
                 break;
             case ChatBean.CHAT_GROUP:
                 GlideUtil.loadAvatar((ImageView) holder.getView(R.id.iv_group_avatar), item.getGroupAvatar());
                 holder.setText(R.id.tv_group_name ,item.getGroupName());
                 holder.setText(R.id.tv_group_time, item.getSendTime());
-                getSsInformation(holder, item);
+                getSsInformation(holder, R.id.tv_group_content, item);
                 Log.e("CHAT_GROUP:", item.getGroupAvatar() + item.getGroupName()+item.getContent());
                 break;
             case ChatBean.CHAT_SYSTEM:
@@ -129,8 +129,9 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                         friendNickname = friendId.get(j).getNickName();
                         contents= sessionList.get(i).getContent();
                         times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
+                        contentType = sessionList.get(i).getContentType();
                         Log.e("sendTimes:", times+contents);
-                        list.add(new ChatBean(sourceId, friendNickname, friendAvatar, ChatBean.CHAT_SINGLR,times,contents));
+                        list.add(new ChatBean(sourceId, friendNickname, friendAvatar, ChatBean.CHAT_SINGLR,times,contents, contentType));
                     }
                     //获取群组聊天列表
                 }else if (sessionType == SSSessionType.GROUPCHAT){
@@ -168,21 +169,21 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
      * @param holder
      * @param item
      */
-    private void getSsInformation(BaseViewHolder holder, ChatBean item){
+    private void getSsInformation(BaseViewHolder holder, int id, ChatBean item){
         if (item.getContentType() == SSMessageFormat.TEXT){
-            holder.setText(R.id.tv_group_content,item.getContent());
+            holder.setText(id,item.getContent());
         }else if (item.getContentType() == SSMessageFormat.LOCATION){
-            holder.setText(R.id.tv_group_content,"[" + mContext.getResources().getString(R.string.location) + "]");
+            holder.setText(id, mContext.getResources().getString(R.string.location) );
         }else if (item.getContentType() == SSMessageFormat.IMAGE){
-            holder.setText(R.id.tv_group_content,"[" + mContext.getResources().getString(R.string.picture) + "]");
+            holder.setText(id, mContext.getResources().getString(R.string.picture) );
         }else if (item.getContentType() == SSMessageFormat.AUDIO){
-            holder.setText(R.id.tv_group_content,"[" + mContext.getResources().getString(R.string.voice) + "]");
+            holder.setText(id, mContext.getResources().getString(R.string.voice) );
         }else if (item.getContentType() == SSMessageFormat.FILES){
             String fileMessage = item.getContent();
             if (MediaFileUtils.isImageFileType(fileMessage)){
-                holder.setText(R.id.tv_group_content,"[" + mContext.getResources().getString(R.string.sticker) + "]");
+                holder.setText(id, mContext.getResources().getString(R.string.sticker) );
             }else if (MediaFileUtils.isVideoFileType(fileMessage)){
-                holder.setText(R.id.tv_group_content,"[" + mContext.getResources().getString(R.string.video) + "]");                    }
+                holder.setText(id, mContext.getResources().getString(R.string.video) );                    }
         }
     }
 }

@@ -66,10 +66,10 @@
     <string name="load_fail">加载失败</string>
 
     <!--最近会话-->
-    <string name="location">位置</string>
+    <string name="location">[位置]</string>
     <string name="draft">[草稿]</string>
-    <string name="picture">图片</string>
-    <string name="voice">语音</string>
-    <string name="sticker">贴图</string>
-    <string name="video">视频</string>
+    <string name="picture">[图片]</string>
+    <string name="voice">[语音]</string>
+    <string name="sticker">[贴图]</string>
+    <string name="video">[视频]</string>
 </resources>

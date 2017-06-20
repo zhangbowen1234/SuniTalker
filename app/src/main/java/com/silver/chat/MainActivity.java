@@ -10,23 +10,35 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.silver.chat.adapter.MainPagerAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.entity.ChatBean;
+import com.silver.chat.network.requestbean.ExitGroupBody;
 import com.silver.chat.ui.chat.SearchChatRecordActivity;
 import com.silver.chat.ui.contact.AddFriendActivity;
 import com.silver.chat.ui.contact.SearchContactActivity;
 import com.silver.chat.ui.contact.group.CreatGroupActivity;
 import com.silver.chat.ui.contact.group.FindGroupActivity;
+import com.silver.chat.ui.mine.MyPRCodeActivity;
 import com.silver.chat.ui.mine.ScanActivity;
 import com.silver.chat.ui.mine.SettingActivity;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.BadgedTabCustomView;
 import com.silver.chat.view.TabLayoutPlus;
+import com.silver.chat.view.dialog.TvLoginOutDialog;
+import com.ssim.android.model.session.SSSession;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.silver.chat.util.Utils.context;
 
 public class MainActivity extends BaseActivity {
 
@@ -173,7 +185,7 @@ public class MainActivity extends BaseActivity {
                 closePanelView();
                 break;
             case R.id.tv_scan:
-                Intent goRegIntent = new Intent(this, ScanActivity.class);
+                Intent goRegIntent = new Intent(this, MyPRCodeActivity.class);
                 ScreenManager.getScreenManager().StartPage(this, goRegIntent, true);
                 break;
             case R.id.tv_search:
@@ -189,10 +201,11 @@ public class MainActivity extends BaseActivity {
                 ToastUtils.showMessage(mContext, "正在修改中...");
                 break;
             case R.id.tv_clear:
-                ToastUtils.showMessage(mContext, "正在修改中...");
+                deleteSession();
+                closePanelView();
                 break;
             case R.id.tv_scan_chat:
-                Intent intent = new Intent(this, ScanActivity.class);
+                Intent intent = new Intent(this, MyPRCodeActivity.class);
                 ScreenManager.getScreenManager().StartPage(this, intent, true);
                 break;
             case R.id.tv_search_chat:
@@ -259,5 +272,36 @@ public class MainActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         Log.d(TAG,"onPause");
+    }
+    /**
+     * 清空会话列表
+     */
+    private void deleteSession(){
+        new TvLoginOutDialog(this).builder()
+                .setCancelable(true)
+                .setCanceledOnTouchOutside(true)
+                .setTitle("是否清空会话列表")
+                .setNegativeButton(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+                .setPositiveButton(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String userId = PreferenceUtil.getInstance(context).getString(PreferenceUtil.USERID, "");
+                        List<SSSession> sessionList = AppContext.getInstance().instance.getSessionList(userId);
+                        List<ChatBean> list = new ArrayList<>();
+                        String sourceId;
+                        if (sessionList.size() != 0){
+                            for (int i = 0; i < sessionList.size(); i++) {
+                                sourceId = sessionList.get(i).getSourceId();
+                                AppContext.getInstance().instance.delSessionById(sourceId);
+                            }
+                        }
+                    }
+                }).show();
+
     }
 }
