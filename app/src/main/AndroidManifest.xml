@@ -76,6 +76,7 @@
             android:label="搜索聊天记录" />
         <activity
             android:name=".ui.contact.SearchContactActivity"
+            android:windowSoftInputMode="adjustPan"
             android:label="搜索联系人" />
         <activity
             android:name=".ui.mine.UserInfoActivity"

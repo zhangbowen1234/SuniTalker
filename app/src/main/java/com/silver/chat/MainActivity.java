@@ -178,7 +178,8 @@ public class MainActivity extends BaseActivity {
                 ScreenManager.getScreenManager().StartPage(this, goRegIntent, true);
                 break;
             case R.id.tv_search:
-                ToastUtils.showMessage(mContext, "正在修改中...");
+                startActivity(SearchChatRecordActivity.class);
+                closePanelView();
                 break;
             case R.id.tv_start_chat:
                 ToastUtils.showMessage(mContext, "正在修改中...");
@@ -199,6 +200,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.tv_search_chat:
                 startActivity(SearchContactActivity.class);
+                closePanelView();
                 break;
             case R.id.tv_add_friend:
                 closePanelView();

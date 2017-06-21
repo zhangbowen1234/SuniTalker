@@ -58,12 +58,16 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
     }
 
     @Override
+    protected int getLayoutResourceId() {
+        return R.layout.fragment_chat_record;
+    }
+
+    @Override
     protected void initView(View view) {
         super.initView(view);
         mMyHandler = new MyHandler(this);
         mRecycleContent = (WSRecyclerView) view.findViewById(R.id.recyle_content);
         mRecycleContent.setLayoutManager(new LinearLayoutManager(mActivity));
-//        friendid = ChatApater.sourceId;
     }
 
     @Override
@@ -77,7 +81,6 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
             mList.remove(position + 1);
         }
         mChatApater = new ChatApater(mList);
-
         mRecycleContent.setAdapter(mChatApater);
         mChatApater.addHeaderView(mRecycleContent.getRefreshView());
         mChatApater.setOnRecyclerItemClickListener(new OnRecyclerItemClickListener() {
@@ -89,7 +92,6 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
                     mIntent.putExtra("friendId", mList.get(position).getUserId());
                     mIntent.putExtra("chatType", Common.PRIVAT);
                     startActivity(mIntent);
-//                    startActivity(GroupNotificationActivity.class);
                 } else if (mChatApater.getItemViewType(position + 1) == ChatBean.CHAT_GROUP) {
                     Intent mIntent = new Intent(mActivity, GroupChatActivity.class);
                     mIntent.putExtra("groupName", mList.get(position).getGroupName());
@@ -163,11 +165,6 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
             }
         });
 
-    }
-
-    @Override
-    protected int getLayoutResourceId() {
-        return R.layout.fragment_chat_record;
     }
 
     public void refreshView() {

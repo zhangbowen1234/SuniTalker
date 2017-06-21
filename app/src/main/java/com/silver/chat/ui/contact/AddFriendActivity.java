@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.adapter.AddFriendAdapter;
 import com.silver.chat.base.BaseActivity;

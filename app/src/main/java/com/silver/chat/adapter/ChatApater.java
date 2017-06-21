@@ -52,7 +52,6 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
         addItemType(ChatBean.CHAT_GROUP_NOTICE, R.layout.item_chat_record_notice);
     }
 
-
     @Override
     protected void convert(final BaseViewHolder holder, ChatBean item , int position) {
         //item多布局
