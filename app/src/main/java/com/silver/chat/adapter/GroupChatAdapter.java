@@ -12,10 +12,12 @@ import com.google.gson.JsonObject;
 import com.silver.chat.R;
 import com.silver.chat.base.Common;
 import com.silver.chat.database.helper.DBHelper;
+import com.silver.chat.database.info.WhereInfo;
 import com.silver.chat.entity.GroupMessageBean;
 import com.silver.chat.network.SSIMLoginManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
 import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.GlideUtil;
@@ -161,6 +163,12 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
         } else { //接收
             leftLayout.setVisibility(View.VISIBLE);
             rightLayout.setVisibility(View.INVISIBLE);
+            String sourceId = item.getSourceId();
+            List<GroupMemberBean> sourceIdList = DBHelper.get().dao(GroupMemberBean.class).query(WhereInfo.get().equal("userId", sourceId));
+            if (sourceIdList.size()>0){
+                String avatar = sourceIdList.get(0).getAvatar();
+                GlideUtil.loadAvatar(leftPhotoView,avatar);
+            }
             switch (item.getContentType()) {
                 case LOCATION:
                     try {
@@ -181,8 +189,7 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
 
     }
 
-    private void setGroupMemAvatar() {
-    }
+
 
     /**
      *设置用户头像

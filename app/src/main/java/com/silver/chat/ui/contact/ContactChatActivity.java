@@ -220,7 +220,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
             String address = data.getStringExtra("address");
             double longitude = data.getDoubleExtra("longitude", 0.0);
             double latitude = data.getDoubleExtra("latitude", 0.0);
-            //ToastUtil.toastMessage(mContext,address+longitude+"   "+latitude);
+            ToastUtil.toastMessage(mContext,address+longitude+"   "+latitude);
         }
     }
 
@@ -252,13 +252,13 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.id.chat_btn_emote:
-                inputEdit.clearFocus();
+             /*   inputEdit.clearFocus();
                 if (!mElEmotion.isShown()) {
                     showEmotionLayout();
 
                 } else if (mElEmotion.isShown()) {
                     hideEmotionLayout();
-                }
+                }*/
                 break;
             case R.id.title_left_back:
                 finish();

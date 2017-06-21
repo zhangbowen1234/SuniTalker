@@ -67,24 +67,56 @@
                 android:layout_marginStart="@dimen/dp_10"
                 android:src="@drawable/ic_contact_portrait" />
 
-
-            <TextView
-                android:id="@+id/friend_message"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_5"
-                android:layout_marginStart="@dimen/dp_5"
-                android:layout_toEndOf="@+id/message_friend_userphoto"
+
                 android:layout_toRightOf="@+id/message_friend_userphoto"
+                android:layout_toEndOf="@+id/message_friend_userphoto"
                 android:background="@drawable/left_chat_text_bg"
-                android:gravity="center|right"
-                android:paddingBottom="@dimen/dp_10"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_10"
-                android:paddingTop="@dimen/dp_10"
-                android:text="你好!"
-                android:textColor="@color/black"
-                android:textSize="@dimen/font_12" />
+                android:orientation="vertical"
+                android:gravity="center|left"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginLeft="@dimen/dp_5"
+
+                >
+
+
+                <TextView
+
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:drawableLeft="@drawable/location_msg"
+                    android:drawablePadding="@dimen/dp_6"
+                    android:id="@+id/friend_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="北京市朝阳区石佛营路恒泰大厦"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_12"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:paddingLeft="@dimen/dp_20"
+                    android:paddingRight="@dimen/dp_20"
+                    android:paddingTop="@dimen/dp_10"
+                    />
+                <View
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    />
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="共享位置"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_7"
+                    android:paddingBottom="@dimen/dp_5"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:paddingRight="@dimen/dp_20"
+                    android:paddingTop="@dimen/dp_10"/>
+            </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout

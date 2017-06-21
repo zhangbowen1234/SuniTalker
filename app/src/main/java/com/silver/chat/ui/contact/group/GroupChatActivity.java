@@ -21,7 +21,9 @@ import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.adapter.GroupChatAdapter;
 import com.silver.chat.adapter.GroupChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.database.helper.DBHelper;
 import com.silver.chat.entity.GroupMessageBean;
+import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.ui.contact.ContactChatActivity;
 import com.silver.chat.ui.contact.MyLocationActivity;
 import com.silver.chat.util.PreferenceUtil;
@@ -30,11 +32,13 @@ import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
 import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
+import com.ssim.android.constant.HttpConstant;
 import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageSendListener;
 import com.ssim.android.model.chat.SSGroupMessage;
 import com.ssim.android.model.chat.SSLocation;
+import com.ssim.android.model.chat.SSMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,8 +110,6 @@ public class GroupChatActivity extends BaseActivity {
         groupName = intent.getStringExtra("groupName");
         groupId = intent.getStringExtra("groupId");
         userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
-
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(false);
         recyleContent.setLayoutManager(linearLayoutManager);
@@ -173,7 +175,6 @@ public class GroupChatActivity extends BaseActivity {
                 if ("".equals(content) || content == null) {
                     ToastUtils.showMessage(mContext, "发送内容不能为空");
                 } else {
-
                     groupMessageBean = new GroupMessageBean(SSMessageFormat.TEXT);
                     //获取当前时间的时间戳
                     timeStamp = System.currentTimeMillis();
@@ -184,6 +185,7 @@ public class GroupChatActivity extends BaseActivity {
                     groupMessageBean.setGroupId(groupId);
                     groupMessageBean.setMessageTime(timeStamp);
                     groupMesList.add(groupMessageBean);
+
                     groupChatAdapter.notifyDataSetChanged();
                     recyleContent.smoothScrollToPosition(groupChatAdapter.getItemCount() - 1);
 
@@ -229,8 +231,7 @@ public class GroupChatActivity extends BaseActivity {
             String address = data.getStringExtra("address");
             float longitude = data.getFloatExtra("longitude", 0);
             float latitude = data.getFloatExtra("latitude", 0);
-
-            //ToastUtil.toastMessage(mContext, address + longitude + "   " + latitude);
+            ToastUtil.toastMessage(mContext, address + longitude + "   " + latitude);
             //获取当前时间的时间戳
             timeStamp = System.currentTimeMillis();
             showContactHead.setVisibility(View.INVISIBLE);
@@ -261,7 +262,6 @@ public class GroupChatActivity extends BaseActivity {
             });
         }
         }
-
     @Override
     protected void initListener() {
         super.initListener();
