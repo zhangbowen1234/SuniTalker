@@ -95,7 +95,7 @@ public class GroupDetailActivity extends BaseActivity {
     private static final int REQUEST_CODE3 = 3;
     private String groupName;
     private String groupAvatar;
-    private int groupId, groUserId;
+    public int groupId, groUserId;
     //群成员列表
     private List<GroupMemberBean> groupMemlists = new ArrayList<>();
     private GMemAdapter mAdapter;
@@ -133,13 +133,18 @@ public class GroupDetailActivity extends BaseActivity {
 
         if (privilege == 1) {
             lists = Arrays.asList(stringArray1);
+            //Log.e("lists1", lists.toString());
         } else if (privilege == 2) {
             lists = Arrays.asList(stringArray2);
+           // Log.e("lists2", lists.toString());
+
         } else {
             lists = Arrays.asList(stringArray3);
+            //Log.e("lists3", lists.toString());
+
         }
 
-        groupLeftFragment = new GroupLeftFragment(lists);
+        groupLeftFragment = new GroupLeftFragment(lists,groupId);
         groupRightFragment = new GroupRightFragment(lists);
         fragments = new ArrayList<>();
         fragments.add(groupLeftFragment);
@@ -159,9 +164,11 @@ public class GroupDetailActivity extends BaseActivity {
         groupAvatar = groupbean.getAvatar();
         dao = DBHelper.get().dao(GroupMemberBean.class);
         getGroupMemberLocal();
+        tvGroupMemCount.setText("群成员(" + groupMemlists.size() + ")");
         if(!(groupMemlists.size()>0)) {
             getGroupMemberNet();
         }
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvGroupMemeber.setLayoutManager(linearLayoutManager);

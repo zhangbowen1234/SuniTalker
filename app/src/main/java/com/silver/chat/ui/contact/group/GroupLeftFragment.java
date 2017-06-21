@@ -1,6 +1,7 @@
 package com.silver.chat.ui.contact.group;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -20,6 +21,7 @@ import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
 import com.silver.chat.view.dialog.TvLoginOutDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 /**
@@ -32,14 +34,20 @@ public class GroupLeftFragment extends BasePagerFragment {
     GridView grideview;
     //单页最多条目个数
     public final int CHILD_NUM = 6;
-    public List<String> mList;
+    public List<String> mList = new ArrayList<>();
     private GrideViewAdapter grideViewAdapter;
     private String token;
+    private int groupId;
 
     public GroupLeftFragment(List list) {
-        this.mList = list;
     }
-    public GroupLeftFragment(){};
+    public GroupLeftFragment(List<String> lists, int groupId) {
+        this.mList = lists;
+        this.groupId = groupId;
+
+    }
+
+
     @Override
     protected void getData() {
         grideViewAdapter = new GrideViewAdapter();
@@ -90,7 +98,9 @@ public class GroupLeftFragment extends BasePagerFragment {
                     convertView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(DeleteGroupMemActivity.class);
+                            Intent intent = new Intent(getActivity(),DeleteGroupMemActivity.class);
+                            intent.putExtra("groupId",groupId);
+                            startActivity(intent);
                         }
                     });
                     break;

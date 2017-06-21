@@ -1,34 +1,61 @@
 package com.silver.chat.adapter;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.silver.chat.R;
+import com.silver.chat.base.Common;
+import com.silver.chat.database.helper.DBHelper;
 import com.silver.chat.entity.GroupMessageBean;
+import com.silver.chat.network.SSIMLoginManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.UserInfoBean;
 import com.silver.chat.util.DateUtils;
+import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
-import com.silver.chat.view.recycleview.BaseQuickAdapter;
+import com.silver.chat.util.ToastUtil;
+import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
-import com.ssim.android.model.chat.SSGroupMessage;
+import com.ssim.android.constant.SSMessageFormat;
+import com.ssim.android.model.chat.SSLocation;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.ssim.android.constant.SSMessageFormat.*;
+import static com.ssim.android.constant.SSMessageFormat.LOCATION;
+
 /**
- * Created by Joe on 2017/6/2.
+ * Created by Joe on 2017/6/13.
  */
 
-public class GroupChatMessageAdapter extends BaseQuickAdapter<GroupMessageBean,BaseViewHolder> {
+public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean, BaseViewHolder> {
 
 
-    public GroupChatMessageAdapter(int layoutResId, List<GroupMessageBean> data) {
-        super(layoutResId, data);
+    /**
+     * Same as QuickAdapter#QuickAdapter(Context,int) but with
+     * some initialization data.
+     *
+     * @param data A new list is created out of this one to avoid mutable list
+     */
+    public GroupChatAdapter(List<GroupMessageBean> data) {
+        super(data);
+        //此处多条目暂时只包含文本消息和地理位置消息
+        addItemType(1, R.layout.chat_message_item);
+        addItemType(8, R.layout.chat_message_item_location);
     }
 
     @Override
     protected void convert(BaseViewHolder holper, GroupMessageBean item, int position) {
-
         RelativeLayout leftLayout;
         RelativeLayout rightLayout;
         TextView leftMessageView;
@@ -36,8 +63,6 @@ public class GroupChatMessageAdapter extends BaseQuickAdapter<GroupMessageBean,B
         TextView timeView;
         ImageView leftPhotoView;
         ImageView rightPhotoView;
-
-
         leftLayout = holper.getView(R.id.chat_friend_left_layout);
         rightLayout = holper.getView(R.id.chat_user_right_layout);
         timeView = holper.getView(R.id.message_time);
@@ -112,15 +137,76 @@ public class GroupChatMessageAdapter extends BaseQuickAdapter<GroupMessageBean,B
 
 //        timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime()) + "");
         String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
+
         if (userId.equals(item.getSourceId())) { //发送
             leftLayout.setVisibility(View.INVISIBLE);
             rightLayout.setVisibility(View.VISIBLE);
-            rightMessageView.setText(item.getContent());
+            setUserAvatar(rightPhotoView);
+
+            switch (item.getContentType()) {
+                case LOCATION:
+                    try {
+                        JSONObject jsonObject = new JSONObject(item.getContent());
+                        String address = (String) jsonObject.get("address");
+                        rightMessageView.setText(address);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                case TEXT:
+                    rightMessageView.setText(item.getContent());
+                    break;
+            }
         } else { //接收
             leftLayout.setVisibility(View.VISIBLE);
             rightLayout.setVisibility(View.INVISIBLE);
-            leftMessageView.setText(item.getContent());
+            switch (item.getContentType()) {
+                case LOCATION:
+                    try {
+                        JSONObject jsonObject = new JSONObject(item.getContent());
+                        String address = (String) jsonObject.get("address");
+                        leftMessageView.setText(address);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                case TEXT:
+                    leftMessageView.setText(item.getContent());
+                    break;
+            }
         }
 
+
     }
+
+    private void setGroupMemAvatar() {
+    }
+
+    /**
+     *设置用户头像
+     * @param rightPhotoView
+     */
+    private void setUserAvatar(final ImageView rightPhotoView) {
+        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+        SSIMLoginManger.getUserInfo(mContext, Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
+
+            @Override
+            public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
+                String avatar = userInfoBeanBaseResponse.data.getAvatar();
+                GlideUtil.loadAvatar(rightPhotoView,avatar);
+            }
+
+            @Override
+            public void onFailed(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
+                ToastUtil.toastMessage(mContext,userInfoBeanBaseResponse.getStatusMsg());
+            }
+
+            @Override
+            public void onError() {
+            }
+        });
+    }
+
 }

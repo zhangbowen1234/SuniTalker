@@ -18,8 +18,10 @@ import com.lqr.emoji.EmotionLayout;
 import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
+import com.silver.chat.adapter.GroupChatAdapter;
 import com.silver.chat.adapter.GroupChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.entity.GroupMessageBean;
 import com.silver.chat.ui.contact.ContactChatActivity;
 import com.silver.chat.ui.contact.MyLocationActivity;
 import com.silver.chat.util.PreferenceUtil;
@@ -32,6 +34,7 @@ import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageSendListener;
 import com.ssim.android.model.chat.SSGroupMessage;
+import com.ssim.android.model.chat.SSLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,14 +82,17 @@ public class GroupChatActivity extends BaseActivity {
     RelativeLayout rlRecyleContent;
     @BindView(R.id.title_left_back)
     ImageView ivLeft;
-    private SSGroupMessage ssGroupMessage;
+    //private SSGroupMessage ssGroupMessage;
     private EmotionKeyboard mEmotionKeyboard;
     private String userId;
     private String groupId;
     private long timeStamp;
-    private GroupChatMessageAdapter chatMessageAdapter;
+    //private GroupChatMessageAdapter chatMessageAdapter;
     private List<SSGroupMessage> groupMessageList = new ArrayList<>();
     private String groupName;
+    private List<GroupMessageBean> groupMesList;
+    private GroupChatAdapter groupChatAdapter;
+    private GroupMessageBean groupMessageBean;
 
     @Override
     protected int getLayoutId() {
@@ -120,17 +126,18 @@ public class GroupChatActivity extends BaseActivity {
         titleBar.setTitleText(groupName + "");
 
         groupMessageList = AppContext.getInstance().instance.getGroupMessageList(userId, groupId, -1, 10);
-
-        chatMessageAdapter = new GroupChatMessageAdapter(R.layout.chat_message_item, groupMessageList);
+        resetBean(groupMessageList);
+        groupChatAdapter = new GroupChatAdapter(groupMesList);
+        //chatMessageAdapter = new GroupChatMessageAdapter(R.layout.chat_message_item, groupMesList);
         if (groupMessageList.size() != 0) {
             showContactHead.setVisibility(View.INVISIBLE);
             //显示最后一条的聊天位置
-            recyleContent.smoothScrollToPosition(chatMessageAdapter.getItemCount());
-            chatMessageAdapter.notifyDataSetChanged();
+            recyleContent.smoothScrollToPosition(groupChatAdapter.getItemCount());
+            groupChatAdapter.notifyDataSetChanged();
         }
         //给recycleview设置适配器
-        recyleContent.setAdapter(chatMessageAdapter);
-        chatMessageAdapter.addHeaderView(recyleContent.getRefreshView());
+        recyleContent.setAdapter(groupChatAdapter);
+        groupChatAdapter.addHeaderView(recyleContent.getRefreshView());
         ivLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,8 +146,21 @@ public class GroupChatActivity extends BaseActivity {
         });
     }
 
+    //条目展示用的RecycleView的Adapter是框架因为条目展示的泛型第一个参数时一个实体类需要继承BaseMulityItem，所以此处对bean重新封装一下
+    private void resetBean(List<SSGroupMessage> groupMessageList) {
+        groupMesList = new ArrayList<GroupMessageBean>();
+        for (int i = 0; i < groupMessageList.size(); i++) {
+            GroupMessageBean groupMessageBean = new GroupMessageBean(groupMessageList.get(i).getContentType());
+            groupMessageBean.setMessageTime(groupMessageList.get(i).getMessageTime());
+            groupMessageBean.setContent(groupMessageList.get(i).getContent());
+            groupMessageBean.setContentType(groupMessageList.get(i).getContentType());
+            groupMessageBean.setSourceId(groupMessageList.get(i).getSourceId());
+            groupMesList.add(groupMessageBean);
+        }
+    }
 
-    @OnClick({R.id.chat_btn_emote, R.id.chat_edit_input, R.id.chat_send_msg, R.id.chatInputHalving, R.id.elEmotion, R.id.chatLayoutMsg, R.id.rl_recyle_content,R.id.iv_location})
+
+    @OnClick({R.id.chat_btn_emote, R.id.chat_edit_input, R.id.chat_send_msg, R.id.chatInputHalving, R.id.elEmotion, R.id.chatLayoutMsg, R.id.rl_recyle_content, R.id.iv_location})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.chat_btn_emote:
@@ -154,28 +174,34 @@ public class GroupChatActivity extends BaseActivity {
                     ToastUtils.showMessage(mContext, "发送内容不能为空");
                 } else {
 
-                    ssGroupMessage = new SSGroupMessage();
+                    groupMessageBean = new GroupMessageBean(SSMessageFormat.TEXT);
                     //获取当前时间的时间戳
                     timeStamp = System.currentTimeMillis();
                     showContactHead.setVisibility(View.INVISIBLE);
                     chatEditInput.setText("");
-                    ssGroupMessage.setContent(content);
-                    ssGroupMessage.setSourceId(userId);
-                    ssGroupMessage.setGroupId(groupId);
-                    ssGroupMessage.setMessageTime(timeStamp);
-                    groupMessageList.add(ssGroupMessage);
-                    chatMessageAdapter.notifyDataSetChanged();
-                    recyleContent.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
+                    groupMessageBean.setContent(content);
+                    groupMessageBean.setSourceId(userId);
+                    groupMessageBean.setGroupId(groupId);
+                    groupMessageBean.setMessageTime(timeStamp);
+                    groupMesList.add(groupMessageBean);
+                    groupChatAdapter.notifyDataSetChanged();
+                    recyleContent.smoothScrollToPosition(groupChatAdapter.getItemCount() - 1);
 
                     SSEngine instance = SSEngine.getInstance();
-                    instance.sendMessageToGroupId(groupId, SSMessageFormat.TEXT, content);
+                    boolean isSend = instance.sendMessageToGroupId(groupId, SSMessageFormat.TEXT, content);
+                    if(isSend) {
+                        instance.setMsgSendListener(new SSMessageSendListener() {
+                            @Override
+                            public void didSend(boolean b, long l) {
+                                if (!b){
+                                    ToastUtil.toastMessage(mContext,"服务器忙");
+                                }
+                            }
+                        });
+                    }else {
+                        ToastUtil.toastMessage(mContext,"消息发送失败");
+                    }
 
-                    instance.setMsgSendListener(new SSMessageSendListener() {
-                        @Override
-                        public void didSend(boolean b, long l) {
-
-                        }
-                    });
                 }
 
 
@@ -188,7 +214,7 @@ public class GroupChatActivity extends BaseActivity {
                 break;
             case R.id.iv_location:
                 Intent intent = new Intent(GroupChatActivity.this, MyLocationActivity.class);
-                startActivityForResult(intent,REQUEST_CODE);
+                startActivityForResult(intent, REQUEST_CODE);
                 break;
             case R.id.rl_recyle_content:
                 break;
@@ -199,14 +225,42 @@ public class GroupChatActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             String address = data.getStringExtra("address");
-            double longitude = data.getDoubleExtra("longitude", 0.0);
-            double latitude = data.getDoubleExtra("latitude", 0.0);
+            float longitude = data.getFloatExtra("longitude", 0);
+            float latitude = data.getFloatExtra("latitude", 0);
 
-            ToastUtil.toastMessage(mContext,address+longitude+"   "+latitude);
+            //ToastUtil.toastMessage(mContext, address + longitude + "   " + latitude);
+            //获取当前时间的时间戳
+            timeStamp = System.currentTimeMillis();
+            showContactHead.setVisibility(View.INVISIBLE);
+            GroupMessageBean groupMessage = new GroupMessageBean(SSMessageFormat.LOCATION);
+            groupMessage.setContent(address);
+            groupMessage.setSourceId(userId);
+            groupMessage.setGroupId(groupId);
+            groupMessage.setContentType(SSMessageFormat.LOCATION);
+            groupMessage.setMessageTime(timeStamp);
+            groupMesList.add(groupMessage);
+            groupChatAdapter.notifyDataSetChanged();
+            recyleContent.smoothScrollToPosition(groupChatAdapter.getItemCount() - 1);
+            SSLocation ssLocation = new SSLocation();
+            ssLocation.address = address;
+            ssLocation.latitude = latitude;
+            ssLocation.longitude = longitude;
+            String jsonLocation = ssLocation.toJson();
+            SSEngine instance = SSEngine.getInstance();
+            instance.sendMessageToGroupId(groupId, SSMessageFormat.LOCATION, jsonLocation);
+
+            instance.setMsgSendListener(new SSMessageSendListener() {
+                @Override
+                public void didSend(boolean b, long l) {
+                    if (!b){
+                        ToastUtil.toastMessage(mContext,"发送失败");
+                    }
+                }
+            });
         }
-    }
+        }
 
     @Override
     protected void initListener() {

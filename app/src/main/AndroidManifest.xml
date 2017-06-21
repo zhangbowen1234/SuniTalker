@@ -46,7 +46,7 @@
         android:theme="@style/AppTheme">
 <!--    <meta-data
         android:name="com.amap.api.v2.apikey"
-        android:value="4049aaf8a09e798e323bec3aa8e8f382"/>-->
+        android:value="c48de938cd99379f5a5cf8ba42ff28de"/>-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="c48de938cd99379f5a5cf8ba42ff28de"/>
