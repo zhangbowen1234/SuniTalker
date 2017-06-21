@@ -49,13 +49,13 @@ public class DataServer {
             }
         }
         List<ChatBean> list = new ArrayList<>();
-//        list.add(new ChatBean("user_id=", "userName=", avatar, ChatBean.CHAT_SINGLR));
+//        mChatList.add(new ChatBean("user_id=", "userName=", avatar, ChatBean.CHAT_SINGLR));
 //        for (int i = 0; i < 4; i++) {
-//            list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL1, ChatBean.CHAT_SINGLR));
-//            list.add(new ChatBean("user_id=" + i, "userName=" + i, null, ChatBean.CHAT_SYSTEM));
-//            list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL3, ChatBean.CHAT_GROUP));
-//            list.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL4, ChatBean.CHAT_DISCUSSION_GROUP));
-//            list.add(new ChatBean("user_id=" + i, "userName=" + i, null, ChatBean.CHAT_GROUP_NOTICE));
+//            mChatList.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL1, ChatBean.CHAT_SINGLR));
+//            mChatList.add(new ChatBean("user_id=" + i, "userName=" + i, null, ChatBean.CHAT_SYSTEM));
+//            mChatList.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL3, ChatBean.CHAT_GROUP));
+//            mChatList.add(new ChatBean("user_id=" + i, "userName=" + i, IMAGE_URL4, ChatBean.CHAT_DISCUSSION_GROUP));
+//            mChatList.add(new ChatBean("user_id=" + i, "userName=" + i, null, ChatBean.CHAT_GROUP_NOTICE));
 //        }
         return list;
     }

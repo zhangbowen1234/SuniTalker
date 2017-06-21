@@ -109,7 +109,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 DeleteItemDialog(0);
                 break;
             case R.id.ok_btn:
-                SSIMFrendManger.deleteFriend(mContext,token, userId, friendId, "innerapp", new ResponseCallBack<BaseResponse>() {
+                SSIMFrendManger.deleteFriend(mContext,token, userId, friendId, new ResponseCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         ToastUtils.showMessage(mContext,baseResponse.getStatusMsg());

@@ -47,7 +47,7 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
      * some initialization data.
      *
-     * @param data A new list is created out of this one to avoid mutable list
+     * @param data A new mChatList is created out of this one to avoid mutable mChatList
      */
     public GroupChatAdapter(List<GroupMessageBean> data) {
         super(data);
