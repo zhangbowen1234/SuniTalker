@@ -77,6 +77,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         mUserList = new ArrayList<SSFriendNotification>();
         mDao = DBHelper.get().dao(GroupMemberBean.class);
         queryUserInfoBean = new QueryUserInfoBean();
+
     }
 
     @Override
