@@ -138,7 +138,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mSendMsg.setOnClickListener(this);
         mBack.setOnClickListener(this);
         /*实现IEmotionSelectedListener接口，手动实现图文混排*/
-//        mElEmotion.setEmotionSelectedListener(this);
         mElEmotion.setEmotionAddVisiable(true);
         mElEmotion.setEmotionSettingVisiable(true);
         //开启定位信息界面
@@ -221,7 +220,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
             String address = data.getStringExtra("address");
             double longitude = data.getDoubleExtra("longitude", 0.0);
             double latitude = data.getDoubleExtra("latitude", 0.0);
-            //ToastUtil.toastMessage(mContext,address+longitude+"   "+latitude);
+            ToastUtil.toastMessage(mContext,address+longitude+"   "+latitude);
         }
     }
 
@@ -253,14 +252,13 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             case R.id.chat_btn_emote:
-                inputEdit.clearFocus();
+             /*   inputEdit.clearFocus();
                 if (!mElEmotion.isShown()) {
-                    return;
+                    showEmotionLayout();
+
                 } else if (mElEmotion.isShown()) {
                     hideEmotionLayout();
-                    return;
-                }
-                showEmotionLayout();
+                }*/
                 break;
             case R.id.title_left_back:
                 finish();
@@ -283,7 +281,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mEmotionKeyboard = EmotionKeyboard.with(this);
         mEmotionKeyboard.bindToContent(mLlContent);
         mEmotionKeyboard.bindToEmotionButton(mEmoteBtn);
-//        mEmotionKeyboard.bindToEditText(inputEdit);
+        mEmotionKeyboard.bindToEditText(inputEdit);
         mEmotionKeyboard.setEmotionLayout(mElEmotion);
     }
 

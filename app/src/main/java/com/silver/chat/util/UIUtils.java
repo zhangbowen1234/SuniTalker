@@ -1,18 +1,26 @@
-package com.silver.chat.view;
+package com.silver.chat.util;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
+import android.widget.Toast;
 
 import com.silver.chat.AppContext;
 import com.silver.chat.base.BaseApp;
+
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
+import static com.silver.chat.base.BaseApp.getMainThreadId;
 
 /**
  * Created by hibon on 2017/5/8.
  */
 
 public class UIUtils {
-
     /**
      * RecyclerView 移动到当前位置，
      *
@@ -46,23 +54,4 @@ public class UIUtils {
         manager.scrollToPositionWithOffset(n, 0);
         manager.setStackFromEnd(true);
     }
-    /**
-     * 延迟执行任务
-     *
-     * @param task
-     * @param delayMillis
-     */
-    public static void postTaskDelay(Runnable task, int delayMillis) {
-        getMainThreadHandler().postDelayed(task, delayMillis);
-    }
-    /**
-     * 得到主线程Handler
-     *
-     * @return
-     */
-    public static Handler getMainThreadHandler() {
-        return BaseApp.getMainHandler();
-    }
-
-
 }

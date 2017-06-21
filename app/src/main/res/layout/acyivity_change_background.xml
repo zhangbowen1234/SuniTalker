@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_lucency">
-
-    <include android:id="@+id/ll_common_bg_view" layout="@layout/common_bg_view"/>
-
-    <LinearLayout
-        android:id="@+id/ll_change_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    android:id="@+id/ll_common_bg_view"
+    android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -23,7 +16,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_100">
+            android:layout_marginTop="@dimen/dp_80">
 
             <ImageView
                 android:layout_width="250dp"
@@ -183,5 +176,4 @@
             android:paddingBottom="@dimen/dp_50"
             android:src="@mipmap/preservation_theme" />
 
-    </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

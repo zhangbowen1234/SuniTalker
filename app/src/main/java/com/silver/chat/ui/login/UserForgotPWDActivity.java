@@ -139,6 +139,8 @@ public class UserForgotPWDActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onFailed(BaseResponse baseResponse) {
                 ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                Log.e(TAG, baseResponse.getStatusMsg() );
+
             }
 
             @Override

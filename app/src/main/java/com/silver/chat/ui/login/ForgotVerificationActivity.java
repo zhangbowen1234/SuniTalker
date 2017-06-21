@@ -109,6 +109,7 @@ public class ForgotVerificationActivity extends BaseActivity implements View.OnC
             @Override
             public void onFailed(BaseResponse<ForgetPasswordBean> forgetPasswordBeanBaseResponse) {
                 ToastUtils.showMessage(mContext, forgetPasswordBeanBaseResponse.getStatusMsg());
+                Log.e(TAG, forgetPasswordBeanBaseResponse.getStatusMsg() );
             }
 
             @Override
@@ -118,7 +119,7 @@ public class ForgotVerificationActivity extends BaseActivity implements View.OnC
         });
     }
     private void sendSmsCode(String uPhone) {
-        SSIMLoginManger.userReginstCode(mContext,Common.version, uPhone, Common.RegType, new ResponseCallBack<BaseResponse>() {
+        SSIMLoginManger.userReginstCode(mContext,Common.version, uPhone, 4, new ResponseCallBack<BaseResponse>() {
 
 
             @Override
@@ -130,6 +131,7 @@ public class ForgotVerificationActivity extends BaseActivity implements View.OnC
             @Override
             public void onFailed(BaseResponse baseResponse) {
                 ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                Log.e(TAG, baseResponse.getStatusMsg());
             }
 
             @Override

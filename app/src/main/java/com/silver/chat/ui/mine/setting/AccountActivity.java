@@ -25,6 +25,7 @@ import com.silver.chat.network.responsebean.UpdateUserInfoBean;
 import com.silver.chat.util.GetFilesUtils;
 import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.SkinSettingManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 

@@ -2,10 +2,12 @@ package com.silver.chat.ui.mine.setting;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.util.SkinSettingManager;
 
 /**
  * 作者：Fandy on 2016/12/9 11:56

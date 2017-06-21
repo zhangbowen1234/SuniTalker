@@ -4,6 +4,8 @@ import android.widget.Switch;
 
 import com.silver.chat.view.recycleview.entity.MultiItemEntity;
 import com.ssim.android.constant.SSMessageFormat;
+import com.ssim.android.model.chat.SSGroupMessage;
+import com.ssim.android.model.chat.SSMessage;
 
 import static com.ssim.android.constant.SSMessageFormat.*;
 
@@ -11,7 +13,6 @@ import static com.ssim.android.constant.SSMessageFormat.*;
  * Created by Joe on 2017/6/13.
  */
 public class GroupMessageBean implements MultiItemEntity {
-
     public static final int TEXT = 1;
     public static final int LOCATION = 8;
     private SSMessageFormat contentType;
