@@ -186,7 +186,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * some initialization data.
      *
      * @param layoutResId The layout resource id of each item.
-     * @param data        A new list is created out of this one to avoid mutable list
+     * @param data        A new mChatList is created out of this one to avoid mutable mChatList
      */
     public BaseQuickAdapter(int layoutResId, List<T> data) {
         this.mData = data == null ? new ArrayList<T>() : data;
@@ -333,7 +333,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     }
 
     /**
-     * Get the data of list
+     * Get the data of mChatList
      *
      * @return
      */
@@ -1042,7 +1042,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     protected abstract void convert(K helper, T item,int position);
 
     /**
-     * Get the row id associated with the specified position in the list.
+     * Get the row id associated with the specified position in the mChatList.
      *
      * @param position The position of the item within the adapter's data set whose row id we want.
      * @return The id of the item at the specified position.
@@ -1280,7 +1280,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * @return return the closest parent item position of the IExpandable.
      * if the IExpandable item's level is 0, return itself position.
      * if the item's level is negative which mean do not implement this, return a negative
-     * if the item is not exist in the data list, return a negative.
+     * if the item is not exist in the data mChatList, return a negative.
      */
     public int getParentPosition(@NonNull T item) {
         int position = getItemPosition(item);

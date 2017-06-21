@@ -318,15 +318,16 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         }
         String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         UpdateUserInfoBean instance = UpdateUserInfoBean.getInstance();
-        instance.setNickName(mTvName.getText().toString());
-        instance.setSex(1);
+        instance.setNickName(nickName);
+        instance.setSex(2);
         instance.setAge(18);
-        instance.setSignature("生命在于运动，啪啪啪");
+        instance.setSignature("生命在于运动!");
 
         SSIMLoginManger.updateUserInfo(mContext,Common.version, token, instance, new ResponseCallBack<BaseResponse<UpdateUserInfoBean>>() {
             @Override
             public void onSuccess(BaseResponse<UpdateUserInfoBean> userInfoBeanBaseResponse) {
                 Log.e("getUserInfo", userInfoBeanBaseResponse.getStatusMsg());
+                PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.NICKNAME, nickName);
             }
 
             @Override

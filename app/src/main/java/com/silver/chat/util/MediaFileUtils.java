@@ -7,7 +7,7 @@ import java.util.Iterator;
  * 判断文件类型
  */
 public class MediaFileUtils {
-    // comma separated list of all file extensions supported by the media scanner  
+    // comma separated mChatList of all file extensions supported by the media scanner
     public static String sFileExtensions;
 
     // Audio file types  
@@ -109,7 +109,7 @@ public class MediaFileUtils {
         addFileType("PLS", FILE_TYPE_PLS, "audio/x-scpls");
         addFileType("WPL", FILE_TYPE_WPL, "application/vnd.ms-wpl");
 
-        // compute file extensions list for native Media Scanner  
+        // compute file extensions mChatList for native Media Scanner
         StringBuilder builder = new StringBuilder();
         Iterator<String> iterator = sFileTypeMap.keySet().iterator();
 

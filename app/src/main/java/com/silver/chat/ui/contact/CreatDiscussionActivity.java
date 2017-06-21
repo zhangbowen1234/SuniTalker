@@ -14,14 +14,17 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.CreatGroupAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.base.Common;
+import com.silver.chat.database.helper.DBHelper;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.CreatGroupBean;
 import com.silver.chat.network.responsebean.AddGroupMemBean;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
+import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
+import com.ssim.android.constant.HttpConstant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +38,7 @@ import butterknife.OnClick;
 
 /**
  * Created by bowen on 2017/5/8.
+ * 创建群聊讨论组
  */
 
 public class CreatDiscussionActivity extends BaseActivity {
