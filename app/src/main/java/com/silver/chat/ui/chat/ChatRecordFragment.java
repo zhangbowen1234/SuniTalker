@@ -161,7 +161,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
                         mChatApater.setData(mList);
                         mRecycleContent.refreshComplete();
                     }
-                }, 3000);
+                }, 2000);
             }
         });
 

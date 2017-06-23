@@ -207,7 +207,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                             mChatMsgList.refreshComplete();
                             chatMessageAdapter.notifyDataSetChanged();
                         }
-                    }, 3000);
+                    }, 2000);
                 }
             });
         }

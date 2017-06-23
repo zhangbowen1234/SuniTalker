@@ -36,6 +36,8 @@
     <!--用于申请获取蓝牙信息进行室内定位-->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!--允许程序写入API设置-->
+    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"/>
 
     <application
         android:name=".AppContext"
