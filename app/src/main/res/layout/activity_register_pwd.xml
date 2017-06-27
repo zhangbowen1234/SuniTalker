@@ -51,7 +51,8 @@
                     android:textColor="@color/white"
                     android:textColorHint="@color/txt_font_one_color"
                     android:textCursorDrawable="@null"
-                    android:textSize="14.0sp"/>
+                    android:textSize="14.0sp"
+                    android:digits="0123456789abcdefghigklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM"/>
 
             </LinearLayout>
 
@@ -81,7 +82,8 @@
                     android:textColor="@color/white"
                     android:textColorHint="@color/txt_font_one_color"
                     android:textCursorDrawable="@null"
-                    android:textSize="14.0sp"/>
+                    android:textSize="14.0sp"
+                    android:digits="0123456789abcdefghigklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM"/>
 
                 <ImageView
                     android:layout_width="20dp"
@@ -106,6 +108,7 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:layout_below="@id/LinearLayout_reg"
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM"
             />
 
 

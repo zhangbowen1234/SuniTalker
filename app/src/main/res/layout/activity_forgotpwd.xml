@@ -50,7 +50,8 @@
                     android:imeOptions="actionNext"
                     android:padding="10.0dip"
                     android:textColor="@color/white"
-                    android:textSize="14.0sp" />
+                    android:textSize="14.0sp"
+                    android:digits="0123456789abcdefghigklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM"/>
 
             </LinearLayout>
 
@@ -81,7 +82,8 @@
                     android:imeOptions="actionNext"
                     android:padding="10.0dip"
                     android:textColor="@color/white"
-                    android:textSize="14.0sp" />
+                    android:textSize="14.0sp"
+                    android:digits="0123456789abcdefghigklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM"/>
 
             </LinearLayout>
 
@@ -103,7 +105,8 @@
             android:textColorHint="@color/txt_font_one_color"
             android:padding="10dp"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            />
 
 
         <Button

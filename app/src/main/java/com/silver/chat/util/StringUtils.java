@@ -1,5 +1,15 @@
 package com.silver.chat.util;
 
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.widget.EditText;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import static android.R.attr.filter;
+
 /**
  * <pre>
  *     author: Blankj

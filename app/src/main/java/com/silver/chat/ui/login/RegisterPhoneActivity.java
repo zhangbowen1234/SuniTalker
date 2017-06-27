@@ -1,6 +1,7 @@
 package com.silver.chat.ui.login;
 
 import android.content.Intent;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;

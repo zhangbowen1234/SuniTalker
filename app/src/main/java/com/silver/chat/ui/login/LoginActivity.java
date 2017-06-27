@@ -5,6 +5,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,11 +29,15 @@ import com.silver.chat.util.NetUtils;
 import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
+import com.silver.chat.util.StringUtils;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
 import com.ssim.android.listener.SSConnectListener;
 
 import java.util.UUID;
+
+import static android.R.attr.editable;
+import static com.amap.api.mapcore.util.cx.m;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectListener {
 

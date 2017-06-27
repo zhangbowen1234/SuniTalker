@@ -75,6 +75,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ui.chat.SearchChatRecordActivity"
+            android:windowSoftInputMode="adjustPan"
             android:label="搜索聊天记录" />
         <activity
             android:name=".ui.contact.SearchContactActivity"
