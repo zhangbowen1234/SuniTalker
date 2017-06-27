@@ -1,5 +1,8 @@
 package com.silver.chat.ui.login;
 
+import android.text.Editable;
+import android.text.Selection;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +21,8 @@ import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.TimeCountUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.MyLineEditText;
+
+import static com.silver.chat.util.Utils.context;
 
 
 /**
@@ -70,6 +75,93 @@ public class RegisterPWDActivity extends BaseActivity implements View.OnClickLis
 //        mAuthCode.addTextChangedListener(new EditChangedListener());
         //计时器
         TimePiece();
+        mSetPwd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int count, int after) {
+                 //当最大字符大于32时，进行字段的截取，并进行提示字段的大小
+                int mTextMaxlenght = 0;
+                Editable editable = mSetPwd.getText();
+                String str = editable.toString().trim();
+                //得到最初字段的长度大小，用于光标位置的判断
+                int selEndIndex = Selection.getSelectionEnd(editable);
+                // 取出每个字符进行判断，如果是字母数字和标点符号则为一个字符加1，
+                //如果是汉字则为两个字符
+                for (int i = 0; i < str.length(); i++) {
+                    char charAt = str.charAt(i);
+                    //32-122包含了空格，大小写字母，数字和一些常用的符号，
+                    //如果在这个范围内则算一个字符，
+                    //如果不在这个范围比如是汉字的话就是两个字符
+                    if (charAt >= 32 && charAt <= 122) {
+                        mTextMaxlenght++;
+                    } else {
+                        mTextMaxlenght += 2;
+                    }
+                    // 当最大字符大于16时，进行字段的截取，并进行提示字段的大小
+                    if (mTextMaxlenght > 16) {
+                        // 截取最大的字段
+                        String newStr = str.substring(0, i);
+                        mSetPwd.setText(newStr);
+                        // 得到新字段的长度值
+                        editable = mSetPwd.getText();
+                        int newLen = editable.length();
+                        if (selEndIndex > newLen) {
+                            selEndIndex = editable.length();
+                        }
+                        // 设置新光标所在的位置
+                        Selection.setSelection(editable, selEndIndex);
+                        ToastUtils.showMessage(context,"至多输入16位");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        mAgainSetPwd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int count, int after) {
+                int mTextMaxlenght = 0;
+                Editable editable = mSetPwd.getText();
+                String str = editable.toString().trim();
+                int selEndIndex = Selection.getSelectionEnd(editable);
+                for (int i = 0; i < str.length(); i++) {
+                    char charAt = str.charAt(i);
+                    if (charAt >= 32 && charAt <= 122) {
+                        mTextMaxlenght++;
+                    } else {
+                        mTextMaxlenght += 2;
+                    }
+                    if (mTextMaxlenght > 16) {
+                        String newStr = str.substring(0, i);
+                        mSetPwd.setText(newStr);
+                        editable = mSetPwd.getText();
+                        int newLen = editable.length();
+                        if (selEndIndex > newLen) {
+                            selEndIndex = editable.length();
+                        }
+                        Selection.setSelection(editable, selEndIndex);
+                        ToastUtils.showMessage(context,"至多输入16位");
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
 

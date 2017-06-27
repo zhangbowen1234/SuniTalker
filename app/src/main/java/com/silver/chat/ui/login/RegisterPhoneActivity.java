@@ -3,6 +3,7 @@ package com.silver.chat.ui.login;
 import android.content.Intent;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -52,6 +53,12 @@ public class RegisterPhoneActivity extends BaseActivity implements View.OnClickL
         weixin.setOnClickListener(this);
         xinlang.setOnClickListener(this);
         mReturnLast.setOnClickListener(this);
+        mUserPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                return (event.getKeyCode()==KeyEvent.KEYCODE_ENTER);
+            }
+        });
 
     }
 

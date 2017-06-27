@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -78,6 +79,7 @@ public class MainActivity extends BaseActivity {
     private MainPagerAdapter mPagerAdapter;
     private Animation mButtonInAnimation;
     private Animation mButtonOutAnimation;
+    private boolean openPanel = false;
 
     @Override
     protected int getLayoutId() {
@@ -225,6 +227,20 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            if (openPanel){
+                closePanelView();
+                return true;
+            }else {
+                return super.onKeyDown(keyCode, event);
+            }
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
+
     //弹出更多
     private void openPanelView() {
         if (tabLayout.getSelectedTabPosition() == 0) {
@@ -244,6 +260,7 @@ public class MainActivity extends BaseActivity {
             tvSearchGroup.startAnimation(mButtonInAnimation);
             tvMoreChat.startAnimation(mButtonInAnimation);
         }
+        openPanel = true;
     }
     //收起更多
     private void closePanelView() {
@@ -262,6 +279,7 @@ public class MainActivity extends BaseActivity {
             tvSearchGroup.startAnimation(mButtonOutAnimation);
             tvMoreChat.startAnimation(mButtonOutAnimation);
         }
+        openPanel = false;
     }
 
     @Override

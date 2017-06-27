@@ -102,6 +102,8 @@
             android:background="@null"
             android:textCursorDrawable="@null"
             android:gravity="center_horizontal"
+            android:numeric="integer"
+            android:maxLength="6"
             android:hint="请输入手机验证码"
             android:textColorHint="@color/txt_font_one_color"
             android:padding="10dp"
