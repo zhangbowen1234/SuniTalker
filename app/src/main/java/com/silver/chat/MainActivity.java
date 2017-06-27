@@ -138,6 +138,11 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
+                if (position == 2){
+                    ivToolbarSearch.setVisibility(View.GONE);
+                }else {
+                    ivToolbarSearch.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
