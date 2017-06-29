@@ -90,6 +90,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
                     Intent mIntent = new Intent(mActivity, ContactChatActivity.class);
                     mIntent.putExtra("contactName", mList.get(position).getUserName());
                     mIntent.putExtra("friendId", mList.get(position).getUserId());
+                    mIntent.putExtra("userAvatar", mList.get(position).getAvatar());
                     mIntent.putExtra("chatType", Common.PRIVAT);
                     startActivity(mIntent);
                 } else if (mChatApater.getItemViewType(position + 1) == ChatBean.CHAT_GROUP) {

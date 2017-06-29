@@ -47,7 +47,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private CircleImageView mContactChatImg;
     private ImageButton mSendMsg, mEmoteBtn;
     private EditText inputEdit;
-    private String contactName;
     private TitleBarView mTitleBar;
     private WSRecyclerView mChatMsgList;
     private RelativeLayout mShowHead;
@@ -63,7 +62,8 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private long timestamp;
     private List<SSP2PMessage> p2PMessageList;
     private MyHandler mMyHandler;
-    private String editcontent;
+    private String editcontent, contactName;
+    public static String userAvatar;
     private ImageView ivLocation;
     private SSP2PMessage receiveMsg = null;
 
@@ -107,6 +107,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         contactName = intent.getStringExtra("contactName");
         friendId = intent.getStringExtra("friendId");
         chatType = intent.getStringExtra("chatType");
+        userAvatar = intent.getStringExtra("userAvatar");
         mTitleBar.setTitleText(contactName + "");
         userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
         /*获取当前系统时间的13位的时间戳*/
