@@ -265,13 +265,11 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
 
                             showEmotionLayout();
                             Log.e(TAG, mElEmotion.isShown() + "");
-
                         } else if (mElEmotion.isShown()) {
-                            hideEmotionLayout();
+//                            hideEmotionLayout();
                             Log.e(TAG, mElEmotion.isShown() + "1");
-
+                            mEmoteBtn.setImageResource(R.drawable.ic_chat_emote);
                         }
-                        showEmotionLayout();
                         break;
                 }
                 return false;
