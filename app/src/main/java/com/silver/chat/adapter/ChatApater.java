@@ -122,6 +122,7 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                     sourceId = sessionList.get(i).getSourceId();
                     BaseDao<ContactListBean> mDao = DBHelper.get().dao(ContactListBean.class);
                     List<ContactListBean> friendId = mDao.query(WhereInfo.get().equal("friendId", sourceId));
+                    Log.d("getChatData: ",friendId.toString());
                     for (int j = 0; j < friendId.size(); j++) {
                         friendAvatar = friendId.get(j).getAvatar();
                         friendNickname = friendId.get(j).getNickName();

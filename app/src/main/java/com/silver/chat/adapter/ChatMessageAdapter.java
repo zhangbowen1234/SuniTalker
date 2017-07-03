@@ -7,8 +7,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.silver.chat.R;
-import com.silver.chat.base.Common;
-import com.silver.chat.network.responsebean.UserInfoBean;
 import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
@@ -18,15 +16,17 @@ import com.ssim.android.model.chat.SSP2PMessage;
 
 import java.util.List;
 
-import static com.silver.chat.ui.contact.ContactChatActivity.userAvatar;
 
 /**
  * Created by hibon on 2016/11/28.
  */
 public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewHolder> {
 
-    public ChatMessageAdapter(int layoutResId, List<SSP2PMessage> data) {
+    private final String mAvatar;
+
+    public ChatMessageAdapter(int layoutResId, List<SSP2PMessage> data, String userAvatar) {
         super(layoutResId, data);
+        mAvatar = userAvatar;
         /*将聊天信息List倒置排序*/
 //        Collections.reverse(data);
     }
@@ -123,13 +123,12 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
             rightLayout.setVisibility(View.VISIBLE);
             rightMessageView.setText(item.getContent());
             GlideUtil.loadAvatar(rightPhotoView, PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, ""));
-            Log.d(TAG, "convert1: "+ PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, ""));
         } else { //接收
             leftLayout.setVisibility(View.VISIBLE);
             rightLayout.setVisibility(View.INVISIBLE);
             leftMessageView.setText(item.getContent());
-            Log.d(TAG, "convert2: "+userAvatar);
-            GlideUtil.loadAvatar(leftPhotoView, userAvatar);
+            GlideUtil.loadAvatar(leftPhotoView, mAvatar);
+//            Log.d(TAG, "convert2: "+mAvatar);
         }
     }
 

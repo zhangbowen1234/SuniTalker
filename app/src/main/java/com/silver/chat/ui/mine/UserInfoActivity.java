@@ -18,8 +18,10 @@ import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.ui.contact.ContactChatActivity;
+import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
+import com.silver.chat.view.RoundImageView;
 import com.silver.chat.view.WhewView;
 
 import java.util.List;
@@ -33,8 +35,9 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
     private TextView tvName,mChat ,tvSex ,tvSign,mTvdelete ,mTvSilence;
     private ImageView mIvBack;
-    private String contactName ,contactSex ,contactSignature,friendId;
+    private String contactName ,contactSex ,contactSignature,friendId, userAvatar;
     private WhewView whewView;
+    private RoundImageView myHeadPhoto;
     private int tag = 0;
     private Dialog dialog = null;
     private String token ,userId;
@@ -54,6 +57,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         tvSign = (TextView) findViewById(R.id.tv_sign);
         mChat = (TextView)findViewById(R.id.tv_detail);
         whewView = (WhewView) findViewById(R.id.wv);
+        myHeadPhoto = (RoundImageView) findViewById(R.id.my_photo);
         mTvdelete = (TextView)findViewById(R.id.tv_delete);
         mTvSilence = (TextView)findViewById(R.id.tv_silence);
 
@@ -67,6 +71,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         contactSex = intent.getStringExtra("sex");
         contactSignature = intent.getStringExtra("signature");
         friendId = intent.getStringExtra("friendId");
+        userAvatar = intent.getStringExtra("userAvatar");
         tvName.setText(contactName);
         if (contactSex.equals(Common.Girl)){
             tvSex.setText("女");
@@ -76,6 +81,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             tvSex.setText("保密");
         }
         tvSign.setText(contactSignature);
+        GlideUtil.loadAvatar(myHeadPhoto,userAvatar);
         token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
         mDao = DBHelper.get().dao(ContactListBean.class);
@@ -101,6 +107,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 Intent mIntent = new Intent(mContext,ContactChatActivity.class);
                 mIntent.putExtra("contactName",contactName);
                 mIntent.putExtra("friendId",friendId);
+                mIntent.putExtra("userAvatar",userAvatar);
                 mIntent.putExtra("chatType",Common.PRIVAT);
                 startActivity(mIntent);
                 break;

@@ -63,7 +63,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private List<SSP2PMessage> p2PMessageList;
     private MyHandler mMyHandler;
     private String editcontent, contactName;
-    public static String userAvatar;
+    private String userAvatar;
     private ImageView ivLocation;
     private SSP2PMessage receiveMsg = null;
 
@@ -117,7 +117,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
          */
         p2PMessageList = SSEngine.getInstance().getP2PMessageList(userId, friendId, -1, 10);
 
-        chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList);
+        chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList,userAvatar);
         if (p2PMessageList.size() != 0) {
             mShowHead.setVisibility(View.INVISIBLE);
             /*显示聊天显示最后一条的位置*/

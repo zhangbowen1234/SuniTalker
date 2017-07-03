@@ -256,7 +256,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     public void onMainThread(List<ContactListBean> data) throws Exception {
                         Log.e("mDao.asTk_onMainThread", "===================");
                         if (data.isEmpty()) {
-                            ToastUtils.showMessage(mActivity, mActivity.getResources().getString(R.string.contactlist_null));
+//                            ToastUtils.showMessage(mActivity, mActivity.getResources().getString(R.string.contactlist_null));
                         } else {
                             mContactList = data;
                             /**
