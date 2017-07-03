@@ -90,7 +90,8 @@
         <activity
             android:name=".ui.contact.ContactChatActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden" /> <!-- 进入界面隐藏软键盘 -->
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+             /> <!-- 进入界面隐藏软键盘 -->
 
         <activity
             android:name=".ui.mine.SettingActivity"

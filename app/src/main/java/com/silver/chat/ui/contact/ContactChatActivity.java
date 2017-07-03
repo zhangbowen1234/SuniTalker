@@ -6,14 +6,19 @@ import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
 import com.lqr.emoji.EmotionKeyboard;
 import com.lqr.emoji.EmotionLayout;
 import com.lqr.emoji.IEmotionExtClickListener;
@@ -41,7 +46,7 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 
-public class ContactChatActivity extends BaseActivity implements View.OnClickListener, SSMessageReceiveListener {
+public class ContactChatActivity extends BaseActivity implements IEmotionSelectedListener, View.OnClickListener, SSMessageReceiveListener {
 
     private static final int REQUEST_CODE = 200;
     private CircleImageView mContactChatImg;
@@ -52,24 +57,29 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     private RelativeLayout mShowHead;
     private ChatMessageAdapter chatMessageAdapter;
     private ViewPager mFaceViewPager;
-    private LinearLayout mExpression;
+    private LinearLayout mRoot, mLlContent;
     private String friendId, userId, chatType;
-    private ImageView mBack;
+    private ImageView mBack, ivLocation;
     private EmotionLayout mElEmotion;
     private EmotionKeyboard mEmotionKeyboard;
-    private RelativeLayout mLlContent;
+    private FrameLayout mFlEmotionView;
     private SSP2PMessage mChatMessage;
     private long timestamp;
     private List<SSP2PMessage> p2PMessageList;
     private MyHandler mMyHandler;
     private String editcontent, contactName;
     private String userAvatar;
-    private ImageView ivLocation;
     private SSP2PMessage receiveMsg = null;
 
     @Override
     protected int getLayoutId() {
         return R.layout.activity_contact_chat;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        inputEdit.clearFocus();
     }
 
     @Override
@@ -83,9 +93,10 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         mEmoteBtn = (ImageButton) findViewById(R.id.chat_btn_emote);
         inputEdit = (EditText) findViewById(R.id.chat_edit_input);
         mShowHead = (RelativeLayout) findViewById(R.id.show_contact_head);
+        mFlEmotionView = (FrameLayout) findViewById(R.id.flEmotionView);
         mBack = (ImageView) findViewById(R.id.title_left_back);
         mElEmotion = (EmotionLayout) findViewById(R.id.elEmotion);
-        mLlContent = (RelativeLayout) findViewById(R.id.rl_recyle_content);
+        mLlContent = (LinearLayout) findViewById(R.id.llContent);
         ivLocation = (ImageView) findViewById(R.id.iv_location);
         mChatMessage = new SSP2PMessage();
         /*设置管理*/
@@ -117,7 +128,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
          */
         p2PMessageList = SSEngine.getInstance().getP2PMessageList(userId, friendId, -1, 10);
 
-        chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList,userAvatar);
+        chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList, userAvatar);
         if (p2PMessageList.size() != 0) {
             mShowHead.setVisibility(View.INVISIBLE);
             /*显示聊天显示最后一条的位置*/
@@ -135,18 +146,18 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
         /*收到消息监听*/
         SSEngine.getInstance().setMsgRcvListener(this);
         /*表情*/
-        mEmoteBtn.setOnClickListener(this);
         mSendMsg.setOnClickListener(this);
         mBack.setOnClickListener(this);
         /*实现IEmotionSelectedListener接口，手动实现图文混排*/
         mElEmotion.setEmotionAddVisiable(true);
         mElEmotion.setEmotionSettingVisiable(true);
+        mElEmotion.setEmotionSelectedListener(this);
         //开启定位信息界面
         ivLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ContactChatActivity.this, MyLocationActivity.class);
-                startActivityForResult(intent,REQUEST_CODE);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
         mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
@@ -161,32 +172,15 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
             }
         });
 
-        /*文字表情混合输入*/
-        mElEmotion.setEmotionSelectedListener(new IEmotionSelectedListener() {
+        mLlContent.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onEmojiSelected(String key) {
-                if (inputEdit == null)
-                    return;
-                Editable editable = inputEdit.getText();
-                if (key.equals("/DEL")) {
-                    inputEdit.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
-                } else {
-                    int start = inputEdit.getSelectionStart();
-                    int end = inputEdit.getSelectionEnd();
-                    start = (start < 0 ? 0 : start);
-                    end = (start < 0 ? 0 : end);
-                    editable.replace(start, end, key);
-
-                    int editEnd = inputEdit.getSelectionEnd();
-                    MoonUtils.replaceEmoticons(LQREmotionKit.getContext(), editable, 0, editable.toString().length());
-                    inputEdit.setSelection(editEnd);
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        closeBottomAndKeyboard();
+                        break;
                 }
-            }
-
-            @Override
-            public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
-                /*得到贴图的存放位置*/
-//                String stickerPath = LQREmotionKit.getStickerPath();
+                return false;
             }
         });
 
@@ -211,17 +205,6 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                     }, 2000);
                 }
             });
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            String address = data.getStringExtra("address");
-            double longitude = data.getDoubleExtra("longitude", 0.0);
-            double latitude = data.getDoubleExtra("latitude", 0.0);
-            ToastUtil.toastMessage(mContext,address+longitude+"   "+latitude);
         }
     }
 
@@ -252,38 +235,85 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
                     });
                 }
                 break;
-            case R.id.chat_btn_emote:
-             /*   inputEdit.clearFocus();
-                if (!mElEmotion.isShown()) {
-                    showEmotionLayout();
-
-                } else if (mElEmotion.isShown()) {
-                    hideEmotionLayout();
-                }*/
-                break;
+//            case R.id.chat_btn_emote:
+//                inputEdit.clearFocus();
+//                if (!mElEmotion.isShown()) {
+//                    showEmotionLayout();
+//
+//                } else if (mElEmotion.isShown()) {
+//                    hideEmotionLayout();
+//                }
+//                break;
             case R.id.title_left_back:
                 finish();
                 break;
         }
     }
 
+    private void initEmotionKeyboard() {
+        mEmotionKeyboard = EmotionKeyboard.with(this);
+        mEmotionKeyboard.bindToEditText(inputEdit);
+        mEmotionKeyboard.bindToContent(mLlContent);
+        mEmotionKeyboard.setEmotionLayout(mFlEmotionView);
+        mEmotionKeyboard.bindToEmotionButton(mEmoteBtn);
+        mEmotionKeyboard.setOnEmotionButtonOnClickListener(new EmotionKeyboard.OnEmotionButtonOnClickListener() {
+            @Override
+            public boolean onEmotionButtonOnClickListener(View view) {
+                switch (view.getId()) {
+                    case R.id.chat_btn_emote:
+                        if (!mElEmotion.isShown()) {
+
+                            showEmotionLayout();
+                            Log.e(TAG, mElEmotion.isShown() + "");
+
+                        } else if (mElEmotion.isShown()) {
+                            hideEmotionLayout();
+                            Log.e(TAG, mElEmotion.isShown() + "1");
+
+                        }
+                        showEmotionLayout();
+                        break;
+                }
+                return false;
+            }
+        });
+    }
 
     private void showEmotionLayout() {
         mElEmotion.setVisibility(View.VISIBLE);
-//        mEmoteBtn.setImageResource(R.mipmap.ic_cheat_keyboard);
-    }
-
-    private void hideEmotionLayout() {
-//        mElEmotion.setVisibility(View.GONE);
         mEmoteBtn.setImageResource(R.drawable.ic_chat_emote_selected);
     }
 
-    private void initEmotionKeyboard() {
-        mEmotionKeyboard = EmotionKeyboard.with(this);
-        mEmotionKeyboard.bindToContent(mLlContent);
-        mEmotionKeyboard.bindToEmotionButton(mEmoteBtn);
-        mEmotionKeyboard.bindToEditText(inputEdit);
-        mEmotionKeyboard.setEmotionLayout(mElEmotion);
+    private void hideEmotionLayout() {
+        mElEmotion.setVisibility(View.GONE);
+        mEmoteBtn.setImageResource(R.drawable.ic_chat_emote);
+    }
+
+    private void closeBottomAndKeyboard() {
+        mElEmotion.setVisibility(View.GONE);
+        if (mEmotionKeyboard != null) {
+            mEmotionKeyboard.interceptBackPress();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mElEmotion.isShown()) {
+            mEmotionKeyboard.interceptBackPress();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onEmojiSelected(String key) {
+        Log.e("Sun", "onEmojiSelected : " + key);
+    }
+
+    @Override
+    public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
+        Toast.makeText(getApplicationContext(), stickerBitmapPath, Toast.LENGTH_SHORT).show();
+        Log.e("Sun", "stickerBitmapPath : " + stickerBitmapPath);
     }
 
     @Override
