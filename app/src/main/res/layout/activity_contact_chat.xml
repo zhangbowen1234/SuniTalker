@@ -3,14 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.silver.chat.view.TitleBarView
-        android:id="@id/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -237,6 +229,14 @@
             android:visibility="gone" />
 
     </LinearLayout>
+
+    <com.silver.chat.view.TitleBarView
+        android:id="@id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

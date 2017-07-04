@@ -61,7 +61,6 @@ public class AppContext extends MultiDexApplication implements SSMessageReceiveL
         PreferenceUtil.getInstance(this).setString(PreferenceUtil.UUIQUEID, uniqueId);
         /**
          *  SDK调用第一步 初始化
-         *
          */
         SSEngine.registerApp(Common.APPKEY, Common.APPSECRET, uniqueId,
                 appContext, new HttpResultCallback<VerifyAppKeyAndSecretResponse>() {

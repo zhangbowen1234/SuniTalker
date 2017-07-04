@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.lqr.emoji.EmotionKeyboard;
 import com.lqr.emoji.EmotionLayout;
 import com.lqr.emoji.IEmotionExtClickListener;
@@ -33,7 +34,6 @@ import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.listener.SSMessageSendListener;
-import com.ssim.android.model.chat.SSLocation;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
 
@@ -76,7 +76,7 @@ public class ContactChatActivity extends BaseActivity implements View.OnClickLis
     protected void initView() {
         super.initView();
 
-        mContactChatImg = (CircleImageView) findViewById(R.id.contact_chat_img);
+        mContactChatImg = (CircleImageView) findViewById(R.id.my_round_head);
         mSendMsg = (ImageButton) findViewById(R.id.chat_send_msg);
         mTitleBar = (TitleBarView) findViewById(R.id.title_bar);
         mChatMsgList = (WSRecyclerView) findViewById(R.id.recyle_content);

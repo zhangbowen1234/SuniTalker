@@ -278,9 +278,9 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    public List<GroupMemberBean> getSortData() {
-        List<GroupMemberBean> userInfoList = mDao.query(WhereInfo.get().equal("userId", sourceId));
-        Log.e("getSortData", userInfoList + "/" + sourceId);
-        return userInfoList;
-    }
+//    public List<GroupMemberBean> getSortData() {
+//        List<GroupMemberBean> userInfoList = mDao.query(WhereInfo.get().equal("userId", sourceId));
+//        Log.e("getSortData", userInfoList + "/" + sourceId);
+//        return userInfoList;
+//    }
 }

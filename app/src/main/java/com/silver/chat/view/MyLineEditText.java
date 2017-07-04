@@ -56,6 +56,7 @@ public class MyLineEditText extends EditText {
         canvas.drawLine(0, mHeight, mWidth, mHeight, paint);//bottom
         canvas.drawLine(0,mHeight-dip2px(getContext(),3),0,mHeight,paint);//left
         canvas.drawLine(mWidth,mHeight-dip2px(getContext(),3),mWidth,mHeight,paint);//right
+
     }
 
 
