@@ -70,6 +70,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
     private String editcontent, contactName;
     private String userAvatar;
     private SSP2PMessage receiveMsg = null;
+    private boolean mIsFirst = false;
 
     @Override
     protected int getLayoutId() {
@@ -79,7 +80,11 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
     @Override
     protected void onResume() {
         super.onResume();
-        inputEdit.clearFocus();
+        if (!mIsFirst) {
+            inputEdit.clearFocus();
+        } else {
+            mIsFirst = false;
+        }
     }
 
     @Override
@@ -235,15 +240,6 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                     });
                 }
                 break;
-//            case R.id.chat_btn_emote:
-//                inputEdit.clearFocus();
-//                if (!mElEmotion.isShown()) {
-//                    showEmotionLayout();
-//
-//                } else if (mElEmotion.isShown()) {
-//                    hideEmotionLayout();
-//                }
-//                break;
             case R.id.title_left_back:
                 finish();
                 break;
@@ -262,12 +258,8 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                 switch (view.getId()) {
                     case R.id.chat_btn_emote:
                         if (!mElEmotion.isShown()) {
-
                             showEmotionLayout();
-                            Log.e(TAG, mElEmotion.isShown() + "");
                         } else if (mElEmotion.isShown()) {
-//                            hideEmotionLayout();
-                            Log.e(TAG, mElEmotion.isShown() + "1");
                             mEmoteBtn.setImageResource(R.drawable.ic_chat_emote);
                         }
                         break;
