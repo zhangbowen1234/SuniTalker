@@ -91,6 +91,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     mCantactIntent.putExtra("sex", contactList.get(position-3).getSex()+"");
                     mCantactIntent.putExtra("signature", contactList.get(position-3).getSignature());
                     mCantactIntent.putExtra("friendId", contactList.get(position-3).getFriendId()+"");
+                    mCantactIntent.putExtra("userAvatar", contactList.get(position - 3).getAvatar());
                     mContext.startActivity(mCantactIntent);
                 }
             });

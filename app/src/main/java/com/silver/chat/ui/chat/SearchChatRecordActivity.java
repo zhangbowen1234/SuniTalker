@@ -1,17 +1,20 @@
 package com.silver.chat.ui.chat;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.github.library.listener.OnRecyclerItemClickListener;
 import com.silver.chat.R;
-import com.silver.chat.adapter.SearchChatRecordApater;
+import com.silver.chat.adapter.ChatApater;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
 import com.silver.chat.entity.ChatBean;
-import com.silver.chat.util.ToastUtil;
+import com.silver.chat.ui.chat.notification.GroupNotificationActivity;
+import com.silver.chat.ui.contact.ContactChatActivity;
+import com.silver.chat.ui.contact.group.GroupChatActivity;
 import com.silver.chat.view.SearchLayout;
-import com.silver.chat.view.recycleview.BaseQuickAdapter;
-import com.silver.chat.view.recycleview.listenner.OnItemClickListener;
+import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +28,8 @@ import java.util.List;
 public class SearchChatRecordActivity extends BaseActivity implements SearchLayout.OnSearchClickListener {
 
     private SearchLayout mSearchLayout;
-    private RecyclerView mRecycleContent;
-    private SearchChatRecordApater mApater;
+    private WSRecyclerView mRecycleContent;
+    private ChatApater mApater;
     private List<ChatBean> mList;
 
     @Override
@@ -38,7 +41,7 @@ public class SearchChatRecordActivity extends BaseActivity implements SearchLayo
     protected void initView() {
         super.initView();
         mSearchLayout = (SearchLayout) findViewById(R.id.search_layout);
-        mRecycleContent = (RecyclerView) findViewById(R.id.recyle_content);
+        mRecycleContent = (WSRecyclerView) findViewById(R.id.recyle_content);
         mRecycleContent.setLayoutManager(new LinearLayoutManager(mContext));
     }
 
@@ -46,31 +49,34 @@ public class SearchChatRecordActivity extends BaseActivity implements SearchLayo
     protected void initListener() {
         super.initListener();
         mSearchLayout.setOnSearchClickListener(this);
-        mRecycleContent.addOnItemTouchListener(new OnItemClickListener() {
-            @Override
-            public void SimpleOnItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (mList.get(position).getItemType() == 1){
-                    ToastUtil.toastMessage(mContext, "系统position=" + position);
-                }else if(mList.get(position).getItemType() == 2){
-                    ToastUtil.toastMessage(mContext, "单聊position=" + position);
-                }else if ((mList.get(position).getItemType() == 3)){
-                    ToastUtil.toastMessage(mContext, "群聊position=" + position);
-                }else if ((mList.get(position).getItemType() == 4)){
-                    ToastUtil.toastMessage(mContext, "讨论组position=" + position);
-                }else if ((mList.get(position).getItemType() == 5)){
-                    ToastUtil.toastMessage(mContext, "群通知position=" + position);
-                }
-            }
-        });
     }
 
     @Override
     protected void initData() {
         super.initData();
         mList = new ArrayList<>();
-//        mList.addAll(DataServer.getChatData());
-        mApater = new SearchChatRecordApater(mList);
+        mList.addAll(ChatApater.getChatData(mContext));
+        mApater = new ChatApater(mList);
         mRecycleContent.setAdapter(mApater);
+        mApater.setOnRecyclerItemClickListener(new OnRecyclerItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (mApater.getItemViewType(position) == ChatBean.CHAT_SINGLR) {
+                    Intent mIntent = new Intent(mContext, ContactChatActivity.class);
+                    mIntent.putExtra("contactName", mList.get(position).getUserName());
+                    mIntent.putExtra("friendId", mList.get(position).getUserId());
+                    mIntent.putExtra("chatType", Common.PRIVAT);
+                    startActivity(mIntent);
+                } else if (mApater.getItemViewType(position) == ChatBean.CHAT_GROUP) {
+                    Intent mIntent = new Intent(mContext, GroupChatActivity.class);
+                    mIntent.putExtra("groupName", mList.get(position).getGroupName());
+                    mIntent.putExtra("groupId", mList.get(position).getGroupId());
+                    startActivity(mIntent);
+                } else if (mApater.getItemViewType(position) == ChatBean.CHAT_GROUP_NOTICE) {
+                    startActivity(GroupNotificationActivity.class);
+                }
+            }
+        });
     }
 
     @Override

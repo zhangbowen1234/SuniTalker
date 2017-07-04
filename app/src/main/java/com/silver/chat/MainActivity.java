@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -78,6 +79,7 @@ public class MainActivity extends BaseActivity {
     private MainPagerAdapter mPagerAdapter;
     private Animation mButtonInAnimation;
     private Animation mButtonOutAnimation;
+    private boolean openPanel = false;
 
     @Override
     protected int getLayoutId() {
@@ -138,6 +140,11 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
+                if (position == 2){
+                    ivToolbarSearch.setVisibility(View.GONE);
+                }else {
+                    ivToolbarSearch.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -178,7 +185,8 @@ public class MainActivity extends BaseActivity {
                 ScreenManager.getScreenManager().StartPage(this, goRegIntent, true);
                 break;
             case R.id.tv_search:
-                ToastUtils.showMessage(mContext, "正在修改中...");
+                startActivity(SearchChatRecordActivity.class);
+                closePanelView();
                 break;
             case R.id.tv_start_chat:
                 ToastUtils.showMessage(mContext, "正在修改中...");
@@ -199,6 +207,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.tv_search_chat:
                 startActivity(SearchContactActivity.class);
+                closePanelView();
                 break;
             case R.id.tv_add_friend:
                 closePanelView();
@@ -215,6 +224,20 @@ public class MainActivity extends BaseActivity {
             case R.id.tv_more_chat:
                 ToastUtils.showMessage(mContext, "正在修改中...");
                 break;
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            if (openPanel){
+                closePanelView();
+                return true;
+            }else {
+                return super.onKeyDown(keyCode, event);
+            }
+        }else {
+            return super.onKeyDown(keyCode, event);
         }
     }
 
@@ -237,6 +260,7 @@ public class MainActivity extends BaseActivity {
             tvSearchGroup.startAnimation(mButtonInAnimation);
             tvMoreChat.startAnimation(mButtonInAnimation);
         }
+        openPanel = true;
     }
     //收起更多
     private void closePanelView() {
@@ -255,6 +279,7 @@ public class MainActivity extends BaseActivity {
             tvSearchGroup.startAnimation(mButtonOutAnimation);
             tvMoreChat.startAnimation(mButtonOutAnimation);
         }
+        openPanel = false;
     }
 
     @Override

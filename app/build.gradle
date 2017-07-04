@@ -31,8 +31,11 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            //是否混淆
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //移除无用的resource文件
+            shrinkResources true
         }
     }
 }
@@ -64,9 +67,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'com.lqr.emoji:library:1.0.2'
-    //    compile 'com.alibaba:fastjson:1.2.31'
     compile 'com.github.baserecycleradapter:library:1.0.9'
-    //    compile 'com.tamic.novate:novate:1.2.8'
     compile 'io.netty:netty-all:4.1.9.Final'
     compile 'io.reactivex.rxjava2:rxjava:2.0.8'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -74,9 +75,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
     compile 'org.greenrobot:greendao:3.2.2'
-    // add library for greenDAO
     compile 'net.zetetic:android-database-sqlcipher:3.5.6'
-    // This is only needed if you want to use encrypted databases
     compile 'com.android.support:multidex:1.0.0'
     compile project(':ssim-release')
 }

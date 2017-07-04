@@ -63,7 +63,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     /**
      * 联系人集合
      */
-    private List<ContactListBean> mContactList;
+    public static List<ContactListBean> mContactList;
     /**
      * 排序后的联系人集合
      */
@@ -102,8 +102,8 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         mRecycleContent = (RecyclerView) view.findViewById(R.id.recyle_content);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.hide();
-        mContactList = new ArrayList<ContactListBean>();
-        mConList = new ArrayList<ContactListBean>();
+        mContactList = new ArrayList<>();
+        mConList = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(mActivity);
         /*设置布局管理器*/
         mRecycleContent.setLayoutManager(linearLayoutManager);
@@ -256,7 +256,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     public void onMainThread(List<ContactListBean> data) throws Exception {
                         Log.e("mDao.asTk_onMainThread", "===================");
                         if (data.isEmpty()) {
-                            ToastUtils.showMessage(mActivity, mActivity.getResources().getString(R.string.contactlist_null));
+//                            ToastUtils.showMessage(mActivity, mActivity.getResources().getString(R.string.contactlist_null));
                         } else {
                             mContactList = data;
                             /**

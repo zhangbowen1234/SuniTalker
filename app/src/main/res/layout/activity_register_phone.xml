@@ -126,10 +126,10 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="50dp">
 
-            <com.silver.chat.view.MyLineEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:enabled="false" />
+            <!--<com.silver.chat.view.MyLineEditText-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:enabled="false" />-->
 
             <com.silver.chat.view.MyLineEditText
                 android:id="@id/user_phone"
@@ -139,7 +139,7 @@
                 android:background="@null"
                 android:gravity="center"
                 android:hint="请输入手机号"
-                android:inputType="phone"
+                android:numeric="integer"
                 android:padding="@dimen/dp_10"
                 android:textColor="@color/white"
                 android:textColorHint="@color/txt_font_one_color"

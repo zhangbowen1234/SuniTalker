@@ -21,12 +21,25 @@ import com.silver.chat.R;
  */
 
 public class SearchLayout extends LinearLayout implements View.OnClickListener, TextWatcher {
-
+    /**
+     * 上下文对象
+     */
     private Context mContext;
+    /**
+     * 返回按钮
+     */
     private ImageView mIvBack;
+    /**
+     * 删除键
+     */
     private ImageView mIvClear;
+    /**
+     * 输入框
+     */
     private EditText mEtSearch;
-
+    /**
+     * 搜索回调接口
+     */
     private OnSearchClickListener mOnSearchClickListener;
 
     public SearchLayout(Context context) {
@@ -65,6 +78,7 @@ public class SearchLayout extends LinearLayout implements View.OnClickListener, 
 
         updateEt();
         mEtSearch.addTextChangedListener(this);
+
     }
 
     /**
