@@ -27,7 +27,6 @@ import com.silver.chat.network.responsebean.UpdateUserInfoBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;

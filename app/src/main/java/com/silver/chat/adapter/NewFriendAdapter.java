@@ -1,6 +1,8 @@
 package com.silver.chat.adapter;
 
 import com.silver.chat.R;
+import com.silver.chat.util.GlideUtil;
+import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
 import com.ssim.android.model.notification.SSFriendNotification;
@@ -25,6 +27,7 @@ public class NewFriendAdapter extends BaseQuickAdapter<SSFriendNotification,Base
     protected void convert(BaseViewHolder helper, SSFriendNotification item, int position) {
         helper.setText(R.id.add_user_name,item.getSourceName())
                 .setText(R.id.friend_additional,item.getContent());
+        GlideUtil.loadAvatar((CircleImageView)helper.getView(R.id.add_friend_head),item.getSourceAvatar());
 
 
     }

@@ -60,7 +60,6 @@ public class BaseCallBack {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 Log.e("BaseCallBack", response.body() + "");
-//                Log.e("BaseCallBack", response.body().data+"");
                 if (response.body().getStatusCode() == 200 || response.body().getStatusCode() == 1) {
                     callBack.onSuccess(response.body());
                 } else if (response.body().getStatusCode() == 300) {

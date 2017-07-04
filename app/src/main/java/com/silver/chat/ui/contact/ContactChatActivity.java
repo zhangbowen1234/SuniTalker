@@ -5,10 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -23,13 +20,10 @@ import com.lqr.emoji.EmotionKeyboard;
 import com.lqr.emoji.EmotionLayout;
 import com.lqr.emoji.IEmotionExtClickListener;
 import com.lqr.emoji.IEmotionSelectedListener;
-import com.lqr.emoji.LQREmotionKit;
-import com.lqr.emoji.MoonUtils;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.util.PreferenceUtil;
-import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
@@ -38,7 +32,6 @@ import com.ssim.android.constant.SSMessageFormat;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.listener.SSMessageSendListener;
-import com.ssim.android.model.chat.SSLocation;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
 
@@ -91,7 +84,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
     protected void initView() {
         super.initView();
 
-        mContactChatImg = (CircleImageView) findViewById(R.id.contact_chat_img);
+        mContactChatImg = (CircleImageView) findViewById(R.id.my_round_head);
         mSendMsg = (ImageButton) findViewById(R.id.chat_send_msg);
         mTitleBar = (TitleBarView) findViewById(R.id.title_bar);
         mChatMsgList = (WSRecyclerView) findViewById(R.id.recyle_content);
