@@ -113,7 +113,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
                      content = friendNotificationList.get(i).getContent();
 
                     List<GroupMemberBean> userInfoList = mDao.query(WhereInfo.get().equal("userId", sourceId));
-//                    Log.e("onMainThread", "data+" + userInfoList);
+                    Log.e("onMainThread", "data+" + userInfoList);
                     mSSFriendNotification = new SSFriendNotification();
                     if (userInfoList.isEmpty()) {
                         /*其次从网络获取数据*/
@@ -138,7 +138,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
      * 通过好友Id获取好友信息
      */
     private void httpIdQueryList() {
-        Log.e("httpIdQueryList", "*******"+content);
+        Log.e("httpIdQueryList", "sourceId:"+sourceId+"==content:"+content);
         SSIMFrendManger.idQueryUserInfo(mContext, token, sourceId, new ResponseCallBack<BaseResponse<QueryUserInfoBean>>() {
             @Override
             public void onSuccess(BaseResponse<QueryUserInfoBean> queryUserInfoBeanBaseResponse) {
@@ -157,7 +157,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         });
 
         if (queryUserInfoBean != null){
-//            Log.e("queryUserInfoBean",queryUserInfoBean.getNickName());
+            Log.e("queryUserInfoBean",queryUserInfoBean.toString());
             mSSFriendNotification.setContent(content);
             mSSFriendNotification.setSourceAvatar(queryUserInfoBean.getAvatar());
             mSSFriendNotification.setSourceName(queryUserInfoBean.getNickName());
