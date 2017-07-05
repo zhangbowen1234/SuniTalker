@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lqr.emoji.MoonUtils;
 import com.silver.chat.R;
 import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.GlideUtil;
@@ -121,14 +122,13 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
         if (userId.equals(item.getSourceId())) { //发送
             leftLayout.setVisibility(View.INVISIBLE);
             rightLayout.setVisibility(View.VISIBLE);
-            rightMessageView.setText(item.getContent());
+            MoonUtils.identifyFaceExpression(mContext,rightMessageView,item.getContent(), 0b1);
             GlideUtil.loadAvatar(rightPhotoView, PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, ""));
         } else { //接收
             leftLayout.setVisibility(View.VISIBLE);
             rightLayout.setVisibility(View.INVISIBLE);
-            leftMessageView.setText(item.getContent());
+            MoonUtils.identifyFaceExpression(mContext,leftMessageView,item.getContent(), 0b1);
             GlideUtil.loadAvatar(leftPhotoView, mAvatar);
-//            Log.d(TAG, "convert2: "+mAvatar);
         }
     }
 
