@@ -301,6 +301,7 @@ public class GroupDetailActivity extends BaseActivity {
                 startActivity(intent1);
                 break;
             case R.id.iv_conversation:
+                Log.e(TAG, "aaaaaaaaaaaaaaa" );
                 Intent intent4 = new Intent(this, GroupChatActivity.class);
                 intent4.putExtra("groupName",groupName);
                 intent4.putExtra("groupId",groupId+"");
