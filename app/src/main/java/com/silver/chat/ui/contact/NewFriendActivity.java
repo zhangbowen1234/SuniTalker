@@ -54,7 +54,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     private List<SSFriendNotification> mUserList;
     private NewFriendAdapter addFriendAdatpter;
     private BaseDao<GroupMemberBean> mDao;
-    private String sourceId ,content;
+    private String sourceId, content;
     private SSFriendNotification mSSFriendNotification;
     private QueryUserInfoBean queryUserInfoBean;
 
@@ -91,7 +91,9 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         /**
          * SDK中取得好友添加申请通知列表
          */
-        friendNotificationList = SSEngine.getInstance().getFriendNotificationList();
+        if (SSEngine.getInstance().getFriendNotificationList() != null)
+            friendNotificationList = SSEngine.getInstance().getFriendNotificationList();
+
         /*查询数据库*/
         QueryDbParent();
         if (addFriendAdatpter == null) {
@@ -110,7 +112,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
             public void run() {
                 for (int i = 0; i < friendNotificationList.size(); i++) {
                     sourceId = friendNotificationList.get(i).getSourceId();
-                     content = friendNotificationList.get(i).getContent();
+                    content = friendNotificationList.get(i).getContent();
 
                     List<GroupMemberBean> userInfoList = mDao.query(WhereInfo.get().equal("userId", sourceId));
                     Log.e("onMainThread", "data+" + userInfoList);
@@ -138,7 +140,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
      * 通过好友Id获取好友信息
      */
     private void httpIdQueryList() {
-        Log.e("httpIdQueryList", "sourceId:"+sourceId+"==content:"+content);
+        Log.e("httpIdQueryList", "sourceId:" + sourceId + "==content:" + content);
         SSIMFrendManger.idQueryUserInfo(mContext, token, sourceId, new ResponseCallBack<BaseResponse<QueryUserInfoBean>>() {
             @Override
             public void onSuccess(BaseResponse<QueryUserInfoBean> queryUserInfoBeanBaseResponse) {
@@ -156,8 +158,8 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
             }
         });
 
-        if (queryUserInfoBean != null){
-            Log.e("queryUserInfoBean",queryUserInfoBean.toString());
+        if (queryUserInfoBean != null) {
+            Log.e("queryUserInfoBean", queryUserInfoBean.toString());
             mSSFriendNotification.setContent(content);
             mSSFriendNotification.setSourceAvatar(queryUserInfoBean.getAvatar());
             mSSFriendNotification.setSourceName(queryUserInfoBean.getNickName());

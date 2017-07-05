@@ -63,7 +63,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     /**
      * 联系人集合
      */
-    public static List<ContactListBean> mContactList;
+    public List<ContactListBean> mContactList;
     /**
      * 排序后的联系人集合
      */
@@ -208,7 +208,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     public void httpContactList() {
         String token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
         String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
-        SSIMFrendManger.contactList(getContext(), Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
+        SSIMFrendManger.allContactList(getContext(), Common.version, userId, token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
             @Override
             public void onSuccess(final BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
 //                ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
@@ -247,7 +247,8 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                         /*删除原始文件*/
                         mDao.delete(query);
                         /*保存新数据*/
-                        mDao.create(mConList);
+                        if (mConList != null)
+                            mDao.create(mConList);
                         Log.e("mDao.asTk_run", "===================");
                         return getSortData();
                     }
@@ -331,4 +332,13 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     @Override
     protected void getData() {
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("ContactFragment_onResume", "++++++++");
+        httpContactList();
+    }
+
+
 }

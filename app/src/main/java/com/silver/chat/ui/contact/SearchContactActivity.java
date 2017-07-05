@@ -6,11 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import com.silver.chat.R;
 import com.silver.chat.adapter.SearchContactAdapter;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.view.SearchLayout;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 作者：hibon on 2016/11/28 18:16
@@ -42,8 +38,8 @@ public class SearchContactActivity extends BaseActivity implements SearchLayout.
     @Override
     protected void initData() {
         super.initData();
-        mAdapter = new SearchContactAdapter(mContext, ContactFragment.mContactList);
-        mRecycleContent.setAdapter(mAdapter);
+//        mAdapter = new SearchContactAdapter(this, ContactFragment.mContactList);
+//        mRecycleContent.setAdapter(mAdapter);
     }
 
     @Override

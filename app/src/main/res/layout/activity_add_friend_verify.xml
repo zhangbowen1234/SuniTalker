@@ -104,9 +104,7 @@
             android:maxLength="20"
             android:paddingLeft="@dimen/dp_20"
             android:textColorHint="@color/txt_font_one_color"
-            android:inputType="text|textMultiLine"
-            android:cursorVisible="true"
-            android:textCursorDrawable="@color/white"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:textColor="@color/white"
             android:textSize="@dimen/font_15" />
 
