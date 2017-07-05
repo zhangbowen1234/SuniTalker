@@ -139,6 +139,28 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
          /*给RecyclerView列表设置适配器*/
         mChatMsgList.setAdapter(chatMessageAdapter);
         chatMessageAdapter.addHeaderView(mChatMsgList.getRefreshView());
+         /*刷新聊天记录*/
+        if (p2PMessageList == null || p2PMessageList.size() == 0) {
+            mChatMsgList.refreshComplete();
+        } else {
+            mChatMsgList.setOnRefreshCompleteListener(new WSRecyclerView.OnRefreshCompleteListener() {
+                @Override
+                public void onRefreshComplete() {
+                    mMyHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            SSP2PMessage ssp2PMessage = p2PMessageList.get((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1));
+                            long messageTime = ssp2PMessage.getMessageTime();
+                            Log.e("aa", ssp2PMessage.getSourceId() + "/" + ssp2PMessage.getContent());
+                            List<SSP2PMessage> p2PMsgList = SSEngine.getInstance().getP2PMessageList(userId, friendId, messageTime, 10);
+                            p2PMessageList.addAll((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1), p2PMsgList);
+                            chatMessageAdapter.notifyDataSetChanged();
+                            mChatMsgList.refreshComplete();
+                        }
+                    }, 2000);
+                }
+            });
+        }
     }
 
     @Override
@@ -184,29 +206,6 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                 return false;
             }
         });
-
-        /*刷新聊天记录*/
-        if (p2PMessageList == null || p2PMessageList.size() == 0) {
-            mChatMsgList.refreshComplete();
-        } else {
-            mChatMsgList.setOnRefreshCompleteListener(new WSRecyclerView.OnRefreshCompleteListener() {
-                @Override
-                public void onRefreshComplete() {
-                    mMyHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            SSP2PMessage ssp2PMessage = p2PMessageList.get((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1));
-                            long messageTime = ssp2PMessage.getMessageTime();
-                            Log.e("aa", ssp2PMessage.getSourceId() + "/" + ssp2PMessage.getContent());
-                            List<SSP2PMessage> p2PMsgList = SSEngine.getInstance().getP2PMessageList(userId, friendId, messageTime, 10);
-                            p2PMessageList.addAll((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1), p2PMsgList);
-                            mChatMsgList.refreshComplete();
-                            chatMessageAdapter.notifyDataSetChanged();
-                        }
-                    }, 2000);
-                }
-            });
-        }
     }
 
     @Override
