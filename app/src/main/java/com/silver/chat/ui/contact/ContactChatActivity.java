@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 import com.lqr.emoji.EmotionKeyboard;
 import com.lqr.emoji.EmotionLayout;
 import com.lqr.emoji.IEmotionExtClickListener;
@@ -23,6 +25,7 @@ import com.lqr.emoji.IEmotionSelectedListener;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
@@ -63,6 +66,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
     private String editcontent, contactName;
     private String userAvatar;
     private SSP2PMessage receiveMsg = null;
+    private boolean mIsFirst = false;
 
     @Override
     protected int getLayoutId() {
@@ -72,7 +76,11 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
     @Override
     protected void onResume() {
         super.onResume();
-        inputEdit.clearFocus();
+        if (!mIsFirst) {
+            inputEdit.clearFocus();
+        } else {
+            mIsFirst = false;
+        }
     }
 
     @Override
@@ -131,6 +139,28 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
          /*给RecyclerView列表设置适配器*/
         mChatMsgList.setAdapter(chatMessageAdapter);
         chatMessageAdapter.addHeaderView(mChatMsgList.getRefreshView());
+         /*刷新聊天记录*/
+        if (p2PMessageList == null || p2PMessageList.size() == 0) {
+            mChatMsgList.refreshComplete();
+        } else {
+            mChatMsgList.setOnRefreshCompleteListener(new WSRecyclerView.OnRefreshCompleteListener() {
+                @Override
+                public void onRefreshComplete() {
+                    mMyHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            SSP2PMessage ssp2PMessage = p2PMessageList.get((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1));
+                            long messageTime = ssp2PMessage.getMessageTime();
+                            Log.e("aa", ssp2PMessage.getSourceId() + "/" + ssp2PMessage.getContent());
+                            List<SSP2PMessage> p2PMsgList = SSEngine.getInstance().getP2PMessageList(userId, friendId, messageTime, 10);
+                            p2PMessageList.addAll((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1), p2PMsgList);
+                            chatMessageAdapter.notifyDataSetChanged();
+                            mChatMsgList.refreshComplete();
+                        }
+                    }, 1500);
+                }
+            });
+        }
     }
 
     @Override
@@ -176,29 +206,6 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                 return false;
             }
         });
-
-        /*刷新聊天记录*/
-        if (p2PMessageList == null || p2PMessageList.size() == 0) {
-            mChatMsgList.refreshComplete();
-        } else {
-            mChatMsgList.setOnRefreshCompleteListener(new WSRecyclerView.OnRefreshCompleteListener() {
-                @Override
-                public void onRefreshComplete() {
-                    mMyHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            SSP2PMessage ssp2PMessage = p2PMessageList.get((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1));
-                            long messageTime = ssp2PMessage.getMessageTime();
-                            Log.e("aa", ssp2PMessage.getSourceId() + "/" + ssp2PMessage.getContent());
-                            List<SSP2PMessage> p2PMsgList = SSEngine.getInstance().getP2PMessageList(userId, friendId, messageTime, 10);
-                            p2PMessageList.addAll((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1), p2PMsgList);
-                            mChatMsgList.refreshComplete();
-                            chatMessageAdapter.notifyDataSetChanged();
-                        }
-                    }, 2000);
-                }
-            });
-        }
     }
 
     @Override
@@ -228,15 +235,6 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                     });
                 }
                 break;
-//            case R.id.chat_btn_emote:
-//                inputEdit.clearFocus();
-//                if (!mElEmotion.isShown()) {
-//                    showEmotionLayout();
-//
-//                } else if (mElEmotion.isShown()) {
-//                    hideEmotionLayout();
-//                }
-//                break;
             case R.id.title_left_back:
                 finish();
                 break;
@@ -255,12 +253,8 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                 switch (view.getId()) {
                     case R.id.chat_btn_emote:
                         if (!mElEmotion.isShown()) {
-
                             showEmotionLayout();
-                            Log.e(TAG, mElEmotion.isShown() + "");
                         } else if (mElEmotion.isShown()) {
-//                            hideEmotionLayout();
-                            Log.e(TAG, mElEmotion.isShown() + "1");
                             mEmoteBtn.setImageResource(R.drawable.ic_chat_emote);
                         }
                         break;

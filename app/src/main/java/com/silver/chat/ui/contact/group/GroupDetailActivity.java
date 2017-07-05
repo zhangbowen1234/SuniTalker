@@ -77,7 +77,6 @@ public class GroupDetailActivity extends BaseActivity {
     ViewPager viewpager;
     @BindView(R.id.iv_arrow_bottom)
     ImageView ivArrowBottom;
-    public int privilege;
     @BindView(R.id.iv_conversation)
     ImageView ivConversation;
     @BindView(R.id.iv_qrcode)
@@ -86,6 +85,7 @@ public class GroupDetailActivity extends BaseActivity {
     RelativeLayout rlGroupMem;
     @BindView(R.id.rv_group_memeber)
     RecyclerView rvGroupMemeber;
+    public int privilege;
 
     private List<String> lists;
     private GroupLeftFragment groupLeftFragment;
@@ -301,6 +301,7 @@ public class GroupDetailActivity extends BaseActivity {
                 startActivity(intent1);
                 break;
             case R.id.iv_conversation:
+                Log.e(TAG, "aaaaaaaaaaaaaaa" );
                 Intent intent4 = new Intent(this, GroupChatActivity.class);
                 intent4.putExtra("groupName",groupName);
                 intent4.putExtra("groupId",groupId+"");

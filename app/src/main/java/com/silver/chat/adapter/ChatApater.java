@@ -2,8 +2,11 @@ package com.silver.chat.adapter;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.lqr.emoji.MoonUtils;
 import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.database.dao.BaseDao;
@@ -28,6 +31,7 @@ import com.ssim.android.model.session.SSSession;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.id;
 import static com.j256.ormlite.field.DataPersisterManager.clear;
 import static java.util.Collections.addAll;
 
@@ -60,14 +64,16 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 GlideUtil.loadAvatar((ImageView) holder.getView(R.id.iv_avatar), item.getAvatar());
                 holder.setText(R.id.tv_name, item.getUserName());
                 holder.setText(R.id.tv_time, item.getSendTime());
-                getSsInformation(holder, R.id.tv_content, item);
+                TextView content = (TextView) holder.convertView.findViewById(R.id.tv_content);
+                getSsInformation(holder, content, item);
                 Log.e("avatar:", item.getContent() + item.getUserName()+item.getSendTime());
                 break;
             case ChatBean.CHAT_GROUP:
                 GlideUtil.loadAvatar((ImageView) holder.getView(R.id.iv_group_avatar), item.getGroupAvatar());
                 holder.setText(R.id.tv_group_name ,item.getGroupName());
                 holder.setText(R.id.tv_group_time, item.getSendTime());
-                getSsInformation(holder, R.id.tv_group_content, item);
+                TextView content1 = (TextView) holder.convertView.findViewById(R.id.tv_content);
+                getSsInformation(holder, content1, item);
                 Log.e("CHAT_GROUP:", item.getGroupAvatar() + item.getGroupName()+item.getContent());
                 break;
             case ChatBean.CHAT_SYSTEM:
@@ -166,21 +172,21 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
      * @param holder
      * @param item
      */
-    private void getSsInformation(BaseViewHolder holder, int id, ChatBean item){
+    private void getSsInformation(BaseViewHolder holder, View view, ChatBean item){
         if (item.getContentType() == SSMessageFormat.TEXT){
-            holder.setText(id,item.getContent());
+            MoonUtils.identifyFaceExpression(mContext, view,item.getContent(), 0b1);
         }else if (item.getContentType() == SSMessageFormat.LOCATION){
-            holder.setText(id, mContext.getResources().getString(R.string.location) );
+            holder.setText(view.getId(), mContext.getResources().getString(R.string.location) );
         }else if (item.getContentType() == SSMessageFormat.IMAGE){
-            holder.setText(id, mContext.getResources().getString(R.string.picture) );
+            holder.setText(view.getId(), mContext.getResources().getString(R.string.picture) );
         }else if (item.getContentType() == SSMessageFormat.AUDIO){
-            holder.setText(id, mContext.getResources().getString(R.string.voice) );
+            holder.setText(view.getId(), mContext.getResources().getString(R.string.voice) );
         }else if (item.getContentType() == SSMessageFormat.FILES){
             String fileMessage = item.getContent();
             if (MediaFileUtils.isImageFileType(fileMessage)){
-                holder.setText(id, mContext.getResources().getString(R.string.sticker) );
+                holder.setText(view.getId(), mContext.getResources().getString(R.string.sticker) );
             }else if (MediaFileUtils.isVideoFileType(fileMessage)){
-                holder.setText(id, mContext.getResources().getString(R.string.video) );                    }
+                holder.setText(view.getId(), mContext.getResources().getString(R.string.video) );                    }
         }
     }
 }
