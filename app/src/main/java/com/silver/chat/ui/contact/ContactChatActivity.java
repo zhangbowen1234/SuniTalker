@@ -157,7 +157,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                             chatMessageAdapter.notifyDataSetChanged();
                             mChatMsgList.refreshComplete();
                         }
-                    }, 2000);
+                    }, 1500);
                 }
             });
         }

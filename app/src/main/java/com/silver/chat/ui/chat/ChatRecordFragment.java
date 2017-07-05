@@ -153,19 +153,25 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
                 return false;
             }
         });
-        mRecycleContent.setOnRefreshCompleteListener(new WSRecyclerView.OnRefreshCompleteListener() {
-            @Override
-            public void onRefreshComplete() {
-                mMyHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mChatApater.setData(mList);
-                        mRecycleContent.refreshComplete();
-                    }
-                }, 2000);
-            }
-        });
-
+        /*刷新会话列表*/
+        if (mList == null && mList.size() == 0){
+            mRecycleContent.refreshComplete();
+        }else {
+            mRecycleContent.setOnRefreshCompleteListener(new WSRecyclerView.OnRefreshCompleteListener() {
+                @Override
+                public void onRefreshComplete() {
+                    mMyHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mList.clear();
+                            mList.addAll(ChatApater.getChatData(mActivity));
+                            mChatApater.notifyDataSetChanged();
+                            mRecycleContent.refreshComplete();
+                        }
+                    }, 1500);
+                }
+            });
+        }
     }
 
     public void refreshView() {
