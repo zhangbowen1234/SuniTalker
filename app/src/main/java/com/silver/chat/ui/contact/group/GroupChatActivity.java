@@ -2,6 +2,7 @@ package com.silver.chat.ui.contact.group;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -51,7 +52,6 @@ import butterknife.OnClick;
  * Created by Joe on 2017/6/1.
  */
 public class GroupChatActivity extends BaseActivity {
-    private static final int REQUEST_CODE = 201;
     @BindView(R.id.title_bar)
     TitleBarView titleBar;
     @BindView(R.id.round_three)
@@ -80,12 +80,14 @@ public class GroupChatActivity extends BaseActivity {
     TextView chatInputHalving;
     @BindView(R.id.elEmotion)
     EmotionLayout elEmotion;
-    @BindView(R.id.chatLayoutMsg)
+    @BindView(R.id.chatLayoutMsg1)
     LinearLayout chatLayoutMsg;
     @BindView(R.id.rl_recyle_content)
     RelativeLayout rlRecyleContent;
     @BindView(R.id.title_left_back)
     ImageView ivLeft;
+    @BindView(R.id.iv_location1)
+    ImageView ivLocation;
     //private SSGroupMessage ssGroupMessage;
     private EmotionKeyboard mEmotionKeyboard;
     private String userId;
@@ -97,10 +99,12 @@ public class GroupChatActivity extends BaseActivity {
     private List<GroupMessageBean> groupMesList;
     private GroupChatAdapter groupChatAdapter;
     private GroupMessageBean groupMessageBean;
+    private static final int REQUEST_CODE = 201;
+
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_contact_chat;
+        return R.layout.activity_contact_chat2;
     }
 
     @Override
@@ -162,7 +166,7 @@ public class GroupChatActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.chat_btn_emote, R.id.chat_edit_input, R.id.chat_send_msg, R.id.chatInputHalving, R.id.elEmotion, R.id.chatLayoutMsg, R.id.rl_recyle_content, R.id.iv_location})
+    @OnClick({R.id.chat_btn_emote, R.id.chat_edit_input, R.id.chat_send_msg, R.id.chatInputHalving, R.id.elEmotion, R.id.chatLayoutMsg1, R.id.rl_recyle_content, R.id.iv_location1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.chat_btn_emote:
@@ -212,9 +216,9 @@ public class GroupChatActivity extends BaseActivity {
                 break;
             case R.id.elEmotion:
                 break;
-            case R.id.chatLayoutMsg:
+            case R.id.chatLayoutMsg1:
                 break;
-            case R.id.iv_location:
+            case R.id.iv_location1:
                 Intent intent = new Intent(GroupChatActivity.this, MyLocationActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
                 break;
