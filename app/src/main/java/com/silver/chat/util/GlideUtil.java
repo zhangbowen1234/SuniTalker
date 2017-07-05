@@ -6,6 +6,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.silver.chat.R;
 
+import static com.silver.chat.AppContext.appContext;
+
 /**
  * Glide图片加载
  */
@@ -18,7 +20,7 @@ public class GlideUtil {
      * @param url
      */
     public static void loadAvatar(ImageView v, String url) {
-        Glide.with(v.getContext())
+        Glide.with(appContext)
                 .load(url)
                 .asBitmap()
                 .dontAnimate()
