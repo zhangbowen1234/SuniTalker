@@ -27,6 +27,7 @@ import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
@@ -53,7 +54,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
     private RelativeLayout mShowHead;
     private ChatMessageAdapter chatMessageAdapter;
     private ViewPager mFaceViewPager;
-    private LinearLayout mRoot, mLlContent;
+    private LinearLayout mLlContent;
     private String friendId, userId, chatType;
     private ImageView mBack, ivLocation;
     private EmotionLayout mElEmotion;
@@ -226,13 +227,20 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                     mShowHead.setVisibility(View.INVISIBLE);
                     mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
 
-                    SSEngine.getInstance().sendMessageToTargetId(this.friendId, SSMessageFormat.TEXT, editcontent);
-                    SSEngine.getInstance().setMsgSendListener(new SSMessageSendListener() {
-                        @Override
-                        public void didSend(boolean b, long l) {
-                            Log.e(TAG, "didSend" + "boolean:" + b + ";long:" + l);
-                        }
-                    });
+                    SSEngine instance = SSEngine.getInstance();
+                    boolean isSend = instance.sendMessageToGroupId(this.friendId, SSMessageFormat.TEXT, editcontent);
+                    if (isSend) {
+                        instance.setMsgSendListener(new SSMessageSendListener() {
+                            @Override
+                            public void didSend(boolean b, long l) {
+                                if (!b) {
+                                    ToastUtil.toastMessage(mContext, "服务器忙");
+                                }
+                            }
+                        });
+                    } else {
+                        ToastUtil.toastMessage(mContext, "消息发送失败");
+                    }
                 }
                 break;
             case R.id.title_left_back:

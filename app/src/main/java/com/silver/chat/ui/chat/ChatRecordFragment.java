@@ -63,6 +63,15 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mList.clear();
+        mList.addAll(ChatApater.getChatData(mActivity));
+        mChatApater.notifyDataSetChanged();
+        mRecycleContent.refreshComplete();
+    }
+
+    @Override
     protected void initView(View view) {
         super.initView(view);
         mMyHandler = new MyHandler(this);

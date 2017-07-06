@@ -1,20 +1,7 @@
 package com.silver.chat.util;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.util.TypedValue;
-import android.widget.Toast;
-
-import com.silver.chat.AppContext;
-import com.silver.chat.base.BaseApp;
-
-import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
-import static com.silver.chat.base.BaseApp.getMainThreadId;
 
 /**
  * Created by hibon on 2017/5/8.
