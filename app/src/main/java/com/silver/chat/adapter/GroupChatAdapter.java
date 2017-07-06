@@ -62,6 +62,7 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
         ImageView leftPhotoView;
         ImageView rightPhotoView;
         BubbleImageView leftSendImg;
+        BubbleImageView rightSendImg;
         leftLayout = holper.getView(R.id.chat_friend_left_layout);
         rightLayout = holper.getView(R.id.chat_user_right_layout);
         timeView = holper.getView(R.id.message_time);
@@ -70,6 +71,7 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
         leftMessageView = holper.getView(R.id.friend_message);
         rightMessageView = holper.getView(R.id.user_message);
         leftSendImg = holper.getView(R.id.friend_message_img);
+        rightSendImg = holper.getView(R.id.user_message_img);
 
         long timestamp = System.currentTimeMillis();
         /*当前年份*/
@@ -122,7 +124,7 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
                     MoonUtils.identifyFaceExpression(mContext,rightMessageView,item.getContent(), 0b1);
                     break;
                 case IMAGE:
-
+                    GlideUtil.loadLuesuotu(rightSendImg, item.getContent());
                     break;
             }
         } else { //接收

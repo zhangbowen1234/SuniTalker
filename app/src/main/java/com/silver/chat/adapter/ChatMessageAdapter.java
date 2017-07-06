@@ -1,6 +1,5 @@
 package com.silver.chat.adapter;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,6 +13,9 @@ import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
 import com.ssim.android.model.chat.SSP2PMessage;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
