@@ -40,7 +40,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
     //请求体常量
     private final String INNERAPP = "innerapp";
     //用户输入的验证信息
-    private String verifyMsg;
+    private String verifyMsg,mNime;
 
     @Override
     protected int getLayoutId() {
@@ -79,6 +79,9 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
             mNickName.setText(nickName + "");
             mTitle.setText("添加群组验证");
         }
+        mNime = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
+        mMsgVerify.setHint("我是"+mNime);
+
         personAvatar = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
         userName = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
         token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
@@ -149,7 +152,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                         sendAddGroup();
                     }
                 } else {
-                    verifyMsg= "123";
+                    verifyMsg= "我是"+mNime;
                     if (TextUtils.equals(action, "AddFriendActivity")) {
                     /*申请添加好友*/
                         sendAddFriend();

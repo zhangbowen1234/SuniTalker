@@ -20,8 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 作者：Fandy on 2016/11/22 18:05
- * 邮箱：fandy618@hotmail.com
+ * 作者：hibon on 2016/11/22 18:05
  * 聊天记录搜索界面
  */
 

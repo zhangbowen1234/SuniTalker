@@ -5,8 +5,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,15 +27,11 @@ import com.silver.chat.util.NetUtils;
 import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
-import com.silver.chat.util.StringUtils;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
 import com.ssim.android.listener.SSConnectListener;
 
 import java.util.UUID;
-
-import static android.R.attr.editable;
-import static com.amap.api.mapcore.util.cx.m;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectListener {
 
@@ -189,6 +183,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
      * 登录入口
      */
     private void goLogin() {
+        showDialog("正在登录");
         if (NetUtils.isConnected(this)) {
             SSIMLoginManger.goLogin(mContext, Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
                 @Override
@@ -206,7 +201,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     PreferenceUtil.getInstance(LoginActivity.this).setLog(true);
                     PreferenceUtil.getInstance(mContext).setString("phone", uPhone);
                     PreferenceUtil.getInstance(mContext).setString("pwd", uPwd);
-                    Log.e("登录得到toKen", loginRequestBeanBaseResponse.data.getToken());
+//                    Log.e("登录得到toKen", loginRequestBeanBaseResponse.data.getToken());
                     Message logMsg = new Message();
                     logMsg.what = 0;
                     logMsg.obj = loginRequestBeanBaseResponse.getStatusMsg();
@@ -215,15 +210,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                 @Override
                 public void onFailed(BaseResponse<LoginRequestBean> loginRequestBaseResponse) {
+                    disDialog();
                     ToastUtils.showMessage(mContext, loginRequestBaseResponse.getStatusMsg());
                 }
 
                 @Override
                 public void onError() {
+                    disDialog();
                     ToastUtils.showMessage(mContext, "连接异常");
                 }
             });
         } else {
+            disDialog();
             ToastUtils.showMessage(this, "请检查网络!");
         }
 
@@ -234,8 +232,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0: //跳转启动主页
+                    disDialog();
                     getUserInfo();
-                    Log.d("AAAA", msg.obj + "");
+//                    Log.d("AAAA", msg.obj + "");
                     ssConnect();
                     PreferenceUtil.getInstance(LoginActivity.this).setLog(true);
                     startActivity(MainActivity.class);
@@ -272,8 +271,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                         SSIMLoginManger.getUserInfo(mContext, Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
                             @Override
                             public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
-//                        ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
-                                Log.e("getUserInfo", userInfoBeanBaseResponse.getStatusMsg());
+                                Log.e("Login_getUserInfo", userInfoBeanBaseResponse.getStatusMsg());
                                 /**
                                  * 保存用户信息
                                  */
@@ -294,7 +292,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                             @Override
                             public void onError() {
-                                ToastUtils.showMessage(mContext, "连接失败");
+                                ToastUtils.showMessage(mContext, "连接异常");
                             }
                         });
                     }

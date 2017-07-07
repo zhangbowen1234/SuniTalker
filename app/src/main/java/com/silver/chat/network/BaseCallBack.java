@@ -27,9 +27,7 @@ public class BaseCallBack {
         baseResponseCall.enqueue(new Callback<BaseResponse<T>>() {
             @Override
             public void onResponse(Call<BaseResponse<T>> call, Response<BaseResponse<T>> response) {
-                Log.e("BaseCallBack", response.body() + "");
-                Log.e("BaseCallBack", response.body().data + "");
-
+//                Log.e("BaseCallBack", response.body().getStatusMsg() + "");
                 if (response.body().getStatusCode() == 200) {
                     callBack.onSuccess(response.body());
                 } else if (response.body().getStatusCode() == 300) {

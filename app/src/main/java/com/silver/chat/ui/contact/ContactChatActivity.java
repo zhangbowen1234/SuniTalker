@@ -16,8 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.Util;
 import com.lqr.emoji.EmotionKeyboard;
 import com.lqr.emoji.EmotionLayout;
 import com.lqr.emoji.IEmotionExtClickListener;
@@ -25,7 +23,6 @@ import com.lqr.emoji.IEmotionSelectedListener;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
@@ -42,7 +39,10 @@ import com.ssim.android.model.chat.SSP2PMessage;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-
+/**
+ * 聊天界面
+ * Created by hibon on 2017
+ */
 public class ContactChatActivity extends BaseActivity implements IEmotionSelectedListener, View.OnClickListener, SSMessageReceiveListener {
 
     private static final int REQUEST_CODE = 200;
@@ -129,7 +129,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
          * 私人聊天列表
          */
         p2PMessageList = SSEngine.getInstance().getP2PMessageList(userId, friendId, -1, 10);
-
+        Log.e("p2PMessageList",p2PMessageList.toString());
         chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList, userAvatar);
         if (p2PMessageList.size() != 0) {
             mShowHead.setVisibility(View.INVISIBLE);
@@ -235,6 +235,8 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                             public void didSend(boolean b, long l) {
                                 if (!b) {
                                     ToastUtil.toastMessage(mContext, "服务器忙");
+                                }else {
+                                    Log.e("didSend",b+"");
                                 }
                             }
                         });
@@ -313,6 +315,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
     public void receiveMsg(SSMessage ssMessage) {
         if (ssMessage instanceof SSP2PMessage) {
             receiveMsg = (SSP2PMessage) ssMessage;
+            Log.e("receiveMsg",receiveMsg.getContent());
             String sourceId = receiveMsg.getSourceId();
             if (sourceId.equals(friendId) || sourceId == friendId) {
                 Log.e(TAG, receiveMsg.getContent());

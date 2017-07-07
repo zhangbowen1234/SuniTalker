@@ -31,6 +31,10 @@ import com.silver.chat.util.PinyinComparator;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.util.UIUtils;
+import com.ssim.android.engine.SSEngine;
+import com.ssim.android.listener.SSNotificationListener;
+import com.ssim.android.model.notification.SSFriendNotification;
+import com.ssim.android.model.notification.SSNotification;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,18 +45,12 @@ import java.util.List;
  * 联系人
  */
 
-public class ContactFragment extends BasePagerFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
-    /**
-     * 静止没有滚动
-     */
+public class ContactFragment extends BasePagerFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, SSNotificationListener {
+    /* 静止没有滚动*/
     public static final int SCROLL_STATE_IDLE = 0;
-    /**
-     * 正在被外部拖拽,一般为用户正在用手指滚动
-     */
+    /*正在被外部拖拽,一般为用户正在用手指滚动*/
     public static final int SCROLL_STATE_DRAGGING = 1;
-    /**
-     * 自动滚动
-     */
+    /*自动滚动*/
     public static final int SCROLL_STATE_SETTLING = 2;
     private static final String ISALLCONTACT = "isAllContact";
 
@@ -60,27 +58,16 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     private RecyclerView mRecycleContent, mHorizontalRecycleContent;
     private SwipeRefreshLayout mRefreshLayout;
     private RelativeLayout mToolbar;
-    /**
-     * 联系人集合
-     */
-    public static List<ContactListBean> mContactList;
-    /**
-     * 排序后的联系人集合
-     */
+    /*联系人集合*/
+    public List<ContactListBean> mContactList;
+    /*排序后的联系人集合*/
     private List<ContactListBean> mConList;
     private ContactListAdapter contactListAdapter;
-
-    /**
-     * 汉字转换成拼音的类
-     */
+    /*汉字转换成拼音的类*/
     private CharacterParser characterParser;
-    /**
-     * 根据拼音来排列ListView里面的数据类
-     */
+    /*根据拼音来排列ListView里面的数据类*/
     private PinyinComparator pinyinComparator;
-    /**
-     * 是否获取全部联系人
-     */
+    /*是否获取全部联系人*/
     private boolean isAllContact;
     private GestureDetector mGestureDetector;
     private LinearLayoutManager linearLayoutManager;
@@ -96,6 +83,22 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         return fragment;
     }
 
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    /*根据a-z进行排序源数据*/
+                    Collections.sort(mContactList, pinyinComparator);
+                    /*联系人列表的adapter*/
+                    contactListAdapter = new ContactListAdapter(mActivity, mContactList);
+                    mRecycleContent.setAdapter(contactListAdapter);
+                    contactListAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void initView(View view) {
         super.initView(view);
@@ -107,7 +110,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         linearLayoutManager = new LinearLayoutManager(mActivity);
         /*设置布局管理器*/
         mRecycleContent.setLayoutManager(linearLayoutManager);
-        String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
         mDao = DBHelper.get().dao(ContactListBean.class);
         /*实例化汉字转拼音类*/
         characterParser = CharacterParser.getInstance();
@@ -150,32 +152,32 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
     }
 
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 0:
-                    /*根据a-z进行排序源数据*/
-                    Collections.sort(mContactList, pinyinComparator);
-                    /*联系人列表的adapter*/
-                    contactListAdapter = new ContactListAdapter(mActivity, mContactList);
-                    mRecycleContent.setAdapter(contactListAdapter);
-                    contactListAdapter.notifyDataSetChanged();
-                    break;
-            }
-        }
-    };
 
     @Override
     protected void initData() {
         super.initData();
-        /**
-         * 联网获取联系人
-         */
-        /*请求所有文件目录数据*/
-//        httpContactList();
-        /*优先从数据库中读取数据*/
+        /*优先从数据库中获取联系人*/
         QueryDbParent();
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        /**
+         * 刷新页面监听
+         */
+//        mRefreshLayout.setOnRefreshListener(this);
+        /*收到消息监听*/
+        SSEngine.getInstance().setNotificationListener(this);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UIUtils.MoveToPosition(linearLayoutManager, 0);
+                UIUtils.MoveToPosition(new LinearLayoutManager(mActivity), mRecycleContent, 0);
+                fab.hide();
+
+            }
+        });
     }
 
     /**
@@ -209,13 +211,11 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         String token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
         String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
         SSIMFrendManger.contactList(getContext(), Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
+            //        SSIMFrendManger.allContactList(getContext(), Common.version, userId,token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
             @Override
             public void onSuccess(final BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
-//                ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
                 ArrayList<ContactListBean> contactData = listBaseResponse.data;
-                /**
-                 * 填充其他数据
-                 */
+                /* 填充其他数据*/
                 for (int i = 0; i < contactData.size(); i++) {
                     sortModel = new ContactListBean();
                     sortModel.setNickName(contactData.get(i).getNickName());
@@ -247,7 +247,8 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                         /*删除原始文件*/
                         mDao.delete(query);
                         /*保存新数据*/
-                        mDao.create(mConList);
+                        if (mConList != null)
+                            mDao.create(mConList);
                         Log.e("mDao.asTk_run", "===================");
                         return getSortData();
                     }
@@ -289,25 +290,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
 
     @Override
-    protected void initListener() {
-        super.initListener();
-        /**
-         * 刷新页面监听
-         */
-//        mRefreshLayout.setOnRefreshListener(this);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UIUtils.MoveToPosition(linearLayoutManager, 0);
-                UIUtils.MoveToPosition(new LinearLayoutManager(mActivity), mRecycleContent, 0);
-                fab.hide();
-
-            }
-        });
-    }
-
-    @Override
     public void onClick(View v) {
     }
 
@@ -331,4 +313,28 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     @Override
     protected void getData() {
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("ContactFragment_onResume", "++++++++");
+//        httpContactList();
+    }
+
+    @Override
+    public void receiveNotification(SSNotification ssNotification) {
+        if (ssNotification instanceof SSFriendNotification) {
+            SSFriendNotification ssFriendNotification = (SSFriendNotification) ssNotification;
+            Log.e("ContactFragment", "getAction:" + ssFriendNotification.getAction() + "getContent:" + ssFriendNotification.getContent() +
+                    "getSourceId:"+ ssFriendNotification.getSourceId()+ "getTargetId:"+ ssFriendNotification.getTargetId() + "getNotificationType:"+
+            ssFriendNotification.getNotificationType() );
+
+            List<ContactListBean> query = mDao.query(WhereInfo.get().equal("friendId",ssFriendNotification.getSourceId()));
+            //删除原始文件
+            mDao.delete(query);
+            QueryDbParent();
+        }
+    }
+
+
 }
