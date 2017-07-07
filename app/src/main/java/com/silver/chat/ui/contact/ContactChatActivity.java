@@ -228,7 +228,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                     mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
 
                     SSEngine instance = SSEngine.getInstance();
-                    boolean isSend = instance.sendMessageToGroupId(this.friendId, SSMessageFormat.TEXT, editcontent);
+                    boolean isSend = instance.sendMessageToTargetId(friendId, SSMessageFormat.TEXT, editcontent);
                     if (isSend) {
                         instance.setMsgSendListener(new SSMessageSendListener() {
                             @Override

@@ -21,18 +21,20 @@ import com.silver.chat.base.Common;
 import com.silver.chat.network.SSIMLoginManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.UpdataLoadImg;
 import com.silver.chat.network.responsebean.UpdateUserInfoBean;
 import com.silver.chat.util.GetFilesUtils;
 import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
-import com.silver.chat.util.SkinSettingManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 import static com.silver.chat.util.Utils.context;
 
@@ -68,8 +70,9 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     private String path;// 不含图片的文件目录
     private String imagePath;// 包含图片的路径
     private String imageName = "imHead.jpg";
-    private File tempFile;
+    private File tempFile;//图片位置
     private String iconUrl;//网络图片地址
+    private String token;
 
     @Override
     protected int getLayoutId() {
@@ -90,11 +93,8 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         path = GetFilesUtils.getFolderPath(mContext, Common.IMAGE_PATH);
         //文件全路径
         imagePath = path + imageName;
+        Log.d("path", "initView: "+imagePath);
 
-        tempFile = new File(path);
-        if (!(tempFile.exists())) {
-            tempFile.mkdirs();
-        }
         //显示头像
         iconUrl = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
         GlideUtil.loadAvatar(mIvAvatar, iconUrl);
@@ -114,6 +114,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         super.initData();
         spName = PreferenceUtil.getInstance(mContext).getString("nickName", "");
         spPhone = PreferenceUtil.getInstance(mContext).getString("phone", "");
+        token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         mTvName.setText(spName);
         mEdPhone.setText(spPhone);
 
@@ -285,18 +286,37 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-    private Map<String, String> headers = new HashMap<>();
-//    private Novate novate;
     /**
      * 上传头像
      */
     private void upLoad() {
+        tempFile = new File(imagePath);
+        if (!(tempFile.exists())) {
+            tempFile.mkdirs();
+        }
+        //创建RequestBody,用于封装构建RequestBody
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), tempFile);
+        // MultipartBody.Part  和后端约定好Key，这里的partName是用image
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", tempFile.getName(), requestFile);
+        SSIMLoginManger.upLoadHead(body, new ResponseCallBack<BaseResponse<UpdataLoadImg>>() {
+            @Override
+            public void onSuccess(BaseResponse baseResponse) {
+                ToastUtils.showMessage(mContext,"上传成功");
+                //替换sp中的头像地址
+                PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR,new UpdataLoadImg().getUrl());
+                mIvAvatar.setImageURI(imageUri);
+            }
 
-//        //创建RequestBody,用于封装构建RequestBody
-//        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), imagePath);
-//        // MultipartBody.Part  和后端约定好Key，这里的partName是用image
-//        MultipartBody.Part body = MultipartBody.Part.createFormData("file", imageName, requestFile);
+            @Override
+            public void onFailed(BaseResponse baseResponse) {
+                ToastUtils.showMessage(mContext,"上传失败");
+            }
 
+            @Override
+            public void onError() {
+
+            }
+        });
 //        headers.put("token",PreferenceUtil.TOKEN);
 //        novate = new Novate.Builder(this)
 //                //.addParameters(parameters)
@@ -306,17 +326,18 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
 //                .addHeader(headers)//.addApiManager(ApiManager.class)
 //                .addLog(true)
 //                .build();
-
-
     }
 
+    public static RequestBody toRequestBody(String value){
+        RequestBody body = RequestBody.create(MediaType.parse("text/plain"),value);
+        return body;
+    }
     public void getUpdateInfo() {
         nickName = mTvName.getText().toString();
         if (Objects.equals(nickName, spName) || spName.equals(nickName)) {
             //ToastUtils.showMessage(mContext,"无需重复请求");
             return;
         }
-        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
         UpdateUserInfoBean instance = UpdateUserInfoBean.getInstance();
         instance.setNickName(nickName);
         instance.setSex(2);

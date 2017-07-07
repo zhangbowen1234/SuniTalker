@@ -8,10 +8,20 @@ import com.silver.chat.network.requestbean.LoginRequest;
 import com.silver.chat.network.requestbean.RegisterRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.LoginRequestBean;
+import com.silver.chat.network.responsebean.UpdataLoadImg;
 import com.silver.chat.network.responsebean.UpdateUserInfoBean;
 import com.silver.chat.network.responsebean.UserInfoBean;
 
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.silver.chat.util.Utils.context;
 
 /**
  * Created by hibon on 2017/4/26.
@@ -133,11 +143,17 @@ public class SSIMLoginManger {
 
     }
 
-//    public static void upLoadHead(String token, MultipartBody.Part file ,
-//                                  final ResponseCallBack<BaseResponse> callBack){
-//        ApiService imApi = RetrofitHelperUpLoadHead.create().imApi;
-//        Call<BaseResponse> baseResponseCall = imApi.upLoadHead(token,file);
-//        BaseCallBack.enqueueBase(baseResponseCall,callBack);
-//    }
-
+    public static void upLoadHead(MultipartBody.Part file ,
+                                  final ResponseCallBack<BaseResponse<UpdataLoadImg>> callBack){
+        ApiService imApi = getApiRetrofit().create(ApiService.class);
+        Call<BaseResponse<UpdataLoadImg>> baseResponseCall = imApi.upLoadHead(file);
+        BaseCallBack.enqueue(context,baseResponseCall,callBack);
+    }
+    private static Retrofit getApiRetrofit(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Urls.CLOUD_SERVER)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        return retrofit;
+    }
 }
