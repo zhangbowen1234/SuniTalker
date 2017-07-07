@@ -1,14 +1,12 @@
 package com.silver.chat.adapter;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.bumptech.glide.Glide;
+import com.lqr.emoji.MoonUtils;
 import com.silver.chat.R;
 import com.silver.chat.base.Common;
 import com.silver.chat.database.helper.DBHelper;
@@ -23,18 +21,15 @@ import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
+import com.silver.chat.util.UIUtils;
+import com.silver.chat.view.BubbleImageView;
 import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
-import com.ssim.android.constant.SSMessageFormat;
-import com.ssim.android.model.chat.SSLocation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-
-import static com.ssim.android.constant.SSMessageFormat.*;
-import static com.ssim.android.constant.SSMessageFormat.LOCATION;
 
 /**
  * Created by Joe on 2017/6/13.
@@ -53,6 +48,7 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
         super(data);
         //此处多条目暂时只包含文本消息和地理位置消息
         addItemType(1, R.layout.chat_message_item);
+        addItemType(2, R.layout.chat_message_item_image);
         addItemType(8, R.layout.chat_message_item_location);
     }
 
@@ -65,6 +61,8 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
         TextView timeView;
         ImageView leftPhotoView;
         ImageView rightPhotoView;
+        BubbleImageView leftSendImg;
+        BubbleImageView rightSendImg;
         leftLayout = holper.getView(R.id.chat_friend_left_layout);
         rightLayout = holper.getView(R.id.chat_user_right_layout);
         timeView = holper.getView(R.id.message_time);
@@ -72,6 +70,8 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
         rightPhotoView = holper.getView(R.id.message_user_userphoto);
         leftMessageView = holper.getView(R.id.friend_message);
         rightMessageView = holper.getView(R.id.user_message);
+        leftSendImg = holper.getView(R.id.friend_message_img);
+        rightSendImg = holper.getView(R.id.user_message_img);
 
         long timestamp = System.currentTimeMillis();
         /*当前年份*/
@@ -93,15 +93,7 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
 
         if (year == msgYear) {
             if (monthAndDay.equals(msgMonthAndDay) || monthAndDay == msgMonthAndDay) {
-//                if (hour.equals(msgHour) || hour == msgHour){
-//                    if ( !minute.equals(msgMinute) || minute != msgMinute){
-//                        /*小时:分*/
-//                        timeView.setText(DateUtils.formatTimeSimple(item.getMessageTime()) + "");
-//                    }
-//                }else {
-                     /*小时:分*/
                 timeView.setText(DateUtils.formatTimeSimple(item.getMessageTime()) + "");
-//                }
             } else {
                 /*月:日:小时:分*/
                 timeView.setText(DateUtils.formatMonthDateMdHm(item.getMessageTime()) + "");
@@ -110,41 +102,13 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
             /*年:月:日:小时:分*/
             timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime()) + "");
         }
-//        Log.e("year+小时", year + "/"+msgYear);
-//        Log.e("monthAndDay+月日", monthAndDay + "/"+msgMonthAndDay);
-//        Log.e("hour + minute", hour + "/"+msgHour+"==="+minute +"/"+msgMinute);
-
-
-//        String msgTime = DateUtils.formatDateAndTime_(item.getMessageTime());
-//        String yerarMonthDayHm = DateUtils.formatDateAndTime_(timestamp);
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//        try {
-//            Date msgParse = dateFormat.parse(msgTime);
-//            Date currentParse = dateFormat.parse(msgTime);
-//            long diff = currentParse.getTime() - msgParse.getTime();
-//            Log.e("diff",diff+"");
-//
-//            long days = diff / (1000 * 60 * 60 * 24);
-//            long hours = (diff - days * (1000 * 60 * 60 * 24))
-//                    / (1000 * 60 * 60);
-//            long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours
-//                    * (1000 * 60 * 60))
-//                    / (1000 * 60);
-//
-//            Log.e("111",days + "天" + hours + "小时" + minutes + "分");
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-
-
-//        timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime()) + "");
         String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
 
         if (userId.equals(item.getSourceId())) { //发送
             leftLayout.setVisibility(View.INVISIBLE);
             rightLayout.setVisibility(View.VISIBLE);
-            setUserAvatar(rightPhotoView);
-
+//            setUserAvatar(rightPhotoView);
+            GlideUtil.loadAvatar(rightPhotoView, PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, ""));
             switch (item.getContentType()) {
                 case LOCATION:
                     try {
@@ -157,7 +121,10 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
 
                     break;
                 case TEXT:
-                    rightMessageView.setText(item.getContent());
+                    MoonUtils.identifyFaceExpression(mContext,rightMessageView,item.getContent(), 0b1);
+                    break;
+                case IMAGE:
+                    GlideUtil.loadLuesuotu(rightSendImg, item.getContent());
                     break;
             }
         } else { //接收
@@ -181,7 +148,10 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
 
                     break;
                 case TEXT:
-                    leftMessageView.setText(item.getContent());
+                    MoonUtils.identifyFaceExpression(mContext,leftMessageView,item.getContent(), 0b1);
+                    break;
+                case IMAGE:
+                    GlideUtil.loadLuesuotu(leftSendImg, item.getContent());
                     break;
             }
         }

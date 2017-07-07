@@ -72,7 +72,7 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 GlideUtil.loadAvatar((ImageView) holder.getView(R.id.iv_group_avatar), item.getGroupAvatar());
                 holder.setText(R.id.tv_group_name ,item.getGroupName());
                 holder.setText(R.id.tv_group_time, item.getSendTime());
-                TextView content1 = (TextView) holder.convertView.findViewById(R.id.tv_content);
+                TextView content1 = (TextView) holder.convertView.findViewById(R.id.tv_group_content);
                 getSsInformation(holder, content1, item);
                 Log.e("CHAT_GROUP:", item.getGroupAvatar() + item.getGroupName()+item.getContent());
                 break;
