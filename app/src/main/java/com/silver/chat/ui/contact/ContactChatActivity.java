@@ -129,7 +129,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
          * 私人聊天列表
          */
         p2PMessageList = SSEngine.getInstance().getP2PMessageList(userId, friendId, -1, 10);
-
+        Log.e("p2PMessageList",p2PMessageList.toString());
         chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList, userAvatar);
         if (p2PMessageList.size() != 0) {
             mShowHead.setVisibility(View.INVISIBLE);
@@ -228,13 +228,15 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                     mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
 
                     SSEngine instance = SSEngine.getInstance();
-                    boolean isSend = instance.sendMessageToGroupId(this.friendId, SSMessageFormat.TEXT, editcontent);
+                    boolean isSend = instance.sendMessageToTargetId(friendId, SSMessageFormat.TEXT, editcontent);
                     if (isSend) {
                         instance.setMsgSendListener(new SSMessageSendListener() {
                             @Override
                             public void didSend(boolean b, long l) {
                                 if (!b) {
                                     ToastUtil.toastMessage(mContext, "服务器忙");
+                                }else {
+                                    Log.e("didSend",b+"");
                                 }
                             }
                         });
@@ -313,6 +315,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
     public void receiveMsg(SSMessage ssMessage) {
         if (ssMessage instanceof SSP2PMessage) {
             receiveMsg = (SSP2PMessage) ssMessage;
+            Log.e("receiveMsg",receiveMsg.getContent());
             String sourceId = receiveMsg.getSourceId();
             if (sourceId.equals(friendId) || sourceId == friendId) {
                 Log.e(TAG, receiveMsg.getContent());

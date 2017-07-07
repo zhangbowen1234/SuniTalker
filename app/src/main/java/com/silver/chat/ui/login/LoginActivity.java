@@ -201,7 +201,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     PreferenceUtil.getInstance(LoginActivity.this).setLog(true);
                     PreferenceUtil.getInstance(mContext).setString("phone", uPhone);
                     PreferenceUtil.getInstance(mContext).setString("pwd", uPwd);
-                    Log.e("登录得到toKen", loginRequestBeanBaseResponse.data.getToken());
+//                    Log.e("登录得到toKen", loginRequestBeanBaseResponse.data.getToken());
                     Message logMsg = new Message();
                     logMsg.what = 0;
                     logMsg.obj = loginRequestBeanBaseResponse.getStatusMsg();
@@ -234,7 +234,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 case 0: //跳转启动主页
                     disDialog();
                     getUserInfo();
-                    Log.d("AAAA", msg.obj + "");
+//                    Log.d("AAAA", msg.obj + "");
                     ssConnect();
                     PreferenceUtil.getInstance(LoginActivity.this).setLog(true);
                     startActivity(MainActivity.class);
@@ -271,8 +271,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                         SSIMLoginManger.getUserInfo(mContext, Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
                             @Override
                             public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
-//                        ToastUtils.showMessage(mContext, userInfoBeanBaseResponse.getStatusMsg());
-                                Log.e("getUserInfo", userInfoBeanBaseResponse.getStatusMsg());
+                                Log.e("Login_getUserInfo", userInfoBeanBaseResponse.getStatusMsg());
                                 /**
                                  * 保存用户信息
                                  */
@@ -293,7 +292,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                             @Override
                             public void onError() {
-                                ToastUtils.showMessage(mContext, "连接失败");
+                                ToastUtils.showMessage(mContext, "连接异常");
                             }
                         });
                     }

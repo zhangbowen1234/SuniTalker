@@ -88,9 +88,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         mNickName = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
         mAvatar = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
 
-        /**
-         * SDK中取得好友添加申请通知列表
-         */
+        /*SDK中取得好友添加申请通知列表*/
         friendNotificationList = SSEngine.getInstance().getFriendNotificationList();
 
         /*查询数据库*/
@@ -270,9 +268,9 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         if (ssNotification instanceof SSFriendNotification) {
          /*好友申请添加好友的通知监听*/
             SSFriendNotification ssFriendNotiFication = (SSFriendNotification) ssNotification;
-            NotificationSourceId = ssFriendNotiFication.getContent();
+            NotificationContent = ssFriendNotiFication.getContent();
             NotificationSourceId = ssFriendNotiFication.getSourceId();
-            Log.e("申请加好友通知:", NotificationSourceId + "/" + NotificationSourceId);
+            Log.e("申请加好友通知:", NotificationSourceId + "/" + NotificationContent);
             friendNotificationList.add(ssFriendNotiFication);
             /*查询数据库*/
 //            QueryDbParent();

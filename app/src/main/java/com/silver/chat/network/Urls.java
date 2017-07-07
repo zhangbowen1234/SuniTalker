@@ -8,6 +8,7 @@ public class Urls {
 //    public static final String SERVER = "http://192.254.1.21:7102/";
 //    public static final String SERVER = "http://192.254.1.7:7102/";
 //    public static final String SERVER = "http://192.168.10.215:7102/";
+//    public static final String SERVER = "http://10.3.1.98:7102/";
     public static final String SERVER = "http://imx.users.docker.sspaas.net/";
 //    public static final String CLOUD_SERVER = "http://cloud.docker.sspaas.net/sspaas-cloud/imicom/uploadImIcom/";
 
