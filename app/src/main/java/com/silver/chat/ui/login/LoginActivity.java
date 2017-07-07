@@ -5,8 +5,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,15 +27,11 @@ import com.silver.chat.util.NetUtils;
 import com.silver.chat.util.NumberUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
-import com.silver.chat.util.StringUtils;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
 import com.ssim.android.listener.SSConnectListener;
 
 import java.util.UUID;
-
-import static android.R.attr.editable;
-import static com.amap.api.mapcore.util.cx.m;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, SSConnectListener {
 
@@ -189,6 +183,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
      * 登录入口
      */
     private void goLogin() {
+        showDialog("正在登录");
         if (NetUtils.isConnected(this)) {
             SSIMLoginManger.goLogin(mContext, Common.version, LoginRequest.getInstance(), new ResponseCallBack<BaseResponse<LoginRequestBean>>() {
                 @Override
@@ -215,15 +210,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
                 @Override
                 public void onFailed(BaseResponse<LoginRequestBean> loginRequestBaseResponse) {
+                    disDialog();
                     ToastUtils.showMessage(mContext, loginRequestBaseResponse.getStatusMsg());
                 }
 
                 @Override
                 public void onError() {
+                    disDialog();
                     ToastUtils.showMessage(mContext, "连接异常");
                 }
             });
         } else {
+            disDialog();
             ToastUtils.showMessage(this, "请检查网络!");
         }
 
@@ -234,6 +232,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0: //跳转启动主页
+                    disDialog();
                     getUserInfo();
                     Log.d("AAAA", msg.obj + "");
                     ssConnect();

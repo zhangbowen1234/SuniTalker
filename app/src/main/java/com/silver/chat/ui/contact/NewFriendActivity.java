@@ -91,8 +91,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         /**
          * SDK中取得好友添加申请通知列表
          */
-        if (SSEngine.getInstance().getFriendNotificationList() != null)
-            friendNotificationList = SSEngine.getInstance().getFriendNotificationList();
+        friendNotificationList = SSEngine.getInstance().getFriendNotificationList();
 
         /*查询数据库*/
         QueryDbParent();

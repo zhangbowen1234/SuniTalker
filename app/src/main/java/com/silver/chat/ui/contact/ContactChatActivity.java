@@ -16,8 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.util.Util;
 import com.lqr.emoji.EmotionKeyboard;
 import com.lqr.emoji.EmotionLayout;
 import com.lqr.emoji.IEmotionExtClickListener;
@@ -25,7 +23,6 @@ import com.lqr.emoji.IEmotionSelectedListener;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
@@ -41,7 +38,10 @@ import com.ssim.android.model.chat.SSP2PMessage;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-
+/**
+ * 聊天界面
+ * Created by hibon on 2017
+ */
 public class ContactChatActivity extends BaseActivity implements IEmotionSelectedListener, View.OnClickListener, SSMessageReceiveListener {
 
     private static final int REQUEST_CODE = 200;

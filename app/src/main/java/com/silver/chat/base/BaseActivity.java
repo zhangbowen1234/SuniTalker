@@ -11,6 +11,7 @@ import com.silver.chat.R;
 import com.silver.chat.util.AppManager;
 import com.silver.chat.util.SkinSettingManager;
 import com.silver.chat.util.ToastUtil;
+import com.silver.chat.view.CustomProgressDialog;
 
 import butterknife.ButterKnife;
 import butterknife.Optional;
@@ -26,6 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      **/
     protected final String TAG = this.getClass().getSimpleName();
     protected Context mContext;
+    CustomProgressDialog progessdialog = null;
 
     @Optional
     @Override
@@ -118,6 +120,25 @@ public abstract class BaseActivity extends AppCompatActivity {
             intent.putExtras(bundle);
         }
         startActivity(intent);
+    }
+
+    /**
+     * 显示加载进度条
+     */
+    public void showDialog(String msg) {
+        progessdialog = new CustomProgressDialog(BaseActivity.this, msg,
+                R.style.Theme_dialog);
+        progessdialog.show();
+    }
+
+    /**
+     * 取消进度条
+     */
+    public void disDialog() {
+        if (progessdialog != null) {
+            progessdialog.dismiss();
+            progessdialog.cancel();
+        }
     }
 
 
