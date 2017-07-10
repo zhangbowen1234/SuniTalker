@@ -94,11 +94,12 @@ public class GroupRightFragment extends BasePagerFragment {
             switch (holder.textView.getText().toString()) {
 
                 case "消息免扰":
-                    holder.imageView.setImageResource(R.drawable.ic_stick_white);
+                    holder.imageView.setImageResource(R.drawable.group_message_free);
+                    final ViewHolder finalHolder = holder;
                     convertView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            showExcuxeDialog();
+                            showExcuxeDialog(finalHolder);
                         }
                     });
                     break;
@@ -112,7 +113,7 @@ public class GroupRightFragment extends BasePagerFragment {
                     });
                     break;
                 case "投诉":
-                    holder.imageView.setImageResource(R.drawable.ic_stick_white);
+                    holder.imageView.setImageResource(R.drawable.group_complaint);
                     convertView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -122,7 +123,7 @@ public class GroupRightFragment extends BasePagerFragment {
                     });
                     break;
                 case "清空记录":
-                    holder.imageView.setImageResource(R.drawable.ic_stick_white);
+                    holder.imageView.setImageResource(R.drawable.group_empty_record);
                     convertView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -132,7 +133,7 @@ public class GroupRightFragment extends BasePagerFragment {
                     });
                     break;
                 case "更多":
-                    holder.imageView.setImageResource(R.drawable.ic_stick_white);
+                    holder.imageView.setImageResource(R.drawable.group_more);
                     convertView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -147,7 +148,7 @@ public class GroupRightFragment extends BasePagerFragment {
         }
     }
     //消息免扰的Dialog
-    private void showExcuxeDialog() {
+    private void showExcuxeDialog(final ViewHolder holder) {
         new TvLoginOutDialog(getActivity()).builder()
                 .setCancelable(true)
                 .setCanceledOnTouchOutside(true)
@@ -161,6 +162,7 @@ public class GroupRightFragment extends BasePagerFragment {
                 .setPositiveButton(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        holder.imageView.setImageResource(R.drawable.group_message_click);
                         Toast.makeText(mActivity,"确定",Toast.LENGTH_SHORT).show();
                     }
                 }).show();

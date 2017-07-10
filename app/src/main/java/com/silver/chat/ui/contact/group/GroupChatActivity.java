@@ -3,7 +3,6 @@ package com.silver.chat.ui.contact.group;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -22,11 +21,9 @@ import com.lqr.emoji.IEmotionExtClickListener;
 import com.lqr.emoji.IEmotionSelectedListener;
 import com.silver.chat.AppContext;
 import com.silver.chat.R;
-import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.adapter.GroupChatAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.GroupMessageBean;
-import com.silver.chat.ui.chat.notification.GroupNotificationActivity;
 import com.silver.chat.ui.contact.MyLocationActivity;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
@@ -41,7 +38,6 @@ import com.ssim.android.listener.SSMessageSendListener;
 import com.ssim.android.model.chat.SSGroupMessage;
 import com.ssim.android.model.chat.SSLocation;
 import com.ssim.android.model.chat.SSMessage;
-import com.ssim.android.model.chat.SSP2PMessage;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -140,27 +136,29 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
         mChatMsgList.setAdapter(groupChatAdapter);
         groupChatAdapter.addHeaderView(mChatMsgList.getRefreshView());
           /*刷新聊天记录暂时又bug*/
-//        if (groupMessageList == null || groupMessageList.size() == 0) {
-//            mChatMsgList.refreshComplete();
-//        } else {
-//            mChatMsgList.setOnRefreshCompleteListener(new WSRecyclerView.OnRefreshCompleteListener() {
-//                @Override
-//                public void onRefreshComplete() {
-//                    mMyHandler.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
+        if (groupMessageList == null || groupMessageList.size() == 0) {
+            mChatMsgList.refreshComplete();
+        } else {
+            mChatMsgList.setOnRefreshCompleteListener(new WSRecyclerView.OnRefreshCompleteListener() {
+                @Override
+                public void onRefreshComplete() {
+                    mMyHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 //                            SSGroupMessage ssp2PMessage = groupMessageList.get((groupChatAdapter.getItemCount() - 1) - (groupChatAdapter.getItemCount() - 1));
 //                            long messageTime = ssp2PMessage.getMessageTime();
 //                            Log.e("aa", ssp2PMessage.getSourceId() + "/" + ssp2PMessage.getContent());
-//                            List<SSGroupMessage> p2PMsgList = SSEngine.getInstance().getGroupMessageList(userId, groupId, messageTime, 10);
-//                            groupMessageList.addAll((groupChatAdapter.getItemCount() - 1) - (groupChatAdapter.getItemCount() - 1), p2PMsgList);
-//                            groupChatAdapter.notifyDataSetChanged();
-//                            mChatMsgList.refreshComplete();
-//                        }
-//                    }, 1500);
-//                }
-//            });
-//        }
+                            List<SSGroupMessage> p2PMsgList = SSEngine.getInstance().getGroupMessageList(userId, groupId, -1, 10);
+                            groupMessageList.addAll((groupChatAdapter.getItemCount() - 1) - (groupChatAdapter.getItemCount() - 1), p2PMsgList);
+                            resetBean(groupMessageList);
+                            groupChatAdapter.setNewData(groupMesList);
+                            groupChatAdapter.notifyDataSetChanged();
+                            mChatMsgList.refreshComplete();
+                        }
+                    }, 1500);
+                }
+            });
+        }
     }
 
     //条目展示用的RecycleView的Adapter是框架因为条目展示的泛型第一个参数时一个实体类需要继承BaseMulityItem，所以此处对bean重新封装一下
@@ -239,14 +237,13 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
             }
         });
 
-        mLlContent.setOnTouchListener(new View.OnTouchListener() {
+        mChatMsgList.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        closeBottomAndKeyboard();
-                        break;
-                }
+                //隐藏软键盘
+                mEmoteBtn.setImageResource(R.drawable.ic_chat_emote_normal);
+                mEmotionKeyboard.hideSoftInput();
+                closeBottomAndKeyboard();
                 return false;
             }
         });
@@ -367,9 +364,6 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
             String sourceId = receiveMsg.getGroupId();
             if (sourceId.equals(groupId) || sourceId == groupId) {
                 Log.e(TAG, receiveMsg.getContent());
-                if (groupMessageList.size() != 0) {
-                    mShowHead.setVisibility(View.INVISIBLE);
-                }
                 mHandler.sendEmptyMessage(0);
             }
         }
@@ -384,6 +378,7 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
                 case 0:
                     /*显示新收到的消息*/
                     if (receiveMsg != null) {
+                        mShowHead.setVisibility(View.INVISIBLE);
                         groupMessageList.add(receiveMsg);
                         resetBean(groupMessageList);
                         groupChatAdapter.setNewData(groupMesList);

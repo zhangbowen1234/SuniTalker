@@ -87,7 +87,6 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
     @Override
     protected void initView() {
         super.initView();
-
         mContactChatImg = (CircleImageView) findViewById(R.id.my_round_head);
         mSendMsg = (ImageButton) findViewById(R.id.chat_send_msg);
         mTitleBar = (TitleBarView) findViewById(R.id.title_bar);
@@ -129,7 +128,6 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
          * 私人聊天列表
          */
         p2PMessageList = SSEngine.getInstance().getP2PMessageList(userId, friendId, -1, 10);
-        Log.e("p2PMessageList",p2PMessageList.toString());
         chatMessageAdapter = new ChatMessageAdapter(R.layout.chat_message_item, p2PMessageList, userAvatar);
         if (p2PMessageList.size() != 0) {
             mShowHead.setVisibility(View.INVISIBLE);
@@ -196,14 +194,13 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
             }
         });
 
-        mLlContent.setOnTouchListener(new View.OnTouchListener() {
+        mChatMsgList.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        closeBottomAndKeyboard();
-                        break;
-                }
+                //隐藏软键盘
+                mEmoteBtn.setImageResource(R.drawable.ic_chat_emote_normal);
+                mEmotionKeyboard.hideSoftInput();
+                closeBottomAndKeyboard();
                 return false;
             }
         });
@@ -319,9 +316,6 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
             String sourceId = receiveMsg.getSourceId();
             if (sourceId.equals(friendId) || sourceId == friendId) {
                 Log.e(TAG, receiveMsg.getContent());
-                if (p2PMessageList.size() != 0) {
-                    mShowHead.setVisibility(View.INVISIBLE);
-                }
                 mHandler.sendEmptyMessage(0);
             }
         }
@@ -337,6 +331,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                 case 0:
                     /*显示新收到的消息*/
                     if (receiveMsg != null) {
+                        mShowHead.setVisibility(View.INVISIBLE);
                         p2PMessageList.add(receiveMsg);
                         chatMessageAdapter.setNewData(p2PMessageList);
                         chatMessageAdapter.notifyDataSetChanged();
@@ -351,7 +346,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
         private WeakReference<ContactChatActivity> activityWeakReference;
 
         public MyHandler(ContactChatActivity fragment) {
-            activityWeakReference = new WeakReference<ContactChatActivity>(fragment);
+            activityWeakReference = new WeakReference<>(fragment);
         }
 
         @Override
