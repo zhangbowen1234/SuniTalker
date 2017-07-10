@@ -115,17 +115,12 @@
             android:textColor="#8affffff"
             android:textSize="12dp" />
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="0.5dp"
-            android:layout_marginBottom="7dp"
-            android:layout_marginTop="7dp"
-            android:background="#706A8F" />
 
         <RelativeLayout
             android:id="@+id/rl_group_member"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="@dimen/dp_5"
             >
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_group_memeber"
@@ -157,9 +152,9 @@
 
         <View
             android:layout_width="wrap_content"
-            android:layout_height="0.5dp"
+            android:layout_height="1dp"
             android:layout_marginTop="7dp"
-            android:background="#706A8F" />
+            android:background="@color/white_10" />
 
         <RelativeLayout
             android:layout_width="match_parent"
