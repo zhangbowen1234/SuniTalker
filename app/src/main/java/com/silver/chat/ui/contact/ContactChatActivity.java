@@ -23,6 +23,7 @@ import com.lqr.emoji.IEmotionSelectedListener;
 import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.ui.chat.ChatRecordFragment;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
@@ -306,6 +307,8 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
     public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
         Toast.makeText(getApplicationContext(), stickerBitmapPath, Toast.LENGTH_SHORT).show();
         Log.e("Sun", "stickerBitmapPath : " + stickerBitmapPath);
+        String stickerPath = stickerBitmapPath;
+        //发送图片
     }
 
     @Override
@@ -315,7 +318,6 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
             Log.e("receiveMsg",receiveMsg.getContent());
             String sourceId = receiveMsg.getSourceId();
             if (sourceId.equals(friendId) || sourceId == friendId) {
-                Log.e(TAG, receiveMsg.getContent());
                 mHandler.sendEmptyMessage(0);
             }
         }
