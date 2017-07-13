@@ -23,6 +23,7 @@ import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.adapter.GroupChatAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.entity.ChatMessageBean;
 import com.silver.chat.entity.GroupMessageBean;
 import com.silver.chat.ui.contact.MyLocationActivity;
 import com.silver.chat.util.PreferenceUtil;
@@ -71,6 +72,7 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
     private boolean mIsFirst = false;
     private MyHandler mMyHandler;
     private SSGroupMessage receiveMsg = null;
+    private ImageView mLocation;
 
     @Override
     protected int getLayoutId() {
@@ -85,6 +87,8 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
         } else {
             mIsFirst = false;
         }
+        groupChatAdapter.notifyDataSetChanged();
+        mChatMsgList.setAdapter(groupChatAdapter);
     }
 
     @Override
@@ -101,6 +105,7 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
         mBack = (ImageView) findViewById(R.id.title_left_back);
         mElEmotion = (EmotionLayout) findViewById(R.id.elEmotion);
         mLlContent = (LinearLayout) findViewById(R.id.llContent);
+        mLocation = (ImageView) findViewById(R.id.iv_location1);
 
         Intent intent = getIntent();
         groupName = intent.getStringExtra("groupName");
@@ -221,6 +226,7 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
          /*表情*/
         mSendMsg.setOnClickListener(this);
         mBack.setOnClickListener(this);
+        mLocation.setOnClickListener(this);
     /*实现IEmotionSelectedListener接口，手动实现图文混排*/
         mElEmotion.setEmotionAddVisiable(true);
         mElEmotion.setEmotionSettingVisiable(true);
@@ -379,8 +385,13 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
                     /*显示新收到的消息*/
                     if (receiveMsg != null) {
                         mShowHead.setVisibility(View.INVISIBLE);
-                        groupMessageList.add(receiveMsg);
-                        resetBean(groupMessageList);
+                       // groupMessageList.add(receiveMsg);
+                        groupMessageBean = new GroupMessageBean(receiveMsg.getContentType());
+                        groupMessageBean.setMessageTime(receiveMsg.getMessageTime());
+                        groupMessageBean.setContent(receiveMsg.getContent());
+                        groupMessageBean.setContentType(receiveMsg.getContentType());
+                        groupMessageBean.setSourceId(receiveMsg.getSourceId());
+                        groupMesList.add(groupMessageBean);
                         groupChatAdapter.setNewData(groupMesList);
                         groupChatAdapter.notifyDataSetChanged();
                         mChatMsgList.smoothScrollToPosition(groupChatAdapter.getItemCount() - 1);
@@ -404,4 +415,5 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
             }
         }
     }
+
 }

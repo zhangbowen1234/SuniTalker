@@ -1,5 +1,6 @@
 package com.silver.chat.adapter;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -69,7 +70,7 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
         leftPhotoView = holper.getView(R.id.message_friend_userphoto);
         rightPhotoView = holper.getView(R.id.message_user_userphoto);
         leftMessageView = holper.getView(R.id.friend_message);
-        rightMessageView = holper.getView(R.id.user_message);
+        rightMessageView = holper.getView(R.id.user_message1);
         leftSendImg = holper.getView(R.id.friend_message_img);
         rightSendImg = holper.getView(R.id.user_message_img);
 
@@ -115,6 +116,7 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
                         JSONObject jsonObject = new JSONObject(item.getContent());
                         String address = (String) jsonObject.get("address");
                         rightMessageView.setText(address);
+                        Log.e("bbb", address+"---------" );
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

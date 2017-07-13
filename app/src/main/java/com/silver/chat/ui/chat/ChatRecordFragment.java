@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.service.carrier.CarrierMessagingService;
-import android.speech.tts.TextToSpeech;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
@@ -28,11 +26,8 @@ import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 import com.ssim.android.constant.SSSessionTopLevel;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageReceiveListener;
-import com.ssim.android.listener.SSNotificationListener;
-import com.ssim.android.model.chat.SSGroupMessage;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
-import com.ssim.android.model.notification.SSNotification;
 
 
 import java.lang.ref.WeakReference;
@@ -44,8 +39,7 @@ import static com.silver.chat.adapter.ChatApater.sessionList;
 import static com.silver.chat.adapter.ChatApater.sourceId;
 
 /**
- * 作者：Fandy on 2016/11/14 14:14
- * 邮箱：fandy618@hotmail.com
+ * bowen
  */
 
 public class ChatRecordFragment extends BasePagerFragment implements SSMessageReceiveListener {//,SSMessageReceiveListener,SSMessageSendListener
