@@ -23,7 +23,6 @@ import java.util.List;
 
 /**
  * Created by hibon on 2016/11/22.
- *
  */
 
 public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

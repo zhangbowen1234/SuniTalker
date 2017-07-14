@@ -27,10 +27,12 @@ import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.util.CharacterParser;
+import com.silver.chat.util.NetUtils;
 import com.silver.chat.util.PinyinComparator;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.util.UIUtils;
+import com.ssim.android.constant.SSPublishType;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSNotificationListener;
 import com.ssim.android.model.notification.SSFriendNotification;
@@ -116,7 +118,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         pinyinComparator = new PinyinComparator();
         /*加载联系人列表*/
         mHandler.sendEmptyMessage(0);
-
+        /*布局底部回到顶部按钮功能*/
         fab.attachToRecyclerView(mRecycleContent, new ScrollDirectionListener() {
             @Override
             public void onScrollDown() {
@@ -145,7 +147,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
@@ -158,6 +159,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         super.initData();
         /*优先从数据库中获取联系人*/
         QueryDbParent();
+        Log.e("initData_OnCreate", "initData+++++");
     }
 
     @Override
@@ -208,79 +210,87 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
      * 联网获取联系人
      */
     public void httpContactList() {
-        String token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
-        String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
-        SSIMFrendManger.contactList(getContext(), Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
-            //        SSIMFrendManger.allContactList(getContext(), Common.version, userId,token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
-            @Override
-            public void onSuccess(final BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
-                ArrayList<ContactListBean> contactData = listBaseResponse.data;
+        if (NetUtils.isConnected(mActivity)) {
+            String token = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.TOKEN, "");
+            String userId = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "");
+            SSIMFrendManger.contactList(getContext(), Common.version, userId, "0", "1000", token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
+                // SSIMFrendManger.allContactList(getContext(), Common.version, userId,token, new ResponseCallBack<BaseResponse<ArrayList<ContactListBean>>>() {
+                @Override
+                public void onSuccess(final BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
+                    ArrayList<ContactListBean> contactData = listBaseResponse.data;
                 /* 填充其他数据*/
-                for (int i = 0; i < contactData.size(); i++) {
-                    sortModel = new ContactListBean();
-                    sortModel.setNickName(contactData.get(i).getNickName());
-                    sortModel.setAvatar(contactData.get(i).getAvatar());
-                    sortModel.setFriendId(contactData.get(i).getFriendId());
-                    sortModel.setRemarkName(contactData.get(i).getRemarkName());
-                    sortModel.setSex(contactData.get(i).getSex());
-                    sortModel.setSignature(contactData.get(i).getSignature());
-                    String pinyin = characterParser.getSelling(contactData.get(i).getNickName());
-                    String sortString = pinyin.substring(0, 1).toUpperCase();
+                    for (int i = 0; i < contactData.size(); i++) {
+                        sortModel = new ContactListBean();
+                        sortModel.setAvatar(contactData.get(i).getAvatar());
+                        sortModel.setFriendId(contactData.get(i).getFriendId());
+                        sortModel.setNickName(contactData.get(i).getNickName());
+                        sortModel.setRemarkName(contactData.get(i).getRemarkName());
+                        sortModel.setSex(contactData.get(i).getSex());
+                        sortModel.setSignature(contactData.get(i).getSignature());
+                        String pinyin = characterParser.getSelling(contactData.get(i).getNickName());
+                        String sortString = pinyin.substring(0, 1).toUpperCase();
                     /*正则表达式，判断首字母是否是英文字母*/
-                    if (sortString.matches("[A-Z]")) {
-                        sortModel.setSortLetters(sortString.toUpperCase());
-                    } else {
-                        sortModel.setSortLetters("#");
-                    }
-                    Log.e("sortModel===", "" + sortModel);
-                    sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""));
-                    mConList.add(sortModel);
-                }
-                /**
-                 *  数据库操作内容
-                 */
-                mDao.asyncTask(new EasyRun<List<ContactListBean>>() {
-                    @Override
-                    public List<ContactListBean> run() throws Exception {
-
-                        List<ContactListBean> query = mDao.queryForAll();
-                        /*删除原始文件*/
-                        mDao.delete(query);
-                        /*保存新数据*/
-                        if (mConList != null)
-                            mDao.create(mConList);
-                        Log.e("mDao.asTk_run", "===================");
-                        return getSortData();
-                    }
-
-                    @Override
-                    public void onMainThread(List<ContactListBean> data) throws Exception {
-                        Log.e("mDao.asTk_onMainThread", "===================");
-                        if (data.isEmpty()) {
-//                            ToastUtils.showMessage(mActivity, mActivity.getResources().getString(R.string.contactlist_null));
+                        if (sortString.matches("[A-Z]")) {
+                            sortModel.setSortLetters(sortString.toUpperCase());
                         } else {
-                            mContactList = data;
-                            /**
-                             * 通知显示联系人列表
-                             */
-                            mHandler.sendEmptyMessage(0);
+                            sortModel.setSortLetters("#");
                         }
+                        sortModel.setUserId(PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, ""));
+                        Log.e("sortModel===", "" + sortModel);
+                        mConList.add(sortModel);
                     }
-                });
-            }
+                    /**
+                     *  数据库操作内容
+                     */
+                    mDao.asyncTask(new EasyRun<List<ContactListBean>>() {
+                        @Override
+                        public List<ContactListBean> run() throws Exception {
 
-            @Override
-            public void onFailed(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
-                ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
-                QueryDbParent();
-            }
+                            List<ContactListBean> query = mDao.queryForAll();
+                            Log.e("mDao.asTk_run", "query:" + query);
+                        /*删除原始文件*/
+//                            mDao.delete(query);
+                        /*保存新数据*/
+                            mDao.create(mConList);
+                            Log.e("mDao.asTk_run", "mConList:" + mConList);
+                            return getSortData();
+                        }
 
-            @Override
-            public void onError() {
-                ToastUtils.showMessage(mActivity, "联网失败");
-                QueryDbParent();
-            }
-        });
+                        @Override
+                        public void onMainThread(List<ContactListBean> data) throws Exception {
+                            Log.e("mDao.asTk_onMainThread", "data:" + data);
+                            if (data.isEmpty()) {
+                                ToastUtils.showMessage(mActivity, mActivity.getResources().getString(R.string.contactlist_null));
+                                if (contactListAdapter != null) {
+                                    contactListAdapter.notifyDataSetChanged();
+                                }
+                            } else {
+                                mContactList = data;
+                                /**
+                                 * 通知显示联系人列表
+                                 */
+                                mHandler.sendEmptyMessage(0);
+                            }
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onFailed(BaseResponse<ArrayList<ContactListBean>> listBaseResponse) {
+                    ToastUtils.showMessage(mActivity, listBaseResponse.getStatusMsg());
+                    QueryDbParent();
+                }
+
+                @Override
+                public void onError() {
+                    ToastUtils.showMessage(mActivity, "联网失败");
+                    QueryDbParent();
+                }
+            });
+        } else {
+            ToastUtils.showMessage(mActivity, "网络连接失败，请检查");
+        }
     }
 
     public List<ContactListBean> getSortData() {
@@ -312,13 +322,14 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
     @Override
     protected void getData() {
+        Log.e("ContactFragment_getData", "getData++++++");
     }
 
     @Override
     public void onResume() {
         super.onResume();
         Log.e("ContactFragment_onResume", "++++++++");
-//        httpContactList();
+        QueryDbParent();
     }
 
     @Override
@@ -326,13 +337,14 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
         if (ssNotification instanceof SSFriendNotification) {
             SSFriendNotification ssFriendNotification = (SSFriendNotification) ssNotification;
             Log.e("ContactFragment", "getAction:" + ssFriendNotification.getAction() + "getContent:" + ssFriendNotification.getContent() +
-                    "getSourceId:"+ ssFriendNotification.getSourceId()+ "getTargetId:"+ ssFriendNotification.getTargetId() + "getNotificationType:"+
-            ssFriendNotification.getNotificationType() );
-
-            List<ContactListBean> query = mDao.query(WhereInfo.get().equal("friendId",ssFriendNotification.getSourceId()));
-            //删除原始文件
-            mDao.delete(query);
-            QueryDbParent();
+                    "getSourceId:" + ssFriendNotification.getSourceId() + "getTargetId:" + ssFriendNotification.getTargetId() + "getNotificationType:" +
+                    ssFriendNotification.getNotificationType());
+            if (ssFriendNotification.getNotificationType() == SSPublishType.NOTIFICATION_DELETE_FRIEND) {
+                List<ContactListBean> query = mDao.query(WhereInfo.get().equal("friendId", ssFriendNotification.getSourceId()));
+                //删除原始文件
+                mDao.delete(query);
+                QueryDbParent();
+            }
         }
     }
 

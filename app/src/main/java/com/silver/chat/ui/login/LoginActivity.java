@@ -29,6 +29,7 @@ import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CustomVideoView;
+import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSConnectListener;
 
 import java.util.UUID;
@@ -174,7 +175,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
      */
     private void ssConnect() {
         //IMSDK 连接服务器
-        AppContext.getInstance().instance.connect(PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""),
+        SSEngine.connect(PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, ""),
                 PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.IMTOKEN, ""));
         AppContext.getInstance().instance.setConnectListener(this);//连接
     }
@@ -306,45 +307,24 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     /**
      * 连接SDK监听
-     * @param i
      */
     @Override
-    public void didConnect(int i) {
-        Log.e("didConnect()", i + "");
+    public void didConnect() {
+
     }
 
+    @Override
+    public void connectFailure(int i, String s) {
+        Log.e("connectFailure", ""+ s+"/"+i   );
+    }
     /**
      * 断开连接
      */
     @Override
     public void didDisConnect() {
-        Log.e("didDisConnect()", "didDisConnect");
+        Log.e("didDisConnect()", "SDK连接断开");
     }
 
-    @Override
-    public void turnToWifi() {
-        Log.e("turnToWifi()", "turnToWifi");
-    }
-
-    @Override
-    public void turnToWWAN() {
-        Log.e("turnToWWAN()", "turnToWWAN");
-    }
-
-    @Override
-    public void turnOff() {
-        Log.e("turnOff()", "turnOff");
-    }
-
-    @Override
-    public void WifiState(int i) {
-
-    }
-
-    @Override
-    public void turnOn() {
-        Log.e("turnOn()", "turnOn");
-    }
 
     @Override
     public void onBackPressed() {
