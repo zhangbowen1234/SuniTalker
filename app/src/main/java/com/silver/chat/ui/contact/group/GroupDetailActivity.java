@@ -31,8 +31,7 @@ import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.network.responsebean.GroupMemberBean;
-import com.silver.chat.network.responsebean.SearchGroupBean;
-import com.silver.chat.ui.contact.ContactChatActivity;
+import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.RoundImageView;
 import com.silver.chat.view.WhewView;
@@ -46,7 +45,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.R.string.no;
 
 /**
  * Created by Joe on 2017/5/9.
@@ -156,12 +154,14 @@ public class GroupDetailActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
+        wv.stop();
         Intent intent = getIntent();
         GroupBean groupbean = (GroupBean) intent.getSerializableExtra("groupbean");
         groupName = groupbean.getGroupName();
         privilege = groupbean.getPrivilege();
         groupId = groupbean.getGroupId();
         groupAvatar = groupbean.getAvatar();
+        GlideUtil.loadAvatar(myPhoto,groupAvatar);
         dao = DBHelper.get().dao(GroupMemberBean.class);
         getGroupMemberLocal();
         tvGroupMemCount.setText("群成员(" + groupMemlists.size() + ")");
@@ -240,7 +240,7 @@ public class GroupDetailActivity extends BaseActivity {
     }
 
     /**
-     * 将群成员信息存放发哦本地数据库
+     * 将群成员信息存放在本地数据库
      *
      * @param memLists
      */
@@ -338,7 +338,14 @@ public class GroupDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
     }
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (wv.isStarting()){
+            //如果动画正在运行就停止，否则就继续执行
+            wv.stop();
+        }
+    }
 
     class GroupAdapter extends FragmentPagerAdapter {
 

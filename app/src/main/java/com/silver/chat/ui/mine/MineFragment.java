@@ -1,16 +1,12 @@
 package com.silver.chat.ui.mine;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.silver.chat.R;
 import com.silver.chat.base.BasePagerFragment;
 import com.silver.chat.base.Common;
-import com.silver.chat.network.RetrofitHelper;
 import com.silver.chat.network.SSIMLoginManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.responsebean.BaseResponse;

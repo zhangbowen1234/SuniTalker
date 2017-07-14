@@ -1,5 +1,4 @@
 package com.silver.chat.adapter;
-
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -7,12 +6,13 @@ import android.widget.TextView;
 
 import com.lqr.emoji.MoonUtils;
 import com.silver.chat.R;
+import com.silver.chat.entity.ChatMessageBean;
 import com.silver.chat.util.DateUtils;
 import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
-import com.silver.chat.view.recycleview.BaseQuickAdapter;
+import com.silver.chat.view.BubbleImageView;
+import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
-import com.ssim.android.model.chat.SSP2PMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,21 +23,27 @@ import java.util.List;
 /**
  * Created by hibon on 2016/11/28.
  */
-public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewHolder> {
+public class ChatMessageAdapter extends BaseMultiItemQuickAdapter<ChatMessageBean, BaseViewHolder> {
 
     private final String mAvatar;
 
-    public ChatMessageAdapter(int layoutResId, List<SSP2PMessage> data, String userAvatar) {
-        super(layoutResId, data);
-        mAvatar = userAvatar;
-        /*将聊天信息List倒置排序*/
-//        Collections.reverse(data);
+    /**
+     * Same as QuickAdapter#QuickAdapter(Context,int) but with
+     * some initialization data.
+     *
+     * @param data A new mChatList is created out of this one to avoid mutable mChatList
+     */
+    public ChatMessageAdapter(List<ChatMessageBean> data, String userAvatar) {
+        super(data);
+        this.mAvatar = userAvatar;
+        //此处多条目暂时只包含文本消息和地理位置消息
+        addItemType(1, R.layout.chat_message_item);
+        addItemType(2, R.layout.chat_message_item_image);
+        addItemType(8, R.layout.chat_message_item_location);
     }
 
-
     @Override
-    protected void convert(BaseViewHolder holper, SSP2PMessage item, int position) {
-
+    protected void convert(BaseViewHolder holper, ChatMessageBean item, int position) {
         RelativeLayout leftLayout;
         RelativeLayout rightLayout;
         TextView leftMessageView;
@@ -45,7 +51,8 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
         TextView timeView;
         ImageView leftPhotoView;
         ImageView rightPhotoView;
-
+        BubbleImageView leftSendImg;
+        BubbleImageView rightSendImg;
         leftLayout = holper.getView(R.id.chat_friend_left_layout);
         rightLayout = holper.getView(R.id.chat_user_right_layout);
         timeView = holper.getView(R.id.message_time);
@@ -53,7 +60,8 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
         rightPhotoView = holper.getView(R.id.message_user_userphoto);
         leftMessageView = holper.getView(R.id.friend_message);
         rightMessageView = holper.getView(R.id.user_message);
-//        Log.e("item.getSourceId() :", "item.getMessageTime:" + item.getMessageTime() + ",getSourceId:" + item.getSourceId() + ",说:" + item.getContent());
+        leftSendImg = holper.getView(R.id.friend_message_img);
+        rightSendImg = holper.getView(R.id.user_message_img);
            /*获取当前系统时间的13位的时间戳*/
         long timestamp = System.currentTimeMillis();
         /*当前年份*/
@@ -75,63 +83,62 @@ public class ChatMessageAdapter extends BaseQuickAdapter<SSP2PMessage, BaseViewH
 
         if (year == msgYear) {
             if (monthAndDay.equals(msgMonthAndDay) || monthAndDay == msgMonthAndDay) {
-//                if (hour.equals(msgHour) || hour == msgHour){
-//                    if ( !minute.equals(msgMinute) || minute != msgMinute){
-//                        /*小时:分*/
-//                        timeView.setText(DateUtils.formatTimeSimple(item.getMessageTime()) + "");
-//                    }
-//                }else {
                      /*小时:分*/
-                timeView.setText(DateUtils.formatTimeSimple(item.getMessageTime()) + "");
-//                }
+                timeView.setText(DateUtils.formatTimeSimple(item.getMessageTime()));
             } else {
                 /*月:日:小时:分*/
-                timeView.setText(DateUtils.formatMonthDateMdHm(item.getMessageTime()) + "");
+                timeView.setText(DateUtils.formatMonthDateMdHm(item.getMessageTime()));
             }
         } else {
             /*年:月:日:小时:分*/
-            timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime()) + "");
+            timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime()));
         }
-//        Log.e("year+小时", year + "/"+msgYear);
-//        Log.e("monthAndDay+月日", monthAndDay + "/"+msgMonthAndDay);
-//        Log.e("hour + minute", hour + "/"+msgHour+"==="+minute +"/"+msgMinute);
-
-
-//        String msgTime = DateUtils.formatDateAndTime_(item.getMessageTime());
-//        String yerarMonthDayHm = DateUtils.formatDateAndTime_(timestamp);
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//        try {
-//            Date msgParse = dateFormat.parse(msgTime);
-//            Date currentParse = dateFormat.parse(msgTime);
-//            long diff = currentParse.getTime() - msgParse.getTime();
-//            Log.e("diff",diff+"");
-//
-//            long days = diff / (1000 * 60 * 60 * 24);
-//            long hours = (diff - days * (1000 * 60 * 60 * 24))
-//                    / (1000 * 60 * 60);
-//            long minutes = (diff - days * (1000 * 60 * 60 * 24) - hours
-//                    * (1000 * 60 * 60))
-//                    / (1000 * 60);
-//
-//            Log.e("111",days + "天" + hours + "小时" + minutes + "分");
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-
-
-//        timeView.setText(DateUtils.formatDateAndTime_(item.getMessageTime()) + "");
         String userId = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "");
         if (userId.equals(item.getSourceId())) { //发送
             leftLayout.setVisibility(View.INVISIBLE);
             rightLayout.setVisibility(View.VISIBLE);
-            MoonUtils.identifyFaceExpression(mContext,rightMessageView,item.getContent(), 0b1);
             GlideUtil.loadAvatar(rightPhotoView, PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, ""));
+            switch (item.getContentType()) {
+                case LOCATION:
+                    try {
+                        JSONObject jsonObject = new JSONObject(item.getContent());
+                        String address = (String) jsonObject.get("address");
+                        rightMessageView.setText(address);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                case TEXT:
+                    MoonUtils.identifyFaceExpression(mContext, rightMessageView, item.getContent(), 0b1);
+                    break;
+                case IMAGE:
+                    GlideUtil.loadLuesuotu(rightSendImg, item.getContent());
+                    break;
+            }
         } else { //接收
             leftLayout.setVisibility(View.VISIBLE);
             rightLayout.setVisibility(View.INVISIBLE);
-            MoonUtils.identifyFaceExpression(mContext,leftMessageView,item.getContent(), 0b1);
             GlideUtil.loadAvatar(leftPhotoView, mAvatar);
-        }
-    }
+            switch (item.getContentType()) {
+                case LOCATION:
+                    try {
+                        JSONObject jsonObject = new JSONObject(item.getContent());
+                        String address = (String) jsonObject.get("address");
+                        leftMessageView.setText(address);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
+                    break;
+                case TEXT:
+                    MoonUtils.identifyFaceExpression(mContext, leftMessageView, item.getContent(), 0b1);
+                    break;
+                case IMAGE:
+                    GlideUtil.loadLuesuotu(leftSendImg, item.getContent());
+                    break;
+            }
+        }
+
+    }
 }

@@ -24,8 +24,10 @@ import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.dialog.TopDeleteDialog;
 import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 import com.ssim.android.constant.SSSessionTopLevel;
-import com.ssim.android.listener.SSNotificationListener;
-import com.ssim.android.model.notification.SSNotification;
+import com.ssim.android.engine.SSEngine;
+import com.ssim.android.listener.SSMessageReceiveListener;
+import com.ssim.android.model.chat.SSMessage;
+import com.ssim.android.model.chat.SSP2PMessage;
 
 
 import java.lang.ref.WeakReference;
@@ -37,11 +39,10 @@ import static com.silver.chat.adapter.ChatApater.sessionList;
 import static com.silver.chat.adapter.ChatApater.sourceId;
 
 /**
- * 作者：Fandy on 2016/11/14 14:14
- * 邮箱：fandy618@hotmail.com
+ * bowen
  */
 
-public class ChatRecordFragment extends BasePagerFragment implements SSNotificationListener {//,SSMessageReceiveListener,SSConnectListener,SSMessageSendListener
+public class ChatRecordFragment extends BasePagerFragment implements SSMessageReceiveListener {//,SSMessageReceiveListener,SSMessageSendListener
 
     private WSRecyclerView mRecycleContent;
     private ChatApater mChatApater;
@@ -49,6 +50,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
     public static String TOP_STATES = "TOP";
     private MyHandler mMyHandler;
 //    public String friendid;
+    private SSMessage ssMessage;
 
     public static ChatRecordFragment newInstance() {
         Bundle args = new Bundle();
@@ -68,7 +70,6 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
         mList.clear();
         mList.addAll(ChatApater.getChatData(mActivity));
         mChatApater.notifyDataSetChanged();
-        mRecycleContent.refreshComplete();
     }
 
     @Override
@@ -183,6 +184,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
         }
     }
 
+
     public void refreshView() {
         //如果不调用sort方法，是不会进行排序的，也就不会调用compareTo
         Collections.sort(mList);
@@ -192,18 +194,12 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
     @Override
     protected void initListener() {
         super.initListener();
-         /*收到消息监听*/
-//        AppContext.getInstance().instance.setMsgRcvListener((SSMessageReceiveListener) mActivity);
+            /*收到消息监听*/
+        SSEngine.getInstance().setMsgRcvListener(this);
     }
 
     @Override
     protected void getData() {
-
-    }
-
-    @Override
-    public void receiveNotification(SSNotification ssNotification) {
-
     }
 
     /**
@@ -215,15 +211,26 @@ public class ChatRecordFragment extends BasePagerFragment implements SSNotificat
             switch (msg.what) {
                 case 0:
                     /*显示新收到的消息*/
-//                    if (receiveMsg != null) {
+                    if (ssMessage != null) {
+                        mList.clear();
                         mList.addAll(ChatApater.getChatData(mActivity));
-                        mChatApater.setNewData(mList);
                         mChatApater.notifyDataSetChanged();
-//                    }
+                    }
                     break;
             }
         }
     };
+
+    @Override
+    public void receiveMsg(SSMessage ssMessage) {
+        if (ssMessage instanceof SSP2PMessage) {
+            SSP2PMessage receiveMsg = (SSP2PMessage) ssMessage;
+            String sourceId = receiveMsg.getSourceId();
+            Log.e("appContext_receiveMsg", sourceId + ":" + receiveMsg.getContent());
+            mHandler.sendEmptyMessage(0);
+        }
+    }
+
 
     private static class MyHandler extends Handler {
         private WeakReference<ChatRecordFragment> activityWeakReference;

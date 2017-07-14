@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static android.R.attr.data;
+
 /**
  * 作者：hibon on 2016/11/16 14:14
  * 联系人
@@ -251,6 +253,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                         /*删除原始文件*/
 //                            mDao.delete(query);
                         /*保存新数据*/
+                        if (mConList != null)
                             mDao.create(mConList);
                             Log.e("mDao.asTk_run", "mConList:" + mConList);
                             return getSortData();

@@ -297,26 +297,32 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         //创建RequestBody,用于封装构建RequestBody
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), tempFile);
         // MultipartBody.Part  和后端约定好Key，这里的partName是用image
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", tempFile.getName(), requestFile);
-        SSIMLoginManger.upLoadHead(body, new ResponseCallBack<BaseResponse<UpdataLoadImg>>() {
+        final MultipartBody.Part body = MultipartBody.Part.createFormData("file", tempFile.getName(), requestFile);
+        new Thread(){
             @Override
-            public void onSuccess(BaseResponse baseResponse) {
-                ToastUtils.showMessage(mContext,"上传成功");
-                //替换sp中的头像地址
-                PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR,new UpdataLoadImg().getUrl());
-                mIvAvatar.setImageURI(imageUri);
-            }
+            public void run() {
+                SSIMLoginManger.upLoadHead(body, new ResponseCallBack<BaseResponse<UpdataLoadImg>>() {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        ToastUtils.showMessage(mContext,"上传成功");
+                        //替换sp中的头像地址
+                        PreferenceUtil.getInstance(mContext).setString(PreferenceUtil.AVATAR,new UpdataLoadImg().getUrl());
+                        mIvAvatar.setImageURI(imageUri);
+                    }
 
-            @Override
-            public void onFailed(BaseResponse baseResponse) {
-                ToastUtils.showMessage(mContext,"上传失败");
-            }
+                    @Override
+                    public void onFailed(BaseResponse baseResponse) {
+                        ToastUtils.showMessage(mContext,"上传失败");
+                    }
 
-            @Override
-            public void onError() {
-
+                    @Override
+                    public void onError() {
+                        Log.d(TAG, "onError: 头像上传出错");
+                    }
+                });
             }
-        });
+        }.start();
+
 //        headers.put("token",PreferenceUtil.TOKEN);
 //        novate = new Novate.Builder(this)
 //                //.addParameters(parameters)

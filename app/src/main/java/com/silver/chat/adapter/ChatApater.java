@@ -156,7 +156,7 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
                 }else if (sessionType == SSSessionType.GROUPNOTI){
                     //群通知
 //                    contents = sessionList.get(i).getContent();
-//                    groupId = sessionList.get(i).getGroupId();
+//                    groupId = sessionList.get(i).getTargetId();
 //                    groupName = sessionList.get(i).getGroupName();
 //                    groupAvatar = sessionList.get(i).getGroupAvatar();
 //                    times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
