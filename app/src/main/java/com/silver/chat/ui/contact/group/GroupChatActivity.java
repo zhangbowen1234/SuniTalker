@@ -153,11 +153,12 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
 //                            SSGroupMessage ssp2PMessage = groupMessageList.get((groupChatAdapter.getItemCount() - 1) - (groupChatAdapter.getItemCount() - 1));
 //                            long messageTime = ssp2PMessage.getMessageTime();
 //                            Log.e("aa", ssp2PMessage.getSourceId() + "/" + ssp2PMessage.getContent());
-                            List<SSGroupMessage> p2PMsgList = SSEngine.getInstance().getGroupMessageList(userId, groupId, -1, 10);
-                            groupMessageList.addAll((groupChatAdapter.getItemCount() - 1) - (groupChatAdapter.getItemCount() - 1), p2PMsgList);
-                            resetBean(groupMessageList);
-                            groupChatAdapter.setNewData(groupMesList);
-                            groupChatAdapter.notifyDataSetChanged();
+//                            List<SSGroupMessage> p2PMsgList = SSEngine.getInstance().getGroupMessageList(userId, groupId, -1, 10);
+//                            groupMessageList.addAll((groupChatAdapter.getItemCount() - 1) - (groupChatAdapter.getItemCount() - 1), p2PMsgList);
+//                            Log.d(TAG, "run: "+groupMessageList.toString());
+//                            resetBean(groupMessageList);
+//                            groupChatAdapter.setNewData(groupMesList);
+//                            groupChatAdapter.notifyDataSetChanged();
                             mChatMsgList.refreshComplete();
                         }
                     }, 1500);

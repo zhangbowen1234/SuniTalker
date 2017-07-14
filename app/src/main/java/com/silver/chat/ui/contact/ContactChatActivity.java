@@ -57,7 +57,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
     private RelativeLayout mShowHead;
     private ChatMessageAdapter chatMessageAdapter;
     private ViewPager mFaceViewPager;
-    private LinearLayout mLlContent;
+    private LinearLayout mLlContent,mLl_title_name;
     private String friendId, userId, chatType;
     private ImageView mBack, ivLocation;
     private EmotionLayout mElEmotion;
@@ -157,14 +157,14 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                     mMyHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            SSP2PMessage ssp2PMessage = p2PMessageList.get((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1));
-                            long messageTime = ssp2PMessage.getMessageTime();
-                            Log.e("aa", ssp2PMessage.getSourceId() + "/" + ssp2PMessage.getContent());
-                            List<SSP2PMessage> p2PMsgList = SSEngine.getInstance().getP2PMessageList(userId, friendId, messageTime, 10);
-                            p2PMessageList.addAll((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1), p2PMsgList);
-                            resetBean(p2PMessageList);
-                            chatMessageAdapter.setNewData(chatMessageList);
-                            chatMessageAdapter.notifyDataSetChanged();
+//                            SSP2PMessage ssp2PMessage = p2PMessageList.get((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1));
+//                            long messageTime = ssp2PMessage.getMessageTime();
+//                            Log.e("aa", ssp2PMessage.getSourceId() + "/" + ssp2PMessage.getContent());
+//                            List<SSP2PMessage> p2PMsgList = SSEngine.getInstance().getP2PMessageList(userId, friendId, messageTime, 10);
+//                            p2PMessageList.addAll((chatMessageAdapter.getItemCount() - 1) - (chatMessageAdapter.getItemCount() - 1), p2PMsgList);
+//                            resetBean(p2PMessageList);
+//                            chatMessageAdapter.setNewData(chatMessageList);
+//                            chatMessageAdapter.notifyDataSetChanged();
                             mChatMsgList.refreshComplete();
                         }
                     }, 1500);
@@ -199,13 +199,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
         mElEmotion.setEmotionSettingVisiable(true);
         mElEmotion.setEmotionSelectedListener(this);
         //开启定位信息界面
-        ivLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ContactChatActivity.this, MyLocationActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
-            }
-        });
+        ivLocation.setOnClickListener(this);
         mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
             @Override
             public void onEmotionAddClick(View view) {
