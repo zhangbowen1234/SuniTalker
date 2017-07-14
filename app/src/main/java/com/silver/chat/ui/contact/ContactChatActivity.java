@@ -24,7 +24,10 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.ChatMessageBean;
+import com.silver.chat.ui.login.RegisterPhoneActivity;
+import com.silver.chat.ui.mine.UserInfoActivity;
 import com.silver.chat.util.PreferenceUtil;
+import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
@@ -107,6 +110,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
         mElEmotion = (EmotionLayout) findViewById(R.id.elEmotion);
         mLlContent = (LinearLayout) findViewById(R.id.llContent);
         ivLocation = (ImageView) findViewById(R.id.iv_location);
+        mLl_title_name = (LinearLayout) findViewById(R.id.ll_title_name);
         mChatMessage = new SSP2PMessage();
         /*设置管理*/
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -194,6 +198,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
         /*表情*/
         mSendMsg.setOnClickListener(this);
         mBack.setOnClickListener(this);
+        mLl_title_name.setOnClickListener(this);
         /*实现IEmotionSelectedListener接口，手动实现图文混排*/
         mElEmotion.setEmotionAddVisiable(true);
         mElEmotion.setEmotionSettingVisiable(true);
@@ -305,6 +310,9 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                 break;
             case R.id.title_left_back:
                 finish();
+                break;
+            case R.id.ll_title_name:
+
                 break;
         }
     }
