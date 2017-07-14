@@ -24,10 +24,12 @@ import com.silver.chat.network.requestbean.AgreeFriendAddBody;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.GroupMemberBean;
 import com.silver.chat.network.responsebean.QueryUserInfoBean;
+import com.silver.chat.util.NetUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.recycleview.BaseQuickAdapter;
 import com.silver.chat.view.recycleview.listenner.SimpleClickListener;
+import com.ssim.android.constant.SSPublishType;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSNotificationListener;
 import com.ssim.android.model.notification.SSFriendNotification;
@@ -35,6 +37,8 @@ import com.ssim.android.model.notification.SSNotification;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ssim.android.constant.SSPublishType.NOTIFICATION_ADD_FRIEND;
 
 /**
  * 作者：hibon on 2017/4/16 14:14
@@ -54,9 +58,12 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     private List<SSFriendNotification> mUserList;
     private NewFriendAdapter addFriendAdatpter;
     private BaseDao<GroupMemberBean> mDao;
-    private String sourceId, content;
+    private String uSourceId, uContent;
     private SSFriendNotification mSSFriendNotification;
     private QueryUserInfoBean queryUserInfoBean;
+    private String sourceNickName, sourceAvatar;
+    private SSEngine instance;
+
 
     @Override
     protected int getLayoutId() {
@@ -75,6 +82,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         /*设置布局管理器*/
         mNFRecyclerList.setLayoutManager(linearLayoutManager);
         mUserList = new ArrayList<SSFriendNotification>();
+        friendNotificationList = new ArrayList<SSFriendNotification>();
         mDao = DBHelper.get().dao(GroupMemberBean.class);
         queryUserInfoBean = new QueryUserInfoBean();
 
@@ -89,10 +97,15 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         mAvatar = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
 
         /*SDK中取得好友添加申请通知列表*/
-        friendNotificationList = SSEngine.getInstance().getFriendNotificationList();
-
+        instance = AppContext.getInstance().instance;
+        if (NetUtils.isConnected(mContext)) {
+            friendNotificationList = instance.getFriendNotificationList();
+            Log.e("friendNotificationList",friendNotificationList+"");
+        }
+        if (friendNotificationList != null) {
         /*查询数据库*/
-        QueryDbParent();
+            QueryDbParent();
+        }
         if (addFriendAdatpter == null) {
             addFriendAdatpter = new NewFriendAdapter(R.layout.item_new_friend, mUserList);
         }
@@ -108,23 +121,25 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void run() {
                 for (int i = 0; i < friendNotificationList.size(); i++) {
-                    sourceId = friendNotificationList.get(i).getSourceId();
-                    content = friendNotificationList.get(i).getContent();
+                    String sourceId = friendNotificationList.get(i).getSourceId();
+                    String content = friendNotificationList.get(i).getContent();
 
                     List<GroupMemberBean> userInfoList = mDao.query(WhereInfo.get().equal("userId", sourceId));
                     Log.e("onMainThread", "data+" + userInfoList);
-                    mSSFriendNotification = new SSFriendNotification();
+
                     if (userInfoList.isEmpty()) {
                         /*其次从网络获取数据*/
-                        httpIdQueryList();
+                        httpIdQueryList(sourceId,content);
                     } else {
-                        String mDaoUserId = String.valueOf(userInfoList.get(0).getUserId());
-                        Log.e("mDao_nickName", userInfoList.get(0).getNickName());
+                        mSSFriendNotification = new SSFriendNotification();
+                        sourceAvatar = userInfoList.get(0).getAvatar();
+                        sourceNickName = userInfoList.get(0).getNickName();
+                        Log.e("mDao_nickName", sourceNickName + "//" + sourceId + "//" + content);
+                        mSSFriendNotification.setSourceId(sourceId);
                         mSSFriendNotification.setContent(content);
-                        mSSFriendNotification.setSourceAvatar(userInfoList.get(0).getAvatar());
-                        mSSFriendNotification.setSourceName(userInfoList.get(0).getNickName());
+                        mSSFriendNotification.setSourceAvatar(sourceAvatar);
+                        mSSFriendNotification.setSourceName(sourceNickName);
                         mUserList.add(mSSFriendNotification);
-                        Log.e("a", sourceId + "/" + mDaoUserId + "/" + content);
                         handler.sendEmptyMessage(0);
                     }
                 }
@@ -136,12 +151,28 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     /**
      * 通过好友Id获取好友信息
      */
-    private void httpIdQueryList() {
-        Log.e("httpIdQueryList", "sourceId:" + sourceId + "==content:" + content);
-        SSIMFrendManger.idQueryUserInfo(mContext, token, sourceId, new ResponseCallBack<BaseResponse<QueryUserInfoBean>>() {
+    private void httpIdQueryList(String id,String content) {
+        Log.e("httpIdQueryList", "sourceId:" + id + "==content:" + content);
+        uSourceId = id;
+        uContent = content;
+        SSIMFrendManger.idQueryUserInfo(mContext, token, id, new ResponseCallBack<BaseResponse<QueryUserInfoBean>>() {
             @Override
             public void onSuccess(BaseResponse<QueryUserInfoBean> queryUserInfoBeanBaseResponse) {
                 queryUserInfoBean = queryUserInfoBeanBaseResponse.data;
+                Log.e("queryUserInfoBean_name",queryUserInfoBean.getSignature());
+                if (queryUserInfoBean != null) {
+                    Log.e("queryUserInfoBean", queryUserInfoBean.toString());
+                    mSSFriendNotification = new SSFriendNotification();
+                    mSSFriendNotification.setContent(uContent);
+                    mSSFriendNotification.setSourceId(uSourceId);
+                    mSSFriendNotification.setSourceAvatar(queryUserInfoBean.getAvatar());
+                    mSSFriendNotification.setSourceName(queryUserInfoBean.getNickName());
+                    mUserList.add(mSSFriendNotification);
+                    addFriendAdatpter.addData(mUserList);
+//                    addFriendAdatpter.setNewData(mUserList);
+                    addFriendAdatpter.notifyDataSetChanged();
+                }
+
             }
 
             @Override
@@ -155,14 +186,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
             }
         });
 
-        if (queryUserInfoBean != null) {
-            Log.e("queryUserInfoBean", queryUserInfoBean.toString());
-            mSSFriendNotification.setContent(content);
-            mSSFriendNotification.setSourceAvatar(queryUserInfoBean.getAvatar());
-            mSSFriendNotification.setSourceName(queryUserInfoBean.getNickName());
-            mUserList.add(mSSFriendNotification);
 
-        }
 
 
     }
@@ -176,8 +200,17 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
                     addFriendAdatpter.setNewData(mUserList);
                     addFriendAdatpter.notifyDataSetChanged();
                     break;
+                case 1:
+                    mSSFriendNotification = new SSFriendNotification();
+                    mSSFriendNotification.setContent(uContent);
+                    mSSFriendNotification.setSourceId(uSourceId);
+                    mSSFriendNotification.setSourceAvatar(queryUserInfoBean.getAvatar());
+                    mSSFriendNotification.setSourceName(queryUserInfoBean.getNickName());
+                    mUserList.add(mSSFriendNotification);
+                    addFriendAdatpter.setNewData(mUserList);
+                    addFriendAdatpter.notifyDataSetChanged();
+                    break;
             }
-
         }
     };
 
@@ -193,7 +226,10 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Bundle mBundle = new Bundle();
-                mBundle.putString("sourceId", sourceId);
+                mBundle.putString("sourceId",addFriendAdatpter.getData().get(position).getSourceId());
+                mBundle.putString("sourceNickName", addFriendAdatpter.getData().get(position).getSourceName());
+                mBundle.putString("sourceAvatar", addFriendAdatpter.getData().get(position).getSourceAvatar());
+                mBundle.putString("content", addFriendAdatpter.getData().get(position).getContent());
                 startActivity(FriendApplyforActivity.class, mBundle);
             }
 
@@ -212,7 +248,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
                         agreeFriendAddBody.setSourceId(userId);
                         agreeFriendAddBody.setSourceName(mNickName);
                         agreeFriendAddBody.setSourceAvatar(mAvatar);
-                        agreeFriendAddBody.setTargetId(sourceId);
+                        agreeFriendAddBody.setTargetId(addFriendAdatpter.getData().get(position).getSourceId());
                         SSIMFrendManger.agreeFriend(mContext, token, agreeFriendAddBody, new ResponseCallBack<BaseResponse>() {
                             @Override
                             public void onSuccess(BaseResponse baseResponse) {
@@ -270,10 +306,13 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
             SSFriendNotification ssFriendNotiFication = (SSFriendNotification) ssNotification;
             NotificationContent = ssFriendNotiFication.getContent();
             NotificationSourceId = ssFriendNotiFication.getSourceId();
-            Log.e("申请加好友通知:", NotificationSourceId + "/" + NotificationContent);
-            friendNotificationList.add(ssFriendNotiFication);
-            /*查询数据库*/
-//            QueryDbParent();
+            SSPublishType notificationType = ssFriendNotiFication.getNotificationType();
+            Log.e("申请加好友通知:", NotificationSourceId + "/" + NotificationContent + "/" + notificationType);
+            if (notificationType == NOTIFICATION_ADD_FRIEND) {
+                friendNotificationList.add(ssFriendNotiFication);
+                /*查询数据库*/
+//                QueryDbParent();
+            }
         }
     }
 

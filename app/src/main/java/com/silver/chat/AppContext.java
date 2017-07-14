@@ -15,12 +15,11 @@ import com.silver.chat.base.Common;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.Utils;
 import com.squareup.okhttp.OkHttpClient;
-import com.ssim.android.callback.HttpResultCallback;
 import com.ssim.android.engine.SSEngine;
-import com.ssim.android.http.bean.VerifyAppKeyAndSecretResponse;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
+import com.ssim.android.provider.ContextProvider;
 
 import java.io.InputStream;
 import java.util.UUID;
@@ -30,7 +29,7 @@ import java.util.UUID;
  * 邮箱：fandy618@hotmail.com
  */
 
-public class AppContext extends MultiDexApplication implements SSMessageReceiveListener {
+public class AppContext extends MultiDexApplication implements SSMessageReceiveListener, ContextProvider {
 
     public static AppContext appContext;
     public SSMessage mSSmessage;
@@ -46,7 +45,6 @@ public class AppContext extends MultiDexApplication implements SSMessageReceiveL
         Utils.init(appContext);
         Glide.get(this)
                 .register(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(new OkHttpClient()));
-        appContext = this;
         //SSIMClient.getInstance().init(sContext);
         //初始化表情控件
         LQREmotionKit.init(this, new IImageLoader() {
@@ -59,32 +57,15 @@ public class AppContext extends MultiDexApplication implements SSMessageReceiveL
         UUID uuid = UUID.randomUUID();
         String uniqueId = uuid.toString();
         PreferenceUtil.getInstance(this).setString(PreferenceUtil.UUIQUEID, uniqueId);
+
         /**
-         *  SDK调用第一步 初始化
+         * SDK调用第一步 初始化
          */
-        SSEngine.registerApp(Common.APPKEY, Common.APPSECRET, uniqueId,
-                appContext, new HttpResultCallback<VerifyAppKeyAndSecretResponse>() {
-                    @Override
-                    public void onSuccess(VerifyAppKeyAndSecretResponse verifyAppKeyAndSecretResponse) {
-                        /**
-                         * verifyAppKeyAndSecretResponse.getCode 为1表示初始化成功，否则失败
-                         */
-                        Log.e("AppContext_onSuccess", verifyAppKeyAndSecretResponse.getCode() + "");
-                    }
+        SSEngine.init(Common.APPKEY, Common.APPSECRET, uniqueId, appContext);
 
-                    @Override
-                    public void onFailure(int i, String s) {
-                        Log.e("AppContextFailure", i + "/" + s);
-                    }
-
-                    @Override
-                    public void onError(String s) {
-                        Log.e("AppContext_onError", s);
-                    }
-                });
 
         /**
-         * 接收群和个人消息及通知监听
+         * 接收消息及通知监听
          */
         instance = SSEngine.getInstance();
         instance.setMsgRcvListener(this);
@@ -95,6 +76,7 @@ public class AppContext extends MultiDexApplication implements SSMessageReceiveL
         return appContext;
     }
 
+
     @Override
     public void receiveMsg(SSMessage ssMessage) {
         if (ssMessage instanceof SSP2PMessage) {
@@ -102,5 +84,11 @@ public class AppContext extends MultiDexApplication implements SSMessageReceiveL
             String sourceId = receiveMsg.getSourceId();
             Log.e("appContext_receiveMsg", sourceId + ":" + receiveMsg.getContent());
         }
+    }
+
+
+    @Override
+    public Context getContext() {
+        return appContext;
     }
 }
