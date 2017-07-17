@@ -16,6 +16,7 @@ import com.silver.chat.network.SSIMFrendManger;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.AskJoinGroup;
+import com.silver.chat.network.responsebean.AddFriendBean;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtil;
@@ -26,7 +27,7 @@ import java.net.URLEncoder;
 
 /**
  * 作者：hibon on 2016/11/16 14:14
- * 添加好友认证
+ * 加好友申请
  */
 
 public class AddFriendVerifyActivity extends BaseActivity implements View.OnClickListener {
@@ -230,15 +231,15 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
 
     private void sendAddFriend() {
         String  verify = toURLEncoded(verifyMsg);
-        SSIMFrendManger.goAddFriends(mContext, userId, friendId, verifyMsg, token, new ResponseCallBack<BaseResponse>() {
+        SSIMFrendManger.goAddFriends(mContext, userId, friendId, verifyMsg, token, new ResponseCallBack<AddFriendBean>() {
             @Override
-            public void onSuccess(BaseResponse baseResponse) {
-                ToastUtils.showMessage(mContext, "申请已发出");
+            public void onSuccess(AddFriendBean baseResponse) {
+                ToastUtils.showMessage(mContext, baseResponse.getErrMsg());
                 finish();
             }
             @Override
-            public void onFailed(BaseResponse baseResponse) {
-                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg()+"申请出错");
+            public void onFailed(AddFriendBean baseResponse) {
+                ToastUtils.showMessage(mContext, baseResponse.getErrMsg());
             }
 
             @Override

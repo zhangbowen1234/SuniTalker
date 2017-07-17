@@ -145,7 +145,6 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
                 }
             }
         }).start();
-
     }
 
     /**

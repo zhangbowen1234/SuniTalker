@@ -5,6 +5,7 @@ import android.content.Context;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.AgreeFriendAddBody;
 import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.AddFriendBean;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.QueryUserInfoBean;
 import com.silver.chat.network.responsebean.SearchIdBean;
@@ -59,10 +60,10 @@ public class SSIMFrendManger {
      * @param token
      * @param callBack
      */
-    public static void goAddFriends(Context context,String userId,String friendId,String comment,String token,final ResponseCallBack<BaseResponse> callBack){
+    public static void goAddFriends(Context context,String userId,String friendId,String comment,String token,final ResponseCallBack<AddFriendBean> callBack){
         ApiService imApi = RetrofitHelper.create().imApi;
-        Call<BaseResponse> baseResponseCall = imApi.addFriend(userId, friendId, comment, token);
-        BaseCallBack.enqueueBase(context,baseResponseCall,callBack);
+        Call<AddFriendBean> baseResponseCall = imApi.addFriend(userId, friendId, comment, token);
+        BaseCallBack.enqueueBase2(context,baseResponseCall,callBack);
     }
 
     /**

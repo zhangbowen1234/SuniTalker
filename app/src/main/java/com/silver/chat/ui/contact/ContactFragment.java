@@ -42,8 +42,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static android.R.attr.data;
-
 /**
  * 作者：hibon on 2016/11/16 14:14
  * 联系人
@@ -247,11 +245,11 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                     mDao.asyncTask(new EasyRun<List<ContactListBean>>() {
                         @Override
                         public List<ContactListBean> run() throws Exception {
-
+                            /*查询数据库全部文件*/
                             List<ContactListBean> query = mDao.queryForAll();
                             Log.e("mDao.asTk_run", "query:" + query);
                         /*删除原始文件*/
-//                            mDao.delete(query);
+                            mDao.delete(query);
                         /*保存新数据*/
                         if (mConList != null)
                             mDao.create(mConList);
@@ -264,9 +262,6 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
                             Log.e("mDao.asTk_onMainThread", "data:" + data);
                             if (data.isEmpty()) {
                                 ToastUtils.showMessage(mActivity, mActivity.getResources().getString(R.string.contactlist_null));
-                                if (contactListAdapter != null) {
-                                    contactListAdapter.notifyDataSetChanged();
-                                }
                             } else {
                                 mContactList = data;
                                 /**
@@ -298,7 +293,8 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 
     public List<ContactListBean> getSortData() {
         Log.e(" mDao.queryForAll():", mDao.queryForAll() + "");
-        return mDao.query(WhereInfo.get().equal("userId", PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "")));
+        List<ContactListBean> sortData = mDao.query(WhereInfo.get().equal("userId", PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.USERID, "")));
+            return sortData;
     }
 
 
@@ -332,7 +328,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     public void onResume() {
         super.onResume();
         Log.e("ContactFragment_onResume", "++++++++");
-        QueryDbParent();
+//        QueryDbParent();
     }
 
     @Override

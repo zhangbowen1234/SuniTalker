@@ -29,6 +29,10 @@ import com.ssim.android.model.notification.friend.SSAddFriendNotification;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 作者：hibon on 2016/11/16 14:14
+ * 接受好友申请
+ */
 public class FriendApplyforActivity extends BaseActivity implements SSNotificationListener, View.OnClickListener {
 
     private ImageView mBack;
