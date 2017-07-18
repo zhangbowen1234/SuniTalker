@@ -171,6 +171,7 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
 //        mRefreshLayout.setOnRefreshListener(this);
         /*收到消息监听*/
         SSEngine.getInstance().setNotificationListener(this);
+        /*联系人过多后显示的回到顶部按钮*/
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -315,20 +316,19 @@ public class ContactFragment extends BasePagerFragment implements SwipeRefreshLa
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("ContactFragment_onPause", "=============");
-//        contactListAdapter.notifyDataSetChanged();
+        Log.d("ContactFragment_", "==onPause==");
     }
 
     @Override
     protected void getData() {
-        Log.e("ContactFragment_getData", "getData++++++");
+        Log.e("ContactFragment_", "+++getData+++");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("ContactFragment_onResume", "++++++++");
-//        QueryDbParent();
+        Log.e("ContactFragment_", "+++onResume+++");
+        QueryDbParent();
     }
 
     @Override

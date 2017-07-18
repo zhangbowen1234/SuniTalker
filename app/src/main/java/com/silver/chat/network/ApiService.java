@@ -15,7 +15,6 @@ import com.silver.chat.network.requestbean.SetDiscuMsgRemindBody;
 import com.silver.chat.network.requestbean.SetGroupManagerBody;
 import com.silver.chat.network.responsebean.AddGroupMemBean;
 import com.silver.chat.network.responsebean.BaseResponse;
-import com.silver.chat.network.responsebean.AddFriendBean;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.DisscusBean;
 import com.silver.chat.network.responsebean.GroupBean;
@@ -111,7 +110,7 @@ public interface ApiService {
 
     //申请添加好友
     @PUT("imx/leaf/friend/{userId}/{friendId}/{comment}")
-    Call<AddFriendBean> addFriend(@Path("userId")String userId, @Path("friendId")String friendId, @Path("comment")String comment, @Header("token")String token);
+    Call<BaseResponse> addFriend(@Path("userId")String userId, @Path("friendId")String friendId, @Path("comment")String comment, @Header("token")String token);
 
     //搜索用户
     @GET("imx/leaf/searchuser/{type}/{condition}/{page}/{count}")

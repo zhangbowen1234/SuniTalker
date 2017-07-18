@@ -161,7 +161,11 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
                     @Override
                     public void onFailed(BaseResponse baseResponse) {
                         Log.e("onSuccess", baseResponse.toString());
-                        ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                        if (baseResponse.getStatusCode() ==0){
+                            ToastUtils.showMessage(mContext,"已添加");
+                        }else {
+                            ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                        }
                     }
 
                     @Override
