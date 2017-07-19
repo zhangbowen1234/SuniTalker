@@ -23,7 +23,6 @@ import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.adapter.GroupChatAdapter;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.entity.ChatMessageBean;
 import com.silver.chat.entity.GroupMessageBean;
 import com.silver.chat.ui.contact.MyLocationActivity;
 import com.silver.chat.util.PreferenceUtil;
@@ -64,8 +63,8 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
     private String userId,groupId,groupName;
     private long timeStamp;
     //private GroupChatMessageAdapter chatMessageAdapter;
-    private List<SSGroupMessage> groupMessageList = new ArrayList<>();
-    private List<GroupMessageBean> groupMesList;
+    private List<SSGroupMessage> groupMessageList ;
+    private List<GroupMessageBean> groupMesList = new ArrayList<>();
     private GroupChatAdapter groupChatAdapter;
     private GroupMessageBean groupMessageBean;
     private static final int REQUEST_CODE = 201;
@@ -127,7 +126,7 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
     protected void initData() {
         super.initData();
         mTitleBar.setTitleText(groupName + "");
-        groupMessageList = AppContext.getInstance().instance.getGroupMessageList(userId, groupId, -1, 10);
+        groupMessageList = SSEngine.getInstance().getGroupMessageList(userId, groupId, -1, 10);
         resetBean(groupMessageList);
         groupChatAdapter = new GroupChatAdapter(groupMesList);
         //chatMessageAdapter = new GroupChatMessageAdapter(R.layout.chat_message_item, groupMesList);
@@ -169,9 +168,8 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
 
     //条目展示用的RecycleView的Adapter是框架因为条目展示的泛型第一个参数时一个实体类需要继承BaseMulityItem，所以此处对bean重新封装一下
     private void resetBean(List<SSGroupMessage> groupMessageList) {
-        groupMesList = new ArrayList<>();
         for (int i = 0; i < groupMessageList.size(); i++) {
-            GroupMessageBean groupMessageBean = new GroupMessageBean(groupMessageList.get(i).getContentType());
+            groupMessageBean = new GroupMessageBean(groupMessageList.get(i).getContentType());
             groupMessageBean.setMessageTime(groupMessageList.get(i).getMessageTime());
             groupMessageBean.setContent(groupMessageList.get(i).getContent());
             groupMessageBean.setContentType(groupMessageList.get(i).getContentType());
@@ -287,18 +285,17 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
                 if ("".equals(content) || content == null) {
                     ToastUtils.showMessage(mContext, "发送内容不能为空");
                 } else {
+                    inputEdit.setText("");
                     groupMessageBean = new GroupMessageBean(SSMessageFormat.TEXT);
                     //获取当前时间的时间戳
                     timeStamp = System.currentTimeMillis();
-                    mShowHead.setVisibility(View.INVISIBLE);
-                    inputEdit.setText("");
                     groupMessageBean.setContent(content);
                     groupMessageBean.setSourceId(userId);
                     groupMessageBean.setGroupId(groupId);
                     groupMessageBean.setMessageTime(timeStamp);
                     groupMesList.add(groupMessageBean);
-
                     groupChatAdapter.notifyDataSetChanged();
+                    mShowHead.setVisibility(View.INVISIBLE);
                     mChatMsgList.smoothScrollToPosition(groupChatAdapter.getItemCount() - 1);
 
                     SSEngine instance = SSEngine.getInstance();

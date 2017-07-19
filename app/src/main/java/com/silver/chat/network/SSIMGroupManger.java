@@ -236,4 +236,17 @@ public class SSIMGroupManger {
         Call<BaseResponse<SetGroupManagerBody>> groupMember = imApi.GroupDelete(token,setGroupManagerBody);
         BaseCallBack.enqueue(context,groupMember,callBack);
     }
+
+    /**
+     * 修改群名片
+     * @param context
+     * @param callBack
+     */
+    public static void modifyGroupNickName(Context context,String verson, String token,String userId,int groupId,String groupNickname, final ResponseCallBack<BaseResponse> callBack) {
+        ApiService imApi = RetrofitHelper.create().imApi;
+        Call<BaseResponse> groupMember = imApi.modifyGroupNickName(verson,token,userId,groupId,groupNickname);
+        BaseCallBack.enqueueBase(context,groupMember,callBack);
+    }
+
+
 }

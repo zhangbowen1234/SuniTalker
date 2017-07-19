@@ -163,29 +163,29 @@ public class GroupChatAdapter extends BaseMultiItemQuickAdapter<GroupMessageBean
 
 
 
-    /**
-     *设置用户头像
-     * @param rightPhotoView
-     */
-    private void setUserAvatar(final ImageView rightPhotoView) {
-        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
-        SSIMLoginManger.getUserInfo(mContext, Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
-
-            @Override
-            public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
-                String avatar = userInfoBeanBaseResponse.data.getAvatar();
-                GlideUtil.loadAvatar(rightPhotoView,avatar);
-            }
-
-            @Override
-            public void onFailed(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
-                ToastUtil.toastMessage(mContext,userInfoBeanBaseResponse.getStatusMsg());
-            }
-
-            @Override
-            public void onError() {
-            }
-        });
-    }
+//    /**
+//     *设置用户头像
+//     * @param rightPhotoView
+//     */
+//    private void setUserAvatar(final ImageView rightPhotoView) {
+//        String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
+//        SSIMLoginManger.getUserInfo(mContext, Common.version, token, new ResponseCallBack<BaseResponse<UserInfoBean>>() {
+//
+//            @Override
+//            public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
+//                String avatar = userInfoBeanBaseResponse.data.getAvatar();
+//                GlideUtil.loadAvatar(rightPhotoView,avatar);
+//            }
+//
+//            @Override
+//            public void onFailed(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
+//                ToastUtil.toastMessage(mContext,userInfoBeanBaseResponse.getStatusMsg());
+//            }
+//
+//            @Override
+//            public void onError() {
+//            }
+//        });
+//    }
 
 }

@@ -52,7 +52,7 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="b321ef3284604538e3a31d682fa5b17b"/>
-        <!--Sun高德key  e16acd526c40c90cf72c8233e6122e3f-->
+        <!--Sun高德key  b321ef3284604538e3a31d682fa5b17b-->
         <activity android:name=".ui.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

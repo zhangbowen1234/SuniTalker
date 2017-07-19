@@ -195,4 +195,8 @@ public interface ApiService {
     @POST("imx/{version}/user/group/quite")
     Call<BaseResponse> exitGroup(@Path("version") String version,@Header("token")String token, @Body ExitGroupBody exitGroupBody);
 
+    //修改群昵称
+    @POST("imx/{version}/{userId}/{groupId}/{groupNickname}")
+    Call<BaseResponse> modifyGroupNickName(@Path("version") String version,@Header("token")String token,@Path("userId")String userId,@Path("groupId")int groupId,@Path("groupNickname")String groupNickname);
+
 }

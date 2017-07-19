@@ -123,8 +123,7 @@ public class GroupDetailActivity extends BaseActivity {
     @Override
     protected void initData() {
         tvGroupname.setText(groupName);
-        lists = new ArrayList() {
-        };
+        lists = new ArrayList() {};
         String[] stringArray1 = getResources().getStringArray(R.array.group_qunzhu);
         String[] stringArray2 = getResources().getStringArray(R.array.group_commonmember);
         String[] stringArray3 = getResources().getStringArray(R.array.group_guanliyuan);
@@ -284,6 +283,7 @@ public class GroupDetailActivity extends BaseActivity {
             case R.id.tv_nickname:
             case R.id.rl_group_nickname:
                 Intent intent3 = new Intent(this, ModifyNickNameActivity.class);
+                intent3.putExtra("groupId",groupId);
                 startActivityForResult(intent3, REQUEST_CODE3);
                 break;
 

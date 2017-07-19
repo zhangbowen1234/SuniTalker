@@ -94,7 +94,10 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         //文件全路径
         imagePath = path + imageName;
         Log.d("path", "initView: "+imagePath);
-
+        tempFile = new File(imagePath);
+        if (!(tempFile.exists())) {
+            tempFile.mkdirs();
+        }
         //显示头像
         iconUrl = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
         GlideUtil.loadAvatar(mIvAvatar, iconUrl);
@@ -290,10 +293,7 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
      * 上传头像
      */
     private void upLoad() {
-        tempFile = new File(imagePath);
-        if (!(tempFile.exists())) {
-            tempFile.mkdirs();
-        }
+
         //创建RequestBody,用于封装构建RequestBody
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), tempFile);
         // MultipartBody.Part  和后端约定好Key，这里的partName是用image

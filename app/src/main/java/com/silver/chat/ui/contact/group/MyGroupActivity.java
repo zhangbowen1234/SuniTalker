@@ -23,6 +23,7 @@ import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.ui.contact.SearchContactActivity;
+import com.silver.chat.util.GlideUtil;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.CircleImageView;
 
@@ -301,7 +302,7 @@ public class MyGroupActivity extends BaseActivity {
                 }
             });
             holder.tvName.setText(item.getGroupName());
-
+            GlideUtil.loadAvatar(holder.ivIcon,item.getAvatar());
 
             return convertView;
 
