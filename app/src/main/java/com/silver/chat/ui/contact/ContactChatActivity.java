@@ -67,7 +67,6 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
     private EmotionKeyboard mEmotionKeyboard;
     private FrameLayout mFlEmotionView;
 
-    private SSP2PMessage mChatMessage;
     private long timestamp;
     private List<SSP2PMessage> p2PMessageList;
     private List<ChatMessageBean> chatMessageList  = new ArrayList<>();
@@ -111,7 +110,6 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
         mLlContent = (LinearLayout) findViewById(R.id.llContent);
         ivLocation = (ImageView) findViewById(R.id.iv_location);
         mLl_title_name = (LinearLayout) findViewById(R.id.ll_title_name);
-        mChatMessage = new SSP2PMessage();
         /*设置管理*/
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(false);

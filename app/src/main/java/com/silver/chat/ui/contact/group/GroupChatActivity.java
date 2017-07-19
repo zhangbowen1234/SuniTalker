@@ -59,7 +59,6 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
     private EmotionKeyboard mEmotionKeyboard;
     private FrameLayout mFlEmotionView;
 
-    //private SSGroupMessage ssGroupMessage;
     private String userId,groupId,groupName;
     private long timeStamp;
     //private GroupChatMessageAdapter chatMessageAdapter;
@@ -113,7 +112,6 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setReverseLayout(false);
         mChatMsgList.setLayoutManager(linearLayoutManager);
-
         //将内容输入框交给EmotionLayout来处理
         mElEmotion.attachEditText(inputEdit);
         //实现内容区与表情区仿微信切换效果
