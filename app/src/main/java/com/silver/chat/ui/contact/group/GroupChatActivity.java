@@ -23,7 +23,6 @@ import com.silver.chat.AppContext;
 import com.silver.chat.R;
 import com.silver.chat.adapter.GroupChatAdapter;
 import com.silver.chat.base.BaseActivity;
-import com.silver.chat.entity.ChatMessageBean;
 import com.silver.chat.entity.GroupMessageBean;
 import com.silver.chat.ui.contact.MyLocationActivity;
 import com.silver.chat.util.PreferenceUtil;
@@ -127,7 +126,7 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
     protected void initData() {
         super.initData();
         mTitleBar.setTitleText(groupName + "");
-        groupMessageList = AppContext.getInstance().instance.getGroupMessageList(userId, groupId, -1, 10);
+        groupMessageList = AppContext.getInstance().instance.getGroupMessageList(groupId, -1, 10);
         resetBean(groupMessageList);
         groupChatAdapter = new GroupChatAdapter(groupMesList);
         //chatMessageAdapter = new GroupChatMessageAdapter(R.layout.chat_message_item, groupMesList);

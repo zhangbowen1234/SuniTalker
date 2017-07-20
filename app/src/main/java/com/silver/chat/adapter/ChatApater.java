@@ -23,15 +23,13 @@ import com.silver.chat.util.MediaFileUtils;
 import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
+import com.ssim.android.constant.SSConversationType;
 import com.ssim.android.constant.SSMessageFormat;
-import com.ssim.android.constant.SSSessionType;
-import com.ssim.android.model.notification.SSGroupNotification;
-import com.ssim.android.model.session.SSSession;
+import com.ssim.android.model.session.SSConversation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.id;
 import static com.j256.ormlite.field.DataPersisterManager.clear;
 import static java.util.Collections.addAll;
 
@@ -44,7 +42,7 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
 
     public static List<ChatBean> mChatList;
     public static String sourceId;
-    public static List<SSSession> sessionList;
+    public static List<SSConversation> conversationList;
 
     public ChatApater(List<ChatBean> data) {
         super(data);
@@ -116,50 +114,50 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
      */
     public static List<ChatBean> getChatData(Context context) {
         String userId = PreferenceUtil.getInstance(context).getString(PreferenceUtil.USERID, "");
-        sessionList = AppContext.getInstance().instance.getSessionList(userId);
+         conversationList = AppContext.getInstance().instance.getConversationList();
         mChatList = new ArrayList<>();
-        if (sessionList.size() != 0){
-            for (int i = 0; i < sessionList.size(); i++) {
-                SSSessionType sessionType = sessionList.get(i).getSessionType();
+        if (conversationList.size() != 0){
+            for (int i = 0; i < conversationList.size(); i++) {
+                SSConversationType conversationType = conversationList.get(i).getConversationType();
                 String friendAvatar, friendNickname, groupName, groupAvatar, groupId, contents, times;
                 SSMessageFormat contentType;
-                if (sessionType == SSSessionType.P2PCHAT) {
+                if (conversationType == SSConversationType.P2PCHAT) {
                     //好友聊天列表
-                    sourceId = sessionList.get(i).getSourceId();
+                    sourceId = conversationList.get(i).getSourceId();
                     BaseDao<ContactListBean> mDao = DBHelper.get().dao(ContactListBean.class);
                     List<ContactListBean> friendId = mDao.query(WhereInfo.get().equal("friendId", sourceId));
                     Log.d("getChatData: ",friendId.toString());
                     for (int j = 0; j < friendId.size(); j++) {
                         friendAvatar = friendId.get(j).getAvatar();
                         friendNickname = friendId.get(j).getNickName();
-                        contents= sessionList.get(i).getContent();
-                        times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
-                        contentType = sessionList.get(i).getContentType();
+                        contents= conversationList.get(i).getContent();
+                        times = DateUtils.formatTimeSimple(conversationList.get(i).getSendTime());
+                        contentType = conversationList.get(i).getContentType();
                         Log.e("sendTimes:", times+contents);
                         mChatList.add(new ChatBean(sourceId, friendNickname, friendAvatar, ChatBean.CHAT_SINGLR,times,contents, contentType));
                     }
                     //获取群组聊天列表
-                }else if (sessionType == SSSessionType.GROUPCHAT){
-                    groupId = sessionList.get(i).getGroupId();
+                }else if (conversationType == SSConversationType.GROUPCHAT){
+                    groupId = conversationList.get(i).getGroupId();
                     BaseDao<GroupBean> mDao = DBHelper.get().dao(GroupBean.class);
                     List<GroupBean> groupBeen = mDao.query(WhereInfo.get().equal("groupId", groupId));
                     for (int j = 0; j < groupBeen.size(); j++) {
                         groupAvatar = groupBeen.get(j).getAvatar();
                         groupName = groupBeen.get(j).getGroupName();
-                        contents = sessionList.get(i).getContent();
-                        times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
-                        contentType = sessionList.get(i).getContentType();
-//                    ssSessionTopLevel = sessionList.get(i).getTopLevel();
-                        Log.e("groupAvatar:", groupBeen.get(j).getAvatar()+groupBeen.get(j).getGroupName()+sessionList.get(i).getContent());
+                        contents = conversationList.get(i).getContent();
+                        times = DateUtils.formatTimeSimple(conversationList.get(i).getSendTime());
+                        contentType = conversationList.get(i).getContentType();
+//                    ssSessionTopLevel = conversationList.get(i).getTopLevel();
+                        Log.e("groupAvatar:", groupBeen.get(j).getAvatar()+groupBeen.get(j).getGroupName()+conversationList.get(i).getContent());
                         mChatList.add(new ChatBean(contents, ChatBean.CHAT_GROUP, times, groupId, groupName, groupAvatar,contentType));
                     }
-                }else if (sessionType == SSSessionType.GROUPNOTI){
+                }else if (conversationType == SSConversationType.GROUPNOTI){
                     //群通知
-//                    contents = sessionList.get(i).getContent();
-//                    groupId = sessionList.get(i).getTargetId();
-//                    groupName = sessionList.get(i).getGroupName();
-//                    groupAvatar = sessionList.get(i).getGroupAvatar();
-//                    times = DateUtils.formatTimeSimple(sessionList.get(i).getSendTime());
+//                    contents = conversationList.get(i).getContent();
+//                    groupId = conversationList.get(i).getTargetId();
+//                    groupName = conversationList.get(i).getGroupName();
+//                    groupAvatar = conversationList.get(i).getGroupAvatar();
+//                    times = DateUtils.formatTimeSimple(conversationList.get(i).getSendTime());
 //                    mChatList.add(new ChatBean(contents,ChatBean.CHAT_GROUP_NOTICE, times, groupId, groupName,groupAvatar,contentType));
                 }
             }

@@ -2,7 +2,6 @@ package com.silver.chat.entity;
 
 import com.silver.chat.view.recycleview.entity.MultiItemEntity;
 import com.ssim.android.constant.SSMessageFormat;
-import com.ssim.android.constant.SSSessionTopLevel;
 
 import java.io.Serializable;
 import java.util.Calendar;

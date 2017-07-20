@@ -44,14 +44,23 @@
 
         </LinearLayout>
 
-        <TextView
+        <!--<TextView-->
+            <!--android:id="@+id/agree_add_friend"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:gravity="center"-->
+            <!--android:paddingLeft="@dimen/font_20"-->
+            <!--android:paddingRight="@dimen/font_10"-->
+            <!--android:text="接受"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="@dimen/font_10" />-->
+        <ImageView
             android:id="@+id/agree_add_friend"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingLeft="@dimen/font_15"
-            android:paddingRight="@dimen/font_10"
-            android:text="接受"
+            android:layout_marginRight="@dimen/dp_20"
+            android:background="@drawable/right_in_img"
             android:textColor="@color/white"
             android:textSize="@dimen/font_10" />
 

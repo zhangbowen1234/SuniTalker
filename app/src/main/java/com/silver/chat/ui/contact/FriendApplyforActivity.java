@@ -125,7 +125,6 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
                 SSIMFrendManger.agreeFriend(mContext, token, agreeFriendAddBody, new ResponseCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        Log.e("onSuccess", baseResponse.toString());
                         ToastUtils.showMessage(mContext, "已同意");
                         ContactListBean sortModel = new ContactListBean();
                         sortModel.setNickName(sourceNickName);
@@ -154,6 +153,7 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
 
                             @Override
                             public void onMainThread(List<ContactListBean> data) throws Exception {
+                                finish();
                             }
                         });
                     }
@@ -166,6 +166,7 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
                         }else {
                             ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
                         }
+                        finish();
                     }
 
                     @Override

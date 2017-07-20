@@ -9,8 +9,8 @@ import com.silver.chat.database.helper.DBHelper;
 import com.silver.chat.database.info.WhereInfo;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.util.PreferenceUtil;
-import com.ssim.android.constant.SSSessionType;
-import com.ssim.android.model.session.SSSession;
+import com.ssim.android.constant.SSConversationType;
+import com.ssim.android.model.session.SSConversation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +29,13 @@ public class DataServer {
 
     public static List<ChatBean> getChatData(Context context) {
         String userId = PreferenceUtil.getInstance(context).getString(PreferenceUtil.USERID, "");
-        List<SSSession> sessionList = AppContext.getInstance().instance.getSessionList(userId);
-
-        Log.e("sessionList:", sessionList.size() + "" + sessionList.get(0).getSessionType());
+        List<SSConversation> conversationList = AppContext.getInstance().instance.getConversationList();
+        Log.e("conversationList:", conversationList.size() + "" + conversationList.get(0).getConversationType());
         String avatar = null;
-        for (int i = 0; i < sessionList.size(); i++) {
-            SSSessionType sessionType = sessionList.get(i).getSessionType();
-            if (sessionType == SSSessionType.P2PCHAT) {
-                String sourceId = sessionList.get(i).getSourceId();
+        for (int i = 0; i < conversationList.size(); i++) {
+            SSConversationType ssConversationType = conversationList.get(i).getConversationType();
+            if (ssConversationType == ssConversationType.P2PCHAT) {
+                String sourceId = conversationList.get(i).getSourceId();
                 Log.e("sourceId:", sourceId);
                 BaseDao<ContactListBean> mDao = DBHelper.get().dao(ContactListBean.class);
                 List<ContactListBean> friendId = mDao.query(WhereInfo.get().equal("friendId", sourceId));

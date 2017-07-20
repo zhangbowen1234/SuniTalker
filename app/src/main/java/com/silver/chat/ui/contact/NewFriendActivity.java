@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.silver.chat.AppContext;
 import com.silver.chat.R;
@@ -51,7 +50,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
     private RecyclerView mNFRecyclerList;
     private LinearLayoutManager linearLayoutManager;
     private LinearLayout mAddFriend;
-    private TextView agreeAdd;
+    private ImageView agreeAdd;
     private String token, userId, mNickName, mAvatar;
     private AgreeFriendAddBody agreeFriendAddBody;
     private List<SSFriendNotification> friendNotificationList;
@@ -76,7 +75,8 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
         mBack = (ImageView) findViewById(R.id.title_left_back);
         mNFRecyclerList = (RecyclerView) findViewById(R.id.new_friend_list);
         mAddFriend = (LinearLayout) findViewById(R.id.ll_add_friend);
-        agreeAdd = (TextView) findViewById(R.id.agree_add_friend);
+//        agreeAdd = (TextView) findViewById(R.id.agree_add_friend);
+        agreeAdd = (ImageView) findViewById(R.id.agree_add_friend);
         linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         /*设置布局管理器*/
@@ -127,7 +127,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
                     List<GroupMemberBean> userInfoList = mDao.query(WhereInfo.get().equal("userId", sourceId));
                     Log.e("onMainThread", "data+" + userInfoList);
 
-                    if (userInfoList.isEmpty()) {
+//                    if (userInfoList.isEmpty()) {
                         /*其次从网络获取数据*/
 //                        httpIdQueryList(sourceId,content);
                         uSourceId = sourceId;
@@ -145,9 +145,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
                                     mSSFriendNotification.setSourceAvatar(queryUserInfoBean.getAvatar());
                                     mSSFriendNotification.setSourceName(queryUserInfoBean.getNickName());
                                     mUserList.add(mSSFriendNotification);
-//                                    addFriendAdatpter.addData(mUserList);
-                                    addFriendAdatpter.setNewData(mUserList);
-                                    addFriendAdatpter.notifyDataSetChanged();
+                                    handler.sendEmptyMessage(0);
                                 }
                             }
 
@@ -163,18 +161,18 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
                         });
 
 
-                    } else {
-                        mSSFriendNotification = new SSFriendNotification();
-                        sourceAvatar = userInfoList.get(0).getAvatar();
-                        sourceNickName = userInfoList.get(0).getNickName();
-                        Log.e("mDao_nickName", sourceNickName + "//" + sourceId + "//" + content);
-                        mSSFriendNotification.setSourceId(sourceId);
-                        mSSFriendNotification.setContent(content);
-                        mSSFriendNotification.setSourceAvatar(sourceAvatar);
-                        mSSFriendNotification.setSourceName(sourceNickName);
-                        mUserList.add(mSSFriendNotification);
-                        handler.sendEmptyMessage(0);
-                    }
+//                    } else {
+//                        mSSFriendNotification = new SSFriendNotification();
+//                        sourceAvatar = userInfoList.get(0).getAvatar();
+//                        sourceNickName = userInfoList.get(0).getNickName();
+//                        Log.e("mDao_nickName", sourceNickName + "//" + sourceId + "//" + content);
+//                        mSSFriendNotification.setSourceId(sourceId);
+//                        mSSFriendNotification.setContent(content);
+//                        mSSFriendNotification.setSourceAvatar(sourceAvatar);
+//                        mSSFriendNotification.setSourceName(sourceNickName);
+//                        mUserList.add(mSSFriendNotification);
+//                        handler.sendEmptyMessage(0);
+//                    }
                 }
             }
         }).start();
@@ -227,6 +225,7 @@ public class NewFriendActivity extends BaseActivity implements View.OnClickListe
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
+                    Log.e("handleMessage","mUserList" + mUserList);
                     addFriendAdatpter.setNewData(mUserList);
                     addFriendAdatpter.notifyDataSetChanged();
                     break;

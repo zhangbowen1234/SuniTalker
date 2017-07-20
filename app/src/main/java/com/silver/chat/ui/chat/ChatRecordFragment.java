@@ -23,19 +23,18 @@ import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.dialog.TopDeleteDialog;
 import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
-import com.ssim.android.constant.SSSessionTopLevel;
+import com.ssim.android.constant.SSConversationTopLevel;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
-
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.silver.chat.adapter.ChatApater.sessionList;
+import static com.silver.chat.adapter.ChatApater.conversationList;
 import static com.silver.chat.adapter.ChatApater.sourceId;
 
 /**
@@ -134,8 +133,8 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
                                 mList.add(0, chatBean);
                                 mList.remove(position + 1);
                                 refreshView();
-                                SSSessionTopLevel ssSessionTopLevel = SSSessionTopLevel.LEVEL_HIGH;
-                                sessionList.get(position).setTopLevel(ssSessionTopLevel);
+                                SSConversationTopLevel levelHigh = SSConversationTopLevel.LEVEL_HIGH;
+                                conversationList.get(position).setTopLevel(levelHigh);
                                 Log.e("onClick: ", (position + 1) +"");
                             }
                         })
@@ -143,7 +142,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
                             @Override
                             public void onClick(View view) {
                                 mList.remove(mChatApater.getItem(position));
-                                AppContext.getInstance().instance.delSessionById(sourceId);
+                                AppContext.getInstance().instance.delConversationById(sourceId);
                                 Log.e( "setDelete: ", sourceId);
                                 ToastUtils.showMessage(getActivity(), "删除成功");
                                 mChatApater.notifyDataSetChanged();
@@ -155,8 +154,8 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
                                 //取消置顶
 //                                chatBean.setTop(0);
 //                                chatBean.setTime(System.currentTimeMillis());
-                                SSSessionTopLevel ssSessionTopLevel = SSSessionTopLevel.DEFAULT;
-                                sessionList.get(position).setTopLevel(ssSessionTopLevel);
+                                SSConversationTopLevel levelHigh = SSConversationTopLevel.DEFAULT;
+                                conversationList.get(position).setTopLevel(levelHigh);
                                 refreshView();
                             }
                         }).show();
