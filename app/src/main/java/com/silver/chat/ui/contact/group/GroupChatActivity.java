@@ -124,7 +124,7 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
     protected void initData() {
         super.initData();
         mTitleBar.setTitleText(groupName + "");
-        groupMessageList = SSEngine.getInstance().getGroupMessageList(userId, groupId, -1, 10);
+        groupMessageList = SSEngine.getInstance().getGroupMessageList(groupId, -1, 10);
         resetBean(groupMessageList);
         groupChatAdapter = new GroupChatAdapter(groupMesList);
         //chatMessageAdapter = new GroupChatMessageAdapter(R.layout.chat_message_item, groupMesList);

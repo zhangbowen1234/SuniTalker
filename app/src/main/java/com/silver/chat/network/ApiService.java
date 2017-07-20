@@ -30,8 +30,6 @@ import com.silver.chat.network.responsebean.UserInfoBean;
 import java.util.ArrayList;
 
 import okhttp3.MultipartBody;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;

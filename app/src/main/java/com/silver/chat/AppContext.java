@@ -19,7 +19,7 @@ import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
-import com.ssim.android.provider.ContextProvider;
+import com.ssim.android.provider.SSContextProvider;
 
 import java.io.InputStream;
 import java.util.UUID;
@@ -29,7 +29,7 @@ import java.util.UUID;
  * 邮箱：fandy618@hotmail.com
  */
 
-public class AppContext extends MultiDexApplication implements SSMessageReceiveListener, ContextProvider {
+public class AppContext extends MultiDexApplication implements SSMessageReceiveListener, SSContextProvider {
 
     public static AppContext appContext;
     public SSMessage mSSmessage;
@@ -62,7 +62,6 @@ public class AppContext extends MultiDexApplication implements SSMessageReceiveL
          * SDK调用第一步 初始化
          */
         SSEngine.init(Common.APPKEY, Common.APPSECRET, uniqueId, appContext);
-
 
         /**
          * 接收消息及通知监听

@@ -29,6 +29,10 @@ import com.ssim.android.model.notification.friend.SSAddFriendNotification;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 作者：hibon on 2016/11/16 14:14
+ * 接受好友申请
+ */
 public class FriendApplyforActivity extends BaseActivity implements SSNotificationListener, View.OnClickListener {
 
     private ImageView mBack;
@@ -121,7 +125,6 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
                 SSIMFrendManger.agreeFriend(mContext, token, agreeFriendAddBody, new ResponseCallBack<BaseResponse>() {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        Log.e("onSuccess", baseResponse.toString());
                         ToastUtils.showMessage(mContext, "已同意");
                         ContactListBean sortModel = new ContactListBean();
                         sortModel.setNickName(sourceNickName);
@@ -150,6 +153,7 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
 
                             @Override
                             public void onMainThread(List<ContactListBean> data) throws Exception {
+                                finish();
                             }
                         });
                     }
@@ -157,7 +161,12 @@ public class FriendApplyforActivity extends BaseActivity implements SSNotificati
                     @Override
                     public void onFailed(BaseResponse baseResponse) {
                         Log.e("onSuccess", baseResponse.toString());
-                        ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                        if (baseResponse.getStatusCode() ==0){
+                            ToastUtils.showMessage(mContext,"已添加");
+                        }else {
+                            ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
+                        }
+                        finish();
                     }
 
                     @Override

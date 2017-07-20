@@ -89,46 +89,46 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                                 String token = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.TOKEN, "");
                                 if (NetUtils.isConnected(mContext)) {//是否联网
                                     if (token != null && !"".equals(token)) {
-                                        SSIMLoginManger.outLogin(mContext,Common.version, token, new ResponseCallBack<BaseResponse>() {
+                                        SSIMLoginManger.outLogin(mContext, Common.version, token, new ResponseCallBack<BaseResponse>() {
                                             @Override
                                             public void onSuccess(BaseResponse baseResponse) {
                                                 PreferenceUtil.getInstance(mContext).setFirst(false);
                                                 PreferenceUtil.getInstance(mContext).setLog(false);
                                                 Bundle loginBundle = new Bundle();
-                                                loginBundle.putInt("type",Common.LoginType);
-                                                startActivity(LoginActivity.class,loginBundle);
+                                                loginBundle.putInt("type", Common.LoginType);
+                                                startActivity(LoginActivity.class, loginBundle);
                                                 AppManager.getInstance().finishActivity(MainActivity.class);
                                                 finish();
-                                                Toast.makeText(mContext,"退出成功",Toast.LENGTH_SHORT).show();
+                                                ToastUtils.showMessage(mContext, "退出成功");
                                             }
 
                                             @Override
                                             public void onFailed(BaseResponse baseResponse) {
-                                                Toast.makeText(mContext,baseResponse.getStatusMsg(),Toast.LENGTH_SHORT).show();
-                                                if (baseResponse.getStatusCode() ==Common.AnewLoginCode){
-                                                    PreferenceUtil.getInstance(mContext).setFirst(false);
-                                                    PreferenceUtil.getInstance(mContext).setLog(false);
-                                                    Bundle loginBundle = new Bundle();
-                                                    loginBundle.putInt("type",Common.LoginType);
-                                                    startActivity(LoginActivity.class,loginBundle);
-                                                    AppManager.getInstance().finishActivity(MainActivity.class);
-                                                    finish();
-                                                    Toast.makeText(mContext,"退出成功",Toast.LENGTH_SHORT).show();
-                                                }
+                                                Toast.makeText(mContext, baseResponse.getStatusMsg(), Toast.LENGTH_SHORT).show();
+                                                PreferenceUtil.getInstance(mContext).setFirst(false);
+                                                PreferenceUtil.getInstance(mContext).setLog(false);
+                                                Bundle loginBundle = new Bundle();
+                                                loginBundle.putInt("type", Common.LoginType);
+                                                startActivity(LoginActivity.class, loginBundle);
+                                                AppManager.getInstance().finishActivity(MainActivity.class);
+                                                finish();
+                                                ToastUtils.showMessage(mContext, "退出成功");
                                             }
 
                                             @Override
                                             public void onError() {
-                                                Toast.makeText(mContext,"连接异常",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(mContext, "连接异常", Toast.LENGTH_SHORT).show();
                                                 PreferenceUtil.getInstance(mContext).setFirst(false);
                                                 PreferenceUtil.getInstance(mContext).setLog(false);
                                                 Bundle loginBundle = new Bundle();
-                                                loginBundle.putInt("type",Common.LoginType);
-                                                startActivity(LoginActivity.class,loginBundle);
+                                                loginBundle.putInt("type", Common.LoginType);
+                                                startActivity(LoginActivity.class, loginBundle);
                                                 finish();
+                                                ToastUtils.showMessage(mContext, "退出成功");
                                             }
                                         });
-                                    }}else {
+                                    }
+                                } else {
                                     ToastUtils.showMessage(mContext, "请检查网络!");
                                 }
                             }

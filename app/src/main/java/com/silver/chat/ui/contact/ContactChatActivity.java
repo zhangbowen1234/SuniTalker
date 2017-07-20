@@ -24,10 +24,7 @@ import com.silver.chat.R;
 import com.silver.chat.adapter.ChatMessageAdapter;
 import com.silver.chat.base.BaseActivity;
 import com.silver.chat.entity.ChatMessageBean;
-import com.silver.chat.ui.login.RegisterPhoneActivity;
-import com.silver.chat.ui.mine.UserInfoActivity;
 import com.silver.chat.util.PreferenceUtil;
-import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtil;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.CircleImageView;
@@ -137,7 +134,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
         /*
          * 私人聊天列表
          */
-        p2PMessageList = SSEngine.getInstance().getP2PMessageList(userId, friendId, -1, 10);
+        p2PMessageList = SSEngine.getInstance().getP2PMessageList(friendId, -1, 10);
         resetBean(p2PMessageList);
         chatMessageAdapter = new ChatMessageAdapter(chatMessageList, userAvatar);
         if (p2PMessageList.size() != 0) {

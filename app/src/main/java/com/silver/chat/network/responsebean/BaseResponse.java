@@ -13,9 +13,6 @@ public class BaseResponse<T> implements Serializable{
     private long responseTime;
     public T data;
 
-    public BaseResponse() {
-
-    }
 
     public BaseResponse(int code, String errMsg, long responseTime) {
         this.statusCode = code;

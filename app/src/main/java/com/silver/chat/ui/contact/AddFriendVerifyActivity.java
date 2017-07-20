@@ -26,7 +26,7 @@ import java.net.URLEncoder;
 
 /**
  * 作者：hibon on 2016/11/16 14:14
- * 添加好友认证
+ * 加好友申请
  */
 
 public class AddFriendVerifyActivity extends BaseActivity implements View.OnClickListener {
@@ -40,7 +40,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
     //请求体常量
     private final String INNERAPP = "innerapp";
     //用户输入的验证信息
-    private String verifyMsg,mNime;
+    private String verifyMsg, mNime;
 
     @Override
     protected int getLayoutId() {
@@ -80,7 +80,7 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
             mTitle.setText("添加群组验证");
         }
         mNime = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
-        mMsgVerify.setHint("我是"+mNime);
+        mMsgVerify.setHint("我是" + mNime);
 
         personAvatar = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.AVATAR, "");
         userName = PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.NICKNAME, "");
@@ -146,19 +146,19 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
                     if (TextUtils.equals(action, "AddFriendActivity")) {
                     /*申请添加好友*/
                         sendAddFriend();
-                    /**好友备注   暂时注掉等后台该接口*/
+                        /**好友备注   暂时注掉等后台该接口*/
 //                        remarksFdNm();
-                    }else {
+                    } else {
                         sendAddGroup();
                     }
                 } else {
-                    verifyMsg= "我是"+mNime;
+                    verifyMsg = "我是" + mNime;
                     if (TextUtils.equals(action, "AddFriendActivity")) {
                     /*申请添加好友*/
                         sendAddFriend();
                     /*好友备注*/
 //                        remarksFdNm();
-                    }else {
+                    } else {
                         sendAddGroup();
                     }
 //                    ToastUtil.toastMessage(mContext, "验证信息不能为空");
@@ -229,16 +229,18 @@ public class AddFriendVerifyActivity extends BaseActivity implements View.OnClic
     }
 
     private void sendAddFriend() {
-        String  verify = toURLEncoded(verifyMsg);
+        String verify = toURLEncoded(verifyMsg);
         SSIMFrendManger.goAddFriends(mContext, userId, friendId, verifyMsg, token, new ResponseCallBack<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse baseResponse) {
-                ToastUtils.showMessage(mContext, "申请已发出");
+                if (baseResponse.getStatusCode() == 200)
+                    ToastUtils.showMessage(mContext, "申请已发送");
                 finish();
             }
+
             @Override
             public void onFailed(BaseResponse baseResponse) {
-                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg()+"申请出错");
+                ToastUtils.showMessage(mContext, baseResponse.getStatusMsg());
             }
 
             @Override

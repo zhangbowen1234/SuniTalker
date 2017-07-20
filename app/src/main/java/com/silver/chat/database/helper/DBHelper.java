@@ -17,7 +17,7 @@ public class DBHelper extends BaseDBHelper {
     private static final int DB_VERSION = 2;
 
     //数据库名称
-    private static final String DB_NAME = "ssimdemo.db";
+    private static final String DB_NAME = "ssimdata.db";
 
     //数据表清单
     private static final Class<?>[] tables = {
