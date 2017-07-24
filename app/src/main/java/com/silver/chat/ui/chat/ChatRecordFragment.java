@@ -26,6 +26,7 @@ import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 import com.ssim.android.constant.SSConversationTopLevel;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageReceiveListener;
+import com.ssim.android.model.chat.SSGroupMessage;
 import com.ssim.android.model.chat.SSMessage;
 import com.ssim.android.model.chat.SSP2PMessage;
 
@@ -50,6 +51,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
     private MyHandler mMyHandler;
 //    public String friendid;
     private SSMessage ssMessage;
+    private SSP2PMessage receiveMsg = null;
 
     public static ChatRecordFragment newInstance() {
         Bundle args = new Bundle();
@@ -210,11 +212,11 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
             switch (msg.what) {
                 case 0:
                     /*显示新收到的消息*/
-                    if (ssMessage != null) {
+//                    if (receiveMsg != null) {
                         mList.clear();
                         mList.addAll(ChatApater.getChatData(mActivity));
                         mChatApater.notifyDataSetChanged();
-                    }
+//                    }
                     break;
             }
         }
@@ -222,10 +224,10 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
 
     @Override
     public void receiveMsg(SSMessage ssMessage) {
-        if (ssMessage instanceof SSP2PMessage) {
-            SSP2PMessage receiveMsg = (SSP2PMessage) ssMessage;
+        if (ssMessage instanceof SSP2PMessage || ssMessage instanceof SSGroupMessage) {
+            receiveMsg = (SSP2PMessage) ssMessage;
             String sourceId = receiveMsg.getSourceId();
-            Log.e("appContext_receiveMsg", sourceId + ":" + receiveMsg.getContent());
+            Log.e("appContext_receiveMsg111", sourceId + ":" + receiveMsg.getContent());
             mHandler.sendEmptyMessage(0);
         }
     }
