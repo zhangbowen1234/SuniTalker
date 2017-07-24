@@ -14,6 +14,15 @@ import android.widget.TextView;
 
 import com.silver.chat.adapter.MainPagerAdapter;
 import com.silver.chat.base.BaseActivity;
+import com.silver.chat.base.Common;
+import com.silver.chat.database.callback.EasyRun;
+import com.silver.chat.database.dao.BaseDao;
+import com.silver.chat.database.helper.DBHelper;
+import com.silver.chat.network.SSIMGroupManger;
+import com.silver.chat.network.callback.ResponseCallBack;
+import com.silver.chat.network.requestbean.JoinedGroupRequest;
+import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.ui.chat.SearchChatRecordActivity;
 import com.silver.chat.ui.contact.AddFriendActivity;
 import com.silver.chat.ui.contact.SearchContactActivity;
@@ -21,14 +30,20 @@ import com.silver.chat.ui.contact.group.CreatGroupActivity;
 import com.silver.chat.ui.contact.group.FindGroupActivity;
 import com.silver.chat.ui.mine.MyPRCodeActivity;
 import com.silver.chat.ui.mine.SettingActivity;
+import com.silver.chat.util.PreferenceUtil;
 import com.silver.chat.util.ScreenManager;
 import com.silver.chat.util.ToastUtils;
 import com.silver.chat.view.BadgedTabCustomView;
 import com.silver.chat.view.TabLayoutPlus;
 import com.silver.chat.view.dialog.TvLoginOutDialog;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static android.R.attr.data;
 
 public class MainActivity extends BaseActivity {
 
@@ -110,6 +125,8 @@ public class MainActivity extends BaseActivity {
             }
         }
         tabLayout.getTabCustomViewAt(1).setTabCount(true, 0);
+        //群组网络请求
+        getNetGroupInfo();
     }
 
     @Override
@@ -312,5 +329,69 @@ public class MainActivity extends BaseActivity {
                     }
                 }).show();
 
+    }
+    /**
+     * 请求网络获取群组信息
+     */
+    private  List<GroupBean> data;
+    private BaseDao<GroupBean> mDao;
+    private ArrayList<GroupBean> lists;
+    private GroupBean groupBean;
+    private void getNetGroupInfo() {
+        data = new ArrayList<>();
+        mDao = DBHelper.get().dao(GroupBean.class);
+        String userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
+        String token = PreferenceUtil.getInstance(this).getString(PreferenceUtil.TOKEN, "");
+        int i = Integer.parseInt(userId);
+        JoinedGroupRequest request = JoinedGroupRequest.getInstance();
+        request.setUserId(i);
+        SSIMGroupManger.getJoinGroupList(mContext, Common.version, request, token, new ResponseCallBack<BaseResponse<ArrayList<GroupBean>>>() {
+
+
+            @Override
+            public void onSuccess(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
+                data = arrayListBaseResponse.data;
+                //将数据放入数据库中
+                putLocal(data);
+            }
+
+            @Override
+            public void onFailed(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
+            }
+
+            @Override
+            public void onError() {
+
+
+            }
+        });
+    }
+    private void putLocal(final List<GroupBean> datass) {
+        lists = new ArrayList<>();
+        for (int i = 0; i < datass.size(); i++) {
+            groupBean = new GroupBean();
+            groupBean.setGroupName(datass.get(i).getGroupName());
+            groupBean.setAvatar(datass.get(i).getAvatar());
+            groupBean.setCreateTime(datass.get(i).getCreateTime());
+            groupBean.setGroupId(datass.get(i).getGroupId());
+            groupBean.setGroupRemark(datass.get(i).getGroupRemark());
+            groupBean.setPrivilege(datass.get(i).getPrivilege());
+            groupBean.setUserId(datass.get(i).getUserId());
+            lists.add(groupBean);
+        }
+
+        mDao.asyncTask(new EasyRun<List<GroupBean>>() {
+            @Override
+            public List<GroupBean> run() throws Exception {
+                mDao.create(lists);
+                return mDao.queryForAll();
+            }
+
+            @Override
+            public void onMainThread(List<GroupBean> data) throws Exception {
+                super.onMainThread(data);
+
+            }
+        });
     }
 }

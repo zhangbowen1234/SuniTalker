@@ -52,7 +52,6 @@ public class MyGroupActivity extends BaseActivity {
     private int selectPosition;
     private BaseDao<GroupBean> mDao;
     private List<GroupBean> data;
-    private ArrayList<GroupBean> datas;
     private ArrayList<GroupBean> lists;
     private GroupBean groupBean;
 
@@ -69,7 +68,7 @@ public class MyGroupActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
-        datas = new ArrayList<>();
+        data = new ArrayList<>();
         mCreatGroups = new ArrayList<>();
         mManagerGroups = new ArrayList<>();
         mJoinGroups = new ArrayList<>();
@@ -78,9 +77,9 @@ public class MyGroupActivity extends BaseActivity {
 
         //获取群组数据信息数据库为空去网络获取
         getLocalGroupInfo();
-        if (!(data.size() > 0) ) {
-            getNetGroupInfo();
-        }
+//        if (!(data.size() > 0) ) {
+//            getNetGroupInfo();
+//        }
         myAdapter = new MyAdapter();
         listView.setAdapter(myAdapter);
         listView.expandGroup(0);
@@ -130,66 +129,66 @@ public class MyGroupActivity extends BaseActivity {
     /**
      * 请求网络获取群组信息
      */
-    private void getNetGroupInfo() {
-        String userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
-        String token = PreferenceUtil.getInstance(this).getString(PreferenceUtil.TOKEN, "");
-        int i = Integer.parseInt(userId);
-        JoinedGroupRequest request = JoinedGroupRequest.getInstance();
-        request.setUserId(i);
-        SSIMGroupManger.getJoinGroupList(mContext, Common.version, request, token, new ResponseCallBack<BaseResponse<ArrayList<GroupBean>>>() {
-
-
-            @Override
-            public void onSuccess(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
-                data = arrayListBaseResponse.data;
-                myAdapter.notifyDataSetChanged();
-                //将数据放入数据库中
-                putLocal(data);
-                quFenData();
-            }
-
-            @Override
-            public void onFailed(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
-            }
-
-            @Override
-            public void onError() {
-
-
-            }
-        });
-
-
-    }
-
-    private void putLocal(final List<GroupBean> datass) {
-        lists = new ArrayList<>();
-        for (int i = 0; i < datass.size(); i++) {
-            groupBean = new GroupBean();
-            groupBean.setGroupName(datass.get(i).getGroupName());
-            groupBean.setAvatar(datass.get(i).getAvatar());
-            groupBean.setCreateTime(datass.get(i).getCreateTime());
-            groupBean.setGroupId(datass.get(i).getGroupId());
-            groupBean.setGroupRemark(datass.get(i).getGroupRemark());
-            groupBean.setPrivilege(datass.get(i).getPrivilege());
-            groupBean.setUserId(datass.get(i).getUserId());
-            lists.add(groupBean);
-        }
-
-        mDao.asyncTask(new EasyRun<List<GroupBean>>() {
-            @Override
-            public List<GroupBean> run() throws Exception {
-                mDao.create(lists);
-                return mDao.queryForAll();
-            }
-
-            @Override
-            public void onMainThread(List<GroupBean> data) throws Exception {
-                super.onMainThread(data);
-
-            }
-        });
-    }
+////    private void getNetGroupInfo() {
+////        String userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
+////        String token = PreferenceUtil.getInstance(this).getString(PreferenceUtil.TOKEN, "");
+////        int i = Integer.parseInt(userId);
+////        JoinedGroupRequest request = JoinedGroupRequest.getInstance();
+////        request.setUserId(i);
+////        SSIMGroupManger.getJoinGroupList(mContext, Common.version, request, token, new ResponseCallBack<BaseResponse<ArrayList<GroupBean>>>() {
+////
+////
+////            @Override
+////            public void onSuccess(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
+////                data = arrayListBaseResponse.data;
+////                myAdapter.notifyDataSetChanged();
+////                //将数据放入数据库中
+////                putLocal(data);
+////                quFenData();
+////            }
+////
+////            @Override
+////            public void onFailed(BaseResponse<ArrayList<GroupBean>> arrayListBaseResponse) {
+////            }
+////
+////            @Override
+////            public void onError() {
+////
+////
+////            }
+////        });
+////
+////
+////    }
+//
+//    private void putLocal(final List<GroupBean> datass) {
+//        lists = new ArrayList<>();
+//        for (int i = 0; i < datass.size(); i++) {
+//            groupBean = new GroupBean();
+//            groupBean.setGroupName(datass.get(i).getGroupName());
+//            groupBean.setAvatar(datass.get(i).getAvatar());
+//            groupBean.setCreateTime(datass.get(i).getCreateTime());
+//            groupBean.setGroupId(datass.get(i).getGroupId());
+//            groupBean.setGroupRemark(datass.get(i).getGroupRemark());
+//            groupBean.setPrivilege(datass.get(i).getPrivilege());
+//            groupBean.setUserId(datass.get(i).getUserId());
+//            lists.add(groupBean);
+//        }
+//
+//        mDao.asyncTask(new EasyRun<List<GroupBean>>() {
+//            @Override
+//            public List<GroupBean> run() throws Exception {
+//                mDao.create(lists);
+//                return mDao.queryForAll();
+//            }
+//
+//            @Override
+//            public void onMainThread(List<GroupBean> data) throws Exception {
+//                super.onMainThread(data);
+//
+//            }
+//        });
+//    }
 
 
     /**

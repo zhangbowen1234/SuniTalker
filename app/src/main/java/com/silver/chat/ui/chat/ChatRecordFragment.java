@@ -50,8 +50,6 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
     public static String TOP_STATES = "TOP";
     private MyHandler mMyHandler;
 //    public String friendid;
-    private SSMessage ssMessage;
-    private SSP2PMessage receiveMsg = null;
 
     public static ChatRecordFragment newInstance() {
         Bundle args = new Bundle();
@@ -86,7 +84,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
         super.initData();
         mList = new ArrayList<>();
         mList.addAll(ChatApater.getChatData(mActivity));
-        if (mList.size() != 0){
+        if (mList.size() != 0) {
             int position = PreferenceUtil.getInstance(mActivity).getInt("position", 0);
             mList.add(0, mList.get(position));
             mList.remove(position + 1);
@@ -137,7 +135,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
                                 refreshView();
                                 SSConversationTopLevel levelHigh = SSConversationTopLevel.LEVEL_HIGH;
                                 conversationList.get(position).setTopLevel(levelHigh);
-                                Log.e("onClick: ", (position + 1) +"");
+                                Log.e("onClick: ", (position + 1) + "");
                             }
                         })
                         .setDeleteTextview(new View.OnClickListener() {
@@ -145,7 +143,7 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
                             public void onClick(View view) {
                                 mList.remove(mChatApater.getItem(position));
                                 AppContext.getInstance().instance.delConversationById(sourceId);
-                                Log.e( "setDelete: ", sourceId);
+                                Log.e("setDelete: ", sourceId);
                                 ToastUtils.showMessage(getActivity(), "删除成功");
                                 mChatApater.notifyDataSetChanged();
                             }
@@ -165,9 +163,9 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
             }
         });
         /*刷新会话列表*/
-        if (mList == null && mList.size() == 0){
+        if (mList == null && mList.size() == 0) {
             mRecycleContent.refreshComplete();
-        }else {
+        } else {
             mRecycleContent.setOnRefreshCompleteListener(new WSRecyclerView.OnRefreshCompleteListener() {
                 @Override
                 public void onRefreshComplete() {
@@ -212,11 +210,9 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
             switch (msg.what) {
                 case 0:
                     /*显示新收到的消息*/
-//                    if (receiveMsg != null) {
-                        mList.clear();
-                        mList.addAll(ChatApater.getChatData(mActivity));
-                        mChatApater.notifyDataSetChanged();
-//                    }
+                    mList.clear();
+                    mList.addAll(ChatApater.getChatData(mActivity));
+                    mChatApater.notifyDataSetChanged();
                     break;
             }
         }
@@ -224,10 +220,12 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
 
     @Override
     public void receiveMsg(SSMessage ssMessage) {
-        if (ssMessage instanceof SSP2PMessage || ssMessage instanceof SSGroupMessage) {
-            receiveMsg = (SSP2PMessage) ssMessage;
+        if (ssMessage instanceof SSP2PMessage) {
+            SSP2PMessage receiveMsg = (SSP2PMessage) ssMessage;
             String sourceId = receiveMsg.getSourceId();
             Log.e("appContext_receiveMsg111", sourceId + ":" + receiveMsg.getContent());
+            mHandler.sendEmptyMessage(0);
+        } else if (ssMessage instanceof SSGroupMessage) {
             mHandler.sendEmptyMessage(0);
         }
     }
