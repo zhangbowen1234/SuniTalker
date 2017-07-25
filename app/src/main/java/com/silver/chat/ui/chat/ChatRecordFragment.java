@@ -39,7 +39,7 @@ import static com.silver.chat.adapter.ChatApater.conversationList;
 import static com.silver.chat.adapter.ChatApater.sourceId;
 
 /**
- * bowen
+ * bowen   会话列表
  */
 
 public class ChatRecordFragment extends BasePagerFragment implements SSMessageReceiveListener {//,SSMessageReceiveListener,SSMessageSendListener
@@ -172,9 +172,9 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
                     mMyHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            mList.clear();
-                            mList.addAll(ChatApater.getChatData(mActivity));
-                            mChatApater.notifyDataSetChanged();
+//                            mList.clear();
+//                            mList.addAll(ChatApater.getChatData(mActivity));
+//                            mChatApater.notifyDataSetChanged();
                             mRecycleContent.refreshComplete();
                         }
                     }, 1500);
