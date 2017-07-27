@@ -67,7 +67,7 @@ public class MineFragment extends BasePagerFragment implements View.OnClickListe
             public void onSuccess(BaseResponse<UserInfoBean> userInfoBeanBaseResponse) {
                 String nickName = userInfoBeanBaseResponse.data.getNickName();
                 String signature = userInfoBeanBaseResponse.data.getSignature();
-                String avatar = userInfoBeanBaseResponse.data.getAvatar();
+                String avatar = PreferenceUtil.getInstance(mActivity).getString(PreferenceUtil.AVATAR, "");
                 GlideUtil.loadAvatar(myHeadPhoto,avatar);
                 tvName.setText(nickName);
                 tvSign.setText(signature);

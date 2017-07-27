@@ -18,10 +18,12 @@ import com.silver.chat.base.Common;
 import com.silver.chat.database.callback.EasyRun;
 import com.silver.chat.database.dao.BaseDao;
 import com.silver.chat.database.helper.DBHelper;
+import com.silver.chat.database.info.WhereInfo;
 import com.silver.chat.network.SSIMGroupManger;
 import com.silver.chat.network.callback.ResponseCallBack;
 import com.silver.chat.network.requestbean.JoinedGroupRequest;
 import com.silver.chat.network.responsebean.BaseResponse;
+import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.network.responsebean.GroupBean;
 import com.silver.chat.ui.chat.SearchChatRecordActivity;
 import com.silver.chat.ui.contact.AddFriendActivity;
@@ -108,7 +110,9 @@ public class MainActivity extends BaseActivity {
         mButtonOutAnimation = AnimationUtils.loadAnimation(this, R.anim.button_out);
         setSupportActionBar(toolbar);
         toolbar.setTitle("chat");
-
+        lists = new ArrayList<>();
+        data = new ArrayList<>();
+        mDao = DBHelper.get().dao(GroupBean.class);
     }
 
     @Override
@@ -125,8 +129,23 @@ public class MainActivity extends BaseActivity {
             }
         }
         tabLayout.getTabCustomViewAt(1).setTabCount(true, 0);
-        //群组网络请求
-        getNetGroupInfo();
+        mDao.asyncTask(new EasyRun<List<GroupBean>>() {
+            @Override
+            public List<GroupBean> run() throws Exception {
+                return getGroupFriend();
+            }
+
+            @Override
+            public void onMainThread(List<GroupBean> data) throws Exception {
+                if (data.isEmpty()) {
+                    /*其次从网络获取数据*/
+                    getNetGroupInfo();
+                } else {
+                    lists = data;
+                }
+            }
+        });
+
     }
 
     @Override
@@ -335,11 +354,9 @@ public class MainActivity extends BaseActivity {
      */
     private  List<GroupBean> data;
     private BaseDao<GroupBean> mDao;
-    private ArrayList<GroupBean> lists;
+    private List<GroupBean> lists;
     private GroupBean groupBean;
     private void getNetGroupInfo() {
-        data = new ArrayList<>();
-        mDao = DBHelper.get().dao(GroupBean.class);
         String userId = PreferenceUtil.getInstance(this).getString(PreferenceUtil.USERID, "");
         String token = PreferenceUtil.getInstance(this).getString(PreferenceUtil.TOKEN, "");
         int i = Integer.parseInt(userId);
@@ -367,7 +384,6 @@ public class MainActivity extends BaseActivity {
         });
     }
     private void putLocal(final List<GroupBean> datass) {
-        lists = new ArrayList<>();
         for (int i = 0; i < datass.size(); i++) {
             groupBean = new GroupBean();
             groupBean.setGroupName(datass.get(i).getGroupName());
@@ -383,15 +399,31 @@ public class MainActivity extends BaseActivity {
         mDao.asyncTask(new EasyRun<List<GroupBean>>() {
             @Override
             public List<GroupBean> run() throws Exception {
+                List<GroupBean> query = mDao.queryForAll();
+                            /*删除原始文件*/
+                mDao.delete(query);
+                Log.e("mDao.asTk_run", "query:" + query);
+                     /*保存新数据*/
+                if (lists != null)
                 mDao.create(lists);
-                return mDao.queryForAll();
+                return getGroupFriend();
             }
 
             @Override
             public void onMainThread(List<GroupBean> data) throws Exception {
                 super.onMainThread(data);
+                //群组网络请求
+                if (data.isEmpty()){
 
+                }else {
+                    lists = data;
+                }
             }
         });
+    }
+    public List<GroupBean> getGroupFriend() {
+        Log.e(" mDao.queryForAll():", mDao.queryForAll() + "");
+        List<GroupBean> sortData = mDao.query(WhereInfo.get().equal("userId", PreferenceUtil.getInstance(mContext).getString(PreferenceUtil.USERID, "")));
+        return sortData;
     }
 }
