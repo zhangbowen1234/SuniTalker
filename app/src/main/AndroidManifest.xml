@@ -175,10 +175,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
             android:label="群聊界面" />
-        <activity android:name=".ui.contact.FriendApplyforActivity"></activity>
+        <activity android:name=".ui.contact.FriendApplyforActivity"/>
         <activity android:name=".ui.contact.MyLocationActivity"
             android:label="地理位置的界面"/>
-        <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name="com.amap.api.location.APSService"/>
     </application>
 
 </manifest>
