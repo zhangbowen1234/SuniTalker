@@ -62,8 +62,6 @@
                 android:layout_width="@dimen/dp_47"
                 android:layout_height="@dimen/dp_47"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginStart="@dimen/dp_10"
                 android:src="@drawable/ic_contact_portrait" />
@@ -73,9 +71,7 @@
                 android:id="@+id/friend_message_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_5"
-                android:layout_marginStart="@dimen/dp_5"
-                android:layout_toEndOf="@+id/message_friend_userphoto"
+                android:layout_alignTop="@+id/message_friend_userphoto"
                 android:layout_toRightOf="@+id/message_friend_userphoto"
                 android:adjustViewBounds="true"
                 android:maxHeight="150dp"
@@ -103,16 +99,19 @@
             android:visibility="visible"
             android:orientation="horizontal">
 
-
+            <com.silver.chat.view.CircleImageView
+                android:id="@+id/message_user_userphoto"
+                android:layout_width="@dimen/dp_47"
+                android:layout_height="@dimen/dp_47"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/dp_10"
+                android:src="@drawable/ic_contact_portrait" />
             <com.silver.chat.view.BubbleImageView
                 android:id="@+id/user_message_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginEnd="@dimen/dp_5"
-                android:layout_marginRight="@dimen/dp_5"
                 android:layout_toLeftOf="@+id/message_user_userphoto"
-                android:layout_toStartOf="@+id/message_user_userphoto"
+                android:layout_alignTop="@+id/message_user_userphoto"
                 android:adjustViewBounds="true"
                 android:maxHeight="150dp"
                 android:minHeight="100dp"
@@ -125,16 +124,6 @@
                 app:bubble_arrowTop="20dp"
                 app:bubble_arrowWidth="8dp"/>
 
-            <com.silver.chat.view.CircleImageView
-                android:id="@+id/message_user_userphoto"
-                android:layout_width="@dimen/dp_47"
-                android:layout_height="@dimen/dp_47"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/dp_10"
-                android:layout_marginRight="@dimen/dp_10"
-                android:src="@drawable/ic_contact_portrait" />
         </RelativeLayout>
     </RelativeLayout>
 

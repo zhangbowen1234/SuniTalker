@@ -66,9 +66,11 @@ public class ChatRecordFragment extends BasePagerFragment implements SSMessageRe
     @Override
     public void onResume() {
         super.onResume();
-        mList.clear();
-        mList.addAll(ChatApater.getChatData(mActivity));
-        mChatApater.notifyDataSetChanged();
+        if (mChatApater != null){
+            mList.clear();
+            mList.addAll(ChatApater.getChatData(mActivity));
+            mChatApater.notifyDataSetChanged();
+        }
     }
 
     @Override

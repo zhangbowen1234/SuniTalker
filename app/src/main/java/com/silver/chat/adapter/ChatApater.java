@@ -114,8 +114,8 @@ public class ChatApater extends BaseMultiItemQuickAdapter<ChatBean, BaseViewHold
      */
     public static List<ChatBean> getChatData(Context context) {
         String userId = PreferenceUtil.getInstance(context).getString(PreferenceUtil.USERID, "");
-        conversationList = AppContext.getInstance().instance.getConversationList();
         mChatList = new ArrayList<>();
+        conversationList = AppContext.getInstance().instance.getConversationList();
         if (conversationList.size() != 0){
             for (int i = 0; i < conversationList.size(); i++) {
                 SSConversationType conversationType = conversationList.get(i).getConversationType();

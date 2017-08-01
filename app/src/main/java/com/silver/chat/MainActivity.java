@@ -412,12 +412,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onMainThread(List<GroupBean> data) throws Exception {
                 super.onMainThread(data);
-                //群组网络请求
-                if (data.isEmpty()){
-
-                }else {
-                    lists = data;
-                }
             }
         });
     }
