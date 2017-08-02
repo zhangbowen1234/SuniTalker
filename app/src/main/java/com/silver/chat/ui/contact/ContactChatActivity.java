@@ -135,6 +135,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
          * 私人聊天列表
          */
         p2PMessageList = SSEngine.getInstance().getP2PMessageList(friendId, -1, 10);
+        Log.e( "p2PMessageList" ,p2PMessageList + "");
         resetBean(p2PMessageList);
         chatMessageAdapter = new ChatMessageAdapter(chatMessageList, userAvatar);
         if (p2PMessageList.size() != 0) {

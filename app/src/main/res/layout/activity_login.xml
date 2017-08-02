@@ -16,6 +16,7 @@
             android:layout_height="match_parent"/>
 
         <RelativeLayout
+            android:id="@+id/rl_hideSoft"
             android:background="@mipmap/reg_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

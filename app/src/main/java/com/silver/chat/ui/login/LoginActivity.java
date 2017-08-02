@@ -1,14 +1,18 @@
 package com.silver.chat.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.silver.chat.AppContext;
@@ -43,6 +47,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     private String uPhone, uPwd;
     private CustomVideoView mVideoView;
+    private RelativeLayout rl_hideSoft;
 
     @Override
     protected int getLayoutId() {
@@ -57,6 +62,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         mUserPhone = (EditText) findViewById(R.id.user_phone);
         mUserPwd = (EditText) findViewById(R.id.user_pwd);
         mVideoView = (CustomVideoView) findViewById(R.id.log_videoview);
+        rl_hideSoft = (RelativeLayout) findViewById(R.id.rl_hideSoft);
         //监听
         mGoReg.setOnClickListener(this);
         mForgot.setOnClickListener(this);
@@ -99,6 +105,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
          * 获取用户信息
          */
         getUserInfo();
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        rl_hideSoft.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(rl_hideSoft.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                return false;
+            }
+        });
     }
 
     /**
