@@ -1,5 +1,6 @@
 package com.silver.chat.ui.contact;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -31,6 +32,7 @@ import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
 import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 import com.ssim.android.constant.SSMessageFormat;
+import com.ssim.android.constant.SSPublishType;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.listener.SSMessageSendListener;
@@ -41,6 +43,8 @@ import com.ssim.android.model.chat.SSP2PMessage;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import kr.co.namee.permissiongen.PermissionGen;
 
 /**
  * 聊天界面
@@ -116,7 +120,16 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
         /*实现内容区与表情区仿微信切换效果*/
         initEmotionKeyboard();
         mMyHandler = new MyHandler(this);
-
+        PermissionGen.with(this)
+                .addRequestCode(100)
+                .permissions(Manifest.permission.RECORD_AUDIO
+                        , Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        , Manifest.permission.WAKE_LOCK
+                        , Manifest.permission.ACCESS_COARSE_LOCATION
+                        , Manifest.permission.ACCESS_FINE_LOCATION
+                        , Manifest.permission.READ_PHONE_STATE
+                        , Manifest.permission.READ_EXTERNAL_STORAGE)
+                .request();
     }
 
     @Override
@@ -246,11 +259,12 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
             mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
             SSLocation ssLocation = new SSLocation();
             ssLocation.address = address;
-            ssLocation.latitude = latitude;
-            ssLocation.longitude = longitude;
+            ssLocation.lat = latitude;
+            ssLocation.lng = longitude;
             String jsonLocation = ssLocation.toJson();
             SSEngine instance = SSEngine.getInstance();
-            instance.sendMessageToTargetId(friendId, SSMessageFormat.LOCATION, jsonLocation);
+            instance.sendLocationMsg(SSPublishType.MSG_P2PCHAT,friendId,ssLocation);
+//            instance.sendMessageToTargetId(friendId, SSMessageFormat.LOCATION, jsonLocation);
 
             instance.setMsgSendListener(new SSMessageSendListener() {
                 @Override
@@ -283,7 +297,7 @@ public class ContactChatActivity extends BaseActivity implements IEmotionSelecte
                     mChatMsgList.smoothScrollToPosition(chatMessageAdapter.getItemCount() - 1);
 
                     SSEngine instance = SSEngine.getInstance();
-                    boolean isSend = instance.sendMessageToTargetId(friendId, SSMessageFormat.TEXT, editcontent);
+                    boolean isSend = instance.sendTextMsg(SSPublishType.MSG_P2PCHAT,friendId, editcontent);
                     if (isSend) {
                         instance.setMsgSendListener(new SSMessageSendListener() {
                             @Override

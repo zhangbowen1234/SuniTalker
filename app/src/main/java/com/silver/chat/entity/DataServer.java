@@ -10,7 +10,7 @@ import com.silver.chat.database.info.WhereInfo;
 import com.silver.chat.network.responsebean.ContactListBean;
 import com.silver.chat.util.PreferenceUtil;
 import com.ssim.android.constant.SSConversationType;
-import com.ssim.android.model.session.SSConversation;
+import com.ssim.android.model.conversation.SSConversation;
 
 import java.util.ArrayList;
 import java.util.List;

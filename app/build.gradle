@@ -78,4 +78,5 @@ dependencies {
     compile 'net.zetetic:android-database-sqlcipher:3.5.6'
     compile 'com.android.support:multidex:1.0.0'
     compile project(':ssim-release')
+    compile 'com.lovedise:permissiongen:0.0.6'
 }

@@ -25,7 +25,7 @@ import com.silver.chat.view.recycleview.BaseMultiItemQuickAdapter;
 import com.silver.chat.view.recycleview.BaseViewHolder;
 import com.ssim.android.constant.SSConversationType;
 import com.ssim.android.constant.SSMessageFormat;
-import com.ssim.android.model.session.SSConversation;
+import com.ssim.android.model.conversation.SSConversation;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -102,7 +102,7 @@ public class ChatMessageAdapter extends BaseMultiItemQuickAdapter<ChatMessageBea
                 case LOCATION:
                     try {
                         JSONObject jsonObject = new JSONObject(item.getContent());
-                        String address = (String) jsonObject.get("address");
+                        String address = jsonObject.getString("address");
                         rightMessageView.setText(address);
                     } catch (JSONException e) {
                         e.printStackTrace();

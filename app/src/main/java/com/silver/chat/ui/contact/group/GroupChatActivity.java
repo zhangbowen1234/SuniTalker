@@ -32,6 +32,7 @@ import com.silver.chat.view.CircleImageView;
 import com.silver.chat.view.TitleBarView;
 import com.silver.chat.view.recycleview.pulltorefreshable.WSRecyclerView;
 import com.ssim.android.constant.SSMessageFormat;
+import com.ssim.android.constant.SSPublishType;
 import com.ssim.android.engine.SSEngine;
 import com.ssim.android.listener.SSMessageReceiveListener;
 import com.ssim.android.listener.SSMessageSendListener;
@@ -198,11 +199,11 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
             mChatMsgList.smoothScrollToPosition(groupChatAdapter.getItemCount() - 1);
             SSLocation ssLocation = new SSLocation();
             ssLocation.address = address;
-            ssLocation.latitude = latitude;
-            ssLocation.longitude = longitude;
+            ssLocation.lat = latitude;
+            ssLocation.lng = longitude;
             String jsonLocation = ssLocation.toJson();
             SSEngine instance = SSEngine.getInstance();
-            instance.sendMessageToGroupId(groupId, SSMessageFormat.LOCATION, jsonLocation);
+            instance.sendLocationMsg(SSPublishType.MSG_GROUPCHAT,groupId,ssLocation);
 
             instance.setMsgSendListener(new SSMessageSendListener() {
                 @Override
@@ -297,7 +298,7 @@ public class GroupChatActivity extends BaseActivity implements IEmotionSelectedL
                     mChatMsgList.smoothScrollToPosition(groupChatAdapter.getItemCount() - 1);
 
                     SSEngine instance = SSEngine.getInstance();
-                    boolean isSend = instance.sendMessageToGroupId(groupId, SSMessageFormat.TEXT, content);
+                    boolean isSend = instance.sendTextMsg(SSPublishType.MSG_GROUPCHAT,groupId, content);
                     if (isSend) {
                         instance.setMsgSendListener(new SSMessageSendListener() {
                             @Override
