@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textColor="@color/red_50"
+        android:textColor="@color/red_500"
         android:text="@string/action_group" />
 
 </FrameLayout>
