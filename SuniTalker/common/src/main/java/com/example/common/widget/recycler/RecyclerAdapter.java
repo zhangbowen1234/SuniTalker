@@ -204,7 +204,6 @@ public abstract class RecyclerAdapter<Data>
             // 回掉方法
             this.mListener.onItemClick(viewHolder, mDataList.get(pos));
         }
-
     }
 
     @Override

@@ -4,14 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.example.bowen.sunitalker.frags.main.ActiveFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/action_home"
-        android:textColor="@color/textPrimary" />
+   <com.example.common.widget.GalleyView
+       android:id="@+id/galleyView"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:padding="1dp"/>
 
 
 </FrameLayout>
