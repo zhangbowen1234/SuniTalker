@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
+import com.example.bowen.sunitalker.activities.AccountActivity;
 import com.example.bowen.sunitalker.frags.main.ActiveFragment;
 import com.example.bowen.sunitalker.frags.main.ContactFragment;
 import com.example.bowen.sunitalker.frags.main.GroupFragment;
@@ -99,7 +100,7 @@ public class MainActivity extends Activity implements
 
     @OnClick(R.id.btn_action)
     void onActionClick() {
-
+        AccountActivity.show(this);
     }
 
     /**

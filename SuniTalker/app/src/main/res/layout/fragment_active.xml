@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     tools:context="com.example.bowen.sunitalker.frags.main.ActiveFragment">
 
-   <com.example.common.widget.GalleyView
-       android:id="@+id/galleyView"
+   <com.example.common.widget.GalleryView
+       android:id="@+id/galleryView"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:padding="1dp"/>
