@@ -26,7 +26,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    implementation project(':common')
+    implementation project(':factory')
     implementation "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
     implementation "com.android.support:recyclerview-v7:$rootProject.ext.supportVersion"
     implementation "com.android.support:design:$rootProject.ext.supportVersion"
@@ -41,7 +41,10 @@ dependencies {
     compile "com.jakewharton:butterknife:$rootProject.ext.butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterknifeVersion"
 
+    //noinspection GradleDependency
     compile "com.yalantis:ucrop:$rootProject.ext.ucropVersion"
+
+    compile "pub.devrel:easypermissions:$rootProject.ext.easyPMVersion"
 
 //    compile "com.yalantis:ucrop:$rootProject.ext.ucropVersion"
 //    compile "pub.devrel:easypermissions:$rootProject.ext.easyPMVersion"
