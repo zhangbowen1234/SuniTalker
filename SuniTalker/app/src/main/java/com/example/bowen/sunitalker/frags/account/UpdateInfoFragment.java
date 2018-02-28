@@ -12,6 +12,8 @@ import com.example.bowen.sunitalker.R;
 import com.example.bowen.sunitalker.frags.media.GalleryFragment;
 import com.example.common.app.Application;
 import com.example.common.widget.PortraitView;
+import com.example.factory.Factory;
+import com.example.factory.net.UploadHelper;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -94,12 +96,12 @@ public class UpdateInfoFragment extends com.example.common.app.Fragment {
         final String localPath = uri.getPath();
         Log.e("TAG", "localPath:" + localPath);
 
-//        Factory.runOnAsync(new Runnable() {
-//            @Override
-//            public void run() {
-//                String url = UploadHelper.uploadPortrait(localPath);
-//                Log.e("TAG", "url:" + url);
-//            }
-//        });
+        Factory.runOnAsync(new Runnable() {
+            @Override
+            public void run() {
+                String url = UploadHelper.uploadPortrait(localPath);
+                Log.e("TAG", "url:" + url);
+            }
+        });
     }
 }
