@@ -44,7 +44,6 @@ dependencies {
 
     //noinspection GradleDependency
     compile "com.yalantis:ucrop:$rootProject.ext.ucropVersion"
-
     compile "pub.devrel:easypermissions:$rootProject.ext.easyPMVersion"
 
 //    compile "com.yalantis:ucrop:$rootProject.ext.ucropVersion"
