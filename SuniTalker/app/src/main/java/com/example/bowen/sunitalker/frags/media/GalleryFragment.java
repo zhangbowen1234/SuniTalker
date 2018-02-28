@@ -1,10 +1,10 @@
 package com.example.bowen.sunitalker.frags.media;
 
+
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
@@ -16,32 +16,31 @@ import com.example.bowen.sunitalker.R;
 import com.example.common.tools.UiTool;
 import com.example.common.widget.GalleryView;
 
-import net.qiujuer.genius.ui.Ui;
 
 /**
  * 图片选择Fragment
  */
 public class GalleryFragment extends BottomSheetDialogFragment
         implements GalleryView.SelectedChangeListener {
-
     private GalleryView mGallery;
     private OnSelectedListener mListener;
 
     public GalleryFragment() {
-
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // 我们先使用默认的
+        // 返回一个我们复写的
         return new TransStatusBottomSheetDialog(getContext());
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_gallery, container,false);
-        mGallery = root.findViewById(R.id.galleryView);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // 获取我们的GalleryView
+        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
+        mGallery = (GalleryView) root.findViewById(R.id.galleryView);
         return root;
     }
 
@@ -53,20 +52,21 @@ public class GalleryFragment extends BottomSheetDialogFragment
 
     @Override
     public void onSelectedCountChanged(int count) {
-        //如果选中的一张图片
+        // 如果选中的一张图片
         if (count > 0) {
             // 隐藏自己
             dismiss();
             if (mListener != null) {
-                //得到所有的选中的图片的路径
-                String[] paths = mGallery.getSelectPath();
+                // 得到所有的选中的图片的路径
+                String[] paths = mGallery.getSelectedPath();
                 // 返回第一张
                 mListener.onSelectedImage(paths[0]);
-                //取消和唤起者之间的应用，加快内存回收
+                // 取消和唤起者之间的应用，加快内存回收
                 mListener = null;
             }
         }
     }
+
 
     /**
      * 设置事件监听，并返回自己
@@ -79,6 +79,7 @@ public class GalleryFragment extends BottomSheetDialogFragment
         return this;
     }
 
+
     /**
      * 选中图片的监听器
      */
@@ -86,7 +87,11 @@ public class GalleryFragment extends BottomSheetDialogFragment
         void onSelectedImage(String path);
     }
 
-    private static class TransStatusBottomSheetDialog extends BottomSheetDialog {
+
+    /**
+     * 为了解决顶部状态栏变黑而写的TransStatusBottomSheetDialog
+     */
+    public static class TransStatusBottomSheetDialog extends BottomSheetDialog {
 
         public TransStatusBottomSheetDialog(@NonNull Context context) {
             super(context);
@@ -105,9 +110,9 @@ public class GalleryFragment extends BottomSheetDialogFragment
             super.onCreate(savedInstanceState);
 
             final Window window = getWindow();
-
             if (window == null)
                 return;
+
 
             // 得到屏幕高度
             int screenHeight = UiTool.getScreenHeight(getOwnerActivity());
@@ -121,4 +126,5 @@ public class GalleryFragment extends BottomSheetDialogFragment
 
         }
     }
+
 }

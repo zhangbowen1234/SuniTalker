@@ -118,7 +118,7 @@ public class GalleryView extends RecyclerView {
      *
      * @return 返回一个数组
      */
-    public String[] getSelectPath() {
+    public String[] getSelectedPath() {
         String[] paths = new String[mSelectedImages.size()];
         int index = 0;
         for (Image image : mSelectedImages) {
