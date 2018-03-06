@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 注册的界面
+ * 注册的界面操作
  */
 public class RegisterFragment extends PresenterFragment<RegisterContract.Presenter>
         implements RegisterContract.View {

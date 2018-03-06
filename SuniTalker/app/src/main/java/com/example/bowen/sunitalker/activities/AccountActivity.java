@@ -13,6 +13,8 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.example.bowen.sunitalker.R;
 import com.example.bowen.sunitalker.frags.account.AccountTrigger;
+import com.example.bowen.sunitalker.frags.account.LoginFragment;
+import com.example.bowen.sunitalker.frags.account.RegisterFragment;
 import com.example.common.comm.app.Activity;
 import com.example.common.comm.app.Fragment;
 
@@ -47,7 +49,7 @@ public class AccountActivity extends Activity implements AccountTrigger {
         super.initWidget();
 
         // 初始化Fragment
-//        mCurFragment = mLoginFragment = new LoginFragment();
+        mCurFragment = mLoginFragment = new LoginFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.lay_container, mCurFragment)
@@ -79,7 +81,7 @@ public class AccountActivity extends Activity implements AccountTrigger {
             if (mRegisterFragment == null) {
                 //默认情况下为null，
                 //第一次之后就不为null了
-//                mRegisterFragment = new RegisterFragment();
+                mRegisterFragment = new RegisterFragment();
             }
             fragment = mRegisterFragment;
         } else {
