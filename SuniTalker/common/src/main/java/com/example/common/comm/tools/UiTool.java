@@ -1,4 +1,4 @@
-package com.example.common.tools;
+package com.example.common.comm.tools;
 
 import android.app.Activity;
 import android.content.res.Resources;

@@ -1,8 +1,9 @@
 package com.example.bowen.sunitalker;
 
 
+import com.example.bowen.sunitalker.activities.MainActivity;
 import com.example.bowen.sunitalker.frags.assist.PermissionsFragment;
-import com.example.common.app.Activity;
+import com.example.common.comm.app.Activity;
 
 public class LaunchActivity extends Activity {
 

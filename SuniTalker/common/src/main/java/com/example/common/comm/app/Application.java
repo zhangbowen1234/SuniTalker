@@ -1,4 +1,4 @@
-package com.example.common.app;
+package com.example.common.comm.app;
 
 import android.os.SystemClock;
 import android.support.annotation.StringRes;

@@ -19,7 +19,7 @@
             app:titleTextColor="@color/textPrimary" />
     </android.support.design.widget.AppBarLayout>
 
-    <com.example.common.widget.GalleryView
+    <com.example.common.comm.widget.GalleryView
         android:id="@+id/galleryView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

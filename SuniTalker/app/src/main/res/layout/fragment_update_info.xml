@@ -2,10 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.bowen.sunitalker.frags.account.UpdateInfoFragment">
+    tools:context="com.example.bowen.sunitalker.frags.user.UpdateInfoFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <com.example.common.widget.PortraitView
+    <com.example.common.comm.widget.PortraitView
         android:id="@+id/im_portrait"
         android:layout_width="@dimen/portraitMaxSize"
         android:layout_height="@dimen/portraitMaxSize"

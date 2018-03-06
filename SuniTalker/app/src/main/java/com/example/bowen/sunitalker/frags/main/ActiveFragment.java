@@ -3,8 +3,8 @@ package com.example.bowen.sunitalker.frags.main;
 
 
 import com.example.bowen.sunitalker.R;
-import com.example.common.app.Fragment;
-import com.example.common.widget.GalleryView;
+import com.example.common.comm.app.Fragment;
+import com.example.common.comm.widget.GalleryView;
 
 import butterknife.BindView;
 

@@ -1,8 +1,7 @@
-package com.example.common.app;
+package com.example.common.comm.app;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.*;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
@@ -86,9 +85,9 @@ public abstract class Activity extends AppCompatActivity {
         if (fragments != null && fragments.size() > 0) {
             for (Fragment fragment : fragments) {
                 //判断是否为我们能够处理的Fragment类型
-                if (fragment instanceof com.example.common.app.Fragment) {
+                if (fragment instanceof com.example.common.comm.app.Fragment) {
                     //判断是否拦截了返回按钮
-                    if (((com.example.common.app.Fragment) fragment).onBackPressed()) {
+                    if (((com.example.common.comm.app.Fragment) fragment).onBackPressed()) {
                         //如果有直接Return
                         return;
                     }

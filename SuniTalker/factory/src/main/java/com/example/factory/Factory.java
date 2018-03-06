@@ -1,7 +1,7 @@
 package com.example.factory;
 
 
-import com.example.common.app.Application;
+import com.example.common.comm.app.Application;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

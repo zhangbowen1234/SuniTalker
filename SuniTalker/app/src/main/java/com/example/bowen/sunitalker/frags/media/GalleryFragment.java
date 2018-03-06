@@ -1,6 +1,5 @@
 package com.example.bowen.sunitalker.frags.media;
 
-
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,9 +12,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import com.example.bowen.sunitalker.R;
-import com.example.common.tools.UiTool;
-import com.example.common.widget.GalleryView;
-
+import com.example.common.comm.tools.UiTool;
+import com.example.common.comm.widget.GalleryView;
 
 /**
  * 图片选择Fragment

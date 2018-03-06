@@ -1,4 +1,4 @@
-package com.example.common.widget.recycler;
+package com.example.common.comm.widget.recycler;
 
 /**
  * AdapterCallback对Data进行更新操作

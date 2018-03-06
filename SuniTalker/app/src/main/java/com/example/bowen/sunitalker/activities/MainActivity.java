@@ -1,31 +1,27 @@
-package com.example.bowen.sunitalker;
+package com.example.bowen.sunitalker.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
-import com.example.bowen.sunitalker.activities.AccountActivity;
-import com.example.bowen.sunitalker.frags.assist.PermissionsFragment;
+import com.example.bowen.sunitalker.R;
 import com.example.bowen.sunitalker.frags.main.ActiveFragment;
 import com.example.bowen.sunitalker.frags.main.ContactFragment;
 import com.example.bowen.sunitalker.frags.main.GroupFragment;
 import com.example.bowen.sunitalker.helper.NavHelper;
-import com.example.common.app.Activity;
-import com.example.common.widget.PortraitView;
+import com.example.common.comm.app.Activity;
+import com.example.common.comm.widget.PortraitView;
 
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.widget.FloatActionButton;

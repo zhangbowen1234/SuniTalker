@@ -1,17 +1,17 @@
-package com.example.bowen.sunitalker.frags.account;
+package com.example.bowen.sunitalker.frags.user;
 
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
-import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.example.bowen.sunitalker.R;
 import com.example.bowen.sunitalker.frags.media.GalleryFragment;
-import com.example.common.app.Application;
-import com.example.common.widget.PortraitView;
+import com.example.common.comm.app.Application;
+import com.example.common.comm.app.Fragment;
+import com.example.common.comm.widget.PortraitView;
 import com.example.factory.Factory;
 import com.example.factory.net.UploadHelper;
 import com.yalantis.ucrop.UCrop;
@@ -26,10 +26,13 @@ import static android.app.Activity.RESULT_OK;
 /**
  * 用户更新信息的Fragment
  */
-public class UpdateInfoFragment extends com.example.common.app.Fragment {
-
+public class UpdateInfoFragment extends Fragment {
     @BindView(R.id.im_portrait)
     PortraitView mPortrait;
+
+    public UpdateInfoFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     protected int getContentLayoutId() {
@@ -53,16 +56,17 @@ public class UpdateInfoFragment extends com.example.common.app.Fragment {
 
                         // 发起剪切
                         UCrop.of(Uri.fromFile(new File(path)), Uri.fromFile(dPath))
-                                .withAspectRatio(1, 1)  // 1比1比例
-                                .withMaxResultSize(520, 520)  //  返回最大的尺寸
-                                .withOptions(options)  // 相关参数
+                                .withAspectRatio(1, 1) // 1比1比例
+                                .withMaxResultSize(520, 520) // 返回最大的尺寸
+                                .withOptions(options) // 相关参数
                                 .start(getActivity());
                     }
                 })
-                //show 的时候建议使用getChildFragmentManager
-                //tag  GalleryFragment  class 名字
+                // show 的时候建议使用getChildFragmentManager，
+                // tag GalleryFragment class 名
                 .show(getChildFragmentManager(), GalleryFragment.class.getName());
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -80,6 +84,7 @@ public class UpdateInfoFragment extends com.example.common.app.Fragment {
         }
     }
 
+
     /**
      * 加载Uri到当前的头像中
      *
@@ -91,6 +96,7 @@ public class UpdateInfoFragment extends com.example.common.app.Fragment {
                 .asBitmap()
                 .centerCrop()
                 .into(mPortrait);
+
 
         // 拿到本地文件的地址
         final String localPath = uri.getPath();
@@ -104,4 +110,5 @@ public class UpdateInfoFragment extends com.example.common.app.Fragment {
             }
         });
     }
+
 }

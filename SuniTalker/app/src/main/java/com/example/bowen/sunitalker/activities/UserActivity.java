@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.example.bowen.sunitalker.R;
-import com.example.bowen.sunitalker.frags.account.AccountTrigger;
+import com.example.bowen.sunitalker.frags.user.UpdateInfoFragment;
 import com.example.common.comm.app.Activity;
 import com.example.common.comm.app.Fragment;
 
@@ -20,34 +20,34 @@ import net.qiujuer.genius.ui.compat.UiCompat;
 
 import butterknife.BindView;
 
-public class AccountActivity extends Activity implements AccountTrigger {
+/**
+ * 用户信息界面
+ * 可以提供用户信息修改
+ */
+public class UserActivity extends Activity {
     private Fragment mCurFragment;
-    private Fragment mLoginFragment;
-    private Fragment mRegisterFragment;
-
     @BindView(R.id.im_bg)
     ImageView mBg;
 
     /**
-     * 账户Activity显示的入口
-     *
-     * @param context Context
+     * 显示界面的入口方法
      */
     public static void show(Context context) {
-        context.startActivity(new Intent(context, AccountActivity.class));
+        context.startActivity(new Intent(context, UserActivity.class));
     }
+
 
     @Override
     protected int getContentLayoutId() {
-        return R.layout.activity_account;
+        return R.layout.activity_user;
     }
+
 
     @Override
     protected void initWidget() {
         super.initWidget();
 
-        // 初始化Fragment
-//        mCurFragment = mLoginFragment = new LoginFragment();
+        mCurFragment = new UpdateInfoFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.lay_container, mCurFragment)
@@ -72,26 +72,9 @@ public class AccountActivity extends Activity implements AccountTrigger {
                 });
     }
 
+    // Activity中收到剪切图片成功的回调
     @Override
-    public void triggerView() {
-        Fragment fragment;
-        if (mCurFragment == mLoginFragment) {
-            if (mRegisterFragment == null) {
-                //默认情况下为null，
-                //第一次之后就不为null了
-//                mRegisterFragment = new RegisterFragment();
-            }
-            fragment = mRegisterFragment;
-        } else {
-            // 因为默认请求下mLoginFragment已经赋值，无须判断null
-            fragment = mLoginFragment;
-        }
-
-        // 重新赋值当前正在显示的Fragment
-        mCurFragment = fragment;
-        // 切换显示ø
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.lay_container, fragment)
-                .commit();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mCurFragment.onActivityResult(requestCode, resultCode, data);
     }
 }

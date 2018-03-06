@@ -1,4 +1,4 @@
-package com.example.common.widget.recycler;
+package com.example.common.comm.widget.recycler;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;

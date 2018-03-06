@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.bowen.sunitalker.R;
 import com.example.bowen.sunitalker.frags.media.GalleryFragment;
-import com.example.common.app.Application;
+import com.example.common.comm.app.Application;
 
 import java.util.List;
 

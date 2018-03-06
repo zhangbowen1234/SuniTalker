@@ -2,15 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bowen.sunitalker">
 
-    <!--写入存储权限，OSS-->
+    <!-- 写入存储权限，OSS -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--读取存储权限-->
+    <!-- 读取存储权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--网络权限-->
+    <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!--录音权限-->
+    <!-- 录音权限 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
@@ -22,11 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Main">
-
-        </activity>
+            android:theme="@style/AppTheme.Main"></activity>
         <activity
             android:name=".activities.AccountActivity"
             android:theme="@style/AppTheme.Account" />
@@ -41,6 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.UserActivity"></activity>
     </application>
 
 </manifest>
