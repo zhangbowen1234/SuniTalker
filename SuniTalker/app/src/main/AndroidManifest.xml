@@ -27,7 +27,7 @@
             android:theme="@style/AppTheme.Main"></activity>
         <activity
             android:name=".activities.AccountActivity"
-            android:theme="@style/AppTheme.Account" />
+            android:theme="@style/AppTheme.TransStatusBar" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"

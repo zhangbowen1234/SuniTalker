@@ -6,6 +6,7 @@ import com.example.factory.modle.api.account.RegisterModel;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.POST;
 
 /**
  * 网络请求的所有的接口
@@ -20,5 +21,6 @@ public interface RemoteService {
      * @param model  传入的是RegisterModel
      * @return 返回的是RspModel<AccountRspModel>
      */
+    @POST("account/register")
     Call<RspModel<AccountRspModel>> accountRegister(@Body RegisterModel model) ;
 }

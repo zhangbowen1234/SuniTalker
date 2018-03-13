@@ -4,8 +4,6 @@ import java.util.Date;
 
 /**
  * 服务器和客户端 最外层接口的返回封装
- * @author qiujuer Email:qiujuer@live.cn
- * @version 1.0.0
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class RspModel<T> {

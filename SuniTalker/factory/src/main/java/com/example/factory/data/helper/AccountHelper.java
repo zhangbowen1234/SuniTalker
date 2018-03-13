@@ -1,6 +1,10 @@
 package com.example.factory.data.helper;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import com.example.common.factory.data.DataSource;
+import com.example.factory.Factory;
 import com.example.factory.R;
 import com.example.factory.modle.api.RspModel;
 import com.example.factory.modle.api.account.AccountRspModel;
@@ -12,6 +16,8 @@ import com.example.factory.net.RemoteService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 
 /**
@@ -36,10 +42,11 @@ public class AccountHelper {
         // 异步的请求
         call.enqueue(new Callback<RspModel<AccountRspModel>>() {
             @Override
-            public void onResponse(Call<RspModel<AccountRspModel>> call, Response<RspModel<AccountRspModel>> response) {
+            public void onResponse(Call<RspModel<AccountRspModel>> call,
+                                   Response<RspModel<AccountRspModel>> response) {
                 // 请求成功返回
                 // 从返回中得到我们的全局Model，内部是使用的Gson进行解析
-                RspModel<AccountRspModel> rspModel = response.body();
+                RspModel<AccountRspModel> rspModel = response.body();//rspModel为null
                 if (rspModel.success()) {
                     // 拿到实体
                     AccountRspModel accountRspModel = rspModel.getResult();
@@ -54,6 +61,7 @@ public class AccountHelper {
                 } else {
                     // TODO 对返回的RdpModel中的失败的Code进行解析，解析到对应的String资源上面
 //                    callback.onDataNotAvailable();
+                    Factory.decodeRspCode(rspModel,callback);
                 }
             }
 
@@ -61,6 +69,7 @@ public class AccountHelper {
             public void onFailure(Call<RspModel<AccountRspModel>> call, Throwable t) {
                 // 网络请求失败
                 callback.onDataNotAvailable(R.string.data_network_error);
+                Log.e( "onFailure: ",t.toString());
             }
         });
     }
@@ -70,6 +79,7 @@ public class AccountHelper {
      * @param callback  Callback
      */
     public static void bindPush(final DataSource.Callback<User> callback){
-
+        //抛出一个错误，其实是我们的绑定没有进行
+        callback.onDataNotAvailable(R.string.app_name);
     }
 }
