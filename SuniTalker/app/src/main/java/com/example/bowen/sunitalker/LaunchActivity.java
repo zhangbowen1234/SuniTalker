@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Property;
 import android.view.View;
 
+import com.example.bowen.sunitalker.activities.AccountActivity;
 import com.example.bowen.sunitalker.activities.MainActivity;
 import com.example.bowen.sunitalker.frags.assist.PermissionsFragment;
 import com.example.common.comm.app.Activity;
@@ -54,7 +55,8 @@ public class LaunchActivity extends Activity {
         startAnim(0.5f, new Runnable() {
             @Override
             public void run() {
-                skip();
+                // 检查等待状态
+                waitPushReceiverId();
             }
         });
     }
@@ -65,12 +67,24 @@ public class LaunchActivity extends Activity {
      * 等待个推框架对我们的PushId设置好值
      */
     private void waitPushReceiverId(){
-        // 如果说还没拿到
-        if (!TextUtils.isEmpty(Account.getPushId())){
-            // 跳转
-            skip();
-            return;
+        if (Account.isLogin()){
+            // 已经登录情况下，判断是否绑定
+            // 如果没有绑定则等待广播接收器进行绑定
+            if (Account.isBind()){
+                skip();
+                return;
+            }
+        }else {
+            // 没有登录
+            // 如果说拿到pushId,没有登录是不能绑定PushId的
+            if (!TextUtils.isEmpty(Account.getPushId())){
+                // 跳转
+                skip();
+                return;
+            }
         }
+
+
 
         // 循环等待
         getWindow().getDecorView()
@@ -101,7 +115,12 @@ public class LaunchActivity extends Activity {
     private void reallySkip(){
         // 权限检测
         if (PermissionsFragment.haveAll(this, getSupportFragmentManager())) {
-            MainActivity.show(this);
+            // 检查跳转到主页还是登录
+            if(Account.isLogin()){
+                MainActivity.show(this);
+            }else {
+                AccountActivity.show(this);
+            }
             finish();
         }
 

@@ -6,6 +6,7 @@ import android.support.annotation.StringRes;
 import com.example.common.comm.app.Application;
 import com.example.common.factory.data.DataSource;
 import com.example.factory.modle.api.RspModel;
+import com.example.factory.presistence.Account;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -38,6 +39,14 @@ public class Factory {
                 // TODO 设置一个过滤器,数据库级别的Model不进行Json转换
 //                .setExclusionStrategies()
                 .create();
+    }
+
+    /**
+     * Factory中的初始化
+     */
+    public static void setup() {
+        // 持久化的数据进行初始化
+        Account.load(app());
     }
 
     /**
@@ -156,4 +165,5 @@ public class Factory {
      */
     public static void dispatchPush(String message) {
         // TODO
-    }}
+    }
+}
