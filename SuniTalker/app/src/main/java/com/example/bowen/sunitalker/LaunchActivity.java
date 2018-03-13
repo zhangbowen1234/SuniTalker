@@ -84,8 +84,6 @@ public class LaunchActivity extends Activity {
             }
         }
 
-
-
         // 循环等待
         getWindow().getDecorView()
                 .postDelayed(new Runnable() {
