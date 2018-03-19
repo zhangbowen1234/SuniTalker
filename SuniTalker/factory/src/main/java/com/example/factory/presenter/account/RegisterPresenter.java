@@ -8,6 +8,7 @@ import com.example.common.factory.presenter.BasePresenter;
 import com.example.factory.data.helper.AccountHelper;
 import com.example.factory.modle.api.account.RegisterModel;
 import com.example.factory.modle.db.User;
+import com.example.factory.presistence.Account;
 
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;
@@ -48,7 +49,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View>
             //进行网络请求
 
             // 构造Model，进行请求调用
-            RegisterModel model = new RegisterModel(phone,password,name);
+            RegisterModel model = new RegisterModel(phone,password,name, Account.getPushId());
             //进行网络请求并设置回送为自己
             AccountHelper.register(model,this);
 
