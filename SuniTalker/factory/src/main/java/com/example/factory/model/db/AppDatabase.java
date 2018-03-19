@@ -1,4 +1,4 @@
-package com.example.factory.modle.db;
+package com.example.factory.model.db;
 
 import com.raizlabs.android.dbflow.annotation.Database;
 

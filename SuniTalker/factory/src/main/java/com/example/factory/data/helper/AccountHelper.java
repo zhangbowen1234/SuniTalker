@@ -2,30 +2,22 @@ package com.example.factory.data.helper;
 
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.common.factory.data.DataSource;
 import com.example.factory.Factory;
 import com.example.factory.R;
-import com.example.factory.modle.api.RspModel;
-import com.example.factory.modle.api.account.AccountRspModel;
-import com.example.factory.modle.api.account.LoginModel;
-import com.example.factory.modle.api.account.RegisterModel;
-import com.example.factory.modle.db.AppDatabase;
-import com.example.factory.modle.db.User;
+import com.example.factory.model.api.RspModel;
+import com.example.factory.model.api.account.AccountRspModel;
+import com.example.factory.model.api.account.LoginModel;
+import com.example.factory.model.api.account.RegisterModel;
+import com.example.factory.model.db.User;
 import com.example.factory.net.Network;
 import com.example.factory.net.RemoteService;
 import com.example.factory.presistence.Account;
-import com.raizlabs.android.dbflow.config.DatabaseDefinition;
-import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
-import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.widget.Toast.LENGTH_SHORT;
 
 
 /**
@@ -79,6 +71,7 @@ public class AccountHelper {
 
         // 调用Retrofit对我们的网络请求接口做代理
         RemoteService service = Network.remote();
+        // 得到一个Call
         Call<RspModel<AccountRspModel>> call = service.accountBind(pushId);
 
         call.enqueue(new AccountRspCallback(callback));

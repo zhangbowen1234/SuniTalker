@@ -3,11 +3,12 @@ package com.example.factory.presistence;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.factory.Factory;
-import com.example.factory.modle.api.account.AccountRspModel;
-import com.example.factory.modle.db.User;
-import com.example.factory.modle.db.User_Table;
+import com.example.factory.model.api.account.AccountRspModel;
+import com.example.factory.model.db.User;
+import com.example.factory.model.db.User_Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 /**
@@ -104,6 +105,7 @@ public class Account {
         // 首先保证登录成功
         if (isLogin()) {
             User self = getUser();
+            Log.e("isComplete: ",self.toString() );
             return !TextUtils.isEmpty(self.getDesc())
                     && !TextUtils.isEmpty(self.getPortrait())
                     && self.getSex() != 0;

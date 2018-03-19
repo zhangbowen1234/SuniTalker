@@ -1,6 +1,6 @@
-package com.example.factory.modle.api.account;
+package com.example.factory.model.api.account;
 
-import com.example.factory.modle.db.User;
+import com.example.factory.model.db.User;
 
 /**
  * Created by bowen on 2018/3/6.

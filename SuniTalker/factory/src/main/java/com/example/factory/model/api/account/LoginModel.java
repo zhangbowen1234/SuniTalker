@@ -1,4 +1,4 @@
-package com.example.factory.modle.api.account;
+package com.example.factory.model.api.account;
 
 /**
  * Created by bowen on 2018/3/6.

@@ -1,4 +1,4 @@
-package com.example.factory.modle.api;
+package com.example.factory.model.api;
 
 import java.util.Date;
 

@@ -2,6 +2,7 @@ package com.example.bowen.sunitalker.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import com.example.bowen.sunitalker.frags.main.GroupFragment;
 import com.example.bowen.sunitalker.helper.NavHelper;
 import com.example.common.comm.app.Activity;
 import com.example.common.comm.widget.PortraitView;
+import com.example.factory.presistence.Account;
 
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.widget.FloatActionButton;
@@ -61,6 +63,17 @@ public class MainActivity extends Activity implements
      */
     public static void show(Context context) {
         context.startActivity(new Intent(context, MainActivity.class));
+    }
+
+    @Override
+    protected boolean initArgs(Bundle bundle) {
+        if (Account.isComplete()) {
+            // 判断用户信息是否完全，完全则走正常流程
+            return super.initArgs(bundle);
+        }else {
+            UserActivity.show(this);
+            return false;
+        }
     }
 
     @Override

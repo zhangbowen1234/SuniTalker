@@ -5,7 +5,7 @@ import android.support.annotation.StringRes;
 
 import com.example.common.comm.app.Application;
 import com.example.common.factory.data.DataSource;
-import com.example.factory.modle.api.RspModel;
+import com.example.factory.model.api.RspModel;
 import com.example.factory.presistence.Account;
 import com.example.factory.utils.DBFlowExclusionStrategy;
 import com.google.gson.Gson;

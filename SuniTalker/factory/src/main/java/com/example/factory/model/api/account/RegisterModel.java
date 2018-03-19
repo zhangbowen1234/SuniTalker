@@ -1,4 +1,4 @@
-package com.example.factory.modle.api.account;
+package com.example.factory.model.api.account;
 
 /**
  * 注册使用的请求 Model

@@ -6,8 +6,8 @@ import com.example.common.Common;
 import com.example.common.factory.data.DataSource;
 import com.example.common.factory.presenter.BasePresenter;
 import com.example.factory.data.helper.AccountHelper;
-import com.example.factory.modle.api.account.RegisterModel;
-import com.example.factory.modle.db.User;
+import com.example.factory.model.api.account.RegisterModel;
+import com.example.factory.model.db.User;
 import com.example.factory.presistence.Account;
 
 import net.qiujuer.genius.kit.handler.Run;
