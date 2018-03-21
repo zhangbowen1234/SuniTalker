@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--个推广播注册-->
+        <!-- 个推广播注册 -->
         <receiver
             android:name=".MessageReceiver"
             android:enabled="true"
@@ -46,6 +46,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".LaunchActivity"
+            android:label="@string/title_activity_launch"
             android:theme="@style/AppTheme.TransStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,8 +56,14 @@
         </activity>
         <activity
             android:name=".activities.UserActivity"
+            android:label="@string/title_activity_user"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Account" />
+        <activity
+            android:name=".activities.SearchActivity"
+            android:label="@string/title_search"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.TransStatusBar" />
     </application>
 
 </manifest>

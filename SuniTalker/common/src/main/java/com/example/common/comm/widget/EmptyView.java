@@ -9,10 +9,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.common.R;
+import com.example.common.comm.app.Application;
+import com.example.common.comm.widget.convention.PlaceHolderView;
+
 import net.qiujuer.genius.ui.widget.Loading;
-import net.qiujuer.italker.common.R;
-import net.qiujuer.italker.common.app.Application;
-import net.qiujuer.italker.common.widget.convention.PlaceHolderView;
 
 /**
  * 简单的占位控件，
