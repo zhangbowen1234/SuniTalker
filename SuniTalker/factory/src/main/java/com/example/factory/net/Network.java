@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.example.common.Common;
 import com.example.factory.Factory;
-import com.example.factory.presistence.Account;
+import com.example.factory.persistence.Account;
 
 import java.io.IOException;
 

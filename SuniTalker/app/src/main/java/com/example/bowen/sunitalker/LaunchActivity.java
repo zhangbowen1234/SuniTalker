@@ -15,7 +15,7 @@ import com.example.bowen.sunitalker.activities.AccountActivity;
 import com.example.bowen.sunitalker.activities.MainActivity;
 import com.example.bowen.sunitalker.frags.assist.PermissionsFragment;
 import com.example.common.comm.app.Activity;
-import com.example.factory.presistence.Account;
+import com.example.factory.persistence.Account;
 
 import net.qiujuer.genius.res.Resource;
 import net.qiujuer.genius.ui.compat.UiCompat;

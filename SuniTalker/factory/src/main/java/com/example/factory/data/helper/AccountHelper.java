@@ -13,7 +13,7 @@ import com.example.factory.model.api.account.RegisterModel;
 import com.example.factory.model.db.User;
 import com.example.factory.net.Network;
 import com.example.factory.net.RemoteService;
-import com.example.factory.presistence.Account;
+import com.example.factory.persistence.Account;
 
 import retrofit2.Call;
 import retrofit2.Callback;

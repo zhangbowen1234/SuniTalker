@@ -8,7 +8,7 @@ import com.example.common.factory.presenter.BasePresenter;
 import com.example.factory.data.helper.AccountHelper;
 import com.example.factory.model.api.account.RegisterModel;
 import com.example.factory.model.db.User;
-import com.example.factory.presistence.Account;
+import com.example.factory.persistence.Account;
 
 import net.qiujuer.genius.kit.handler.Run;
 import net.qiujuer.genius.kit.handler.runable.Action;

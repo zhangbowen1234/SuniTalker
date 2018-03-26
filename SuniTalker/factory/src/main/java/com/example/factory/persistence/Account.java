@@ -1,4 +1,4 @@
-package com.example.factory.presistence;
+package com.example.factory.persistence;
 
 import android.content.Context;
 import android.content.SharedPreferences;

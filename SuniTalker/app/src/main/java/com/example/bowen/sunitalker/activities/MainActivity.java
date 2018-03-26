@@ -23,7 +23,7 @@ import com.example.bowen.sunitalker.frags.main.GroupFragment;
 import com.example.bowen.sunitalker.helper.NavHelper;
 import com.example.common.comm.app.Activity;
 import com.example.common.comm.widget.PortraitView;
-import com.example.factory.presistence.Account;
+import com.example.factory.persistence.Account;
 
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.widget.FloatActionButton;
