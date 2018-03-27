@@ -1,11 +1,6 @@
 package com.example.bowen.sunitalker.frags.search;
 
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.bowen.sunitalker.R;
 import com.example.bowen.sunitalker.activities.SearchActivity;
 import com.example.common.comm.app.Fragment;

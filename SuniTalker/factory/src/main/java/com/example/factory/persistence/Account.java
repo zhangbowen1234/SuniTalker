@@ -156,6 +156,15 @@ public class Account {
                 .where(User_Table.id.eq(userId))
                 .querySingle();
     }
+    /**
+     * 返回用户Id
+     *
+     * @return 用户Id
+     */
+    public static String getUserId() {
+        // 如果为null返回一个new的User，其次从数据库查询
+        return getUser().getId();
+    }
 
     /**
      * 获取当前登录的Token

@@ -21,6 +21,8 @@ public abstract class Fragment extends android.support.v4.app.Fragment {
     protected View mRoot;
     protected Unbinder mRootBinder;
     protected PlaceHolderView mPlaceHolderView;
+    // 标志是否第一次初始化数据
+    protected boolean mIsFirstInitData = true;
 
     @Override
     public void onAttach(Context context) {
@@ -33,16 +35,16 @@ public abstract class Fragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        if (mRoot == null){
+        if (mRoot == null) {
             int layId = getContentLayoutId();
             //初始化当前的跟布局，但是不在创建时就添加到container里面
-            View root = inflater.inflate(layId,container,false);
+            View root = inflater.inflate(layId, container, false);
             initWidget(root);
             mRoot = root;
-        }else {
-            if (mRoot.getParent()!=null){
+        } else {
+            if (mRoot.getParent() != null) {
                 //把当前Root从其父控件中移除
-                ((ViewGroup)mRoot.getParent()).removeView(mRoot);
+                ((ViewGroup) mRoot.getParent()).removeView(mRoot);
             }
         }
         return mRoot;
@@ -51,19 +53,29 @@ public abstract class Fragment extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (mIsFirstInitData) {
+            // 触发一次以后不会触发
+            mIsFirstInitData = false;
+            // 触发
+            onFirstInit();
+        }
         //当View创建完成后初始化数据
         initData();
     }
+
     /**
      * 初始化相关参数
-     * @param bundle  参数bundle
-     * @return   如果控件初始化返回true
+     *
+     * @param bundle 参数bundle
+     * @return 如果控件初始化返回true
      */
-    protected void initArgs(Bundle bundle){
+    protected void initArgs(Bundle bundle) {
 
     }
+
     /**
      * 得到当前界面的资源文件Id
+     *
      * @return
      */
     protected abstract int getContentLayoutId();
@@ -71,31 +83,40 @@ public abstract class Fragment extends android.support.v4.app.Fragment {
     /**
      * 初始化控件
      */
-    protected void initWidget(View view){
-        mRootBinder = ButterKnife.bind(this,view);
+    protected void initWidget(View view) {
+        mRootBinder = ButterKnife.bind(this, view);
     }
 
     /**
      * 初始化数据
      */
-    protected void initData(){
+    protected void initData() {
+
+    }
+
+    /**
+     * 当首次初始化数据的时候会调用的方法
+     */
+    protected void onFirstInit() {
 
     }
 
     /**
      * 返回按键触发时调用
-     * @return   true代表已处理返回逻辑，Activity不用自己finish
-     *           false代表我没有处理返回逻辑，Activity需要自己finish
+     *
+     * @return true代表已处理返回逻辑，Activity不用自己finish
+     * false代表我没有处理返回逻辑，Activity需要自己finish
      */
-    public boolean onBackPressed(){
+    public boolean onBackPressed() {
         return false;
     }
 
     /**
      * 设置占位布局
+     *
      * @param placeHolderView 继承了占位布局规范的View
      */
-    public void setPlaceHolderView(PlaceHolderView placeHolderView){
+    public void setPlaceHolderView(PlaceHolderView placeHolderView) {
         this.mPlaceHolderView = placeHolderView;
     }
 }

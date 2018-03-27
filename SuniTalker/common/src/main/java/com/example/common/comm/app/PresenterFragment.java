@@ -16,6 +16,7 @@ public abstract class PresenterFragment<Presenter extends BaseContract.Presenter
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         // 在界面onAttach之后就触发初始化Presenter
         initPresenter();
     }
@@ -29,7 +30,7 @@ public abstract class PresenterFragment<Presenter extends BaseContract.Presenter
 
     @Override
     public void showError(int str) {
-        // 显示错误,优先使用占位布局
+        // 显示错误, 优先使用占位布局
         if (mPlaceHolderView != null) {
             mPlaceHolderView.triggerError(str);
         } else {
@@ -46,13 +47,7 @@ public abstract class PresenterFragment<Presenter extends BaseContract.Presenter
 
     @Override
     public void setPresenter(Presenter presenter) {
-        // View 中赋值Presenter
+        // View中赋值Presenter
         mPresenter = presenter;
-
-    }
-
-    @Override
-    protected int getContentLayoutId() {
-        return 0;
     }
 }

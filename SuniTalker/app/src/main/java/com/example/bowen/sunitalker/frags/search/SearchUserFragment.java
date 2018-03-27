@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.bowen.sunitalker.R;
 import com.example.bowen.sunitalker.activities.SearchActivity;
+import com.example.bowen.sunitalker.frags.main.ContactFragment;
 import com.example.common.comm.app.PresenterFragment;
 import com.example.common.comm.widget.EmptyView;
 import com.example.common.comm.widget.PortraitView;
@@ -18,6 +19,7 @@ import com.example.factory.model.card.UserCard;
 import com.example.factory.presenter.contact.FollowContract;
 import com.example.factory.presenter.contact.FollowPresenter;
 import com.example.factory.presenter.search.SearchContract;
+import com.example.factory.presenter.search.SearchUserPresenter;
 
 import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.compat.UiCompat;
@@ -58,11 +60,11 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
 
         // 初始化Recycler
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecycler.setAdapter(new RecyclerAdapter<UserCard>() {
+        mRecycler.setAdapter(mAdapter = new RecyclerAdapter<UserCard>() {
             @Override
             protected int getItemViewType(int position, UserCard userCard) {
                 // 返回cell的布局id
-                return 0;
+                return R.layout.cell_search_list;
             }
 
             @Override
@@ -101,7 +103,7 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
     @Override
     protected SearchContract.Presenter initPresenter() {
         // 初始化Presenter
-        return null;
+        return new SearchUserPresenter(this);
     }
 
     /**
@@ -129,10 +131,7 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
 
         @Override
         protected void onBind(UserCard userCard) {
-            Glide.with(SearchUserFragment.this)
-                    .load(userCard.getPortrait())
-                    .centerCrop().into(mPortraitView);
-
+            mPortraitView.setup(Glide.with(SearchUserFragment.this), userCard);
             mName.setText(userCard.getName());
             mFollow.setEnabled(!userCard.isFollow());
         }
@@ -149,7 +148,7 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
             // 更改当前界面状态
             if (mFollow.getDrawable() instanceof LoadingDrawable) {
                 // 失败则停止状态，并且显示一个圆圈
-                LoadingDrawable drawable= (LoadingDrawable) mFollow.getDrawable();
+                LoadingDrawable drawable = (LoadingDrawable) mFollow.getDrawable();
                 drawable.setProgress(1);
                 drawable.stop();
             }

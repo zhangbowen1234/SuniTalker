@@ -1,5 +1,6 @@
 package com.example.factory.model.card;
 
+import com.example.common.factory.model.Author;
 import com.example.factory.model.db.User;
 import com.google.gson.annotations.Expose;
 
@@ -10,7 +11,7 @@ import java.util.Date;
  * Created by bowen on 2018/3/19.
  */
 
-public class UserCard {
+public class UserCard implements Author {
     private String id;
     private String name;
     private String phone;
