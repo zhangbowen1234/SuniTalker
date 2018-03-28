@@ -10,6 +10,7 @@ import com.example.factory.model.card.UserCard;
 import com.example.factory.model.db.AppDatabase;
 import com.example.factory.model.db.User;
 import com.example.factory.persistence.Account;
+import com.example.factory.utils.DiffUiDataCallback;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -64,24 +65,28 @@ public class ContactPresenter extends BasePresenter<ContactContract.View>
             @Override
             public void onDataLoaded(final List<UserCard> userCards) {
 
-                final List<User> users =  new ArrayList<>();
+                final List<User> users = new ArrayList<>();
                 for (UserCard userCard : userCards) {
                     users.add(userCard.build());
                 }
                 // 丢到事务中保存数据库
                 DatabaseDefinition definition = FlowManager.getDatabase(AppDatabase.class);
-                        definition.beginTransactionAsync(new ITransaction() {
-                            @Override
-                            public void execute(DatabaseWrapper databaseWrapper) {
-                                for (UserCard userCard : userCards) {
-                                    FlowManager.getModelAdapter(User.class).saveAll(users);
-                                }
-                            }
-                        }).build().execute();// 调用异步执行
+                definition.beginTransactionAsync(new ITransaction() {
+                    @Override
+                    public void execute(DatabaseWrapper databaseWrapper) {
+                        for (UserCard userCard : userCards) {
+                            FlowManager.getModelAdapter(User.class).saveAll(users);
+                        }
+                    }
+                }).build().execute();// 调用异步执行
 
                 // 网络的数据往往是新的，我们需要直接刷新到界面
-                getView().getRecyclerAdapter().replace(users);
-                getView().onAdapterDataChanged();
+                List<User> old = getView().getRecyclerAdapter().getItems();
+
+                // 会导致数据顺序全部为新的数据集合
+//                getView().getRecyclerAdapter().replace(users);
+
+                diff(old, users);
             }
         });
 
@@ -93,30 +98,15 @@ public class ContactPresenter extends BasePresenter<ContactContract.View>
 
     }
 
-    private void diff(List<User> newList,List<User> oldList){
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-            @Override
-            public int getOldListSize() {
-                return 0;
-            }
+    private void diff(List<User> oldList, List<User> newList) {
+        DiffUiDataCallback callback = new DiffUiDataCallback<>(oldList, newList);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback);
 
-            @Override
-            public int getNewListSize() {
-                return 0;
-            }
+        // 在对比完成后进行数据刷新
+        getView().getRecyclerAdapter().replace(newList);
 
-            @Override
-            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                return false;
-            }
-
-            @Override
-            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                return false;
-            }
-        });
-
-        //
+        // 尝试刷新
         result.dispatchUpdatesTo(getView().getRecyclerAdapter());
+        getView().onAdapterDataChanged();
     }
 }
