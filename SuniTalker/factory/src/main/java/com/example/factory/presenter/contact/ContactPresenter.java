@@ -9,6 +9,7 @@ import com.example.factory.data.helper.UserHelper;
 import com.example.factory.model.card.UserCard;
 import com.example.factory.model.db.AppDatabase;
 import com.example.factory.model.db.User;
+import com.example.factory.model.db.User_Table;
 import com.example.factory.persistence.Account;
 import com.example.factory.utils.DiffUiDataCallback;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
@@ -41,7 +42,7 @@ public class ContactPresenter extends BasePresenter<ContactContract.View>
                 .from(User.class) // 查询的表
                 .where(User_Table.isFollow.eq(true)) // 查询的语句
                 .and(User_Table.id.notEq(Account.getUserId())) // 查询的条件
-                .orderBy(User_Table.name, true)  // 排序方式（正向按名字排序）
+                .orderBy( User_Table.name, true)  // 排序方式（正向按名字排序）
                 .limit(100) // 每次查100条
                 .async() // 异步查询
                 .queryListResultCallback(new QueryTransaction.QueryResultListCallback<User>() { // 异步返回的Callback

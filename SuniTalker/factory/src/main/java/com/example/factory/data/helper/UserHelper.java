@@ -7,10 +7,13 @@ import com.example.factory.model.api.RspModel;
 import com.example.factory.model.api.user.UserUpdateModel;
 import com.example.factory.model.card.UserCard;
 import com.example.factory.model.db.User;
+import com.example.factory.model.db.User_Table;
 import com.example.factory.net.Network;
 import com.example.factory.net.RemoteService;
 import com.example.factory.presenter.contact.FollowPresenter;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
+import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -82,7 +85,7 @@ public class UserHelper {
 
 
     // 关注的网络请求
-    public static void follow(String id,final DataSource.Callback<UserCard> callback) {
+    public static void follow(String id, final DataSource.Callback<UserCard> callback) {
         RemoteService service = Network.remote();
         Call<RspModel<UserCard>> call = service.userFollow(id);
 
@@ -130,5 +133,55 @@ public class UserHelper {
                 callback.onDataNotAvailable(R.string.data_network_error);
             }
         });
+    }
+
+    // 从本地查询一个用户的信息
+    public static User findFormLocal(String id) {
+        return SQLite.select()
+                .from(User.class)
+                .where(User_Table.id.eq(id))
+                .querySingle();
+    }
+
+    // 从本地查询一个用户的信息
+    public static User findFormNet(String id) {
+        RemoteService remoteService = Network.remote();
+        try {
+            Response<RspModel<UserCard>> response = remoteService.userFind(id).execute();
+            UserCard card = response.body().getResult();
+            if (card != null) {
+                // TODO 数据库的刷新,但是没有通知
+                User user = card.build();
+                user.save();
+                return user;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 搜索一个用户，优先本地缓存，
+     * 没有然后再从网络拉取
+     */
+    public static User search(String id) {
+        User user = findFormLocal(id);
+        if (user == null) {
+            return findFormNet(id);
+        }
+        return user;
+    }
+
+    /**
+     * 搜索一个用户，优先网络拉取，
+     * 没有然后再从本地缓存
+     */
+    public static User searchFirstOfNet(String id) {
+        User user = findFormNet(id);
+        if (user == null) {
+            return findFormLocal(id);
+        }
+        return user;
     }
 }
