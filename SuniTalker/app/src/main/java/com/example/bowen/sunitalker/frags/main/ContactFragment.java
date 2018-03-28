@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.bowen.sunitalker.R;
 import com.example.bowen.sunitalker.activities.MessageActivity;
+import com.example.bowen.sunitalker.activities.PersonalActivity;
 import com.example.common.comm.app.PresenterFragment;
 import com.example.common.comm.widget.EmptyView;
 import com.example.common.comm.widget.PortraitView;
@@ -17,6 +18,7 @@ import com.example.factory.presenter.contact.ContactContract;
 import com.example.factory.presenter.contact.ContactPresenter;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 联系人
@@ -124,10 +126,10 @@ public class ContactFragment extends PresenterFragment<ContactContract.Presenter
             mDesc.setText(user.getDesc());
         }
 
-//        @OnClick(R.id.im_portrait)
-//        void onPortraitClick() {
-//            // 显示信息
-//            PersonalActivity.show(getContext(), mData.getId());
-//        }
+        @OnClick(R.id.im_portrait)
+        void onPortraitClick() {
+            // 显示信息
+            PersonalActivity.show(getContext(), mData.getId());
+        }
     }
 }

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.bowen.sunitalker.R;
+import com.example.bowen.sunitalker.activities.PersonalActivity;
 import com.example.bowen.sunitalker.activities.SearchActivity;
 import com.example.bowen.sunitalker.frags.main.ContactFragment;
 import com.example.common.comm.app.PresenterFragment;
@@ -134,6 +135,11 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
             mPortraitView.setup(Glide.with(SearchUserFragment.this), userCard);
             mName.setText(userCard.getName());
             mFollow.setEnabled(!userCard.isFollow());
+        }
+
+        @OnClick(R.id.im_portrait)
+        void onPortraitClick() {
+            PersonalActivity.show(getContext(), mData.getId());
         }
 
         @OnClick(R.id.im_follow)
