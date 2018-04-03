@@ -7,7 +7,7 @@ import com.example.common.factory.presenter.BaseContract;
  * Created by bowen on 2018/3/21.
  */
 
-public abstract class PersenterToolbarActivity<Presenter extends BaseContract.Presenter>
+public abstract class PresenterToolbarActivity<Presenter extends BaseContract.Presenter>
         extends ToolbarActivity implements BaseContract.View<Presenter> {
     protected Presenter mPresenter;
 

@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.bowen.sunitalker.R;
-import com.example.common.comm.app.PersenterToolbarActivity;
+import com.example.common.comm.app.PresenterToolbarActivity;
 import com.example.common.comm.widget.PortraitView;
 import com.example.factory.model.db.User;
 import com.example.factory.presenter.contact.PersonalContract;
@@ -27,7 +27,7 @@ import net.qiujuer.genius.res.Resource;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class PersonalActivity extends PersenterToolbarActivity<PersonalContract.Presenter>
+public class PersonalActivity extends PresenterToolbarActivity<PersonalContract.Presenter>
         implements PersonalContract.View {
     private static final String BOUND_KEY_ID = "BOUND_KEY_ID";
     private String userId;
@@ -92,7 +92,7 @@ public class PersonalActivity extends PersenterToolbarActivity<PersonalContract.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_follow) {
-            // 进行关注操作
+            // TODO 进行关注操作
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -104,7 +104,7 @@ public class PersonalActivity extends PersenterToolbarActivity<PersonalContract.
         User user = mPresenter.getUserPersonal();
         if (user == null)
             return;
-        MessageActivity.show(this, null);
+        MessageActivity.show(this, user);
     }
 
     /**
@@ -137,7 +137,7 @@ public class PersonalActivity extends PersenterToolbarActivity<PersonalContract.
         mName.setText(user.getName());
         mDesc.setText(user.getDesc());
         mFollows.setText(String.format(getString(R.string.label_follows), user.getFollows()));
-        mFollowing.setText(user.getFollowing());
+        mFollowing.setText(String.format(getString(R.string.label_following), user.getFollowing()));
         hideLoading();
     }
 
