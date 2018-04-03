@@ -21,6 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
+ * 网络请求helper
  * Created by bowen on 2018/3/19.
  */
 

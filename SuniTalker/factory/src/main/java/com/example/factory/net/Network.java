@@ -38,7 +38,7 @@ public class Network {
         if (instance.retrofit != null) {
             return instance.retrofit;
         }
-        // 得到一个OKClient
+        // 得到一个OK Client
         OkHttpClient client = new OkHttpClient.Builder()
                 // 给所有的请求添加一个拦截器
                 .addInterceptor(new Interceptor() {
@@ -48,7 +48,7 @@ public class Network {
                         Request original = chain.request();
                         // 重新进行build
                         Request.Builder builder = original.newBuilder();
-                        if (TextUtils.isEmpty(Account.getToken())) {
+                        if (!TextUtils.isEmpty(Account.getToken())) {
                             // 全局的一个Token注入
                             builder.addHeader("token", Account.getToken());
                         }

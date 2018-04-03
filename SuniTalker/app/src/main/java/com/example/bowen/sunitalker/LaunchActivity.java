@@ -20,6 +20,7 @@ import com.example.factory.persistence.Account;
 import net.qiujuer.genius.res.Resource;
 import net.qiujuer.genius.ui.compat.UiCompat;
 
+// 启动页
 public class LaunchActivity extends Activity {
 
     //Drawable

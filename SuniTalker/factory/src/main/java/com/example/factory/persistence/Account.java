@@ -141,6 +141,7 @@ public class Account {
         Account.token = model.getToken();
         Account.account = model.getAccount();
         Account.userId = model.getUser().getId();
+        Log.e( "login: ", token+"_"+account+"_"+userId);
         save(Factory.app());
     }
 
