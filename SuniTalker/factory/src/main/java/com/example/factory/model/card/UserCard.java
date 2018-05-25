@@ -1,16 +1,14 @@
 package com.example.factory.model.card;
 
+
 import com.example.common.factory.model.Author;
 import com.example.factory.model.db.User;
-import com.google.gson.annotations.Expose;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
- * Created by bowen on 2018/3/19.
+ * 用户卡片，用于接收服务器返回
  */
-
 public class UserCard implements Author {
     private String id;
     private String name;
@@ -111,8 +109,8 @@ public class UserCard implements Author {
         this.modifyAt = modifyAt;
     }
 
-    // 缓存一个对应的User，不能被GSON解析使用
-    private User user;
+    // 缓存一个对应的User, 不能被GSON框架解析使用ø
+    private transient User user;
 
     public User build() {
         if (user == null) {
@@ -124,8 +122,8 @@ public class UserCard implements Author {
             user.setDesc(desc);
             user.setSex(sex);
             user.setFollow(isFollow);
-            user.setFollowing(following);
             user.setFollows(follows);
+            user.setFollowing(following);
             user.setModifyAt(modifyAt);
             this.user = user;
         }

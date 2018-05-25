@@ -99,7 +99,6 @@ public class AccountHelper {
             if (rspModel.success()) {
                 // 拿到实体
                 AccountRspModel accountRspModel = rspModel.getResult();
-
                 // 获取我的信息
                 User user = accountRspModel.getUser();
                 // 第一种，直接保存
