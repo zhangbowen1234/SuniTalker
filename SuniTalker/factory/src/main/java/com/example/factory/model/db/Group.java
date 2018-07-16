@@ -127,9 +127,9 @@ public class Group extends BaseDbModel<Group> implements Serializable {
     }
 
     @Override
-    public boolean isSame(Group oldT) {
+    public boolean isSame(Group old) {
         // 进行对比判断时，判断是否为一个群的信息，判断id即可
-        return Objects.equals(id, oldT.id);
+        return Objects.equals(id, old.id);
     }
 
     @Override
