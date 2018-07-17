@@ -17,20 +17,19 @@ import java.util.List;
  * 联系人的Presenter实现
  * Created by bowen on 2018/3/27.
  */
-
 public class ContactPresenter extends BaseSourcePresenter<User, User, ContactDataSource, ContactContract.View>
         implements ContactContract.Presenter, DataSource.SucceedCallback<List<User>> {
 
-    private ContactDataSource mSource;
-
     public ContactPresenter(ContactContract.View view) {
-        // 初始化数据库仓库
+        // 初始化数据仓库
         super(new ContactRepository(), view);
     }
+
 
     @Override
     public void start() {
         super.start();
+
         // 加载网络数据
         UserHelper.refreshContacts();
     }
@@ -47,7 +46,7 @@ public class ContactPresenter extends BaseSourcePresenter<User, User, ContactDat
         List<User> old = adapter.getItems();
 
         // 进行数据对比
-        DiffUiDataCallback callback = new DiffUiDataCallback<>(old, users);
+        DiffUtil.Callback callback = new DiffUiDataCallback<>(old, users);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callback);
 
         // 调用基类方法进行界面刷新

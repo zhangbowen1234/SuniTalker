@@ -24,7 +24,6 @@ import retrofit2.Response;
  * 网络请求helper
  * Created by bowen on 2018/3/19.
  */
-
 public class UserHelper {
     // 更新用户信息的操作，异步的
     public static void update(UserUpdateModel model, final DataSource.Callback<UserCard> callback) {
@@ -44,7 +43,7 @@ public class UserHelper {
                     // 返回成功
                     callback.onDataLoaded(userCard);
                 } else {
-                    // 错误情况下进行分配
+                    // 错误情况下进行错误分配
                     Factory.decodeRspCode(rspModel, callback);
                 }
             }
@@ -78,6 +77,7 @@ public class UserHelper {
                 callback.onDataNotAvailable(R.string.data_network_error);
             }
         });
+
         // 把当前的调度者返回
         return call;
     }
@@ -99,7 +99,6 @@ public class UserHelper {
                     // 返回数据
                     callback.onDataLoaded(userCard);
                 } else {
-                    // 错误情况下进行错误分配
                     Factory.decodeRspCode(rspModel, callback);
                 }
             }
@@ -111,47 +110,49 @@ public class UserHelper {
         });
     }
 
-    // 刷新联系人的操作 ， 不需要Callback，直接存储到数据库，
+    // 刷新联系人的操作，不需要Callback，直接存储到数据库，
     // 并通过数据库观察者进行通知界面更新，
     // 界面更新的时候进行对比，然后差异更新
     public static void refreshContacts() {
         RemoteService service = Network.remote();
-        service.userContacts().enqueue(new Callback<RspModel<List<UserCard>>>() {
-            @Override
-            public void onResponse(Call<RspModel<List<UserCard>>> call, Response<RspModel<List<UserCard>>> response) {
-                RspModel<List<UserCard>> rspModel = response.body();
-                if (rspModel.success()) {
-                    List<UserCard> cards = rspModel.getResult();
-                    if (cards == null || cards.size() == 0)
-                        return;
+        service.userContacts()
+                .enqueue(new Callback<RspModel<List<UserCard>>>() {
+                    @Override
+                    public void onResponse(Call<RspModel<List<UserCard>>> call, Response<RspModel<List<UserCard>>> response) {
+                        RspModel<List<UserCard>> rspModel = response.body();
+                        if (rspModel.success()) {
+                            // 拿到集合
+                            List<UserCard> cards = rspModel.getResult();
+                            if (cards == null || cards.size() == 0)
+                                return;
 
-                    UserCard[] cards1 = cards.toArray(new UserCard[0]);
-                    //CollectionUtil.toArray(cards,UserCard.class);
+                            UserCard[] cards1 = cards.toArray(new UserCard[0]);
+                            // CollectionUtil.toArray(cards, UserCard.class);
 
-                    Factory.getUserCenter().dispatch(cards1);
+                            Factory.getUserCenter().dispatch(cards1);
 
-                } else {
-                    Factory.decodeRspCode(rspModel, null);
-                }
-            }
+                        } else {
+                            Factory.decodeRspCode(rspModel, null);
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<RspModel<List<UserCard>>> call, Throwable t) {
-                // nothing
-            }
-        });
+                    @Override
+                    public void onFailure(Call<RspModel<List<UserCard>>> call, Throwable t) {
+                        // nothing
+                    }
+                });
     }
 
     // 从本地查询一个用户的信息
-    public static User findFormLocal(String id) {
+    public static User findFromLocal(String id) {
         return SQLite.select()
                 .from(User.class)
                 .where(User_Table.id.eq(id))
                 .querySingle();
     }
 
-    // 从网络查询一个用户的信息
-    public static User findFormNet(String id) {
+    // 从网络查询某用户的信息
+    public static User findFromNet(String id) {
         RemoteService remoteService = Network.remote();
         try {
             Response<RspModel<UserCard>> response = remoteService.userFind(id).execute();
@@ -160,36 +161,39 @@ public class UserHelper {
                 User user = card.build();
                 // 数据库的存储并通知
                 Factory.getUserCenter().dispatch(card);
-                // TODO 跟着视频到这
                 return user;
             }
-        } catch (IOException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
+
     /**
      * 搜索一个用户，优先本地缓存，
-     * 没有然后再从网络拉取
+     * 没有用然后再从网络拉取
      */
     public static User search(String id) {
-        User user = findFormLocal(id);
+        User user = findFromLocal(id);
         if (user == null) {
-            return findFormNet(id);
+            return findFromNet(id);
         }
         return user;
     }
 
     /**
-     * 搜索一个用户，优先网络拉取，
-     * 没有然后再从本地缓存
+     * 搜索一个用户，优先网络查询
+     * 没有用然后再从本地缓存拉取
      */
     public static User searchFirstOfNet(String id) {
-        User user = findFormNet(id);
+        User user = findFromNet(id);
         if (user == null) {
-            return findFormLocal(id);
+            return findFromLocal(id);
         }
         return user;
     }
+
 }

@@ -38,7 +38,6 @@ import butterknife.OnClick;
 public class SearchUserFragment extends PresenterFragment<SearchContract.Presenter>
         implements SearchActivity.SearchFragment, SearchContract.UserView {
 
-
     @BindView(R.id.empty)
     EmptyView mEmptyView;
 
@@ -56,8 +55,8 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
     }
 
     @Override
-    protected void initWidget(View view) {
-        super.initWidget(view);
+    protected void initWidget(View root) {
+        super.initWidget(root);
 
         // 初始化Recycler
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -72,8 +71,8 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
             protected ViewHolder<UserCard> onCreateViewHolder(View root, int viewType) {
                 return new SearchUserFragment.ViewHolder(root);
             }
-
         });
+
         // 初始化占位布局
         mEmptyView.bind(mRecycler);
         setPlaceHolderView(mEmptyView);
@@ -88,7 +87,7 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
 
     @Override
     public void search(String content) {
-        // Activity->Fragment->Presenter->Net网络请求
+        // Activity->Fragment->Presenter->Net
         mPresenter.search(content);
     }
 
@@ -96,9 +95,8 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
     public void onSearchDone(List<UserCard> userCards) {
         // 数据成功的情况下返回数据
         mAdapter.replace(userCards);
-        // 如果有数据，则是ok，没有数据就显示空布局
+        // 如果有数据，则是OK，没有数据就显示空布局
         mPlaceHolderView.triggerOkOrEmpty(mAdapter.getItemCount() > 0);
-
     }
 
     @Override
@@ -108,11 +106,10 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
     }
 
     /**
-     * 每一个cell的布局操作
+     * 每一个Cell的布局操作
      */
     class ViewHolder extends RecyclerAdapter.ViewHolder<UserCard>
             implements FollowContract.View {
-
         @BindView(R.id.im_portrait)
         PortraitView mPortraitView;
 
@@ -123,6 +120,7 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
         ImageView mFollow;
 
         private FollowContract.Presenter mPresenter;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -139,6 +137,7 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
 
         @OnClick(R.id.im_portrait)
         void onPortraitClick() {
+            // 显示信息
             PersonalActivity.show(getContext(), mData.getId());
         }
 
@@ -146,19 +145,17 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
         void onFollowClick() {
             // 发起关注
             mPresenter.follow(mData.getId());
-
         }
 
         @Override
         public void showError(int str) {
             // 更改当前界面状态
             if (mFollow.getDrawable() instanceof LoadingDrawable) {
-                // 失败则停止状态，并且显示一个圆圈
+                // 失败则停止动画，并且显示一个圆圈
                 LoadingDrawable drawable = (LoadingDrawable) mFollow.getDrawable();
                 drawable.setProgress(1);
                 drawable.stop();
             }
-
         }
 
         @Override
@@ -169,9 +166,8 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
             LoadingDrawable drawable = new LoadingCircleDrawable(minSize, maxSize);
             drawable.setBackgroundColor(0);
 
-            int[] color = new int[]{UiCompat.getColor(getResources(), R.color.white)};
+            int[] color = new int[]{UiCompat.getColor(getResources(), R.color.white_alpha_208)};
             drawable.setForegroundColor(color);
-
             // 设置进去
             mFollow.setImageDrawable(drawable);
             // 启动动画
@@ -191,9 +187,8 @@ public class SearchUserFragment extends PresenterFragment<SearchContract.Present
                 // 设置为默认的
                 mFollow.setImageResource(R.drawable.sel_opt_done_add);
             }
-
+            // 发起更新
             updateData(userCard);
         }
     }
-
 }
